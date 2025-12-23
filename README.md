@@ -88,4 +88,4 @@
 | `Drag & Drop` | Transfer data between widgets (Cross-Talk Protocol) |
 
 ---
-*Built by [Your Name/Handle]. Encrypted. Distributed. Free.*
+*Built by [Jon-Arve Constantine / GizzZmo]. Encrypted. Distributed. Free.*
