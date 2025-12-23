@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Omni-Grid | The Super App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&family=Inter:wght@400;600&family=Playfair+Display:wght@700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-grid-layout/1.3.4/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-resizable/3.0.4/css/styles.css" />
+    <style id="theme-root">
+      :root {
+        --color-bg: #0f0518;
+        --color-surface: #1a0b2e;
+        --color-primary: #d946ef;
+        --color-secondary: #8b5cf6;
+        --color-text: #e2e8f0;
+        --color-accent: #06b6d4;
+        --font-body: 'Share Tech Mono', monospace;
+        --font-gothic: 'UnifrakturMaguntia', cursive;
+        --radius: 0.25rem;
+      }
+      
+      body {
+        font-family: var(--font-body);
+        background-color: var(--color-bg);
+        color: var(--color-text);
+        transition: background-color 0.5s ease, color 0.5s ease;
+      }
+
+      h1, h2, h3, h4, .font-display {
+        font-family: 'Orbitron', sans-serif;
+      }
+      
+      .font-gothic {
+        font-family: var(--font-gothic);
+      }
+
+      /* Dynamic Override Helper Classes */
+      .bg-theme-bg { background-color: var(--color-bg) !important; }
+      .bg-theme-surface { background-color: var(--color-surface) !important; }
+      .text-theme-text { color: var(--color-text) !important; }
+      .text-theme-primary { color: var(--color-primary) !important; }
+      .border-theme-primary { border-color: var(--color-primary) !important; }
+      
+      /* Custom scrollbar for cyberpunk aesthetic */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.3); 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--color-primary); 
+        border: 1px solid var(--color-surface);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-secondary); 
+        box-shadow: 0 0 10px var(--color-primary);
+      }
+
+      /* CRT Scanline Effect */
+      .scanlines::before {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(18, 16, 16, 0) 50%,
+          rgba(0, 0, 0, 0.25) 50%
+        );
+        background-size: 100% 4px;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.15;
+      }
+
+      /* React Grid Layout Overrides */
+      .react-grid-item.react-grid-placeholder {
+        background: rgba(217, 70, 239, 0.1) !important;
+        border: 1px dashed var(--color-primary) !important;
+        opacity: 0.5;
+        z-index: 100 !important;
+        box-shadow: 0 0 15px var(--color-primary);
+      }
+      
+      .react-resizable-handle {
+        z-index: 50;
+        width: 20px !important;
+        height: 20px !important;
+        bottom: 4px !important;
+        right: 4px !important;
+        cursor: se-resize !important;
+        background: transparent !important;
+      }
+      
+      .react-resizable-handle::after {
+        content: "";
+        position: absolute;
+        right: 4px;
+        bottom: 4px;
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid var(--color-primary);
+        border-bottom: 2px solid var(--color-primary);
+        transition: all 0.2s;
+      }
+
+      .react-resizable-handle:hover::after {
+        box-shadow: 0 0 10px var(--color-primary);
+      }
+
+      /* Glitch Animation Keyframes */
+      @keyframes glitch {
+        0% { transform: translate(0) }
+        20% { transform: translate(-2px, 2px) }
+        40% { transform: translate(-2px, -2px) }
+        60% { transform: translate(2px, 2px) }
+        80% { transform: translate(2px, -2px) }
+        100% { transform: translate(0) }
+      }
+      
+      .hover-glitch:hover {
+        animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+        color: var(--color-secondary);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.263.1?external=react,react-dom",
+    "zustand": "https://esm.sh/zustand@4.5.0?external=react",
+    "zustand/": "https://esm.sh/zustand@4.5.0&external=react/",
+    "react-grid-layout": "https://esm.sh/react-grid-layout@1.4.4?external=react,react-dom"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-slate-950 text-slate-200 antialiased overflow-hidden selection:bg-fuchsia-500/50 selection:text-white">
+    <div id="root" class="h-screen w-screen scanlines"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
