@@ -18,6 +18,8 @@
 
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
+**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md)**
+
 ## 0x02 // CORE MODULES
 
 ### 🧠 The Neural Suite
@@ -86,6 +88,27 @@
 | :--- | :--- |
 | `Cmd + K` | Trigger AI Refine in Scratchpad |
 | `Drag & Drop` | Transfer data between widgets (Cross-Talk Protocol) |
+
+For complete keyboard shortcuts reference, see [Keyboard Shortcuts Guide](./docs/keyboard-shortcuts.md).
+
+---
+
+## 0x06 // DOCUMENTATION
+
+Comprehensive documentation is available in the `docs/` folder:
+
+### 📚 Quick Links
+- **[Documentation Hub](./docs/README.md)** - Complete documentation index
+- **[Getting Started Guide](./docs/getting-started.md)** - Installation and setup
+- **[Widget Development](./docs/widget-development.md)** - Create custom widgets
+- **[Architecture Overview](./docs/architecture.md)** - Technical deep-dive
+- **[API Reference](./docs/api-reference.md)** - Complete API documentation
+- **[Configuration Guide](./docs/configuration.md)** - Settings and customization
+- **[State Management](./docs/state-management.md)** - Zustand patterns
+- **[FAQ](./docs/faq.md)** - Frequently asked questions
+- **[Troubleshooting](./docs/troubleshooting.md)** - Common issues and solutions
+- **[WIKI](./docs/WIKI.md)** - Core concepts and philosophy
+- **[How-To Guide](./docs/HOWTO.md)** - Practical recipes
 
 ---
 *Built by [Jon-Arve Constantine / GizzZmo]. Encrypted. Distributed. Free.*
