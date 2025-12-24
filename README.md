@@ -71,7 +71,7 @@
 
 4.  **Ignition**
     ```bash
-    npm start
+    npm run dev -- --port 1234
     # Access via http://localhost:1234
     ```
 

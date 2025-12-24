@@ -4,20 +4,33 @@
 #include <unistd.h>
 
 #include <atomic>
+#include <array>
+#include <algorithm>
+#include <cerrno>
+#include <condition_variable>
+#include <cstdio>
 #include <csignal>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <mutex>
 #include <optional>
+#include <queue>
 #include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <thread>
+#include <system_error>
+#include <sys/time.h>
 
 namespace fs = std::filesystem;
 namespace {
 std::atomic<bool> running{true};
 int server_fd_global = -1;
+constexpr const char* kIndexFile = "index.html";
+constexpr int kDefaultPort = 1234;
 }  // namespace
 
 void handle_signal(int) {
@@ -89,7 +102,7 @@ bool send_all(int client_fd, const std::string &payload) {
     const auto total = payload.size();
     while (sent < total) {
         const auto chunk =
-            send(client_fd, payload.data() + sent, static_cast<int>(total - sent), 0);
+            send(client_fd, payload.data() + sent, total - sent, 0);
         if (chunk <= 0) return false;
         sent += static_cast<size_t>(chunk);
     }
@@ -119,18 +132,38 @@ std::optional<std::string> load_file(const fs::path &path) {
 
 std::string read_request(int client_fd) {
     constexpr size_t kMaxRequestSize = 8192;
-    char buffer[2048];
+    std::array<char, kMaxRequestSize> buffer{};
     std::string data;
     ssize_t received = 0;
     while (data.find("\r\n\r\n") == std::string::npos &&
-           (received = recv(client_fd, buffer, sizeof(buffer), 0)) > 0) {
-        data.append(buffer, static_cast<size_t>(received));
+           (received = recv(client_fd, buffer.data(), buffer.size(), 0)) > 0) {
+        data.append(buffer.data(), static_cast<size_t>(received));
         if (data.size() >= kMaxRequestSize) break;
     }
     return data;
 }
 
+bool path_within_root(const fs::path &root, const fs::path &target) {
+    std::error_code ec;
+    const auto normalized_root = fs::weakly_canonical(root, ec);
+    if (ec) return false;
+    const auto normalized_target = fs::weakly_canonical(target, ec);
+    if (ec) return false;
+    auto root_it = normalized_root.begin();
+    auto target_it = normalized_target.begin();
+    for (; root_it != normalized_root.end() && target_it != normalized_target.end();
+         ++root_it, ++target_it) {
+        if (*root_it != *target_it) return false;
+    }
+    return root_it == normalized_root.end();
+}
+
 void handle_client(int client_fd, const fs::path &root_dir) {
+    timeval timeout{};
+    timeout.tv_sec = 5;
+    timeout.tv_usec = 0;
+    setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+
     const auto raw_request = read_request(client_fd);
     const auto line_end = raw_request.find("\r\n");
     const auto request_line =
@@ -152,15 +185,20 @@ void handle_client(int client_fd, const fs::path &root_dir) {
     const auto raw_path = request_line.substr(first_space + 1, second_space - first_space - 1);
     const auto path = sanitize_path(raw_path);
 
-    fs::path target = path == "/" ? fs::path("index.html") : fs::path(path.substr(1));
+    fs::path target = path == "/" ? fs::path(kIndexFile) : fs::path(path.substr(1));
     target = (root_dir / target).lexically_normal();
 
     if (!fs::exists(target) && !has_extension(path)) {
-        target = root_dir / "index.html";
+        target = root_dir / kIndexFile;
     }
 
-    const auto normalized_target = fs::weakly_canonical(target);
-    if (normalized_target.native().rfind(root_dir.native(), 0) != 0) {
+    std::error_code ec;
+    const auto normalized_target = fs::weakly_canonical(target, ec);
+    if (ec) {
+        send_response(client_fd, 400, "Bad Request", "text/plain", "Invalid path.\n");
+        return;
+    }
+    if (!path_within_root(root_dir, normalized_target)) {
         send_response(client_fd, 403, "Forbidden", "text/plain", "Invalid path.\n");
         return;
     }
@@ -181,23 +219,44 @@ void handle_client(int client_fd, const fs::path &root_dir) {
 }
 
 int main(int argc, char *argv[]) {
-    int port = 1234;
+    int port = kDefaultPort;
     if (const char *env_port = std::getenv("PORT")) {
         try {
             port = std::stoi(env_port);
         } catch (...) {
+            std::cerr << "Invalid PORT value '" << env_port << "', using default " << kDefaultPort
+                      << "\n";
+            port = kDefaultPort;
         }
     }
     if (argc > 1) {
         try {
             port = std::stoi(argv[1]);
         } catch (...) {
-            std::cerr << "Invalid port argument, using default " << port << "\n";
+            std::cerr << "Invalid port argument, using default " << kDefaultPort << "\n";
+            port = kDefaultPort;
         }
     }
 
+    if (port <= 0 || port > 65535) {
+        std::cerr << "Port out of range, using default " << kDefaultPort << "\n";
+        port = kDefaultPort;
+    }
+
     fs::path root = fs::exists("dist") ? fs::path("dist") : fs::path(".");
-    root = fs::weakly_canonical(root);
+    std::error_code root_ec;
+    root = fs::weakly_canonical(root, root_ec);
+    if (root_ec) {
+        root_ec.clear();
+        root = fs::absolute(root, root_ec);
+    }
+    std::mutex queue_mutex;
+    std::condition_variable queue_cv;
+    std::queue<int> client_queue;
+    const auto concurrency = std::thread::hardware_concurrency();
+    const size_t worker_count = std::max<size_t>(4, concurrency ? concurrency : 4);
+    std::vector<std::thread> workers;
+    workers.reserve(worker_count);
 
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     server_fd_global = server_fd;
@@ -234,18 +293,46 @@ int main(int argc, char *argv[]) {
     std::cout << "Omni-Grid server listening on http://localhost:" << port
               << " serving " << root << "\n";
 
+    for (size_t i = 0; i < worker_count; ++i) {
+        workers.emplace_back([&queue_mutex, &queue_cv, &client_queue, root]() {
+            while (true) {
+                int client_fd = -1;
+                {
+                    std::unique_lock<std::mutex> lock(queue_mutex);
+                    queue_cv.wait(lock, [&client_queue]() {
+                        return !client_queue.empty() || !running.load();
+                    });
+                    if (!running.load() && client_queue.empty()) break;
+                    client_fd = client_queue.front();
+                    client_queue.pop();
+                }
+                handle_client(client_fd, root);
+                close(client_fd);
+            }
+        });
+    }
+
     while (running.load()) {
         sockaddr_in client_addr{};
         socklen_t client_len = sizeof(client_addr);
         int client_fd = accept(server_fd, reinterpret_cast<sockaddr *>(&client_addr), &client_len);
         if (client_fd < 0) {
             if (!running.load()) break;
+            std::cerr << "accept failed: " << std::strerror(errno) << "\n";
             continue;
         }
-        handle_client(client_fd, root);
-        close(client_fd);
+        {
+            std::lock_guard<std::mutex> lock(queue_mutex);
+            client_queue.push(client_fd);
+        }
+        queue_cv.notify_one();
     }
 
+    running = false;
+    queue_cv.notify_all();
     close(server_fd);
+    for (auto &worker : workers) {
+        if (worker.joinable()) worker.join();
+    }
     return 0;
 }
