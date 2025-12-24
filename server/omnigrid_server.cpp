@@ -3,6 +3,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#include <atomic>
+#include <csignal>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -13,6 +15,17 @@
 #include <vector>
 
 namespace fs = std::filesystem;
+namespace {
+std::atomic<bool> running{true};
+int server_fd_global = -1;
+}  // namespace
+
+void handle_signal(int) {
+    running = false;
+    if (server_fd_global != -1) {
+        shutdown(server_fd_global, SHUT_RDWR);
+    }
+}
 
 std::string sanitize_path(const std::string &raw_path) {
     std::string path = raw_path;
@@ -71,7 +84,19 @@ std::string mime_type(const fs::path &path) {
     return "application/octet-stream";
 }
 
-void send_response(int client_fd, int status, const std::string &status_text,
+bool send_all(int client_fd, const std::string &payload) {
+    size_t sent = 0;
+    const auto total = payload.size();
+    while (sent < total) {
+        const auto chunk =
+            send(client_fd, payload.data() + sent, static_cast<int>(total - sent), 0);
+        if (chunk <= 0) return false;
+        sent += static_cast<size_t>(chunk);
+    }
+    return true;
+}
+
+bool send_response(int client_fd, int status, const std::string &status_text,
                    const std::string &content_type, const std::string &body) {
     std::ostringstream oss;
     oss << "HTTP/1.1 " << status << " " << status_text << "\r\n";
@@ -79,10 +104,9 @@ void send_response(int client_fd, int status, const std::string &status_text,
     oss << "Content-Type: " << content_type << "\r\n";
     oss << "Connection: close\r\n\r\n";
     const auto header = oss.str();
-    send(client_fd, header.data(), header.size(), 0);
-    if (!body.empty()) {
-        send(client_fd, body.data(), body.size(), 0);
-    }
+    if (!send_all(client_fd, header)) return false;
+    if (!body.empty()) return send_all(client_fd, body);
+    return true;
 }
 
 std::optional<std::string> load_file(const fs::path &path) {
@@ -94,13 +118,14 @@ std::optional<std::string> load_file(const fs::path &path) {
 }
 
 std::string read_request(int client_fd) {
+    constexpr size_t kMaxRequestSize = 8192;
     char buffer[2048];
     std::string data;
     ssize_t received = 0;
     while (data.find("\r\n\r\n") == std::string::npos &&
            (received = recv(client_fd, buffer, sizeof(buffer), 0)) > 0) {
-        data.append(buffer, received);
-        if (data.size() > 8192) break;
+        data.append(buffer, static_cast<size_t>(received));
+        if (data.size() >= kMaxRequestSize) break;
     }
     return data;
 }
@@ -130,18 +155,22 @@ void handle_client(int client_fd, const fs::path &root_dir) {
     fs::path target = path == "/" ? fs::path("index.html") : fs::path(path.substr(1));
     target = (root_dir / target).lexically_normal();
 
-    if (!fs::exists(target)) {
-        if (!has_extension(path)) {
-            target = root_dir / "index.html";
-        }
+    if (!fs::exists(target) && !has_extension(path)) {
+        target = root_dir / "index.html";
     }
 
-    if (!fs::exists(target) || !fs::is_regular_file(target)) {
+    const auto normalized_target = fs::weakly_canonical(target);
+    if (normalized_target.native().rfind(root_dir.native(), 0) != 0) {
+        send_response(client_fd, 403, "Forbidden", "text/plain", "Invalid path.\n");
+        return;
+    }
+
+    if (!fs::exists(normalized_target) || !fs::is_regular_file(normalized_target)) {
         send_response(client_fd, 404, "Not Found", "text/plain", "Resource not found.\n");
         return;
     }
 
-    const auto body = load_file(target);
+    const auto body = load_file(normalized_target);
     if (!body) {
         send_response(client_fd, 500, "Internal Server Error", "text/plain",
                       "Failed to read file.\n");
@@ -168,16 +197,22 @@ int main(int argc, char *argv[]) {
     }
 
     fs::path root = fs::exists("dist") ? fs::path("dist") : fs::path(".");
-    root = fs::absolute(root);
+    root = fs::weakly_canonical(root);
 
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    server_fd_global = server_fd;
+    std::signal(SIGINT, handle_signal);
+    std::signal(SIGTERM, handle_signal);
+
     if (server_fd < 0) {
         std::cerr << "Failed to create socket\n";
         return 1;
     }
 
     int opt = 1;
-    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        std::cerr << "Warning: failed to set SO_REUSEADDR\n";
+    }
 
     sockaddr_in addr{};
     addr.sin_family = AF_INET;
@@ -199,11 +234,12 @@ int main(int argc, char *argv[]) {
     std::cout << "Omni-Grid server listening on http://localhost:" << port
               << " serving " << root << "\n";
 
-    while (true) {
+    while (running.load()) {
         sockaddr_in client_addr{};
         socklen_t client_len = sizeof(client_addr);
         int client_fd = accept(server_fd, reinterpret_cast<sockaddr *>(&client_addr), &client_len);
         if (client_fd < 0) {
+            if (!running.load()) break;
             continue;
         }
         handle_client(client_fd, root);
