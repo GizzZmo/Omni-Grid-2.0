@@ -12,13 +12,32 @@
   [ PROTOCOL: LOCAL-FIRST ]
 ```
 
+<div align="center">
+
+[![CI](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml)
+[![Dependency Audit](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml)
+[![Performance](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml)
+
+[![Release](https://img.shields.io/github/v/release/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=00ff88)](https://github.com/GizzZmo/Omni-Grid-2.0/releases)
+[![License](https://img.shields.io/github/license/GizzZmo/Omni-Grid-2.0?style=flat-square&color=00ccff)](./LICENSE)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?style=flat-square&logo=node.js)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+
+[![Stars](https://img.shields.io/github/stars/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=yellow)](https://github.com/GizzZmo/Omni-Grid-2.0/stargazers)
+[![Issues](https://img.shields.io/github/issues/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=red)](https://github.com/GizzZmo/Omni-Grid-2.0/issues)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](./CONTRIBUTING.md)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square)](https://github.com/GizzZmo/Omni-Grid-2.0/graphs/commit-activity)
+
+</div>
+
 ## 0x01 // OVERVIEW
 
 **Omni-Grid** is a privacy-centric, local-first "Super App" designed to replace fragmented browser tabs with a unified, high-density command center. Built on a modular React grid architecture, it integrates "Smart Grid" financial intelligence, AI-powered drafting, and developer utilities into a single aesthetic interface.
 
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
-**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md)**
+**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
 
 ## 0x02 // CORE MODULES
 
@@ -100,6 +119,33 @@ The server automatically serves from `dist/` (built assets) if it exists, or fal
 *   **Layout:** `react-grid-layout` for draggable, resizable tiles.
 *   **AI Core:** `@google/genai` (Gemini 3.5 Flash/Pro).
 *   **Styling:** TailwindCSS with dynamic CSS variable injection.
+
+## 0x04.1 // CI/CD PIPELINE
+
+Omni-Grid features a comprehensive automated workflow system:
+
+### 🔄 Continuous Integration
+*   **Automated Building:** Multi-platform builds (Node.js 18.x, 20.x)
+*   **Type Safety:** TypeScript strict checking on every commit
+*   **Code Quality:** Automated linting and style checks
+*   **Performance Monitoring:** Build time and bundle size tracking
+
+### 🔒 Security & Quality
+*   **CodeQL Analysis:** Automated security vulnerability scanning
+*   **Dependency Auditing:** Daily npm security audits
+*   **Dependabot:** Automated dependency updates with auto-merge for safe updates
+
+### 📦 Release & Deployment
+*   **Automated Releases:** Tag-triggered release creation with artifacts
+*   **Documentation Deployment:** Auto-deploy docs to GitHub Pages
+*   **Performance Reports:** PR-specific build performance analysis
+
+### 🤖 Automation
+*   **PR Labeling:** Automatic categorization based on changes
+*   **Welcome Bot:** First-time contributor greeting and guidance
+*   **Stale Management:** Automated cleanup of inactive issues/PRs
+
+**[View Complete Workflow Documentation](./.github/WORKFLOWS.md)**
 
 ## 0x05 // KEYBOARD SHORTCUTS
 

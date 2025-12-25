@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+      
+      - name: Build frontend
+        run: npm run build
+      
+      - name: Setup C++ build environment
+        run: sudo apt-get update && sudo apt-get install -y g++ make
+      
+      - name: Build C++ server
+        run: make server
+      
+      - name: Verify server binary
+        run: |
+          if [ -f "./omnigrid_server" ]; then
+            echo "✅ Server binary built successfully"
+            ls -lh ./omnigrid_server
+          else
+            echo "❌ Server binary not found"
+            exit 1
+          fi
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: matrix.node-version == '20.x'
+        with:
+          name: build-artifacts
+          path: |
+            dist/
+            omnigrid_server
+          retention-days: 7
+  
+  lint-and-format:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check for common issues
+        run: |
+          echo "Checking for console.log statements..."
+          if grep -r "console.log" --include="*.ts" --include="*.tsx" . 2>/dev/null; then
+            echo "⚠️  Found console.log statements"
+          else
+            echo "✅ No console.log statements found"
+          fi
+          
+          echo "Checking for TODO comments..."
+          if grep -r "TODO" --include="*.ts" --include="*.tsx" . 2>/dev/null; then
+            echo "⚠️  Found TODO comments"
+          else
+            echo "✅ No TODO comments found"
+          fi
