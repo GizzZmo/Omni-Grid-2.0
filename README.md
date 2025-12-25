@@ -37,7 +37,7 @@
 
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
-**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md)**
+**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
 
 ## 0x02 // CORE MODULES
 
@@ -119,6 +119,33 @@ The server automatically serves from `dist/` (built assets) if it exists, or fal
 *   **Layout:** `react-grid-layout` for draggable, resizable tiles.
 *   **AI Core:** `@google/genai` (Gemini 3.5 Flash/Pro).
 *   **Styling:** TailwindCSS with dynamic CSS variable injection.
+
+## 0x04.1 // CI/CD PIPELINE
+
+Omni-Grid features a comprehensive automated workflow system:
+
+### 🔄 Continuous Integration
+*   **Automated Building:** Multi-platform builds (Node.js 18.x, 20.x)
+*   **Type Safety:** TypeScript strict checking on every commit
+*   **Code Quality:** Automated linting and style checks
+*   **Performance Monitoring:** Build time and bundle size tracking
+
+### 🔒 Security & Quality
+*   **CodeQL Analysis:** Automated security vulnerability scanning
+*   **Dependency Auditing:** Daily npm security audits
+*   **Dependabot:** Automated dependency updates with auto-merge for safe updates
+
+### 📦 Release & Deployment
+*   **Automated Releases:** Tag-triggered release creation with artifacts
+*   **Documentation Deployment:** Auto-deploy docs to GitHub Pages
+*   **Performance Reports:** PR-specific build performance analysis
+
+### 🤖 Automation
+*   **PR Labeling:** Automatic categorization based on changes
+*   **Welcome Bot:** First-time contributor greeting and guidance
+*   **Stale Management:** Automated cleanup of inactive issues/PRs
+
+**[View Complete Workflow Documentation](./.github/WORKFLOWS.md)**
 
 ## 0x05 // KEYBOARD SHORTCUTS
 
