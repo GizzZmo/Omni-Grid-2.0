@@ -77,11 +77,22 @@
 
 ### Optional: C++ Static Server
 If you prefer a standalone HTTP host, compile the lightweight C++ server and serve the built assets (or the root for dev artifacts):
+
+**Using npm scripts (recommended):**
 ```bash
-g++ -std=c++17 -O2 server/omnigrid_server.cpp -o omnigrid_server
+npm run build:all    # Build frontend assets and compile C++ server
+npm run serve        # Run the compiled server (defaults to port 1234)
+# Then open http://localhost:1234
+```
+
+**Manual compilation:**
+```bash
+make server          # or: g++ -std=c++17 -O2 server/omnigrid_server.cpp -o omnigrid_server
 ./omnigrid_server 1234   # port is optional; defaults to 1234
 # Then open http://localhost:1234
 ```
+
+The server automatically serves from `dist/` (built assets) if it exists, or falls back to the root directory (for dev artifacts).
 
 ## 0x04 // ARCHITECTURE
 
