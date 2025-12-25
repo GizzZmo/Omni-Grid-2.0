@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  build-release:
+    name: Build Release Artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build frontend
+        run: npm run build
+      
+      - name: Setup C++ build environment
+        run: sudo apt-get update && sudo apt-get install -y g++ make
+      
+      - name: Build C++ server
+        run: make server
+      
+      - name: Create release archive
+        run: |
+          mkdir -p release
+          cp -r dist release/
+          cp omnigrid_server release/
+          cp README.md release/
+          cp DOCUMENTATION.md release/
+          cp QUICK_REFERENCE.md release/
+          tar -czf omni-grid-release.tar.gz -C release .
+          zip -r omni-grid-release.zip release/
+      
+      - name: Get version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          cat > release_notes.md << 'EOF'
+          ## 🚀 Omni-Grid Release ${{ steps.get_version.outputs.version }}
+          
+          ### 📦 What's Included
+          
+          - **Frontend Assets**: Pre-built React application
+          - **C++ Server**: Compiled lightweight HTTP server
+          - **Documentation**: Complete setup and usage guides
+          
+          ### 🎯 Quick Start
+          
+          1. Extract the archive
+          2. Run `./omnigrid_server 1234`
+          3. Open http://localhost:1234
+          
+          ### 📋 Requirements
+          
+          - Node.js 18+ (for development)
+          - Modern web browser
+          - Google Gemini API Key (for AI features)
+          
+          ### 🔗 Resources
+          
+          - [Documentation](./DOCUMENTATION.md)
+          - [Quick Reference](./QUICK_REFERENCE.md)
+          - [Repository](https://github.com/GizzZmo/Omni-Grid-2.0)
+          EOF
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            omni-grid-release.tar.gz
+            omni-grid-release.zip
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

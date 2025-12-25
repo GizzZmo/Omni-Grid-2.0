@@ -1,0 +1,49 @@
+name: Dependency Audit
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+      
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=moderate || true
+          echo "Audit completed"
+      
+      - name: Check for outdated dependencies
+        run: |
+          echo "Checking for outdated dependencies..."
+          npm outdated || true
+      
+      - name: Generate dependency report
+        run: |
+          echo "## Dependency Report" > dependency-report.md
+          echo "" >> dependency-report.md
+          echo "### Installed Packages" >> dependency-report.md
+          npm list --depth=0 >> dependency-report.md || true
+      
+      - name: Upload dependency report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-report
+          path: dependency-report.md
+          retention-days: 30

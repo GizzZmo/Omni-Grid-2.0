@@ -1,0 +1,92 @@
+name: Performance Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  performance:
+    name: Measure Build Performance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Measure build time
+        run: |
+          echo "## Build Performance Report" > performance-report.md
+          echo "" >> performance-report.md
+          
+          # Measure frontend build
+          echo "### Frontend Build" >> performance-report.md
+          START=$(date +%s)
+          npm run build
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "- **Duration**: ${DURATION}s" >> performance-report.md
+          
+          # Check bundle size
+          if [ -d "dist" ]; then
+            BUNDLE_SIZE=$(du -sh dist | cut -f1)
+            echo "- **Bundle Size**: ${BUNDLE_SIZE}" >> performance-report.md
+            
+            # List largest files
+            echo "" >> performance-report.md
+            echo "### Largest Assets" >> performance-report.md
+            echo "\`\`\`" >> performance-report.md
+            find dist -type f -exec du -h {} + | sort -rh | head -10 >> performance-report.md
+            echo "\`\`\`" >> performance-report.md
+          fi
+          
+          cat performance-report.md
+      
+      - name: Measure C++ build time
+        run: |
+          echo "" >> performance-report.md
+          echo "### C++ Server Build" >> performance-report.md
+          
+          START=$(date +%s)
+          make server
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "- **Duration**: ${DURATION}s" >> performance-report.md
+          
+          if [ -f "./omnigrid_server" ]; then
+            BINARY_SIZE=$(du -h ./omnigrid_server | cut -f1)
+            echo "- **Binary Size**: ${BINARY_SIZE}" >> performance-report.md
+          fi
+          
+          cat performance-report.md
+      
+      - name: Comment PR with performance report
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('performance-report.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
+      
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-report
+          path: performance-report.md
+          retention-days: 30

@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/GizzZmo/Omni-Grid-2.0/blob/main/DOCUMENTATION.md
+    about: Check the full documentation for detailed guides
+  - name: ❓ FAQ
+    url: https://github.com/GizzZmo/Omni-Grid-2.0/blob/main/docs/faq.md
+    about: Frequently asked questions about Omni-Grid
+  - name: 💬 Discussions
+    url: https://github.com/GizzZmo/Omni-Grid-2.0/discussions
+    about: Ask questions and discuss ideas with the community

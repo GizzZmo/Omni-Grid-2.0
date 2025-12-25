@@ -1,0 +1,99 @@
+name: Welcome
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  welcome:
+    name: Welcome New Contributors
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    
+    steps:
+      - name: Welcome new issue creators
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const isFirstIssue = (await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: issue.user.login,
+              state: 'all'
+            })).data.length === 1;
+            
+            if (isFirstIssue) {
+              const message = `👋 Welcome to Omni-Grid, @${issue.user.login}!
+              
+              Thank you for opening your first issue! We appreciate your contribution to making Omni-Grid better.
+              
+              ## 📋 What's Next?
+              
+              - A maintainer will review your issue soon
+              - Please provide as much detail as possible to help us understand and address your concern
+              - Feel free to join our [discussions](https://github.com/GizzZmo/Omni-Grid-2.0/discussions) for questions
+              
+              ## 🌟 Want to Contribute?
+              
+              Check out our [Contributing Guidelines](./CONTRIBUTING.md) to learn how you can help!
+              
+              ---
+              *The net is vast and infinite, but your grid is your own.* 🌐`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: message
+              });
+            }
+      
+      - name: Welcome new PR creators
+        if: github.event_name == 'pull_request_target'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const isFirstPR = (await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: pr.user.login,
+              state: 'all'
+            })).data.length === 1;
+            
+            if (isFirstPR) {
+              const message = `🎉 Congratulations on your first Pull Request, @${pr.user.login}!
+              
+              Thank you for contributing to Omni-Grid! Your effort helps make this project better for everyone.
+              
+              ## 🔍 Review Process
+              
+              - A maintainer will review your PR as soon as possible
+              - Automated checks will run to ensure code quality and security
+              - Please address any feedback or failing checks
+              - Feel free to ask questions if you need help!
+              
+              ## 📚 Resources
+              
+              - [Contributing Guidelines](./CONTRIBUTING.md)
+              - [Documentation](./DOCUMENTATION.md)
+              - [Code of Conduct](./CODE_OF_CONDUCT.md)
+              
+              Thank you for being part of the Omni-Grid community! 🚀
+              
+              ---
+              *The net is vast and infinite, but your grid is your own.* 🌐`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: message
+              });
+            }
