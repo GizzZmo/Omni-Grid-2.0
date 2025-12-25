@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:server": "make server",
+    "build:all": "npm run build && npm run build:server",
+    "serve": "./omnigrid_server",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -13,7 +16,7 @@
     "react-dom": "18.2.0",
     "@google/genai": "^1.34.0",
     "lucide-react": "0.263.1",
-    "zustand": "4.5.0&external=react",
+    "zustand": "4.5.0",
     "react-grid-layout": "1.4.4"
   },
   "devDependencies": {
