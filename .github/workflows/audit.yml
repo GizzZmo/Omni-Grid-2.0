@@ -9,6 +9,9 @@ on:
     - cron: '0 0 * * *'  # Daily at midnight
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   audit:
     name: Security Audit
