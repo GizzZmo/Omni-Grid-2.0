@@ -75,14 +75,24 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const report = fs.readFileSync('performance-report.md', 'utf8');
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: report
-            });
+            try {
+              if (!fs.existsSync('performance-report.md')) {
+                console.log('Performance report file not found, skipping PR comment');
+                return;
+              }
+              
+              const report = fs.readFileSync('performance-report.md', 'utf8');
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: report
+              });
+            } catch (error) {
+              console.error('Error posting performance report:', error.message);
+              core.setFailed(`Failed to post performance report: ${error.message}`);
+            }
       
       - name: Upload performance report
         uses: actions/upload-artifact@v4

@@ -81,7 +81,15 @@ jobs:
       - name: Check for common issues
         run: |
           echo "Checking for console.log statements..."
-          ! grep -r "console.log" --include="*.ts" --include="*.tsx" . || echo "⚠️  Found console.log statements"
+          if grep -r "console.log" --include="*.ts" --include="*.tsx" . 2>/dev/null; then
+            echo "⚠️  Found console.log statements"
+          else
+            echo "✅ No console.log statements found"
+          fi
           
           echo "Checking for TODO comments..."
-          grep -r "TODO" --include="*.ts" --include="*.tsx" . || echo "✅ No TODO comments found"
+          if grep -r "TODO" --include="*.ts" --include="*.tsx" . 2>/dev/null; then
+            echo "⚠️  Found TODO comments"
+          else
+            echo "✅ No TODO comments found"
+          fi

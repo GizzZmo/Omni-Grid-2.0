@@ -27,23 +27,36 @@ jobs:
             
             for (const workflow of workflows) {
               try {
-                const runs = await github.rest.actions.listWorkflowRunsForRepo({
+                // Get all workflows and find the specific one by name
+                const workflowsList = await github.rest.actions.listRepoWorkflows({
                   owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  per_page: 1,
-                  status: 'completed'
+                  repo: context.repo.repo
                 });
                 
-                if (runs.data.workflow_runs.length > 0) {
-                  const run = runs.data.workflow_runs[0];
-                  const status = run.conclusion === 'success' ? '✅' : '❌';
-                  const badge = run.conclusion === 'success' ? '🟢' : '🔴';
-                  summary += `${badge} **${workflow}**: ${status} ${run.conclusion}\n`;
+                const workflowInfo = workflowsList.data.workflows.find(w => w.name === workflow);
+                
+                if (workflowInfo) {
+                  const runs = await github.rest.actions.listWorkflowRuns({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    workflow_id: workflowInfo.id,
+                    per_page: 1,
+                    status: 'completed'
+                  });
+                  
+                  if (runs.data.workflow_runs.length > 0) {
+                    const run = runs.data.workflow_runs[0];
+                    const status = run.conclusion === 'success' ? '✅' : '❌';
+                    const badge = run.conclusion === 'success' ? '🟢' : '🔴';
+                    summary += `${badge} **${workflow}**: ${status} ${run.conclusion}\n`;
+                  } else {
+                    summary += `⚪ **${workflow}**: No runs found\n`;
+                  }
                 } else {
-                  summary += `⚪ **${workflow}**: No runs found\n`;
+                  summary += `⚪ **${workflow}**: Workflow not found\n`;
                 }
               } catch (error) {
-                summary += `⚠️ **${workflow}**: Error fetching status\n`;
+                summary += `⚠️ **${workflow}**: Error fetching status (${error.message})\n`;
               }
             }
             
