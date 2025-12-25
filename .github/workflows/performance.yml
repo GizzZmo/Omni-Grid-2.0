@@ -5,6 +5,10 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   performance:
     name: Measure Build Performance
