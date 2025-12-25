@@ -71,9 +71,17 @@
 
 4.  **Ignition**
     ```bash
-    npm start
+    npm run dev -- --port 1234
     # Access via http://localhost:1234
     ```
+
+### Optional: C++ Static Server
+If you prefer a standalone HTTP host, compile the lightweight C++ server and serve the built assets (or the root for dev artifacts):
+```bash
+g++ -std=c++17 -O2 server/omnigrid_server.cpp -o omnigrid_server
+./omnigrid_server 1234   # port is optional; defaults to 1234
+# Then open http://localhost:1234
+```
 
 ## 0x04 // ARCHITECTURE
 
