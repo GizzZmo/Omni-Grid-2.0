@@ -14,10 +14,10 @@
 
 <div align="center">
 
-[![CI](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml)
-[![Dependency Audit](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml)
-[![Performance](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml)
+[![CI](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml)
+[![Dependency Audit](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml)
+[![Performance](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml/badge.svg?event=pull_request)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml)
 
 [![Release](https://img.shields.io/github/v/release/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=00ff88)](https://github.com/GizzZmo/Omni-Grid-2.0/releases)
 [![License](https://img.shields.io/github/license/GizzZmo/Omni-Grid-2.0?style=flat-square&color=00ccff)](./LICENSE)
