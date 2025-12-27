@@ -40,12 +40,36 @@ jobs:
         run: |
           mkdir -p _site
           
-          # Copy documentation files (with error handling)
-          [ -f "README.md" ] && cp README.md _site/index.md || echo "README.md not found, skipping"
-          [ -d "docs" ] && cp -r docs _site/ || echo "docs directory not found, skipping"
-          [ -f "DOCUMENTATION.md" ] && cp DOCUMENTATION.md _site/ || echo "DOCUMENTATION.md not found, skipping"
-          [ -f "QUICK_REFERENCE.md" ] && cp QUICK_REFERENCE.md _site/ || echo "QUICK_REFERENCE.md not found, skipping"
-          [ -f "CONTRIBUTING.md" ] && cp CONTRIBUTING.md _site/ || echo "CONTRIBUTING.md not found, skipping"
+          # Copy documentation files (with explicit error handling)
+          if [ -f "README.md" ]; then
+            cp README.md _site/index.md || echo "Failed to copy README.md to _site/index.md"
+          else
+            echo "README.md not found, skipping"
+          fi
+          
+          if [ -d "docs" ]; then
+            cp -r docs _site/ || echo "Failed to copy docs directory to _site/"
+          else
+            echo "docs directory not found, skipping"
+          fi
+          
+          if [ -f "DOCUMENTATION.md" ]; then
+            cp DOCUMENTATION.md _site/ || echo "Failed to copy DOCUMENTATION.md to _site/"
+          else
+            echo "DOCUMENTATION.md not found, skipping"
+          fi
+          
+          if [ -f "QUICK_REFERENCE.md" ]; then
+            cp QUICK_REFERENCE.md _site/ || echo "Failed to copy QUICK_REFERENCE.md to _site/"
+          else
+            echo "QUICK_REFERENCE.md not found, skipping"
+          fi
+          
+          if [ -f "CONTRIBUTING.md" ]; then
+            cp CONTRIBUTING.md _site/ || echo "Failed to copy CONTRIBUTING.md to _site/"
+          else
+            echo "CONTRIBUTING.md not found, skipping"
+          fi
           
           # Create a comprehensive index.html
           cat > _site/index.html << 'EOF'
