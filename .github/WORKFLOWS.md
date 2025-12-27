@@ -2,6 +2,18 @@
 
 This document describes all the GitHub Actions workflows configured for the Omni-Grid project.
 
+## 🆕 Recent Improvements (2025-12-27)
+
+All workflows have been enhanced with:
+- ✅ Better error handling and recovery
+- ✅ Comprehensive test coverage reporting
+- ✅ ESLint and Prettier integration
+- ✅ Improved PR commenting and feedback
+- ✅ Enhanced security scanning
+- ✅ Better artifact management
+- ✅ Timeout protection
+- ✅ Retry logic where appropriate
+
 ## 🔄 Continuous Integration Workflows
 
 ### CI Workflow (`ci.yml`)
@@ -10,14 +22,31 @@ This document describes all the GitHub Actions workflows configured for the Omni
 **Purpose:** Ensures code quality and builds successfully
 
 **Jobs:**
-- **Build and Test**: Builds both frontend (Vite) and C++ server on multiple Node.js versions (18.x, 20.x)
-  - TypeScript type checking
-  - Frontend build verification
-  - C++ server compilation
-  - Upload build artifacts
-- **Code Quality Check**: Checks for common issues like console.log statements and TODO comments
+- **Build and Test** (Matrix: Node.js 18.x, 20.x):
+  - ✅ Install dependencies with npm ci
+  - ✅ TypeScript type checking via `npm run typecheck`
+  - ✅ **Run Vitest tests** with `npm run test:run`
+  - ✅ Frontend build verification (Vite)
+  - ✅ C++ server compilation with Make
+  - ✅ Binary verification
+  - ✅ Upload build artifacts (dist/ and omnigrid_server)
+  
+- **Code Quality Check**:
+  - ✅ **ESLint** validation with `npm run lint`
+  - ✅ **Prettier** format checking with `npm run format:check`
+  - ✅ Console.log detection (fails build if found in source)
+  - ✅ TODO/FIXME comment detection (warning only)
+  
+- **Test Coverage**:
+  - ✅ Run tests with coverage reporting
+  - ✅ Upload coverage artifacts
+  - ✅ **Post coverage report as PR comment**
 
-**Artifacts:** Build artifacts (dist/ and omnigrid_server) retained for 7 days
+**Artifacts:** 
+- Build artifacts (dist/ and omnigrid_server) - 7 days
+- Coverage reports - 7 days
+
+**Permissions:** contents:read, checks:write, pull-requests:write
 
 ---
 
@@ -29,12 +58,21 @@ This document describes all the GitHub Actions workflows configured for the Omni
 **Purpose:** Automated security vulnerability scanning
 
 **Jobs:**
-- **Analyze Code**: Runs CodeQL analysis for JavaScript/TypeScript and C++
-  - Security vulnerability detection
-  - Code quality analysis
-  - Best practices enforcement
+- **Analyze Code** (Matrix: JavaScript, C++):
+  - ✅ Initialize CodeQL with security-and-quality queries
+  - ✅ Path-based exclusions (node_modules, dist, coverage, test)
+  - ✅ Separate build process for C++ with manual compilation
+  - ✅ Node.js setup for JavaScript analysis
+  - ✅ SARIF results upload
+  - ✅ Timeout protection (360 minutes)
 
-**Languages Analyzed:** JavaScript, C++
+**Languages Analyzed:** JavaScript/TypeScript, C++
+
+**Improvements:**
+- Better path exclusions to reduce false positives
+- Manual C++ build for better analysis
+- Proper environment setup per language
+- Enhanced timeout protection
 
 ---
 
@@ -45,11 +83,23 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Security Audit**: 
-  - Runs `npm audit` to detect vulnerable dependencies
-  - Checks for outdated packages
-  - Generates dependency report
+  - ✅ Run `npm audit` at moderate severity level
+  - ✅ Check for outdated packages
+  - ✅ Generate comprehensive dependency report
+  - ✅ **Post PR comment if vulnerabilities found**
+  - ✅ Fail builds on non-scheduled runs with vulnerabilities
+  - ✅ Continue on errors for scheduled runs
 
-**Artifacts:** Dependency report retained for 30 days
+**Artifacts:** 
+- Dependency audit report - 30 days
+- Audit output logs - 30 days
+
+**Permissions:** contents:read, issues:write, pull-requests:write
+
+**New Features:**
+- PR commenting on vulnerabilities
+- Smart failure logic (fail on PR, warn on schedule)
+- Better reporting format
 
 ---
 
@@ -62,26 +112,57 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Build Release Artifacts**:
-  - Builds frontend and C++ server
-  - Creates release archives (.tar.gz and .zip)
-  - Generates release notes
-  - Publishes GitHub release with artifacts
+  - ✅ Checkout with full history (fetch-depth: 0)
+  - ✅ **Run tests before release** (`npm run test:run`)
+  - ✅ Build frontend and C++ server
+  - ✅ Verify builds before packaging
+  - ✅ Create .tar.gz and .zip archives
+  - ✅ **Generate SHA-256 checksums**
+  - ✅ Copy all documentation files
+  - ✅ Include .env.example
+  - ✅ Generate comprehensive release notes
+  - ✅ Publish GitHub release with all artifacts
+  - ✅ Timeout protection (30 minutes)
 
 **Artifacts Published:**
-- omni-grid-release.tar.gz
-- omni-grid-release.zip
+- omni-grid-release.tar.gz (with checksum)
+- omni-grid-release.zip (with checksum)
+- Release notes
+
+**Artifacts Retained:** 90 days
+
+**New Features:**
+- Pre-release testing
+- Checksum generation for security
+- Build verification
+- Enhanced release notes
+- Better artifact organization
 
 ---
 
 ### Deploy Documentation (`docs.yml`)
-**Triggers:** Push to main (docs/** or *.md files), Manual dispatch
+**Triggers:** Push to main (docs/*, *.md files, workflow file), Manual dispatch
 
 **Purpose:** Deploys documentation to GitHub Pages
 
 **Jobs:**
-- **Deploy Docs**: Creates and deploys documentation site
-  - Generates static documentation portal
-  - Deploys to GitHub Pages
+- **Deploy Docs**: 
+  - ✅ Setup GitHub Pages environment
+  - ✅ Copy all documentation files with error handling
+  - ✅ **Create beautiful, responsive HTML documentation portal**
+  - ✅ Include CONTRIBUTING.md
+  - ✅ Modern design with gradients and hover effects
+  - ✅ Mobile-responsive layout
+  - ✅ Deploy to GitHub Pages with environment URL
+
+**Features:**
+- Comprehensive HTML landing page
+- Card-based navigation
+- Dark theme with neon accents
+- Error handling for missing files
+- Direct GitHub link
+
+**Environment:** github-pages with URL output
 
 ---
 
@@ -111,9 +192,13 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Auto-merge**: 
-  - Auto-approves minor and patch updates
-  - Enables auto-merge for safe updates
-  - Comments on major updates requiring manual review
+  - ✅ Fetch Dependabot metadata
+  - ✅ Check update type (major/minor/patch)
+  - ✅ Auto-approve minor and patch updates
+  - ✅ Enable auto-merge for safe updates
+  - ✅ Comment on major updates requiring manual review
+
+**Safety:** Only auto-merges minor and patch updates
 
 ---
 
@@ -124,10 +209,13 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Auto-label**: 
-  - Labels based on file paths (frontend, backend, docs, etc.)
-  - Labels based on PR size (XS, S, M, L, XL)
+  - ✅ Labels based on file paths (using labeler.yml config)
+  - ✅ Size-based labeling (XS, S, M, L, XL)
+  - ✅ Path categories: documentation, frontend, backend, services, configuration, dependencies, ci-cd
 
 **Configuration:** `.github/labeler.yml`
+
+**Permissions:** contents:read, pull-requests:write
 
 ---
 
@@ -138,9 +226,12 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Mark Stale**: 
-  - Issues: Marked stale after 60 days, closed after 7 days
-  - PRs: Marked stale after 30 days, closed after 14 days
-  - Exempt labels: `keep-open`, `pinned`, `security`, `bug`, `in-progress`
+  - ✅ Issues: Stale after 60 days, closed after 7 more days
+  - ✅ PRs: Stale after 30 days, closed after 14 more days
+  - ✅ Exempt labels: `keep-open`, `pinned`, `security`, `bug`, `in-progress`
+  - ✅ Friendly messages with guidance
+
+**Permissions:** issues:write, pull-requests:write
 
 ---
 
@@ -151,9 +242,12 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Welcome**: 
-  - Detects first-time contributors
-  - Posts welcoming message with helpful resources
-  - Links to contributing guidelines and documentation
+  - ✅ Detect first-time contributors
+  - ✅ Post welcoming message with helpful resources
+  - ✅ Link to contributing guidelines and documentation
+  - ✅ Custom messages for issues vs PRs
+
+**Permissions:** issues:write, pull-requests:write
 
 ---
 
@@ -166,12 +260,26 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Measure Performance**:
-  - Measures frontend build time
-  - Reports bundle size and largest assets
-  - Measures C++ compilation time
-  - Posts performance report as PR comment
+  - ✅ Measure frontend build time with timing
+  - ✅ Report bundle size and largest assets
+  - ✅ Detect large chunks (>500KB warning)
+  - ✅ Measure C++ compilation time
+  - ✅ **Update existing PR comments** (avoid spam)
+  - ✅ Better error handling with continue-on-error
+  - ✅ Upload build logs for debugging
+  - ✅ Status indicators (✅/❌) in reports
 
-**Artifacts:** Performance report retained for 30 days
+**Artifacts:** 
+- Performance report - 30 days
+- Build logs - 30 days
+
+**Permissions:** contents:read, pull-requests:write
+
+**New Features:**
+- Comment updating instead of creating new comments
+- Warning on large files
+- Better error handling
+- Build status indicators
 
 ---
 
@@ -182,13 +290,26 @@ This document describes all the GitHub Actions workflows configured for the Omni
 
 **Jobs:**
 - **Status Summary**:
-  - Aggregates status of all workflows
-  - Generates status dashboard
-  - Provides quick links to actions and resources
+  - ✅ Aggregate status of all major workflows
+  - ✅ **Display as formatted table** with status, conclusion, and date
+  - ✅ Show latest commit information
+  - ✅ Display open issues and PR counts
+  - ✅ Provide quick links to resources
+  - ✅ Enhanced error handling with continue-on-error
+  - ✅ Generate workflow summary
+
+**Permissions:** actions:read, contents:read
+
+**New Features:**
+- Table-based status display
+- Repository health metrics
+- Latest commit info
+- Better error handling
+- More comprehensive quick links
 
 ---
 
-## 📋 Issue & PR Templates
+## 📋 Configuration Files
 
 ### Issue Templates
 Located in `.github/ISSUE_TEMPLATE/`
@@ -231,37 +352,74 @@ File: `.github/labeler.yml`
 
 ---
 
+## 🛠️ Development Commands
+
+### New Scripts Added
+
+```bash
+# Testing
+npm test              # Run tests in watch mode
+npm run test:run      # Run tests once
+npm run test:ui       # Run tests with UI
+npm run test:coverage # Run tests with coverage report
+
+# Linting & Formatting
+npm run lint          # Run ESLint
+npm run lint:fix      # Fix ESLint issues
+npm run format        # Format all files with Prettier
+npm run format:check  # Check formatting without changing files
+
+# Type Checking
+npm run typecheck     # Run TypeScript type checking
+
+# Building
+npm run build         # Build frontend
+npm run build:server  # Build C++ server
+npm run build:all     # Build both frontend and server
+```
+
+---
+
 ## 🎯 Best Practices
 
 ### For Contributors
-1. Ensure all CI checks pass before requesting review
-2. Keep PRs focused and reasonably sized (< 500 lines when possible)
-3. Update documentation for new features
-4. Add tests for bug fixes and new features
-5. Follow the PR template guidelines
+1. ✅ Run `npm run lint` and `npm run format:check` before committing
+2. ✅ Run `npm run test:run` to ensure all tests pass
+3. ✅ Keep PRs focused and reasonably sized (< 500 lines when possible)
+4. ✅ Update documentation for new features
+5. ✅ Add tests for bug fixes and new features
+6. ✅ Follow the PR template guidelines
+7. ✅ Ensure all CI checks pass before requesting review
 
 ### For Maintainers
-1. Review security alerts from CodeQL and Dependabot promptly
-2. Monitor workflow performance reports
-3. Keep dependencies up to date
-4. Review and merge Dependabot PRs regularly
-5. Use workflow badges in README to communicate project health
+1. ✅ Review security alerts from CodeQL and Dependabot promptly
+2. ✅ Monitor workflow performance reports
+3. ✅ Keep dependencies up to date
+4. ✅ Review and merge Dependabot PRs regularly
+5. ✅ Use workflow badges in README to communicate project health
+6. ✅ Check test coverage trends
 
 ---
 
 ## 🔧 Maintenance
 
 ### Regular Tasks
-- **Weekly**: Review Dependabot PRs
-- **Monthly**: Review stale issues and PRs
-- **Quarterly**: Review and update workflow configurations
-- **As needed**: Update CodeQL queries and security policies
+- **Daily**: Automated dependency audits and stale issue checks
+- **Weekly**: 
+  - Review Dependabot PRs
+  - Check CodeQL security scan results
+- **Monthly**: Review stale issues and PRs manually
+- **Quarterly**: 
+  - Review and update workflow configurations
+  - Update CodeQL queries and security policies
+  - Review test coverage trends
 
 ### Monitoring
-- Check workflow status badges in README
-- Review workflow run history in Actions tab
-- Monitor security advisories
-- Track build performance trends
+- ✅ Check workflow status badges in README
+- ✅ Review workflow run history in Actions tab
+- ✅ Monitor security advisories
+- ✅ Track build performance trends
+- ✅ Review test coverage reports
 
 ---
 
@@ -271,7 +429,12 @@ File: `.github/labeler.yml`
 - [CodeQL Documentation](https://codeql.github.com/docs/)
 - [Dependabot Documentation](https://docs.github.com/en/code-security/dependabot)
 - [GitHub Security Features](https://docs.github.com/en/code-security)
+- [Vitest Documentation](https://vitest.dev/)
+- [ESLint Documentation](https://eslint.org/)
+- [Prettier Documentation](https://prettier.io/)
 
 ---
 
+*Last Updated: 2025-12-27*  
 *For questions or issues with workflows, please open an issue with the `ci-cd` label.*
+
