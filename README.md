@@ -125,27 +125,58 @@ The server automatically serves from `dist/` (built assets) if it exists, or fal
 Omni-Grid features a comprehensive automated workflow system:
 
 ### 🔄 Continuous Integration
+*   **Automated Testing:** Vitest test suite with coverage reporting
 *   **Automated Building:** Multi-platform builds (Node.js 18.x, 20.x)
 *   **Type Safety:** TypeScript strict checking on every commit
-*   **Code Quality:** Automated linting and style checks
+*   **Code Quality:** ESLint and Prettier validation
 *   **Performance Monitoring:** Build time and bundle size tracking
 
 ### 🔒 Security & Quality
-*   **CodeQL Analysis:** Automated security vulnerability scanning
-*   **Dependency Auditing:** Daily npm security audits
+*   **CodeQL Analysis:** Automated security vulnerability scanning (JavaScript & C++)
+*   **Dependency Auditing:** Daily npm security audits with PR alerts
 *   **Dependabot:** Automated dependency updates with auto-merge for safe updates
+*   **Test Coverage:** Automatic coverage reports on PRs
 
 ### 📦 Release & Deployment
-*   **Automated Releases:** Tag-triggered release creation with artifacts
+*   **Automated Releases:** Tag-triggered release creation with SHA-256 checksums
 *   **Documentation Deployment:** Auto-deploy docs to GitHub Pages
-*   **Performance Reports:** PR-specific build performance analysis
+*   **Performance Reports:** PR-specific build performance analysis with warnings
 
 ### 🤖 Automation
-*   **PR Labeling:** Automatic categorization based on changes
+*   **PR Labeling:** Automatic categorization based on changes and size
 *   **Welcome Bot:** First-time contributor greeting and guidance
 *   **Stale Management:** Automated cleanup of inactive issues/PRs
+*   **Status Dashboard:** Real-time workflow health monitoring
 
-**[View Complete Workflow Documentation](./.github/WORKFLOWS.md)**
+**[View Complete Workflow Documentation](./.github/WORKFLOWS.md) | [Testing Guide](./TESTING.md)**
+
+## 0x04.2 // DEVELOPMENT COMMANDS
+
+### Testing
+```bash
+npm test              # Run tests in watch mode
+npm run test:run      # Run tests once (CI mode)
+npm run test:ui       # Launch visual test UI
+npm run test:coverage # Generate coverage report
+```
+
+### Code Quality
+```bash
+npm run lint          # Run ESLint
+npm run lint:fix      # Auto-fix ESLint issues
+npm run format        # Format code with Prettier
+npm run format:check  # Check code formatting
+npm run typecheck     # Run TypeScript type checking
+```
+
+### Building
+```bash
+npm run build         # Build frontend (Vite)
+npm run build:server  # Build C++ server
+npm run build:all     # Build both frontend and server
+npm run dev           # Start development server
+npm run preview       # Preview production build
+```
 
 ## 0x05 // KEYBOARD SHORTCUTS
 

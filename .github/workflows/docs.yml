@@ -8,16 +8,22 @@ on:
       - 'README.md'
       - 'DOCUMENTATION.md'
       - 'QUICK_REFERENCE.md'
+      - '.github/workflows/docs.yml'
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy-docs:
     name: Deploy Docs to GitHub Pages
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     concurrency:
       group: "pages"
@@ -29,56 +35,186 @@ jobs:
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        with:
-          enablement: true
       
       - name: Create documentation site
         run: |
+          set -e
           mkdir -p _site
-          cp README.md _site/index.md
-          cp -r docs _site/ 2>/dev/null || true
-          cp DOCUMENTATION.md _site/ 2>/dev/null || true
-          cp QUICK_REFERENCE.md _site/ 2>/dev/null || true
           
-          # Create a simple index.html
+          # Copy documentation files
+          if [ -f "README.md" ]; then
+            cp README.md _site/index.md
+          fi
+          
+          if [ -d "docs" ]; then
+            cp -r docs _site/
+          fi
+          
+          if [ -f "DOCUMENTATION.md" ]; then
+            cp DOCUMENTATION.md _site/
+          fi
+          
+          if [ -f "QUICK_REFERENCE.md" ]; then
+            cp QUICK_REFERENCE.md _site/
+          fi
+          
+          if [ -f "CONTRIBUTING.md" ]; then
+            cp CONTRIBUTING.md _site/
+          fi
+          
+          # Create a comprehensive index.html
           cat > _site/index.html << 'EOF'
           <!DOCTYPE html>
           <html lang="en">
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Omni-Grid Documentation</title>
+            <title>Omni-Grid 2.0 Documentation</title>
             <style>
-              body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-                line-height: 1.6;
-                background: #0a0a0a;
-                color: #e0e0e0;
+              * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
               }
-              h1 { color: #00ff88; border-bottom: 2px solid #00ff88; }
-              a { color: #00ccff; text-decoration: none; }
-              a:hover { text-decoration: underline; }
-              .nav { background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-              .nav a { display: inline-block; margin: 5px 10px; }
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen',
+                  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                line-height: 1.6;
+                background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+                color: #e0e0e0;
+                min-height: 100vh;
+                padding: 20px;
+              }
+              .container {
+                max-width: 900px;
+                margin: 0 auto;
+              }
+              header {
+                text-align: center;
+                padding: 40px 0;
+                border-bottom: 2px solid #00ff88;
+                margin-bottom: 40px;
+              }
+              h1 {
+                color: #00ff88;
+                font-size: 3em;
+                margin-bottom: 10px;
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+              }
+              .subtitle {
+                color: #00ccff;
+                font-size: 1.2em;
+              }
+              .nav {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin: 40px 0;
+              }
+              .nav-card {
+                background: rgba(26, 26, 46, 0.6);
+                padding: 30px;
+                border-radius: 12px;
+                border: 1px solid #00ff88;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                color: inherit;
+                display: block;
+              }
+              .nav-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+                border-color: #00ccff;
+              }
+              .nav-card h2 {
+                color: #00ccff;
+                margin-bottom: 10px;
+                font-size: 1.5em;
+              }
+              .nav-card p {
+                color: #b0b0b0;
+                font-size: 0.95em;
+              }
+              .icon {
+                font-size: 2em;
+                margin-bottom: 15px;
+                display: block;
+              }
+              footer {
+                text-align: center;
+                padding: 40px 0;
+                margin-top: 60px;
+                border-top: 1px solid #333;
+                color: #888;
+              }
+              .github-link {
+                display: inline-block;
+                margin-top: 20px;
+                padding: 12px 24px;
+                background: #00ff88;
+                color: #0a0a0a;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: bold;
+                transition: all 0.3s ease;
+              }
+              .github-link:hover {
+                background: #00ccff;
+                transform: scale(1.05);
+              }
             </style>
           </head>
           <body>
-            <h1>🌐 OMNI-GRID Documentation</h1>
-            <div class="nav">
-              <a href="README.md">📖 README</a>
-              <a href="DOCUMENTATION.md">📚 Full Documentation</a>
-              <a href="QUICK_REFERENCE.md">⚡ Quick Reference</a>
+            <div class="container">
+              <header>
+                <h1>🌐 OMNI-GRID 2.0</h1>
+                <p class="subtitle">Interactive Quantum-Inspired Grid System</p>
+              </header>
+              
+              <div class="nav">
+                <a href="index.md" class="nav-card">
+                  <span class="icon">📖</span>
+                  <h2>README</h2>
+                  <p>Get started with Omni-Grid, understand the basics and setup instructions</p>
+                </a>
+                
+                <a href="DOCUMENTATION.md" class="nav-card">
+                  <span class="icon">📚</span>
+                  <h2>Full Documentation</h2>
+                  <p>Comprehensive guide covering all features, APIs, and architecture</p>
+                </a>
+                
+                <a href="QUICK_REFERENCE.md" class="nav-card">
+                  <span class="icon">⚡</span>
+                  <h2>Quick Reference</h2>
+                  <p>Handy reference for common commands and shortcuts</p>
+                </a>
+                
+                <a href="CONTRIBUTING.md" class="nav-card">
+                  <span class="icon">🤝</span>
+                  <h2>Contributing</h2>
+                  <p>Learn how to contribute to the Omni-Grid project</p>
+                </a>
+              </div>
+              
+              <footer>
+                <p>The net is vast and infinite, but your grid is your own.</p>
+                <a href="https://github.com/GizzZmo/Omni-Grid-2.0" class="github-link">
+                  ⭐ View on GitHub
+                </a>
+              </footer>
             </div>
-            <p>Welcome to the Omni-Grid documentation portal. Select a document from the navigation above.</p>
           </body>
           </html>
           EOF
+          
+          echo "Documentation site created successfully"
+          ls -la _site/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
       
       - name: Deploy to GitHub Pages
         id: deployment

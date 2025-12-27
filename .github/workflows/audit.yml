@@ -11,6 +11,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   audit:
@@ -27,26 +29,81 @@ jobs:
           node-version: 20.x
           cache: 'npm'
       
+      - name: Install dependencies
+        run: npm ci
+      
       - name: Run npm audit
+        id: npm_audit
+        continue-on-error: true
         run: |
-          npm audit --audit-level=moderate || true
-          echo "Audit completed"
+          echo "## Security Audit Report" > audit-report.md
+          echo "" >> audit-report.md
+          echo "### npm audit results" >> audit-report.md
+          echo "\`\`\`" >> audit-report.md
+          npm audit --audit-level=moderate 2>&1 | tee audit-output.txt >> audit-report.md
+          echo "\`\`\`" >> audit-report.md
+          
+          # Check if there are vulnerabilities
+          if npm audit --audit-level=moderate > /dev/null 2>&1; then
+            echo "audit_status=success" >> $GITHUB_OUTPUT
+            echo "✅ No vulnerabilities found" >> audit-report.md
+          else
+            echo "audit_status=failed" >> $GITHUB_OUTPUT
+            echo "⚠️ Vulnerabilities detected - please review" >> audit-report.md
+          fi
       
       - name: Check for outdated dependencies
+        continue-on-error: true
         run: |
-          echo "Checking for outdated dependencies..."
-          npm outdated || true
+          echo "" >> audit-report.md
+          echo "### Outdated Dependencies" >> audit-report.md
+          echo "\`\`\`" >> audit-report.md
+          npm outdated 2>&1 >> audit-report.md || true
+          echo "\`\`\`" >> audit-report.md
       
       - name: Generate dependency report
         run: |
-          echo "## Dependency Report" > dependency-report.md
-          echo "" >> dependency-report.md
-          echo "### Installed Packages" >> dependency-report.md
-          npm list --depth=0 >> dependency-report.md || true
+          echo "" >> audit-report.md
+          echo "### Installed Packages" >> audit-report.md
+          echo "\`\`\`" >> audit-report.md
+          npm list --depth=0 2>&1 >> audit-report.md || true
+          echo "\`\`\`" >> audit-report.md
+          
+          echo "" >> audit-report.md
+          echo "---" >> audit-report.md
+          echo "*Report generated on $(date)*" >> audit-report.md
+      
+      - name: Comment on PR if vulnerabilities found
+        if: github.event_name == 'pull_request' && steps.npm_audit.outputs.audit_status == 'failed'
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('audit-report.md', 'utf8');
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '⚠️ **Security Alert**: Vulnerabilities detected in dependencies\n\n' + report
+            });
       
       - name: Upload dependency report
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: dependency-report
-          path: dependency-report.md
+          name: dependency-audit-report
+          path: |
+            audit-report.md
+            audit-output.txt
           retention-days: 30
+      
+      - name: Fail if critical vulnerabilities found
+        if: steps.npm_audit.outputs.audit_status == 'failed'
+        run: |
+          echo "::warning::Security vulnerabilities detected. Please review the audit report."
+          # Don't fail the build on audit issues in scheduled runs
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            exit 1
+          fi
