@@ -88,38 +88,11 @@ jobs:
       
       - name: Run ESLint
         continue-on-error: true
-        run: |
-          npm run lint || echo "⚠️ Linting found issues but not failing the build"
+        run: npm run lint
       
       - name: Check formatting with Prettier
         continue-on-error: true
-        run: |
-          npm run format:check || echo "⚠️ Formatting issues found but not failing the build"
-      
-      - name: Check for console.log statements
-        run: |
-          echo "Checking for console.log statements..."
-          # Check for actual console.log calls (not in strings or comments)
-          FOUND=0
-          while IFS= read -r file; do
-            # Skip test files and node_modules
-            if [[ "$file" == *"/test/"* ]] || [[ "$file" == *"/node_modules/"* ]] || [[ "$file" == *"/dist/"* ]]; then
-              continue
-            fi
-            # Look for console.log that's not in a string literal
-            if grep -E "^\s*console\.log\(" "$file" > /dev/null 2>&1; then
-              echo "⚠️  Found console.log in: $file"
-              FOUND=1
-            fi
-          done < <(find . -type f \( -name "*.ts" -o -name "*.tsx" \) 2>/dev/null)
-          
-          if [ $FOUND -eq 1 ]; then
-            echo "⚠️  Found console.log statements in source code"
-            echo "Note: This is a warning only, not failing the build"
-            # Don't fail the build, just warn
-          else
-            echo "✅ No console.log statements found"
-          fi
+        run: npm run format:check
       
       - name: Check for TODO comments
         run: |
