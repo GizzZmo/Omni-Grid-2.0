@@ -38,28 +38,37 @@ jobs:
       
       - name: Create documentation site
         run: |
-          set -e
           mkdir -p _site
           
-          # Copy documentation files
+          # Copy documentation files (with explicit error handling)
           if [ -f "README.md" ]; then
-            cp README.md _site/index.md
+            cp README.md _site/index.md || echo "Failed to copy README.md to _site/index.md"
+          else
+            echo "README.md not found, skipping"
           fi
           
           if [ -d "docs" ]; then
-            cp -r docs _site/
+            cp -r docs _site/ || echo "Failed to copy docs directory to _site/"
+          else
+            echo "docs directory not found, skipping"
           fi
           
           if [ -f "DOCUMENTATION.md" ]; then
-            cp DOCUMENTATION.md _site/
+            cp DOCUMENTATION.md _site/ || echo "Failed to copy DOCUMENTATION.md to _site/"
+          else
+            echo "DOCUMENTATION.md not found, skipping"
           fi
           
           if [ -f "QUICK_REFERENCE.md" ]; then
-            cp QUICK_REFERENCE.md _site/
+            cp QUICK_REFERENCE.md _site/ || echo "Failed to copy QUICK_REFERENCE.md to _site/"
+          else
+            echo "QUICK_REFERENCE.md not found, skipping"
           fi
           
           if [ -f "CONTRIBUTING.md" ]; then
-            cp CONTRIBUTING.md _site/
+            cp CONTRIBUTING.md _site/ || echo "Failed to copy CONTRIBUTING.md to _site/"
+          else
+            echo "CONTRIBUTING.md not found, skipping"
           fi
           
           # Create a comprehensive index.html

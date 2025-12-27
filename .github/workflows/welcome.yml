@@ -3,7 +3,7 @@ name: Welcome
 on:
   issues:
     types: [opened]
-  pull_request_target:
+  pull_request:
     types: [opened]
 
 jobs:
@@ -55,7 +55,7 @@ jobs:
             }
       
       - name: Welcome new PR creators
-        if: github.event_name == 'pull_request_target'
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
