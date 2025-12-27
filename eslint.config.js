@@ -65,6 +65,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      // Disable React Compiler specific rules that conflict with manual memoization
       'react-hooks/preserve-manual-memoization': 'off',
       'react-hooks/unsupported-syntax': 'off',
       'react-compiler/react-compiler': 'off'
