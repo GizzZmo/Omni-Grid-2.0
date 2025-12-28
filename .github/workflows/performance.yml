@@ -30,17 +30,23 @@ jobs:
       - name: Measure build time
         id: build_performance
         run: |
-          set -e
           echo "## Build Performance Report" > performance-report.md
           echo "" >> performance-report.md
           
           # Measure frontend build
           echo "### Frontend Build" >> performance-report.md
           START=$(date +%s)
-          npm run build 2>&1 | tee build.log
-          END=$(date +%s)
-          DURATION=$((END - START))
-          echo "- **Duration**: ${DURATION}s" >> performance-report.md
+          if npm run build 2>&1 | tee build.log; then
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
+            echo "- **Status**: ✅ Built successfully" >> performance-report.md
+          else
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
+            echo "- **Status**: ❌ Build failed" >> performance-report.md
+          fi
           
           # Check bundle size
           if [ -d "dist" ]; then
@@ -70,23 +76,28 @@ jobs:
         id: cpp_build
         continue-on-error: true
         run: |
-          set -e
           echo "" >> performance-report.md
           echo "### C++ Server Build" >> performance-report.md
           
           sudo apt-get update && sudo apt-get install -y g++ make
           
           START=$(date +%s)
-          make server 2>&1 | tee cpp_build.log
-          END=$(date +%s)
-          DURATION=$((END - START))
-          echo "- **Duration**: ${DURATION}s" >> performance-report.md
-          
-          if [ -f "./omnigrid_server" ]; then
-            BINARY_SIZE=$(du -h ./omnigrid_server 2>/dev/null | cut -f1 || echo "unknown")
-            echo "- **Binary Size**: ${BINARY_SIZE}" >> performance-report.md
-            echo "- **Status**: ✅ Built successfully" >> performance-report.md
+          if make server 2>&1 | tee cpp_build.log; then
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
+            
+            if [ -f "./omnigrid_server" ]; then
+              BINARY_SIZE=$(du -h ./omnigrid_server 2>/dev/null | cut -f1 || echo "unknown")
+              echo "- **Binary Size**: ${BINARY_SIZE}" >> performance-report.md
+              echo "- **Status**: ✅ Built successfully" >> performance-report.md
+            else
+              echo "- **Status**: ❌ Build failed - binary not found" >> performance-report.md
+            fi
           else
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
             echo "- **Status**: ❌ Build failed" >> performance-report.md
           fi
           
