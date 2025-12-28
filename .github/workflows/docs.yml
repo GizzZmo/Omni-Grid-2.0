@@ -20,6 +20,10 @@ jobs:
   deploy-docs:
     name: Deploy Docs to GitHub Pages
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     
     environment:
       name: github-pages
