@@ -10,12 +10,14 @@
 Before launching Omni-Grid, ensure your system meets these requirements:
 
 ### Required
+
 - **Node.js:** Version 18.0.0 or higher
 - **npm:** Version 8.0.0 or higher (comes with Node.js)
 - **Modern Browser:** Chrome 90+, Firefox 88+, Safari 14+, or Edge 90+
 - **Screen Resolution:** Minimum 1280x720 (1920x1080 recommended)
 
 ### Optional (For AI Features)
+
 - **Google Gemini API Key:** Required for Neural Link features (Scratchpad, WritePad, Polyglot, Widget Architect)
   - Get your API key at: https://makersuite.google.com/app/apikey
   - Free tier available for personal use
@@ -38,6 +40,7 @@ npm install
 ```
 
 This will install:
+
 - **React 18.2.0** - UI framework
 - **Zustand 4.5.0** - State management
 - **react-grid-layout 1.4.4** - Draggable grid system
@@ -71,6 +74,7 @@ The development server will start at: **http://localhost:5173**
 ### Initial Interface
 
 Upon first launch, you'll see:
+
 1. **OMNI-GRID Header** - Top-left with brand logo
 2. **Launcher Button** - Opens widget catalog
 3. **Control Panel** - Top-right with system controls
@@ -80,17 +84,20 @@ Upon first launch, you'll see:
 ### Adding Your First Widget
 
 **Method 1: Using the Launcher**
+
 1. Click **[ LAUNCHER ]** button (top-left)
 2. Browse categories or search
 3. Click a widget card to add it to the grid
 
 **Method 2: Using the Dock**
+
 1. Click any icon in the bottom dock
 2. Widget toggles on/off instantly
 
 ### Recommended First Setup
 
 For new users, we recommend starting with:
+
 1. **System Core** (Dock: Terminal icon) - Settings and system info
 2. **Neural Scratchpad** (Dock: Brain icon) - AI note-taking
 3. **Focus HUD** (Dock: Activity icon) - Pomodoro timer
@@ -101,22 +108,27 @@ For new users, we recommend starting with:
 ## 🎯 ESSENTIAL OPERATIONS
 
 ### Moving Widgets
+
 - **Drag** the widget header to reposition
 - Widgets auto-arrange to fit
 
 ### Resizing Widgets
+
 - **Drag** the bottom-right corner of any widget
 - Minimum sizes are enforced per widget type
 
 ### Removing Widgets
+
 - Click the **X** icon in the widget header
 - Or toggle off via Dock/Launcher
 
 ### Locking Layout
+
 - Click **LOCKED/UNLOCKED** button (top-right)
 - Prevents accidental repositioning
 
 ### Auto-Organize
+
 - Click **GHOST** button (top-right)
 - AI analyzes usage and suggests optimal layout
 - Ghost widget appears with recommendations
@@ -126,22 +138,26 @@ For new users, we recommend starting with:
 ## 💾 DATA PERSISTENCE
 
 ### Automatic Saving
+
 - **All changes are saved automatically** to browser `localStorage`
 - Layout, widget positions, content, and settings persist between sessions
 - No server required - everything is local
 
 ### Manual Backup
+
 1. Click **Backup** button (top-right)
 2. Downloads a JSON file: `omni-grid-backup-YYYY-MM-DD.json`
 3. Store this file safely
 
 ### Restoring from Backup
+
 1. Click **Restore** button (top-right)
 2. Select your backup JSON file
 3. Confirm the restoration
 4. System reloads with saved state
 
 ### Freeze System
+
 - Click **FREEZE** button (top-right)
 - Suspends all interactions
 - Useful before major changes or backups
@@ -175,6 +191,7 @@ The key is stored in browser localStorage (never sent to any server except Googl
 ### Settings Panel
 
 Access via **System Core** widget:
+
 - **Scanlines Effect** - Enable/disable CRT aesthetic
 - **Matrix Rain** - Toggle background animation
 - **Compact Mode** - Auto-fit widgets (AUTOFIT toggle)
@@ -184,11 +201,11 @@ Access via **System Core** widget:
 
 ## ⌨️ KEYBOARD SHORTCUTS
 
-| Shortcut | Action |
-|----------|--------|
-| `Cmd/Ctrl + K` | Trigger AI operations in Neural widgets |
-| `Drag & Drop` | Transfer data between widgets (Cross-Talk) |
-| `Esc` | Close modals/overlays |
+| Shortcut       | Action                                     |
+| -------------- | ------------------------------------------ |
+| `Cmd/Ctrl + K` | Trigger AI operations in Neural widgets    |
+| `Drag & Drop`  | Transfer data between widgets (Cross-Talk) |
+| `Esc`          | Close modals/overlays                      |
 
 For complete list, see [Keyboard Shortcuts Guide](./keyboard-shortcuts.md).
 
@@ -197,16 +214,19 @@ For complete list, see [Keyboard Shortcuts Guide](./keyboard-shortcuts.md).
 ## 🆘 GETTING HELP
 
 ### In-App Help
+
 - Open **Help Desk** widget (Dock: Question mark icon)
 - Browse widget documentation
 - View quick tips
 
 ### Documentation
+
 - See [FAQ](./faq.md) for common questions
 - Check [Troubleshooting](./troubleshooting.md) for issues
 - Read [Architecture](./architecture.md) for technical details
 
 ### Community
+
 - GitHub Issues: Report bugs or request features
 - GitHub Discussions: Ask questions and share ideas
 
@@ -249,6 +269,7 @@ npm run build
 ## 🚨 COMMON FIRST-LAUNCH ISSUES
 
 **Port 5173 already in use?**
+
 ```bash
 # Kill the process using the port
 lsof -ti:5173 | xargs kill -9  # macOS/Linux
@@ -257,6 +278,7 @@ npm run dev -- --port 3000
 ```
 
 **Dependencies won't install?**
+
 ```bash
 # Clear npm cache
 npm cache clean --force
@@ -266,6 +288,7 @@ npm install
 ```
 
 **Blank screen on launch?**
+
 - Check browser console (F12) for errors
 - Ensure you're using a modern browser
 - Try clearing browser cache and localStorage
@@ -274,6 +297,6 @@ For more troubleshooting, see [Troubleshooting Guide](./troubleshooting.md).
 
 ---
 
-*System Initialized. Welcome to the Grid.*
+_System Initialized. Welcome to the Grid._
 
 **[← Back to Documentation Hub](./README.md)**

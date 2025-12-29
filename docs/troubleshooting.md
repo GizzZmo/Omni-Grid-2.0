@@ -12,13 +12,16 @@
 #### Issue: `npm install` fails
 
 **Symptoms:**
+
 ```
 npm ERR! code ERESOLVE
 npm ERR! ERESOLVE unable to resolve dependency tree
 ```
 
 **Solutions:**
+
 1. **Clear npm cache:**
+
    ```bash
    npm cache clean --force
    rm -rf node_modules package-lock.json
@@ -26,11 +29,13 @@ npm ERR! ERESOLVE unable to resolve dependency tree
    ```
 
 2. **Use legacy peer deps:**
+
    ```bash
    npm install --legacy-peer-deps
    ```
 
 3. **Update npm:**
+
    ```bash
    npm install -g npm@latest
    ```
@@ -47,17 +52,21 @@ npm ERR! ERESOLVE unable to resolve dependency tree
 #### Issue: Port 5173 already in use
 
 **Symptoms:**
+
 ```
 Port 5173 is in use, trying another one...
 ```
 
 **Solutions:**
+
 1. **Kill the process (macOS/Linux):**
+
    ```bash
    lsof -ti:5173 | xargs kill -9
    ```
 
 2. **Kill the process (Windows):**
+
    ```cmd
    netstat -ano | findstr :5173
    taskkill /PID <PID> /F
@@ -75,16 +84,19 @@ Port 5173 is in use, trying another one...
 #### Issue: Blank white screen on launch
 
 **Symptoms:**
+
 - Browser shows blank page
 - No grid visible
 - Console may show errors
 
 **Solutions:**
+
 1. **Check browser console (F12):**
    - Look for JavaScript errors
    - Common errors and fixes below
 
 2. **Clear browser cache:**
+
    ```
    Chrome: Cmd+Shift+Delete (Mac) or Ctrl+Shift+Delete (Windows)
    Firefox: Cmd+Shift+Delete or Ctrl+Shift+Delete
@@ -92,6 +104,7 @@ Port 5173 is in use, trying another one...
    ```
 
 3. **Clear localStorage:**
+
    ```javascript
    // In browser console
    localStorage.clear();
@@ -99,6 +112,7 @@ Port 5173 is in use, trying another one...
    ```
 
 4. **Verify build output:**
+
    ```bash
    npm run build
    npm run preview
@@ -114,11 +128,13 @@ Port 5173 is in use, trying another one...
 #### Issue: Widgets not appearing
 
 **Symptoms:**
+
 - Grid is visible but empty
 - Specific widgets missing
 - Dock buttons don't work
 
 **Solutions:**
+
 1. **Check if widgets are toggled on:**
    - Click LAUNCHER button
    - Verify widget is not disabled
@@ -146,10 +162,12 @@ Port 5173 is in use, trying another one...
 #### Issue: "Please add your Gemini API key"
 
 **Symptoms:**
+
 - AI features (Refine, Expand, etc.) show error
 - Modal prompts for API key
 
 **Solutions:**
+
 1. **Add API key via UI:**
    - Open System Core widget
    - Navigate to Settings tab
@@ -162,6 +180,7 @@ Port 5173 is in use, trying another one...
    - No spaces or special characters
 
 3. **Test API key:**
+
    ```javascript
    // In browser console
    const apiKey = useAppStore.getState().settings.apiKey;
@@ -179,6 +198,7 @@ Port 5173 is in use, trying another one...
 #### Issue: AI requests fail or timeout
 
 **Symptoms:**
+
 ```
 Error: Failed to fetch from Gemini API
 Error: Request timeout
@@ -186,7 +206,9 @@ Error: Invalid response from AI service
 ```
 
 **Solutions:**
+
 1. **Check internet connection:**
+
    ```bash
    ping google.com
    ```
@@ -197,6 +219,7 @@ Error: Invalid response from AI service
    - Free tier: 60 requests/minute
 
 3. **Try different model:**
+
    ```typescript
    // In widget code, switch from 'pro' to 'flash'
    await callGemini(apiKey, prompt, 'flash');
@@ -219,11 +242,13 @@ Error: Invalid response from AI service
 #### Issue: Widgets overlapping or misaligned
 
 **Symptoms:**
+
 - Widgets stack on top of each other
 - Layout looks broken
 - Resize handles missing
 
 **Solutions:**
+
 1. **Toggle Compact Mode:**
    - Click AUTOFIT button (top-right)
    - Try both ON and OFF states
@@ -248,11 +273,13 @@ Error: Invalid response from AI service
 #### Issue: Cannot drag or resize widgets
 
 **Symptoms:**
+
 - Widgets are static
 - No drag handles appear
 - Layout seems frozen
 
 **Solutions:**
+
 1. **Check layout lock:**
    - Look for LOCKED button (top-right)
    - Click to UNLOCK
@@ -276,11 +303,13 @@ Error: Invalid response from AI service
 #### Issue: Slow performance or lag
 
 **Symptoms:**
+
 - UI feels sluggish
 - Animations stutter
 - High CPU/memory usage
 
 **Solutions:**
+
 1. **Reduce active widgets:**
    - Close unused widgets
    - Recommended max: 20 visible
@@ -294,6 +323,7 @@ Error: Invalid response from AI service
    - Old cached files may cause issues
 
 4. **Check browser memory:**
+
    ```javascript
    // Browser console
    console.log(performance.memory);
@@ -310,12 +340,14 @@ Error: Invalid response from AI service
 #### Issue: High memory usage
 
 **Symptoms:**
+
 ```javascript
 // Browser console shows
 performance.memory.usedJSHeapSize > 100MB
 ```
 
 **Solutions:**
+
 1. **Export and clear old data:**
    - Backup current state
    - Factory reset
@@ -336,12 +368,15 @@ performance.memory.usedJSHeapSize > 100MB
 #### Issue: Data not persisting
 
 **Symptoms:**
+
 - Settings reset on refresh
 - Notes disappear
 - Layout resets
 
 **Solutions:**
+
 1. **Check localStorage availability:**
+
    ```javascript
    // Browser console
    try {
@@ -358,6 +393,7 @@ performance.memory.usedJSHeapSize > 100MB
    - Not in private/incognito mode (some browsers disable storage)
 
 3. **Check storage quota:**
+
    ```javascript
    // Browser console
    navigator.storage.estimate().then(estimate => {
@@ -374,11 +410,13 @@ performance.memory.usedJSHeapSize > 100MB
 #### Issue: "localStorage quota exceeded"
 
 **Symptoms:**
+
 ```
 QuotaExceededError: Failed to execute 'setItem' on 'Storage'
 ```
 
 **Solutions:**
+
 1. **Clear old backups:**
    - Export current state
    - Factory reset
@@ -390,6 +428,7 @@ QuotaExceededError: Failed to execute 'setItem' on 'Storage'
    - Remove unused widget data
 
 3. **Check storage usage:**
+
    ```javascript
    const size = new Blob(Object.values(localStorage)).size;
    console.log(`Storage used: ${(size / 1024).toFixed(2)} KB`);
@@ -407,16 +446,19 @@ QuotaExceededError: Failed to execute 'setItem' on 'Storage'
 #### Issue: Backup file won't download
 
 **Symptoms:**
+
 - Click Backup button
 - No file downloads
 - No browser prompt
 
 **Solutions:**
+
 1. **Check browser download settings:**
    - Ensure downloads are not blocked
    - Check for download location permission
 
 2. **Try manual export:**
+
    ```javascript
    // Browser console
    const state = useAppStore.getState();
@@ -433,22 +475,27 @@ QuotaExceededError: Failed to execute 'setItem' on 'Storage'
 #### Issue: "Invalid backup file" error
 
 **Symptoms:**
+
 - Upload backup file
 - Error message appears
 - State not restored
 
 **Solutions:**
+
 1. **Verify JSON format:**
    - Open file in text editor
    - Should be valid JSON
    - Check for corruption
 
 2. **Check backup structure:**
+
    ```json
    {
      "version": 1,
      "timestamp": "2025-...",
-     "state": { /* AppState */ }
+     "state": {
+       /* AppState */
+     }
    }
    ```
 
@@ -470,10 +517,12 @@ QuotaExceededError: Failed to execute 'setItem' on 'Storage'
 #### Issue: Weather/Market data not loading
 
 **Symptoms:**
+
 - Widgets show "No data"
 - External API calls fail
 
 **Solutions:**
+
 1. **Check internet connection**
 
 2. **Verify API endpoints:**
@@ -516,12 +565,7 @@ useEffect(() => {
 // Add to store.ts
 import { devtools } from 'zustand/middleware';
 
-export const useAppStore = create(
-  devtools(
-    persist(/* ... */),
-    { name: 'Omni-Grid' }
-  )
-);
+export const useAppStore = create(devtools(persist(/* ... */), { name: 'Omni-Grid' }));
 ```
 
 Then open Redux DevTools extension.
@@ -558,6 +602,7 @@ Then open Redux DevTools extension.
 When reporting bugs, include:
 
 **System Information:**
+
 ```
 - OS: macOS 13.0 / Windows 11 / Ubuntu 22.04
 - Browser: Chrome 120 / Firefox 121 / Safari 16
@@ -567,16 +612,19 @@ When reporting bugs, include:
 ```
 
 **Steps to Reproduce:**
+
 1. Launch app
 2. Open X widget
 3. Click Y button
 4. Observe error
 
 **Expected vs. Actual:**
+
 - Expected: Widget should show data
 - Actual: Shows error message
 
 **Console Output:**
+
 ```
 Paste any error messages from browser console
 ```
@@ -621,6 +669,6 @@ console.log(JSON.stringify(useAppStore.getState(), null, 2));
 
 ---
 
-*Every bug is a feature request in disguise.*
+_Every bug is a feature request in disguise._
 
 **[← Back to Documentation Hub](./README.md)**

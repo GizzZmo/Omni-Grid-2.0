@@ -16,6 +16,7 @@ Omni-Grid uses **Zustand** for state management, a lightweight alternative to Re
 ### Advantages Over Alternatives
 
 **vs. Redux:**
+
 - ✅ Less boilerplate (~5x less code)
 - ✅ No provider wrapping needed
 - ✅ Simpler learning curve
@@ -23,12 +24,14 @@ Omni-Grid uses **Zustand** for state management, a lightweight alternative to Re
 - ✅ Built-in middleware support
 
 **vs. Context API:**
+
 - ✅ Better performance (no unnecessary re-renders)
 - ✅ Selective subscriptions
 - ✅ Easier debugging
 - ✅ More scalable for large apps
 
 **vs. MobX:**
+
 - ✅ Simpler API
 - ✅ More predictable
 - ✅ Better React integration
@@ -48,7 +51,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 interface AppState {
   // Widget visibility
   visibleWidgets: WidgetType[];
-  
+
   // Responsive layouts
   layouts: {
     lg: GridItemData[];
@@ -57,28 +60,28 @@ interface AppState {
     xs: GridItemData[];
     xxs: GridItemData[];
   };
-  
+
   // System settings
   settings: {
     apiKey: string;
     scanlines: boolean;
     matrixRain: boolean;
   };
-  
+
   // Theme configuration
   theme: AppTheme;
-  
+
   // UI state
   isLayoutLocked: boolean;
   isCompact: boolean;
   ghostWidget: GhostData | null;
-  
+
   // Widget-specific data
   scratchpadNotes: Note[];
   tasks: Task[];
   calculatorHistory: string[];
   // ... more widget data
-  
+
   // Actions
   toggleWidget: (id: WidgetType) => void;
   updateLayout: (layout: GridItemData[], breakpoint?: string) => void;
@@ -92,14 +95,15 @@ export const useAppStore = create(
       visibleWidgets: [],
       layouts: DEFAULT_LAYOUTS,
       // ... other initial values
-      
+
       // Action implementations
-      toggleWidget: (id) => set((state) => ({
-        visibleWidgets: state.visibleWidgets.includes(id)
-          ? state.visibleWidgets.filter(w => w !== id)
-          : [...state.visibleWidgets, id]
-      })),
-      
+      toggleWidget: id =>
+        set(state => ({
+          visibleWidgets: state.visibleWidgets.includes(id)
+            ? state.visibleWidgets.filter(w => w !== id)
+            : [...state.visibleWidgets, id],
+        })),
+
       // ... other actions
     }),
     {
@@ -107,7 +111,7 @@ export const useAppStore = create(
       storage: createJSONStorage(() => localStorage),
     }
   )
-)
+);
 ```
 
 ---
@@ -117,6 +121,7 @@ export const useAppStore = create(
 ### Pattern 1: Selective Subscriptions
 
 **❌ Bad: Subscribe to entire store**
+
 ```typescript
 const MyWidget = () => {
   const state = useAppStore(); // Re-renders on ANY state change!
@@ -125,6 +130,7 @@ const MyWidget = () => {
 ```
 
 **✅ Good: Subscribe to specific properties**
+
 ```typescript
 const MyWidget = () => {
   const apiKey = useAppStore(s => s.settings.apiKey);
@@ -134,6 +140,7 @@ const MyWidget = () => {
 ```
 
 **✅ Better: Multiple selective subscriptions**
+
 ```typescript
 const MyWidget = () => {
   const apiKey = useAppStore(s => s.settings.apiKey);
@@ -154,7 +161,7 @@ const MyWidget = () => {
 const ControlButton = () => {
   // No re-renders (actions don't change)
   const toggleWidget = useAppStore(s => s.toggleWidget);
-  
+
   return (
     <button onClick={() => toggleWidget('SCRATCHPAD')}>
       Toggle
@@ -173,13 +180,13 @@ const ControlButton = () => {
 const handleBackup = () => {
   // Direct state access without subscription
   const currentState = useAppStore.getState();
-  
+
   const backup = {
     version: 1,
     timestamp: new Date().toISOString(),
-    state: currentState
+    state: currentState,
   };
-  
+
   downloadJson('backup.json', backup);
 };
 ```
@@ -194,11 +201,11 @@ const handleBackup = () => {
 const MyWidget = () => {
   // Subscribe to base values
   const visibleWidgets = useAppStore(s => s.visibleWidgets);
-  
+
   // Compute derived value
   const widgetCount = visibleWidgets.length;
   const hasWidgets = widgetCount > 0;
-  
+
   return <div>Widgets: {widgetCount}</div>;
 };
 ```
@@ -208,11 +215,11 @@ const MyWidget = () => {
 ```typescript
 const MyWidget = () => {
   const layouts = useAppStore(s => s.layouts);
-  
+
   const totalArea = useMemo(() => {
     return layouts.lg.reduce((sum, item) => sum + (item.w * item.h), 0);
   }, [layouts]);
-  
+
   return <div>Total area: {totalArea}</div>;
 };
 ```
@@ -225,10 +232,11 @@ const MyWidget = () => {
 
 ```typescript
 // In store definition
-setApiKey: (key: string) => set({ settings: { ...get().settings, apiKey: key } })
+setApiKey: (key: string) => set({ settings: { ...get().settings, apiKey: key } });
 ```
 
 **Usage:**
+
 ```typescript
 const setApiKey = useAppStore(s => s.setApiKey);
 setApiKey('new-key');
@@ -240,16 +248,17 @@ setApiKey('new-key');
 
 ```typescript
 // In store definition
-addTask: (text: string) => set((state) => ({
-  tasks: [
-    ...state.tasks,
-    {
-      id: crypto.randomUUID(),
-      text,
-      status: 'todo'
-    }
-  ]
-}))
+addTask: (text: string) =>
+  set(state => ({
+    tasks: [
+      ...state.tasks,
+      {
+        id: crypto.randomUUID(),
+        text,
+        status: 'todo',
+      },
+    ],
+  }));
 ```
 
 ---
@@ -258,15 +267,16 @@ addTask: (text: string) => set((state) => ({
 
 ```typescript
 // In store definition
-toggleWidget: (id: WidgetType) => set((state) => {
-  const isVisible = state.visibleWidgets.includes(id);
-  
-  return {
-    visibleWidgets: isVisible
-      ? state.visibleWidgets.filter(w => w !== id)
-      : [...state.visibleWidgets, id]
-  };
-})
+toggleWidget: (id: WidgetType) =>
+  set(state => {
+    const isVisible = state.visibleWidgets.includes(id);
+
+    return {
+      visibleWidgets: isVisible
+        ? state.visibleWidgets.filter(w => w !== id)
+        : [...state.visibleWidgets, id],
+    };
+  });
 ```
 
 ---
@@ -277,7 +287,7 @@ toggleWidget: (id: WidgetType) => set((state) => {
 // Outside store (in widget or service)
 const fetchWeatherData = async () => {
   const setWeather = useAppStore.getState().setWeatherData;
-  
+
   try {
     const data = await fetch('https://api.weather.com/...');
     const json = await data.json();
@@ -299,13 +309,17 @@ const fetchWeatherData = async () => {
 
 ```typescript
 persist(
-  (set, get) => ({ /* state */ }),
+  (set, get) => ({
+    /* state */
+  }),
   {
-    name: 'omni-grid-storage',           // localStorage key
+    name: 'omni-grid-storage', // localStorage key
     storage: createJSONStorage(() => localStorage), // Storage adapter
-    partialize: (state) => ({ /* selective */ }),   // Optional: save subset
+    partialize: state => ({
+      /* selective */
+    }), // Optional: save subset
   }
-)
+);
 ```
 
 ---
@@ -314,10 +328,7 @@ persist(
 
 ```typescript
 // Everything is saved
-persist(
-  (set, get) => ({ ...allState }),
-  { name: 'omni-grid-storage' }
-)
+persist((set, get) => ({ ...allState }), { name: 'omni-grid-storage' });
 ```
 
 ---
@@ -327,18 +338,15 @@ persist(
 **Save only specific properties:**
 
 ```typescript
-persist(
-  (set, get) => ({ ...allState }),
-  {
-    name: 'omni-grid-storage',
-    partialize: (state) => ({
-      visibleWidgets: state.visibleWidgets,
-      settings: state.settings,
-      theme: state.theme,
-      // Exclude UI state (locks, freezes, etc.)
-    })
-  }
-)
+persist((set, get) => ({ ...allState }), {
+  name: 'omni-grid-storage',
+  partialize: state => ({
+    visibleWidgets: state.visibleWidgets,
+    settings: state.settings,
+    theme: state.theme,
+    // Exclude UI state (locks, freezes, etc.)
+  }),
+});
 ```
 
 ---
@@ -348,21 +356,18 @@ persist(
 **Handle version upgrades:**
 
 ```typescript
-persist(
-  (set, get) => ({ ...allState }),
-  {
-    name: 'omni-grid-storage',
-    version: 1,
-    migrate: (persistedState: any, version: number) => {
-      if (version === 0) {
-        // Upgrade from v0 to v1
-        persistedState.newField = 'default';
-        delete persistedState.oldField;
-      }
-      return persistedState;
+persist((set, get) => ({ ...allState }), {
+  name: 'omni-grid-storage',
+  version: 1,
+  migrate: (persistedState: any, version: number) => {
+    if (version === 0) {
+      // Upgrade from v0 to v1
+      persistedState.newField = 'default';
+      delete persistedState.oldField;
     }
-  }
-)
+    return persistedState;
+  },
+});
 ```
 
 ---
@@ -386,7 +391,7 @@ describe('MyWidget', () => {
   it('should toggle widget', () => {
     const mockStore = createMockStore();
     const { result } = renderHook(() => mockStore());
-    
+
     result.current.toggleWidget('SCRATCHPAD');
     expect(result.current.toggleWidget).toHaveBeenCalled();
   });
@@ -412,7 +417,7 @@ describe('Store integration', () => {
   it('should add task', () => {
     const addTask = useAppStore.getState().addTask;
     addTask('Test task');
-    
+
     const tasks = useAppStore.getState().tasks;
     expect(tasks).toHaveLength(1);
     expect(tasks[0].text).toBe('Test task');
@@ -432,11 +437,12 @@ describe('Store integration', () => {
 // slices/widgetSlice.ts
 export const createWidgetSlice = (set, get) => ({
   visibleWidgets: [],
-  toggleWidget: (id) => set((state) => ({
-    visibleWidgets: state.visibleWidgets.includes(id)
-      ? state.visibleWidgets.filter(w => w !== id)
-      : [...state.visibleWidgets, id]
-  })),
+  toggleWidget: id =>
+    set(state => ({
+      visibleWidgets: state.visibleWidgets.includes(id)
+        ? state.visibleWidgets.filter(w => w !== id)
+        : [...state.visibleWidgets, id],
+    })),
 });
 
 // slices/settingsSlice.ts
@@ -445,9 +451,10 @@ export const createSettingsSlice = (set, get) => ({
     apiKey: '',
     scanlines: false,
   },
-  updateSettings: (newSettings) => set((state) => ({
-    settings: { ...state.settings, ...newSettings }
-  })),
+  updateSettings: newSettings =>
+    set(state => ({
+      settings: { ...state.settings, ...newSettings },
+    })),
 });
 
 // store.ts
@@ -474,7 +481,9 @@ import { devtools, persist } from 'zustand/middleware';
 export const useAppStore = create(
   devtools(
     persist(
-      (set, get) => ({ /* state */ }),
+      (set, get) => ({
+        /* state */
+      }),
       { name: 'omni-grid-storage' }
     ),
     { name: 'Omni-Grid Store' }
@@ -491,7 +500,7 @@ export const useAppStore = create(
 ```typescript
 // Subscribe to state changes outside React
 const unsubscribe = useAppStore.subscribe(
-  (state) => state.theme,
+  state => state.theme,
   (theme, prevTheme) => {
     console.log('Theme changed:', prevTheme, '→', theme);
     applyThemeToDOM(theme);
@@ -513,7 +522,7 @@ unsubscribe();
 const useAppStore = create((set, get) => ({
   mouseX: 0,
   mouseY: 0,
-  
+
   // Non-reactive update
   setMousePosition: (x, y) => {
     get().mouseX = x;
@@ -532,14 +541,15 @@ const useAppStore = create((set, get) => ({
 import { devtools } from 'zustand/middleware';
 
 export const useAppStore = create(
-  devtools(
-    persist(/* ... */),
-    { name: 'Omni-Grid', enabled: process.env.NODE_ENV === 'development' }
-  )
+  devtools(persist(/* ... */), {
+    name: 'Omni-Grid',
+    enabled: process.env.NODE_ENV === 'development',
+  })
 );
 ```
 
 **Then use Redux DevTools extension to:**
+
 - Inspect state
 - Track actions
 - Time-travel debugging
@@ -549,7 +559,7 @@ export const useAppStore = create(
 ### Pattern 2: Logging Middleware
 
 ```typescript
-const log = (config) => (set, get, api) =>
+const log = config => (set, get, api) =>
   config(
     (...args) => {
       console.log('Before:', get());
@@ -560,11 +570,7 @@ const log = (config) => (set, get, api) =>
     api
   );
 
-export const useAppStore = create(
-  log(
-    persist(/* ... */)
-  )
-);
+export const useAppStore = create(log(persist(/* ... */)));
 ```
 
 ---
@@ -590,6 +596,7 @@ console.log('Changes:', { before, after });
 ### 1. Avoid Over-Subscribing
 
 **❌ Bad:**
+
 ```typescript
 const MyWidget = () => {
   const state = useAppStore(); // Re-renders on ANY change
@@ -598,6 +605,7 @@ const MyWidget = () => {
 ```
 
 **✅ Good:**
+
 ```typescript
 const MyWidget = () => {
   const someValue = useAppStore(s => s.someValue); // Only this value
@@ -619,7 +627,7 @@ const MyWidget = () => {
     (s) => ({ apiKey: s.settings.apiKey, theme: s.theme }),
     shallow // Shallow comparison
   );
-  
+
   return <div>...</div>;
 };
 ```
@@ -652,6 +660,6 @@ const resetState = () => {
 
 ---
 
-*State management is not just about storing data—it's about orchestrating change.*
+_State management is not just about storing data—it's about orchestrating change._
 
 **[← Back to Documentation Hub](./README.md)**

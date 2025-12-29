@@ -21,7 +21,7 @@ describe('Language support alignment', () => {
       'kotlin',
       'swift',
       'graphql',
-      'docker'
+      'docker',
     ];
 
     expect(DEV_DOCS_LANGUAGES).toEqual(expect.arrayContaining(expectedLanguages));

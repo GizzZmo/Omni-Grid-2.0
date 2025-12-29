@@ -14,18 +14,18 @@ export const uploadJson = (callback: (data: any) => void) => {
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = '.json';
-  input.onchange = (e) => {
+  input.onchange = e => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = event => {
       try {
         const json = JSON.parse(event.target?.result as string);
         callback(json);
       } catch (err) {
-        console.error("Failed to parse JSON", err);
-        alert("Invalid JSON file");
+        console.error('Failed to parse JSON', err);
+        alert('Invalid JSON file');
       }
     };
     reader.readAsText(file);

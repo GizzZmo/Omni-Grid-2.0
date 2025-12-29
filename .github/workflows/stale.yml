@@ -2,7 +2,7 @@ name: Stale Issues and PRs
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Daily at midnight
+    - cron: '0 0 * * *' # Daily at midnight
   workflow_dispatch:
 
 jobs:
@@ -12,61 +12,61 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    
+
     steps:
       - name: Stale action
         uses: actions/stale@v9
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          
+
           # Issues
           stale-issue-message: |
             👋 This issue has been automatically marked as stale because it has not had recent activity.
             It will be closed in 7 days if no further activity occurs.
-            
+
             If this issue is still relevant, please:
             - Add a comment to keep it open
             - Add the `keep-open` label
             - Remove the `stale` label
-            
+
             Thank you for your contributions! 🙏
-          
+
           close-issue-message: |
             🔒 This issue has been automatically closed due to inactivity.
-            
+
             If you believe this issue should be reopened, please:
             - Create a new issue with updated information
             - Reference this issue in your new submission
-            
+
             Thank you! 🙏
-          
+
           days-before-issue-stale: 60
           days-before-issue-close: 7
           stale-issue-label: 'stale'
           exempt-issue-labels: 'keep-open,pinned,security,bug'
-          
+
           # Pull Requests
           stale-pr-message: |
             👋 This pull request has been automatically marked as stale because it has not had recent activity.
             It will be closed in 14 days if no further activity occurs.
-            
+
             If this PR is still relevant, please:
             - Rebase against the latest main branch
             - Address any review comments
             - Add a comment to keep it open
             - Add the `keep-open` label
-            
+
             Thank you for your contributions! 🙏
-          
+
           close-pr-message: |
             🔒 This pull request has been automatically closed due to inactivity.
-            
+
             If you would like to continue this work, please:
             - Reopen this PR
             - Create a new PR with updated changes
-            
+
             Thank you! 🙏
-          
+
           days-before-pr-stale: 30
           days-before-pr-close: 14
           stale-pr-label: 'stale'

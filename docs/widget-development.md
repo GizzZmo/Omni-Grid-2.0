@@ -17,6 +17,7 @@ This guide walks you through creating custom widgets for Omni-Grid. Widgets are 
 ## 📋 PREREQUISITES
 
 Before building widgets, you should:
+
 - Understand React functional components and hooks
 - Be familiar with TypeScript basics
 - Have read the [Architecture Overview](./architecture.md)
@@ -50,12 +51,13 @@ Open `types.ts` and add your widget to the `WidgetType` union:
 
 ```typescript
 // types.ts
-export type WidgetType = 
+export type WidgetType =
   // ... existing types
-  | 'WEATHER_STATION'; // Add this line
+  'WEATHER_STATION'; // Add this line
 ```
 
 **Naming Conventions:**
+
 - Use SCREAMING_SNAKE_CASE
 - Be descriptive but concise
 - Avoid generic names (BAD: `TOOL`, GOOD: `REGEX_TESTER`)
@@ -109,7 +111,7 @@ export const WeatherStation: React.FC = () => {
             Current Conditions
           </span>
         </div>
-        <button 
+        <button
           onClick={fetchWeather}
           disabled={loading}
           className="px-2 py-1 bg-cyan-900/30 border border-cyan-500/50 rounded text-[10px] text-cyan-400 hover:bg-cyan-900/50 transition-all"
@@ -143,22 +145,26 @@ export const WeatherStation: React.FC = () => {
 ### Design Guidelines
 
 **Colors (follow existing aesthetic):**
+
 - Background: `bg-slate-950` or `bg-slate-900`
 - Text: `text-slate-200` (primary), `text-slate-400` (secondary), `text-slate-500` (tertiary)
 - Borders: `border-slate-700` or `border-[color]-500/50`
 - Accents: Choose from `cyan`, `fuchsia`, `emerald`, `amber`, `indigo`, `orange`
 
 **Typography:**
+
 - Headers: `text-xs` or `text-[10px]`, `font-bold`, `uppercase`, `tracking-wider`
 - Body: `text-sm` or `text-xs`
 - Data/Numbers: `text-lg` to `text-6xl`, `font-bold`
 
 **Layout:**
+
 - Use `flex` and `flex-col` for responsive stacking
 - Add `overflow-y-auto custom-scrollbar` for scrollable content
 - Use `p-4` for padding (consistent with other widgets)
 
 **Icons:**
+
 - Import from `lucide-react`
 - Standard size: `size={14}` or `size={16}`
 - Color with text color classes
@@ -181,7 +187,7 @@ import { WeatherStation } from '../widgets/WeatherStation';
 ```typescript
 const widgetComponents: Record<WidgetType, JSX.Element> = {
   // ... existing widgets
-  
+
   WEATHER_STATION: (
     <WidgetShell
       id="WEATHER_STATION"
@@ -197,11 +203,13 @@ const widgetComponents: Record<WidgetType, JSX.Element> = {
 ```
 
 **Icon Selection:**
+
 - Use icons from `lucide-react`
 - Import at the top: `import { Cloud } from 'lucide-react';`
 - Browse icons: https://lucide.dev/icons
 
 **Accent Colors:**
+
 - Choose a color that represents the widget's function
 - Examples: `text-cyan-400`, `text-fuchsia-400`, `text-emerald-400`
 
@@ -216,11 +224,11 @@ If your widget needs to persist data across sessions, modify `store.ts`.
 ```typescript
 interface AppState {
   // ... existing properties
-  
+
   // Weather widget state
   weatherLocation: string;
   weatherData: any | null;
-  
+
   // Actions
   setWeatherLocation: (location: string) => void;
   setWeatherData: (data: any) => void;
@@ -234,19 +242,19 @@ create(
   persist(
     (set, get) => ({
       // ... existing defaults
-      
+
       weatherLocation: 'New York',
       weatherData: null,
-      
-      setWeatherLocation: (location) => set({ weatherLocation: location }),
-      setWeatherData: (data) => set({ weatherData: data }),
+
+      setWeatherLocation: location => set({ weatherLocation: location }),
+      setWeatherData: data => set({ weatherData: data }),
     }),
     {
       name: 'omni-grid-storage',
       storage: createJSONStorage(() => localStorage),
     }
   )
-)
+);
 ```
 
 ### Add to Default Layout (Optional)
@@ -261,6 +269,7 @@ const DEFAULT_LAYOUT: GridItemData[] = [
 ```
 
 **Layout Coordinates:**
+
 - `i`: Widget ID (must match WidgetType)
 - `x`: Column position (0-11 for lg breakpoint)
 - `y`: Row position (0-infinity)
@@ -296,8 +305,8 @@ import { Cloud } from 'lucide-react';
 ### Add DockItem
 
 ```typescript
-<DockItem 
-  active={visibleWidgets.includes('WEATHER_STATION')} 
+<DockItem
+  active={visibleWidgets.includes('WEATHER_STATION')}
   onClick={() => toggleWidget('WEATHER_STATION')}
   icon={<Cloud size={18} />}
   label="Weather"
@@ -306,6 +315,7 @@ import { Cloud } from 'lucide-react';
 ```
 
 **Dock Placement:**
+
 - Group with similar widgets (use dividers `<div className="w-[1px] h-8 bg-white/10 mx-1"></div>`)
 - Consider widget category (Dev, Finance, Utility, Creative)
 
@@ -322,7 +332,7 @@ export const WeatherStation: React.FC = () => {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const data = e.dataTransfer.getData('text/plain');
-    
+
     try {
       const parsed = JSON.parse(data);
       if (parsed.location) {
@@ -337,7 +347,7 @@ export const WeatherStation: React.FC = () => {
   };
 
   return (
-    <div 
+    <div
       className="h-full"
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
@@ -363,7 +373,7 @@ const generateWeatherInsights = async () => {
   }
 
   const prompt = `Analyze this weather data and provide insights: ${JSON.stringify(weatherData)}`;
-  
+
   try {
     const response = await callGemini(apiKey, prompt, 'flash');
     setInsights(response);
@@ -387,8 +397,8 @@ return (
       <button
         onClick={() => setActiveTab('current')}
         className={`px-4 py-2 text-[10px] font-bold uppercase ${
-          activeTab === 'current' 
-            ? 'text-cyan-400 border-b-2 border-cyan-400' 
+          activeTab === 'current'
+            ? 'text-cyan-400 border-b-2 border-cyan-400'
             : 'text-slate-500 hover:text-slate-300'
         }`}
       >
@@ -397,8 +407,8 @@ return (
       <button
         onClick={() => setActiveTab('forecast')}
         className={`px-4 py-2 text-[10px] font-bold uppercase ${
-          activeTab === 'forecast' 
-            ? 'text-cyan-400 border-b-2 border-cyan-400' 
+          activeTab === 'forecast'
+            ? 'text-cyan-400 border-b-2 border-cyan-400'
             : 'text-slate-500 hover:text-slate-300'
         }`}
       >
@@ -426,7 +436,7 @@ return (
   <div className="h-full flex flex-col">
     <div className="flex justify-between items-center p-4 border-b border-slate-800">
       <h3 className="text-xs font-bold">Weather Station</h3>
-      <button 
+      <button
         onClick={() => setShowSettings(!showSettings)}
         className="text-slate-400 hover:text-white"
       >
@@ -472,7 +482,7 @@ const [error, setError] = useState<string | null>(null);
       <AlertCircle size={14} className="text-red-400" />
       <span className="text-xs text-red-400">{error}</span>
     </div>
-    <button 
+    <button
       onClick={() => setError(null)}
       className="text-[10px] text-red-500 underline mt-2"
     >
@@ -489,6 +499,7 @@ const [error, setError] = useState<string | null>(null);
 ### Development Testing
 
 1. **Launch dev server:**
+
    ```bash
    npm run dev
    ```
@@ -536,7 +547,7 @@ export const QuoteWidget: React.FC = () => {
     "Your grid, your rules.",
     "Local-first is freedom.",
   ];
-  
+
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
   return (
@@ -560,13 +571,13 @@ export const CounterWidget: React.FC = () => {
     <div className="h-full flex flex-col items-center justify-center bg-slate-950 gap-4">
       <div className="text-6xl font-bold text-cyan-400">{count}</div>
       <div className="flex gap-2">
-        <button 
+        <button
           onClick={() => setCount(count - 1)}
           className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-white"
         >
           -
         </button>
-        <button 
+        <button
           onClick={() => setCount(count + 1)}
           className="px-4 py-2 bg-cyan-900/30 border border-cyan-500/50 rounded text-cyan-400"
         >
@@ -591,7 +602,7 @@ export const ChartWidget: React.FC = () => {
       </h3>
       <div className="flex-1 flex items-end justify-around gap-1">
         {data.map((value, i) => (
-          <div 
+          <div
             key={i}
             className="flex-1 bg-gradient-to-t from-cyan-500 to-fuchsia-500 rounded-t"
             style={{ height: `${value}%` }}
@@ -617,6 +628,7 @@ export const ChartWidget: React.FC = () => {
 **Problem:** Added widget to types.ts but it doesn't show in grid.
 
 **Solution:**
+
 1. Verify you registered it in `GridContainer.tsx`
 2. Check that `WidgetType` string matches exactly
 3. Ensure widget is in `visibleWidgets` array (toggle it on via Launcher)
@@ -626,6 +638,7 @@ export const ChartWidget: React.FC = () => {
 **Problem:** Data resets on page refresh.
 
 **Solution:**
+
 1. Verify you added state to `store.ts` inside the `persist()` wrapper
 2. Check browser console for localStorage errors
 3. Ensure you're using `useAppStore` correctly
@@ -635,6 +648,7 @@ export const ChartWidget: React.FC = () => {
 **Problem:** Colors/spacing don't match other widgets.
 
 **Solution:**
+
 1. Review existing widgets for style patterns
 2. Use `bg-slate-950` for backgrounds
 3. Use consistent padding (`p-4`)
@@ -645,6 +659,7 @@ export const ChartWidget: React.FC = () => {
 **Problem:** Content is cut off or cramped.
 
 **Solution:**
+
 1. Increase default height in `DEFAULT_LAYOUT` (increase `h` value)
 2. Add `overflow-y-auto` for scrollable content
 3. Set `minH` in widget config if needed
@@ -672,6 +687,6 @@ After creating your widget:
 
 ---
 
-*Build once. Grid forever.*
+_Build once. Grid forever._
 
 **[← Back to Documentation Hub](./README.md)**

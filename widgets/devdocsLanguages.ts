@@ -33,5 +33,5 @@ export const DEV_DOCS_LANGUAGES = [
   'sql',
   'swift',
   'typescript',
-  'yaml'
+  'yaml',
 ];

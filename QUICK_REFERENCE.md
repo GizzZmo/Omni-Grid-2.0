@@ -18,36 +18,42 @@ npm run dev
 
 ## ⌨️ KEYBOARD SHORTCUTS
 
-| Shortcut | Action |
-|----------|--------|
-| `Cmd/Ctrl + K` | AI operations |
-| `Esc` | Close modal |
-| `Tab` | Navigate |
-| `Drag` | Move/resize widgets |
+| Shortcut       | Action              |
+| -------------- | ------------------- |
+| `Cmd/Ctrl + K` | AI operations       |
+| `Esc`          | Close modal         |
+| `Tab`          | Navigate            |
+| `Drag`         | Move/resize widgets |
 
 ---
 
 ## 🎨 COMMON TASKS
 
 ### Add a Widget
+
 1. Click **LAUNCHER** button (top-left)
 2. Select widget from list
 3. Widget appears in grid
 
 ### Move a Widget
+
 - Drag the widget header
 
 ### Resize a Widget
+
 - Drag bottom-right corner
 
 ### Lock Layout
+
 - Click **UNLOCKED** button (top-right)
 
 ### Backup Data
+
 - Click **Backup** button (top-right)
 - Save JSON file
 
 ### Restore Data
+
 - Click **Restore** button (top-right)
 - Select backup JSON file
 
@@ -69,27 +75,32 @@ npm run dev
 **Developer:** Web Terminal, Dev Optic, Git Pulse, Docu Hub  
 **Creative:** Aesthetic Engine, Sonic Architecture, Cipher Vault  
 **Productivity:** Focus HUD, Temporal Nexus, Secure Calendar  
-**Research:** News Feed, PDF Viewer, Research Browser  
+**Research:** News Feed, PDF Viewer, Research Browser
 
 ---
 
 ## 🔧 TROUBLESHOOTING
 
 **Blank screen?**
+
 - Check browser console (F12)
 - Clear cache and localStorage
 
 **Widget not showing?**
+
 - Toggle it via Launcher or Dock
 
 **AI not working?**
+
 - Verify API key in System Core → Settings
 
 **Data not saving?**
+
 - Check localStorage is enabled
 - Not in incognito mode
 
 **Performance issues?**
+
 - Close unused widgets
 - Disable scanlines/matrix rain
 
@@ -155,6 +166,6 @@ npm run preview  # Preview production build
 
 ---
 
-*Print this page for desk reference*
+_Print this page for desk reference_
 
 **[← Back to README](./README.md)** | **[Full Documentation →](./DOCUMENTATION.md)**

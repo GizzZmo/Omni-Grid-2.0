@@ -1,14 +1,12 @@
-
-import { GoogleGenAI } from "@google/genai";
-import { GridItemData, GhostData } from "../types";
+import { GoogleGenAI } from '@google/genai';
+import { GridItemData, GhostData } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export async function optimizeLayout(
-  currentLayout: GridItemData[], 
+  currentLayout: GridItemData[],
   visibleWidgets: string[]
-): Promise<{ layout: GridItemData[], ghost?: GhostData }> {
-  
+): Promise<{ layout: GridItemData[]; ghost?: GhostData }> {
   const prompt = `
     Act as a UI/UX expert specializing in "Bento Box" grid layouts.
     
@@ -41,23 +39,25 @@ export async function optimizeLayout(
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
-      config: { responseMimeType: 'application/json' }
+      config: { responseMimeType: 'application/json' },
     });
 
     const result = JSON.parse(response.text || '{}');
     return {
-        layout: result.layout || currentLayout,
-        ghost: result.ghost || undefined
+      layout: result.layout || currentLayout,
+      ghost: result.ghost || undefined,
     };
-
   } catch (error) {
-    console.error("Grid Intelligence Failed:", error);
+    console.error('Grid Intelligence Failed:', error);
     return { layout: currentLayout };
   }
 }
 
-export async function processCrossTalk(droppedText: string, targetWidgetType: string): Promise<string> {
-    const prompt = `
+export async function processCrossTalk(
+  droppedText: string,
+  targetWidgetType: string
+): Promise<string> {
+  const prompt = `
         Context: The user dragged and dropped the following text: "${droppedText}" into the "${targetWidgetType}" widget.
         
         Task: Interpret the intent and format the text for this specific tool.
@@ -69,13 +69,13 @@ export async function processCrossTalk(droppedText: string, targetWidgetType: st
         Output: Return ONLY the processed text content.
     `;
 
-    try {
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
-            contents: prompt,
-        });
-        return response.text || droppedText;
-    } catch (e) {
-        return droppedText;
-    }
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: prompt,
+    });
+    return response.text || droppedText;
+  } catch (e) {
+    return droppedText;
+  }
 }

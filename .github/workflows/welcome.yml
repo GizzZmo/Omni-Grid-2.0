@@ -13,7 +13,7 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    
+
     steps:
       - name: Welcome new issue creators
         if: github.event_name == 'issues'
@@ -27,7 +27,7 @@ jobs:
               creator: issue.user.login,
               state: 'all'
             })).data.length === 1;
-            
+
             if (isFirstIssue) {
               const message = `👋 Welcome to Omni-Grid, @${issue.user.login}!
               
@@ -53,7 +53,7 @@ jobs:
                 body: message
               });
             }
-      
+
       - name: Welcome new PR creators
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
@@ -66,7 +66,7 @@ jobs:
               creator: pr.user.login,
               state: 'all'
             })).data.length === 1;
-            
+
             if (isFirstPR) {
               const message = `🎉 Congratulations on your first Pull Request, @${pr.user.login}!
               

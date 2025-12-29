@@ -3,7 +3,7 @@ import { Eye, Shield, Search } from 'lucide-react';
 
 export const DevOptic: React.FC = () => {
   const [tool, setTool] = useState<'JWT' | 'REGEX'>('JWT');
-  
+
   // JWT State
   const [jwtInput, setJwtInput] = useState('');
   const [jwtOutput, setJwtOutput] = useState<string | null>(null);
@@ -42,7 +42,7 @@ export const DevOptic: React.FC = () => {
 
   return (
     <div className="h-full flex flex-col gap-3">
-       <div className="flex gap-2 bg-slate-900 rounded-lg p-1">
+      <div className="flex gap-2 bg-slate-900 rounded-lg p-1">
         <button
           onClick={() => setTool('JWT')}
           className={`flex-1 py-1 flex items-center justify-center gap-1 text-xs font-medium rounded transition-colors ${tool === 'JWT' ? 'bg-orange-600 text-white' : 'text-slate-400 hover:text-white'}`}
@@ -64,7 +64,7 @@ export const DevOptic: React.FC = () => {
             className="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono text-slate-300 placeholder-slate-700 focus:outline-none focus:border-orange-500"
             placeholder="Paste JWT here (ey...)"
             value={jwtInput}
-            onChange={(e) => handleJwtDecode(e.target.value)}
+            onChange={e => handleJwtDecode(e.target.value)}
           />
           <div className="flex-1 bg-slate-900 border border-slate-800 rounded p-2 overflow-auto custom-scrollbar">
             {jwtOutput ? (
@@ -86,29 +86,36 @@ export const DevOptic: React.FC = () => {
               className="flex-[2] bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono text-slate-300 placeholder-slate-700 focus:outline-none focus:border-orange-500"
               placeholder="Regex Pattern"
               value={regexPattern}
-              onChange={(e) => setRegexPattern(e.target.value)}
+              onChange={e => setRegexPattern(e.target.value)}
             />
-             <input
+            <input
               type="text"
               className="flex-1 bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono text-slate-300 placeholder-slate-700 focus:outline-none focus:border-orange-500"
               placeholder="Flags (g, i)"
               value={regexFlags}
-              onChange={(e) => setRegexFlags(e.target.value)}
+              onChange={e => setRegexFlags(e.target.value)}
             />
           </div>
           <textarea
             className="h-20 bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono text-slate-300 placeholder-slate-700 resize-none focus:outline-none focus:border-orange-500"
             placeholder="Test String"
             value={regexString}
-            onChange={(e) => setRegexString(e.target.value)}
+            onChange={e => setRegexString(e.target.value)}
           />
           <div className="flex-1 bg-slate-900 border border-slate-800 rounded p-2 overflow-auto custom-scrollbar">
-             <div className="text-[10px] uppercase text-slate-500 font-bold mb-1">Matches ({matches.length})</div>
-             <div className="flex flex-wrap gap-1">
-                {matches.map((m, i) => (
-                    <span key={i} className="bg-orange-900/40 text-orange-300 px-1 rounded text-xs font-mono border border-orange-800/50">{m}</span>
-                ))}
-             </div>
+            <div className="text-[10px] uppercase text-slate-500 font-bold mb-1">
+              Matches ({matches.length})
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {matches.map((m, i) => (
+                <span
+                  key={i}
+                  className="bg-orange-900/40 text-orange-300 px-1 rounded text-xs font-mono border border-orange-800/50"
+                >
+                  {m}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       )}

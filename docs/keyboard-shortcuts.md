@@ -15,11 +15,11 @@ Omni-Grid supports keyboard shortcuts for efficient navigation and control. This
 
 ### System Controls
 
-| Shortcut | Action | Context |
-|----------|--------|---------|
+| Shortcut               | Action                | Context                               |
+| ---------------------- | --------------------- | ------------------------------------- |
 | `Cmd + K` / `Ctrl + K` | Trigger AI operations | Neural widgets (Scratchpad, WritePad) |
-| `Esc` | Close modal/overlay | Any modal, Command Palette, Launcher |
-| `Cmd + S` / `Ctrl + S` | Save/Backup state | Anywhere (triggers backup download) |
+| `Esc`                  | Close modal/overlay   | Any modal, Command Palette, Launcher  |
+| `Cmd + S` / `Ctrl + S` | Save/Backup state     | Anywhere (triggers backup download)   |
 
 ---
 
@@ -27,19 +27,19 @@ Omni-Grid supports keyboard shortcuts for efficient navigation and control. This
 
 ### Grid Manipulation
 
-| Action | Result |
-|--------|--------|
-| **Drag** widget header | Move widget to new position |
-| **Drag** bottom-right corner | Resize widget |
-| **Click** X icon | Close/hide widget |
+| Action                         | Result                             |
+| ------------------------------ | ---------------------------------- |
+| **Drag** widget header         | Move widget to new position        |
+| **Drag** bottom-right corner   | Resize widget                      |
+| **Click** X icon               | Close/hide widget                  |
 | **Double-click** widget header | Minimize/maximize (if implemented) |
 
 ### Cross-Talk Protocol
 
-| Action | Result |
-|--------|--------|
-| **Drag** content from widget | Copy data to clipboard |
-| **Drop** on target widget | Transfer data between widgets |
+| Action                       | Result                        |
+| ---------------------------- | ----------------------------- |
+| **Drag** content from widget | Copy data to clipboard        |
+| **Drop** on target widget    | Transfer data between widgets |
 
 ---
 
@@ -47,47 +47,47 @@ Omni-Grid supports keyboard shortcuts for efficient navigation and control. This
 
 ### Neural Scratchpad
 
-| Shortcut | Action |
-|----------|--------|
-| `Cmd + K` / `Ctrl + K` | Open AI command menu |
-| `Cmd + Enter` / `Ctrl + Enter` | Quick refine with AI |
-| `Tab` | Navigate between notes |
-| `Cmd + N` / `Ctrl + N` | Create new note |
+| Shortcut                       | Action                 |
+| ------------------------------ | ---------------------- |
+| `Cmd + K` / `Ctrl + K`         | Open AI command menu   |
+| `Cmd + Enter` / `Ctrl + Enter` | Quick refine with AI   |
+| `Tab`                          | Navigate between notes |
+| `Cmd + N` / `Ctrl + N`         | Create new note        |
 
 ### Focus HUD
 
-| Shortcut | Action |
-|----------|--------|
-| `Space` | Start/pause timer |
-| `Enter` | Add new task |
-| `Cmd + D` / `Ctrl + D` | Mark task as done |
+| Shortcut               | Action               |
+| ---------------------- | -------------------- |
+| `Space`                | Start/pause timer    |
+| `Enter`                | Add new task         |
+| `Cmd + D` / `Ctrl + D` | Mark task as done    |
 | `Delete` / `Backspace` | Delete selected task |
 
 ### Web Terminal
 
-| Shortcut | Action |
-|----------|--------|
-| `Enter` | Execute command |
-| `Arrow Up` | Previous command in history |
-| `Arrow Down` | Next command in history |
-| `Cmd + L` / `Ctrl + L` | Clear terminal |
-| `Tab` | Auto-complete (if implemented) |
+| Shortcut               | Action                         |
+| ---------------------- | ------------------------------ |
+| `Enter`                | Execute command                |
+| `Arrow Up`             | Previous command in history    |
+| `Arrow Down`           | Next command in history        |
+| `Cmd + L` / `Ctrl + L` | Clear terminal                 |
+| `Tab`                  | Auto-complete (if implemented) |
 
 ### Dev Optic
 
-| Shortcut | Action |
-|----------|--------|
-| `Cmd + V` / `Ctrl + V` | Paste JWT or text |
-| `Cmd + C` / `Ctrl + C` | Copy decoded result |
-| `Tab` | Switch between JWT/Regex tabs |
+| Shortcut               | Action                        |
+| ---------------------- | ----------------------------- |
+| `Cmd + V` / `Ctrl + V` | Paste JWT or text             |
+| `Cmd + C` / `Ctrl + C` | Copy decoded result           |
+| `Tab`                  | Switch between JWT/Regex tabs |
 
 ### Universal Transformer
 
-| Shortcut | Action |
-|----------|--------|
+| Shortcut               | Action                    |
+| ---------------------- | ------------------------- |
 | `Cmd + V` / `Ctrl + V` | Paste data for conversion |
-| `Cmd + C` / `Ctrl + C` | Copy converted output |
-| `Cmd + T` / `Ctrl + T` | Toggle format selector |
+| `Cmd + C` / `Ctrl + C` | Copy converted output     |
+| `Cmd + T` / `Ctrl + T` | Toggle format selector    |
 
 ---
 
@@ -97,13 +97,13 @@ Omni-Grid supports keyboard shortcuts for efficient navigation and control. This
 
 **Planned for future releases:**
 
-| Shortcut | Action |
-|----------|--------|
+| Shortcut                   | Action                 |
+| -------------------------- | ---------------------- |
 | `Cmd + 1-9` / `Ctrl + 1-9` | Toggle dock widget 1-9 |
-| `Cmd + 0` / `Ctrl + 0` | Open widget launcher |
-| `Cmd + ,` / `Ctrl + ,` | Open settings |
-| `Cmd + /` / `Ctrl + /` | Open help |
-| `Cmd + P` / `Ctrl + P` | Command palette |
+| `Cmd + 0` / `Ctrl + 0`     | Open widget launcher   |
+| `Cmd + ,` / `Ctrl + ,`     | Open settings          |
+| `Cmd + /` / `Ctrl + /`     | Open help              |
+| `Cmd + P` / `Ctrl + P`     | Command palette        |
 
 ---
 
@@ -113,15 +113,15 @@ Omni-Grid supports keyboard shortcuts for efficient navigation and control. This
 
 These work in Omni-Grid because it's a web app:
 
-| Shortcut | Action |
-|----------|--------|
-| `Cmd + R` / `Ctrl + R` / `F5` | Refresh page |
+| Shortcut                                | Action                     |
+| --------------------------------------- | -------------------------- |
+| `Cmd + R` / `Ctrl + R` / `F5`           | Refresh page               |
 | `Cmd + Shift + R` / `Ctrl + Shift + F5` | Hard refresh (clear cache) |
-| `Cmd + +` / `Ctrl + +` | Zoom in |
-| `Cmd + -` / `Ctrl + -` | Zoom out |
-| `Cmd + 0` / `Ctrl + 0` | Reset zoom |
-| `F12` / `Cmd + Option + I` | Open DevTools |
-| `Cmd + W` / `Ctrl + W` | Close tab |
+| `Cmd + +` / `Ctrl + +`                  | Zoom in                    |
+| `Cmd + -` / `Ctrl + -`                  | Zoom out                   |
+| `Cmd + 0` / `Ctrl + 0`                  | Reset zoom                 |
+| `F12` / `Cmd + Option + I`              | Open DevTools              |
+| `Cmd + W` / `Ctrl + W`                  | Close tab                  |
 
 ---
 
@@ -131,16 +131,16 @@ These work in Omni-Grid because it's a web app:
 
 Within any input field or textarea:
 
-| Shortcut | Action |
-|----------|--------|
-| `Cmd + A` / `Ctrl + A` | Select all |
-| `Cmd + C` / `Ctrl + C` | Copy |
-| `Cmd + X` / `Ctrl + X` | Cut |
-| `Cmd + V` / `Ctrl + V` | Paste |
-| `Cmd + Z` / `Ctrl + Z` | Undo |
-| `Cmd + Shift + Z` / `Ctrl + Y` | Redo |
-| `Cmd + B` / `Ctrl + B` | Bold (in rich editors) |
-| `Cmd + I` / `Ctrl + I` | Italic (in rich editors) |
+| Shortcut                       | Action                   |
+| ------------------------------ | ------------------------ |
+| `Cmd + A` / `Ctrl + A`         | Select all               |
+| `Cmd + C` / `Ctrl + C`         | Copy                     |
+| `Cmd + X` / `Ctrl + X`         | Cut                      |
+| `Cmd + V` / `Ctrl + V`         | Paste                    |
+| `Cmd + Z` / `Ctrl + Z`         | Undo                     |
+| `Cmd + Shift + Z` / `Ctrl + Y` | Redo                     |
+| `Cmd + B` / `Ctrl + B`         | Bold (in rich editors)   |
+| `Cmd + I` / `Ctrl + I`         | Italic (in rich editors) |
 
 ---
 
@@ -149,28 +149,30 @@ Within any input field or textarea:
 ### Browser Console Shortcuts
 
 **Quick State Access:**
+
 ```javascript
 // View current state
-useAppStore.getState()
+useAppStore.getState();
 
 // Toggle widget
-useAppStore.getState().toggleWidget('SCRATCHPAD')
+useAppStore.getState().toggleWidget('SCRATCHPAD');
 
 // Update settings
-useAppStore.getState().updateSettings({ scanlines: true })
+useAppStore.getState().updateSettings({ scanlines: true });
 ```
 
 **Keyboard Macro:**
+
 ```javascript
 // Create custom keyboard shortcut
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (e.metaKey && e.key === 'b') {
     e.preventDefault();
     // Trigger backup
     const backup = {
       version: 1,
       timestamp: new Date().toISOString(),
-      state: useAppStore.getState()
+      state: useAppStore.getState(),
     };
     // Download logic here
   }
@@ -183,14 +185,15 @@ document.addEventListener('keydown', (e) => {
 
 ### Screen Reader Support
 
-| Shortcut | Action |
-|----------|--------|
-| `Tab` | Navigate to next interactive element |
-| `Shift + Tab` | Navigate to previous element |
-| `Enter` / `Space` | Activate button/link |
-| `Arrow keys` | Navigate within lists/menus |
+| Shortcut          | Action                               |
+| ----------------- | ------------------------------------ |
+| `Tab`             | Navigate to next interactive element |
+| `Shift + Tab`     | Navigate to previous element         |
+| `Enter` / `Space` | Activate button/link                 |
+| `Arrow keys`      | Navigate within lists/menus          |
 
 **ARIA Labels:**
+
 - All buttons have descriptive labels
 - Grid items are properly labeled
 - Keyboard navigation follows logical order
@@ -212,7 +215,7 @@ useEffect(() => {
       e.preventDefault();
       setShowLauncher(true);
     }
-    
+
     // Custom shortcut: Cmd+Shift+F to freeze system
     if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'f') {
       e.preventDefault();
@@ -295,6 +298,7 @@ useEffect(() => {
 ### Planned Shortcuts
 
 **Coming Soon:**
+
 - Global search across all widgets (`Cmd/Ctrl + F`)
 - Quick widget switcher (`Cmd/Ctrl + Tab`)
 - Workspace presets (`Cmd/Ctrl + 1-9`)
@@ -302,6 +306,7 @@ useEffect(() => {
 - Undo/redo layout changes (`Cmd/Ctrl + Z/Y`)
 
 **Under Consideration:**
+
 - Vim-style navigation mode
 - Emacs-style key bindings
 - Custom shortcut manager UI
@@ -313,16 +318,19 @@ useEffect(() => {
 ## 🎓 LEARNING PATH
 
 ### Beginner Level
+
 1. Learn basic navigation (Tab, Enter, Esc)
 2. Master grid manipulation (drag, resize)
 3. Use Cross-Talk drag & drop
 
 ### Intermediate Level
+
 1. Memorize Cmd/Ctrl + K for AI
 2. Use widget-specific shortcuts
 3. Leverage browser console for quick actions
 
 ### Advanced Level
+
 1. Create custom shortcuts
 2. Use browser console macros
 3. Automate workflows with scripts
@@ -337,6 +345,6 @@ useEffect(() => {
 
 ---
 
-*Speed comes from muscle memory. Practice makes perfect.*
+_Speed comes from muscle memory. Practice makes perfect._
 
 **[← Back to Documentation Hub](./README.md)**

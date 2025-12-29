@@ -2,7 +2,7 @@ name: Performance Check
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   workflow_dispatch:
 
 permissions:
@@ -13,26 +13,26 @@ jobs:
   performance:
     name: Measure Build Performance
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Measure build time
         id: build_performance
         run: |
           echo "## Build Performance Report" > performance-report.md
           echo "" >> performance-report.md
-          
+
           # Measure frontend build
           echo "### Frontend Build" >> performance-report.md
           START=$(date +%s)
@@ -47,7 +47,7 @@ jobs:
             echo "- **Duration**: ${DURATION}s" >> performance-report.md
             echo "- **Status**: ❌ Build failed" >> performance-report.md
           fi
-          
+
           # Check bundle size
           if [ -d "dist" ]; then
             BUNDLE_SIZE=$(du -sh dist 2>/dev/null | cut -f1 || echo "unknown")
@@ -69,18 +69,18 @@ jobs:
           else
             echo "⚠️ **Warning**: dist directory not found" >> performance-report.md
           fi
-          
+
           cat performance-report.md
-      
+
       - name: Measure C++ build time
         id: cpp_build
         continue-on-error: true
         run: |
           echo "" >> performance-report.md
           echo "### C++ Server Build" >> performance-report.md
-          
+
           sudo apt-get update && sudo apt-get install -y g++ make
-          
+
           START=$(date +%s)
           if make server 2>&1 | tee cpp_build.log; then
             END=$(date +%s)
@@ -100,9 +100,9 @@ jobs:
             echo "- **Duration**: ${DURATION}s" >> performance-report.md
             echo "- **Status**: ❌ Build failed" >> performance-report.md
           fi
-          
+
           cat performance-report.md
-      
+
       - name: Comment PR with performance report
         uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
@@ -153,7 +153,7 @@ jobs:
               console.error('Error posting performance report:', error.message);
               core.warning(`Failed to post performance report: ${error.message}`);
             }
-      
+
       - name: Upload performance report
         uses: actions/upload-artifact@v4
         if: always()

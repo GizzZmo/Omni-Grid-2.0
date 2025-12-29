@@ -1,10 +1,13 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from '@google/genai';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-export async function refineText(text: string, instruction: 'REFINE' | 'EXPAND' | 'TRANSLATE' | 'ANALYZE' | 'SUMMARY' | 'TONE'): Promise<string> {
-  let prompt = "";
-  
+export async function refineText(
+  text: string,
+  instruction: 'REFINE' | 'EXPAND' | 'TRANSLATE' | 'ANALYZE' | 'SUMMARY' | 'TONE'
+): Promise<string> {
+  let prompt = '';
+
   switch (instruction) {
     case 'REFINE':
       prompt = `Rewrite the following text to be more professional, concise, and clear:\n\n"${text}"`;
@@ -31,12 +34,13 @@ export async function refineText(text: string, instruction: 'REFINE' | 'EXPAND' 
       model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
-        systemInstruction: "You are an expert editor and data analyst embedded in a productivity tool.",
-      }
+        systemInstruction:
+          'You are an expert editor and data analyst embedded in a productivity tool.',
+      },
     });
     return response.text || text;
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    throw new Error("Failed to process text with AI.");
+    console.error('Gemini API Error:', error);
+    throw new Error('Failed to process text with AI.');
   }
 }
