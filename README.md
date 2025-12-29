@@ -37,7 +37,7 @@
 
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
-**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
+**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🗺️ [ROADMAP](./ROADMAP.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
 
 ## 0x02 // CORE MODULES
 
@@ -206,6 +206,24 @@ Comprehensive documentation is available in the `docs/` folder:
 - **[Troubleshooting](./docs/troubleshooting.md)** - Common issues and solutions
 - **[WIKI](./docs/WIKI.md)** - Core concepts and philosophy
 - **[How-To Guide](./docs/HOWTO.md)** - Practical recipes
+
+---
+
+## 0x07 // ROADMAP
+
+Want to know what's coming next? Check out our comprehensive development roadmap:
+
+**🗺️ [DEVELOPMENT ROADMAP](./ROADMAP.md)** - Complete project roadmap with timelines, milestones, and contribution opportunities
+
+### Current Focus (Q1 2025)
+- 🚧 Music player widget enhancement
+- 🚧 Code editor widget (Monaco integration)
+- 🚧 AI chat widget (Gemini API)
+- 🚧 Settings panel v2
+- 🚧 Theme customization system
+- 🚧 Widget marketplace foundation
+
+See the [full roadmap](./ROADMAP.md) for detailed timelines, technical milestones, and how you can contribute!
 
 ---
 *Built by [Jon-Arve Constantine / GizzZmo]. Encrypted. Distributed. Free.*

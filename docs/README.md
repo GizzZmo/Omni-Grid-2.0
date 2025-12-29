@@ -19,6 +19,9 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 - **[Configuration Guide](./configuration.md)** - Environment variables, settings, and customization
 - **[Keyboard Shortcuts](./keyboard-shortcuts.md)** - Command reference and power-user tips
 
+### 🗺️ Project Planning
+- **[Development Roadmap](../ROADMAP.md)** - Timeline, milestones, and contribution opportunities
+
 ### 🏗️ Architecture & Design
 - **[Architecture Overview](./architecture.md)** - System design, data flow, and technical decisions
 - **[State Management](./state-management.md)** - Zustand store patterns and local persistence

@@ -32,6 +32,12 @@ New to Omni-Grid? Start here:
    - Theme customization
    - Performance tuning
 
+3. **[Development Roadmap](./ROADMAP.md)**
+   - Project timeline and milestones
+   - Current sprint status
+   - Upcoming features
+   - Contribution opportunities
+
 ---
 
 ## 📖 USER GUIDES
@@ -91,13 +97,21 @@ For developers building on Omni-Grid:
 - [FAQ → Technical Questions](./docs/faq.md#technical-questions)
 - [Troubleshooting → Debugging Techniques](./docs/troubleshooting.md#debugging-techniques)
 
+### Project Planning
+- [Roadmap → Milestone Timeline](./ROADMAP.md#milestone-timeline)
+- [Roadmap → Current Sprint](./ROADMAP.md#current-sprint-q1-2025)
+- [Roadmap → Contribution Opportunities](./ROADMAP.md#contribution-opportunities)
+- [Roadmap → Technical Milestones](./ROADMAP.md#technical-milestones)
+
 ---
 
 ## 📊 DOCUMENTATION STATS
 
-- **Total Documentation Files:** 12
-- **Total Lines:** ~5,700
+- **Total Documentation Files:** 13
+- **Total Lines:** ~23,400
 - **Topics Covered:** 100+
+- **Roadmap Phases:** 5
+- **Widgets Documented:** 35+
 - **Code Examples:** 150+
 - **Last Updated:** 2025
 
