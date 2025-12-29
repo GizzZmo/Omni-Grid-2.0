@@ -14,7 +14,7 @@ interface ErrorBoundaryState {
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = {
     hasError: false,
-    error: null
+    error: null,
   };
   props!: Readonly<ErrorBoundaryProps>;
 
@@ -23,7 +23,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
+    console.error('Uncaught error:', error, errorInfo);
   }
 
   public render() {
@@ -35,7 +35,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
           <pre className="bg-slate-900 p-4 rounded border border-red-900/50 overflow-auto max-w-full font-mono text-xs w-full max-w-2xl">
             {this.state.error?.toString()}
           </pre>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-cyan-900/50 text-cyan-400 border border-cyan-700/50 rounded hover:bg-cyan-900 transition-colors uppercase text-xs font-bold tracking-wider"
           >
@@ -51,7 +51,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
-  throw new Error("Could not find root element to mount to");
+  throw new Error('Could not find root element to mount to');
 }
 
 const root = ReactDOM.createRoot(rootElement);

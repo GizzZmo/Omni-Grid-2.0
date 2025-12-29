@@ -1,44 +1,44 @@
 documentation:
   - changed-files:
-    - any-glob-to-any-file: 
-      - 'docs/**'
-      - '*.md'
+      - any-glob-to-any-file:
+          - 'docs/**'
+          - '*.md'
 
 frontend:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'components/**'
-      - 'widgets/**'
-      - '*.tsx'
-      - 'index.html'
+      - any-glob-to-any-file:
+          - 'components/**'
+          - 'widgets/**'
+          - '*.tsx'
+          - 'index.html'
 
 backend:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'server/**'
-      - '*.cpp'
-      - 'Makefile'
+      - any-glob-to-any-file:
+          - 'server/**'
+          - '*.cpp'
+          - 'Makefile'
 
 services:
   - changed-files:
-    - any-glob-to-any-file: 'services/**'
+      - any-glob-to-any-file: 'services/**'
 
 configuration:
   - changed-files:
-    - any-glob-to-any-file:
-      - '*.json'
-      - '*.config.*'
-      - '.env*'
-      - 'tsconfig.json'
-      - 'vite.config.ts'
+      - any-glob-to-any-file:
+          - '*.json'
+          - '*.config.*'
+          - '.env*'
+          - 'tsconfig.json'
+          - 'vite.config.ts'
 
 dependencies:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'package.json'
-      - 'package-lock.json'
+      - any-glob-to-any-file:
+          - 'package.json'
+          - 'package-lock.json'
 
 ci-cd:
   - changed-files:
-    - any-glob-to-any-file:
-      - '.github/**'
+      - any-glob-to-any-file:
+          - '.github/**'

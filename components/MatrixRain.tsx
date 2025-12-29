@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 
 export const MatrixRain: React.FC = () => {
@@ -12,11 +11,11 @@ export const MatrixRain: React.FC = () => {
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
-    
+
     // Gothic/Runes characters
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%"\'#&_(),.;:?!\\|{}<>[]^~';
     const charArr = chars.split('');
-    
+
     const fontSize = 14;
     const columns = width / fontSize;
     const drops: number[] = [];
@@ -34,15 +33,15 @@ export const MatrixRain: React.FC = () => {
 
       for (let i = 0; i < drops.length; i++) {
         const text = charArr[Math.floor(Math.random() * charArr.length)];
-        
+
         // Random coloring for "glitch" effect
         const randomColor = Math.random();
         if (randomColor > 0.98) {
-            ctx.fillStyle = '#fff'; // White glint
+          ctx.fillStyle = '#fff'; // White glint
         } else if (randomColor > 0.9) {
-            ctx.fillStyle = '#06b6d4'; // Cyan
+          ctx.fillStyle = '#06b6d4'; // Cyan
         } else {
-            ctx.fillStyle = '#d946ef'; // Fuchsia/Purple
+          ctx.fillStyle = '#d946ef'; // Fuchsia/Purple
         }
 
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -69,10 +68,5 @@ export const MatrixRain: React.FC = () => {
     };
   }, []);
 
-  return (
-    <canvas 
-      ref={canvasRef} 
-      className="absolute inset-0 pointer-events-none z-0 opacity-40"
-    />
-  );
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0 opacity-40" />;
 };

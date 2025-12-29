@@ -6,7 +6,14 @@ import reactHooks from 'eslint-plugin-react-hooks';
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '*.config.ts', '*.config.js', 'omnigrid_server']
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      '*.config.ts',
+      '*.config.js',
+      'omnigrid_server',
+    ],
   },
   js.configs.recommended,
   {
@@ -17,8 +24,8 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       globals: {
         console: 'readonly',
@@ -34,6 +41,7 @@ export default [
         Response: 'readonly',
         URL: 'readonly',
         Blob: 'readonly',
+        File: 'readonly',
         FileReader: 'readonly',
         HTMLInputElement: 'readonly',
         HTMLCanvasElement: 'readonly',
@@ -63,13 +71,13 @@ export default [
         GainNode: 'readonly',
         OscillatorNode: 'readonly',
         AnalyserNode: 'readonly',
-        MediaStreamAudioSourceNode: 'readonly'
-      }
+        MediaStreamAudioSourceNode: 'readonly',
+      },
     },
     plugins: {
       '@typescript-eslint': typescript,
       react,
-      'react-hooks': reactHooks
+      'react-hooks': reactHooks,
     },
     rules: {
       ...typescript.configs.recommended.rules,
@@ -83,12 +91,12 @@ export default [
       // Disable React Compiler specific rules that conflict with manual memoization
       'react-hooks/preserve-manual-memoization': 'off',
       'react-hooks/unsupported-syntax': 'off',
-      'react-compiler/react-compiler': 'off'
+      'react-compiler/react-compiler': 'off',
     },
     settings: {
       react: {
-        version: 'detect'
-      }
-    }
-  }
+        version: 'detect',
+      },
+    },
+  },
 ];

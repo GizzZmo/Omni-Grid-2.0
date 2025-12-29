@@ -2,7 +2,7 @@ name: Deploy Documentation
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'docs/**'
       - 'README.md'
@@ -20,57 +20,57 @@ jobs:
   deploy-docs:
     name: Deploy Docs to GitHub Pages
     runs-on: ubuntu-latest
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     concurrency:
-      group: "pages"
+      group: 'pages'
       cancel-in-progress: false
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      
+
       - name: Create documentation site
         run: |
           mkdir -p _site
-          
+
           # Copy documentation files (with explicit error handling)
           if [ -f "README.md" ]; then
             cp README.md _site/index.md || echo "Failed to copy README.md to _site/index.md"
           else
             echo "README.md not found, skipping"
           fi
-          
+
           if [ -d "docs" ]; then
             cp -r docs _site/ || echo "Failed to copy docs directory to _site/"
           else
             echo "docs directory not found, skipping"
           fi
-          
+
           if [ -f "DOCUMENTATION.md" ]; then
             cp DOCUMENTATION.md _site/ || echo "Failed to copy DOCUMENTATION.md to _site/"
           else
             echo "DOCUMENTATION.md not found, skipping"
           fi
-          
+
           if [ -f "QUICK_REFERENCE.md" ]; then
             cp QUICK_REFERENCE.md _site/ || echo "Failed to copy QUICK_REFERENCE.md to _site/"
           else
             echo "QUICK_REFERENCE.md not found, skipping"
           fi
-          
+
           if [ -f "CONTRIBUTING.md" ]; then
             cp CONTRIBUTING.md _site/ || echo "Failed to copy CONTRIBUTING.md to _site/"
           else
             echo "CONTRIBUTING.md not found, skipping"
           fi
-          
+
           # Create a comprehensive index.html
           cat > _site/index.html << 'EOF'
           <!DOCTYPE html>
@@ -216,15 +216,15 @@ jobs:
           </body>
           </html>
           EOF
-          
+
           echo "Documentation site created successfully"
           ls -la _site/
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-      
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

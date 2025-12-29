@@ -5,6 +5,7 @@ This document provides information about testing in the Omni-Grid project.
 ## 🧪 Testing Framework
 
 Omni-Grid uses **Vitest** as its testing framework, providing:
+
 - ⚡ Fast execution with Vite's transformation pipeline
 - 🔄 Watch mode for development
 - 📊 Built-in coverage reporting
@@ -41,6 +42,7 @@ npm run test:coverage
 ### Coverage Reports
 
 Coverage reports are generated in the `coverage/` directory:
+
 - `coverage/index.html` - Visual coverage report
 - `coverage/coverage-summary.json` - JSON summary for CI/CD
 
@@ -101,12 +103,14 @@ describe('MyComponent', () => {
 ## 📊 Coverage Thresholds
 
 Current coverage goals:
+
 - **Statements**: > 70%
 - **Branches**: > 60%
 - **Functions**: > 70%
 - **Lines**: > 70%
 
 View coverage in CI/CD:
+
 - Coverage reports are posted as PR comments
 - Coverage artifacts are uploaded to GitHub Actions
 
@@ -166,6 +170,7 @@ Add to `.vscode/launch.json`:
 ## 📚 Testing Libraries
 
 Installed libraries:
+
 - **vitest**: Test runner and framework
 - **@testing-library/react**: React component testing utilities
 - **@testing-library/jest-dom**: Custom Jest matchers for DOM
@@ -191,6 +196,7 @@ npm run test:ui
 ```
 
 This opens a browser interface where you can:
+
 - ✅ See all tests and their status
 - 🔍 Filter and search tests
 - 📊 View coverage visually
@@ -250,7 +256,8 @@ describe('myUtils', () => {
 
 ### Issue: Tests pass locally but fail in CI
 
-**Solution**: 
+**Solution**:
+
 - Check for environment-specific code
 - Ensure all dependencies are in package.json
 - Check for timing issues (add proper waits)
@@ -263,5 +270,5 @@ describe('myUtils', () => {
 
 ---
 
-*Last Updated: 2025-12-27*  
-*For questions about testing, please open an issue with the `testing` label.*
+_Last Updated: 2025-12-27_  
+_For questions about testing, please open an issue with the `testing` label._

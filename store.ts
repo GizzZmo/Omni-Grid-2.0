@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { GridItemData, WidgetType, AppTheme, GhostData } from './types';
@@ -10,16 +9,16 @@ interface AppState {
   updateLayout: (layout: GridItemData[]) => void;
   setGlobalState: (state: Partial<AppState>) => void;
   resetAll: () => void;
-  
+
   // Grid Intelligence
   ghostWidget: GhostData | null;
   setGhostWidget: (ghost: GhostData | null) => void;
   solidifyGhostWidget: () => void;
-  
+
   // Layout Lock
   isLayoutLocked: boolean;
   toggleLayoutLock: () => void;
-  
+
   // Layout Compaction (Autofit)
   isCompact: boolean;
   toggleCompact: () => void;
@@ -27,14 +26,14 @@ interface AppState {
   // Command Palette
   isCmdPaletteOpen: boolean;
   setCmdPaletteOpen: (open: boolean) => void;
-  
+
   // Settings
   settings: {
     scanlines: boolean;
     sound: boolean;
   };
   toggleSetting: (key: 'scanlines' | 'sound') => void;
-  
+
   // Theme
   theme: AppTheme;
   setTheme: (theme: AppTheme) => void;
@@ -42,11 +41,11 @@ interface AppState {
   // System State
   logs: string[];
   addLog: (msg: string) => void;
-  
+
   // Scratchpad State
   scratchpadContent: string;
   setScratchpadContent: (content: string) => void;
-  
+
   // Focus State
   tasks: Array<{ id: string; text: string; status: 'todo' | 'done' }>;
   addTask: (text: string) => void;
@@ -69,7 +68,7 @@ interface AppState {
   setWeatherLocation: (loc: string) => void;
 
   // -- New Widget States --
-  
+
   // Git Pulse
   gitToken: string;
   setGitToken: (token: string) => void;
@@ -80,9 +79,9 @@ interface AppState {
   removeRssFeed: (url: string) => void;
 
   // Secure Calendar
-  calendarEvents: Array<{ date: string, title: string, encrypted: boolean }>;
-  addCalendarEvent: (event: { date: string, title: string, encrypted: boolean }) => void;
-  
+  calendarEvents: Array<{ date: string; title: string; encrypted: boolean }>;
+  addCalendarEvent: (event: { date: string; title: string; encrypted: boolean }) => void;
+
   // Cipher Pad
   encryptedNotes: Record<string, string>; // ID -> Encrypted Content
   saveEncryptedNote: (id: string, content: string) => void;
@@ -94,7 +93,9 @@ interface AppState {
 
   // CyberEditor
   cyberEditorTabs: Array<{ id: string; name: string; language: string; content: string }>;
-  setCyberEditorTabs: (tabs: Array<{ id: string; name: string; language: string; content: string }>) => void;
+  setCyberEditorTabs: (
+    tabs: Array<{ id: string; name: string; language: string; content: string }>
+  ) => void;
   cyberEditorActiveTab: string;
   setCyberEditorActiveTab: (tabId: string) => void;
 }
@@ -164,31 +165,35 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       layouts: { lg: getCleanLayout() },
       visibleWidgets: ['SYSTEM', 'HELP', 'SCRATCHPAD', 'TRANSFORMER', 'ASSET', 'STRATEGIC'],
-      
+
       toggleWidget: (widgetId: string) =>
-        set((state) => {
+        set(state => {
           const isVisible = state.visibleWidgets.includes(widgetId);
           const newVisibleWidgets = isVisible
-            ? state.visibleWidgets.filter((id) => id !== widgetId)
+            ? state.visibleWidgets.filter(id => id !== widgetId)
             : [...state.visibleWidgets, widgetId];
 
           let currentLayouts = [...state.layouts.lg];
           if (!isVisible) {
             const exists = currentLayouts.find(item => item.i === widgetId);
             if (!exists) {
-               const defaultItem = DEFAULT_LAYOUT.find(d => d.i === widgetId);
-               currentLayouts.push(defaultItem ? { ...defaultItem } : { i: widgetId, x: 0, y: 0, w: 4, h: 6 });
+              const defaultItem = DEFAULT_LAYOUT.find(d => d.i === widgetId);
+              currentLayouts.push(
+                defaultItem ? { ...defaultItem } : { i: widgetId, x: 0, y: 0, w: 4, h: 6 }
+              );
             }
           }
-          state.addLog(isVisible ? `Terminated widget: ${widgetId}` : `Initialized widget: ${widgetId}`);
+          state.addLog(
+            isVisible ? `Terminated widget: ${widgetId}` : `Initialized widget: ${widgetId}`
+          );
           return {
             visibleWidgets: newVisibleWidgets,
-            layouts: { lg: currentLayouts }
+            layouts: { lg: currentLayouts },
           };
         }),
 
       updateLayout: (newLayout: GridItemData[]) =>
-        set((state) => {
+        set(state => {
           const newLayoutMap = new Map(newLayout.map(item => [item.i, item]));
           const mergedLayout = state.layouts.lg.map(existingItem => {
             const updatedItem = newLayoutMap.get(existingItem.i);
@@ -200,9 +205,10 @@ export const useAppStore = create<AppState>()(
           };
         }),
 
-      setGlobalState: (newState) => set((state) => ({ ...state, ...newState })),
-      resetAll: () => set({ 
-          layouts: { lg: getCleanLayout() }, 
+      setGlobalState: newState => set(state => ({ ...state, ...newState })),
+      resetAll: () =>
+        set({
+          layouts: { lg: getCleanLayout() },
           visibleWidgets: ['SYSTEM', 'HELP'],
           scratchpadContent: '',
           tasks: [],
@@ -218,52 +224,68 @@ export const useAppStore = create<AppState>()(
           calendarEvents: [],
           encryptedNotes: {},
           clipboardHistory: [],
-          cyberEditorTabs: [{ id: '1', name: 'untitled.tsx', language: 'typescript', content: '// Start coding...\n' }],
-          cyberEditorActiveTab: '1'
-      }),
+          cyberEditorTabs: [
+            {
+              id: '1',
+              name: 'untitled.tsx',
+              language: 'typescript',
+              content: '// Start coding...\n',
+            },
+          ],
+          cyberEditorActiveTab: '1',
+        }),
 
       // Grid Intelligence
       ghostWidget: null,
-      setGhostWidget: (ghost) => set({ ghostWidget: ghost }),
+      setGhostWidget: ghost => set({ ghostWidget: ghost }),
       solidifyGhostWidget: () => {
-          const { ghostWidget, toggleWidget } = get();
-          if (ghostWidget) {
-              toggleWidget(ghostWidget.suggestedWidgetId);
-              set({ ghostWidget: null });
-          }
+        const { ghostWidget, toggleWidget } = get();
+        if (ghostWidget) {
+          toggleWidget(ghostWidget.suggestedWidgetId);
+          set({ ghostWidget: null });
+        }
       },
 
       // Layout Lock
       isLayoutLocked: false,
-      toggleLayoutLock: () => set((state) => ({ isLayoutLocked: !state.isLayoutLocked })),
+      toggleLayoutLock: () => set(state => ({ isLayoutLocked: !state.isLayoutLocked })),
 
       // Layout Compaction
       isCompact: false,
-      toggleCompact: () => set((state) => ({ isCompact: !state.isCompact })),
+      toggleCompact: () => set(state => ({ isCompact: !state.isCompact })),
 
       // Command Palette
       isCmdPaletteOpen: false,
-      setCmdPaletteOpen: (open) => set({ isCmdPaletteOpen: open }),
+      setCmdPaletteOpen: open => set({ isCmdPaletteOpen: open }),
 
       // Settings
       settings: {
         scanlines: true,
         sound: true,
       },
-      toggleSetting: (key) => set((state) => ({
-        settings: { ...state.settings, [key]: !state.settings[key] }
-      })),
+      toggleSetting: key =>
+        set(state => ({
+          settings: { ...state.settings, [key]: !state.settings[key] },
+        })),
 
       // Theme
       theme: DEFAULT_THEME,
-      setTheme: (theme) => set({ theme }),
+      setTheme: theme => set({ theme }),
 
       // Logs
-      logs: ['Omni-Grid System initialized...', 'User: Jon Constantine confirmed.', 'Secure connection established.'],
-      addLog: (msg) => set(state => ({ logs: [ `[${new Date().toLocaleTimeString()}] ${msg}`, ...state.logs].slice(0, 50) })),
+      logs: [
+        'Omni-Grid System initialized...',
+        'User: Jon Constantine confirmed.',
+        'Secure connection established.',
+      ],
+      addLog: msg =>
+        set(state => ({
+          logs: [`[${new Date().toLocaleTimeString()}] ${msg}`, ...state.logs].slice(0, 50),
+        })),
 
       // Scratchpad
-      scratchpadContent: "# Neural Scratchpad\n\nHighlight text here and use the AI tools to refine, expand, or translate.",
+      scratchpadContent:
+        '# Neural Scratchpad\n\nHighlight text here and use the AI tools to refine, expand, or translate.',
       setScratchpadContent: (content: string) => set({ scratchpadContent: content }),
 
       // Focus
@@ -272,61 +294,66 @@ export const useAppStore = create<AppState>()(
         { id: '2', text: 'Build widgets', status: 'todo' },
       ],
       addTask: (text: string) =>
-        set((state) => ({
+        set(state => ({
           tasks: [...state.tasks, { id: Date.now().toString(), text, status: 'todo' }],
         })),
       toggleTask: (id: string) =>
-        set((state) => ({
-          tasks: state.tasks.map((t) =>
+        set(state => ({
+          tasks: state.tasks.map(t =>
             t.id === id ? { ...t, status: t.status === 'todo' ? 'done' : 'todo' } : t
           ),
         })),
       deleteTask: (id: string) =>
-        set((state) => ({
-          tasks: state.tasks.filter((t) => t.id !== id),
+        set(state => ({
+          tasks: state.tasks.filter(t => t.id !== id),
         })),
-      setTasks: (tasks) => set({ tasks }),
+      setTasks: tasks => set({ tasks }),
 
       // Asset
       tickers: ['BTC', 'ETH', 'SOL', 'USDT', 'NOK'],
-      addTicker: (t) => set((state) => ({ tickers: [...state.tickers, t] })),
-      removeTicker: (t) => set((state) => ({ tickers: state.tickers.filter(ticker => ticker !== t) })),
-      setTickers: (tickers) => set({ tickers }),
+      addTicker: t => set(state => ({ tickers: [...state.tickers, t] })),
+      removeTicker: t => set(state => ({ tickers: state.tickers.filter(ticker => ticker !== t) })),
+      setTickers: tickers => set({ tickers }),
 
       // WritePad
       writePadContent: '',
-      setWritePadContent: (content) => set({ writePadContent: content }),
+      setWritePadContent: content => set({ writePadContent: content }),
 
       // Weather
       weatherLocation: '',
-      setWeatherLocation: (loc) => set({ weatherLocation: loc }),
+      setWeatherLocation: loc => set({ weatherLocation: loc }),
 
       // -- New Widget States --
-      
+
       gitToken: '',
-      setGitToken: (token) => set({ gitToken: token }),
+      setGitToken: token => set({ gitToken: token }),
 
       rssFeeds: ['https://news.ycombinator.com/rss'],
-      addRssFeed: (url) => set(state => ({ rssFeeds: [...state.rssFeeds, url] })),
-      removeRssFeed: (url) => set(state => ({ rssFeeds: state.rssFeeds.filter(f => f !== url) })),
+      addRssFeed: url => set(state => ({ rssFeeds: [...state.rssFeeds, url] })),
+      removeRssFeed: url => set(state => ({ rssFeeds: state.rssFeeds.filter(f => f !== url) })),
 
       calendarEvents: [],
-      addCalendarEvent: (event) => set(state => ({ calendarEvents: [...state.calendarEvents, event] })),
+      addCalendarEvent: event =>
+        set(state => ({ calendarEvents: [...state.calendarEvents, event] })),
 
       encryptedNotes: {},
-      saveEncryptedNote: (id, content) => set(state => ({ encryptedNotes: { ...state.encryptedNotes, [id]: content } })),
+      saveEncryptedNote: (id, content) =>
+        set(state => ({ encryptedNotes: { ...state.encryptedNotes, [id]: content } })),
 
       clipboardHistory: [],
-      addToClipboardHistory: (text) => set(state => {
+      addToClipboardHistory: text =>
+        set(state => {
           const newHistory = [text, ...state.clipboardHistory.filter(t => t !== text)].slice(0, 20);
           return { clipboardHistory: newHistory };
-      }),
+        }),
       clearClipboardHistory: () => set({ clipboardHistory: [] }),
 
-      cyberEditorTabs: [{ id: '1', name: 'untitled.tsx', language: 'typescript', content: '// Start coding...\n' }],
-      setCyberEditorTabs: (tabs) => set({ cyberEditorTabs: tabs }),
+      cyberEditorTabs: [
+        { id: '1', name: 'untitled.tsx', language: 'typescript', content: '// Start coding...\n' },
+      ],
+      setCyberEditorTabs: tabs => set({ cyberEditorTabs: tabs }),
       cyberEditorActiveTab: '1',
-      setCyberEditorActiveTab: (tabId) => set({ cyberEditorActiveTab: tabId })
+      setCyberEditorActiveTab: tabId => set({ cyberEditorActiveTab: tabId }),
     }),
     {
       name: 'omni-grid-storage',

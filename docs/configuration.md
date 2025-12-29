@@ -32,11 +32,13 @@ Omni-Grid-2.0/
 **Purpose:** Google Gemini API key for AI-powered features
 
 **Format:**
+
 ```env
 API_KEY=AIzaSyXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
 ```
 
 **How to obtain:**
+
 1. Visit https://makersuite.google.com/app/apikey
 2. Sign in with Google account
 3. Create or select a project
@@ -44,6 +46,7 @@ API_KEY=AIzaSyXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
 5. Copy to `.env` file
 
 **Features requiring API key:**
+
 - Neural Scratchpad (Refine, Expand, Summarize)
 - WritePad (Document drafting)
 - Polyglot Box (Code translation)
@@ -65,6 +68,7 @@ API_KEY=AIzaSyXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
 ```
 
 **Create `.env.example` for team sharing:**
+
 ```env
 # .env.example
 API_KEY=your_google_gemini_api_key_here
@@ -79,6 +83,7 @@ Access via **System Core** widget → **Settings** tab
 ### API Configuration
 
 **Google Gemini API Key**
+
 - Location: System Core → Settings → API Key
 - Storage: Browser localStorage
 - Scope: Current browser/profile only
@@ -87,12 +92,14 @@ Access via **System Core** widget → **Settings** tab
 ### Visual Settings
 
 #### Scanlines Effect
+
 - **Toggle:** ON/OFF
 - **Effect:** CRT monitor aesthetic with horizontal scanlines
 - **Performance Impact:** Minimal
 - **Recommended:** ON for cyberpunk vibe, OFF for clean UI
 
 #### Matrix Rain
+
 - **Toggle:** ON/OFF
 - **Effect:** Animated background rain effect
 - **Performance Impact:** Low (CSS animation)
@@ -109,6 +116,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 ### Color Customization
 
 **Modifiable Properties:**
+
 - **Background:** Main app background color
 - **Surface:** Widget background color
 - **Primary:** Primary accent (borders, highlights)
@@ -117,6 +125,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 - **Accent:** Additional accent color
 
 **Methods:**
+
 1. **Presets:** Choose from built-in themes
 2. **Manual:** Use color pickers for each property
 3. **AI Generation:** Describe a vibe or upload an image
@@ -124,6 +133,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 ### Built-in Presets
 
 #### Cyberpunk (Default)
+
 ```json
 {
   "background": "#020617",
@@ -136,6 +146,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 ```
 
 #### Neon Night
+
 ```json
 {
   "background": "#0a0a0f",
@@ -148,6 +159,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 ```
 
 #### Minimal Light
+
 ```json
 {
   "background": "#ffffff",
@@ -160,6 +172,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 ```
 
 #### Matrix Green
+
 ```json
 {
   "background": "#000000",
@@ -174,6 +187,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 ### AI Theme Generation
 
 **From Text Prompt:**
+
 1. Open Aesthetic Engine
 2. Enter description (e.g., "sunset over ocean")
 3. Click "Generate"
@@ -181,6 +195,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 5. Preview and apply
 
 **From Image Upload:**
+
 1. Open Aesthetic Engine
 2. Upload image file
 3. AI extracts dominant colors
@@ -189,6 +204,7 @@ Open **Aesthetic Engine** widget (Dock: Wand icon)
 ### Custom Theme Export/Import
 
 **Export Theme:**
+
 ```typescript
 // Access via browser console
 const theme = useAppStore.getState().theme;
@@ -197,13 +213,16 @@ console.log(JSON.stringify(theme, null, 2));
 ```
 
 **Import Theme:**
+
 ```typescript
 // Paste in browser console
 const customTheme = {
-  name: "My Theme",
-  colors: { /* your colors */ },
-  font: "Inter",
-  radius: "4px"
+  name: 'My Theme',
+  colors: {
+    /* your colors */
+  },
+  font: 'Inter',
+  radius: '4px',
 };
 useAppStore.getState().setTheme(customTheme);
 ```
@@ -215,12 +234,14 @@ useAppStore.getState().setTheme(customTheme);
 ### Grid Settings
 
 #### Compact Mode (Auto-Fit)
+
 - **Toggle:** AUTOFIT button (top-right)
 - **Effect:** Automatically arranges widgets vertically with no gaps
 - **Use Case:** Maximize space utilization
 - **Disable:** For free-form layout with gaps
 
 #### Layout Lock
+
 - **Toggle:** LOCKED/UNLOCKED button (top-right)
 - **Effect:** Prevents drag/resize operations
 - **Use Case:** Lock final layout to prevent accidental changes
@@ -229,13 +250,13 @@ useAppStore.getState().setTheme(customTheme);
 
 Layouts automatically adjust at these breakpoints:
 
-| Breakpoint | Width | Columns | Use Case |
-|------------|-------|---------|----------|
-| xxs | 0-479px | 2 | Mobile portrait |
-| xs | 480-767px | 4 | Mobile landscape |
-| sm | 768-995px | 6 | Small tablets |
-| md | 996-1199px | 10 | Tablets, small laptops |
-| lg | 1200px+ | 12 | Desktops, large laptops |
+| Breakpoint | Width      | Columns | Use Case                |
+| ---------- | ---------- | ------- | ----------------------- |
+| xxs        | 0-479px    | 2       | Mobile portrait         |
+| xs         | 480-767px  | 4       | Mobile landscape        |
+| sm         | 768-995px  | 6       | Small tablets           |
+| md         | 996-1199px | 10      | Tablets, small laptops  |
+| lg         | 1200px+    | 12      | Desktops, large laptops |
 
 ### Default Widget Sizes
 
@@ -249,6 +270,7 @@ Modify in `store.ts` → `DEFAULT_LAYOUT`:
 ```
 
 **Grid Units:**
+
 - `w`: Width in columns (1-12)
 - `h`: Height in rows (1 row = 30px)
 - `x`, `y`: Position coordinates
@@ -256,12 +278,14 @@ Modify in `store.ts` → `DEFAULT_LAYOUT`:
 ### Manual Layout Reset
 
 **Via UI:**
+
 1. Open System Core widget
 2. Navigate to Settings tab
 3. Click "Factory Reset" (Skull icon)
 4. Confirm action
 
 **Via Console:**
+
 ```javascript
 // Clear all localStorage
 localStorage.clear();
@@ -276,10 +300,12 @@ location.reload();
 ### Backup Configuration
 
 **Automatic Backup:**
+
 - Not implemented (manual only)
 - Future: Schedule periodic auto-backups
 
 **Manual Backup:**
+
 1. Click **Backup** button (top-right)
 2. Downloads: `omni-grid-backup-YYYY-MM-DD.json`
 3. Contains:
@@ -289,6 +315,7 @@ location.reload();
    - Timestamps for version tracking
 
 **Backup Frequency Recommendations:**
+
 - Daily: If actively using for work
 - Weekly: For casual use
 - Before major changes: Always
@@ -296,6 +323,7 @@ location.reload();
 ### Restore Configuration
 
 **From Backup File:**
+
 1. Click **Restore** button (top-right)
 2. Select backup JSON file
 3. Review prompt (current data will be overwritten)
@@ -303,6 +331,7 @@ location.reload();
 5. App reloads with restored state
 
 **Selective Restore (Advanced):**
+
 ```javascript
 // In browser console
 const backup = /* paste your backup JSON */;
@@ -316,12 +345,14 @@ useAppStore.getState().setScratchpadNotes(backup.state.scratchpadNotes);
 ### Storage Limits
 
 **Browser localStorage Limits:**
+
 - Chrome: ~10MB
 - Firefox: ~10MB
 - Safari: ~5MB
 - Edge: ~10MB
 
 **Current Usage Check:**
+
 ```javascript
 // Browser console
 const used = new Blob(Object.values(localStorage)).size;
@@ -329,6 +360,7 @@ console.log(`localStorage: ${(used / 1024).toFixed(2)} KB`);
 ```
 
 **When Approaching Limits:**
+
 1. Export and archive old backups
 2. Clear unused widget data
 3. Consider IndexedDB migration (future feature)
@@ -340,16 +372,19 @@ console.log(`localStorage: ${(used / 1024).toFixed(2)} KB`);
 ### Sonic Architecture Widget
 
 **Brown Noise Generator:**
+
 - Volume: 0-100%
 - Start/Stop controls
 - Runs in background tab
 
 **Audio File Playback:**
+
 - Upload local audio files
 - Playlist management
 - Loop controls
 
 **Settings:**
+
 - Located within Sonic Architecture widget
 - Browser-based audio API
 - No external dependencies
@@ -361,11 +396,13 @@ console.log(`localStorage: ${(used / 1024).toFixed(2)} KB`);
 ### API Endpoints
 
 **Gemini API:**
+
 - Endpoint: `https://generativelanguage.googleapis.com`
 - Protocol: HTTPS
 - Authentication: API key in request header
 
 **Future Integrations:**
+
 - Weather APIs (configure in Weather Station widget)
 - Financial APIs (configure in Market widgets)
 - Custom backends (add to `services/`)
@@ -375,6 +412,7 @@ console.log(`localStorage: ${(used / 1024).toFixed(2)} KB`);
 For corporate networks with restrictions:
 
 **Vite Proxy (Development):**
+
 ```typescript
 // vite.config.ts
 export default defineConfig({
@@ -383,7 +421,7 @@ export default defineConfig({
       '/api': {
         target: 'https://generativelanguage.googleapis.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },
@@ -391,6 +429,7 @@ export default defineConfig({
 ```
 
 **Production Proxy:**
+
 - Deploy a serverless function (Netlify/Vercel)
 - Forward requests to Gemini API
 - Update `services/geminiService.ts` with new endpoint
@@ -402,25 +441,30 @@ export default defineConfig({
 ### Data Collection
 
 **What Omni-Grid Collects:**
+
 - Nothing. Zero telemetry.
 
 **What's Stored Locally:**
+
 - All widget data
 - Settings and preferences
 - API keys (your responsibility)
 - Layout configurations
 
 **Third-Party Services:**
+
 - Google Gemini (only when AI features are used)
 - See Google's privacy policy for Gemini data handling
 
 ### Clearing All Data
 
 **Complete Wipe:**
+
 1. System Core → Settings → Factory Reset
 2. Or browser console: `localStorage.clear()`
 
 **Per-Widget Clear:**
+
 ```javascript
 // Clear specific widget data
 const state = useAppStore.getState();
@@ -436,16 +480,19 @@ state.setTasks([]);
 ### Optimization Settings
 
 **Disable Visual Effects:**
+
 - Turn off Scanlines (System Core)
 - Turn off Matrix Rain (System Core)
 - Reduces GPU usage on low-end devices
 
 **Limit Active Widgets:**
+
 - Fewer widgets = better performance
 - Recommended max: 20 widgets visible
 - Use Dock to toggle frequently
 
 **Browser Settings:**
+
 - Enable hardware acceleration
 - Close unused tabs
 - Clear browser cache periodically
@@ -453,6 +500,7 @@ state.setTasks([]);
 ### Developer Mode
 
 **Enable React DevTools:**
+
 ```bash
 # Install browser extension
 # Chrome: React Developer Tools
@@ -460,6 +508,7 @@ state.setTasks([]);
 ```
 
 **Zustand DevTools:**
+
 ```typescript
 // Add to store.ts (development only)
 import { devtools } from 'zustand/middleware';
@@ -467,7 +516,9 @@ import { devtools } from 'zustand/middleware';
 export const useAppStore = create(
   devtools(
     persist(
-      (set, get) => ({ /* state */ }),
+      (set, get) => ({
+        /* state */
+      }),
       { name: 'omni-grid-storage' }
     ),
     { name: 'Omni-Grid Store' }
@@ -482,11 +533,13 @@ export const useAppStore = create(
 ### Mobile Optimization
 
 **Recommended Settings:**
+
 - Compact Mode: ON
 - Fewer visible widgets (5-8)
 - Larger widget sizes (w: 2-4, h: 8-12)
 
 **Touch Support:**
+
 - Drag gestures supported
 - Pinch-to-zoom disabled (intentional)
 - Long-press for context menus
@@ -561,6 +614,6 @@ npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 
 ---
 
-*Configuration is power. Own your grid.*
+_Configuration is power. Own your grid._
 
 **[← Back to Documentation Hub](./README.md)**

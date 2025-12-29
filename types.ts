@@ -1,15 +1,46 @@
-
-export type WidgetType = 
+export type WidgetType =
   // Original
-  'TRANSFORMER' | 'SCRATCHPAD' | 'FOCUS_HUD' | 'DEV_OPTIC' | 'CIPHER_VAULT' | 'CHROMA_LAB' | 'TEMPORAL' | 'SONIC' | 'CALC' | 'ASSET' | 'POLYGLOT' | 'WRITEPAD' | 'WEATHER' | 'VALUTA' | 'SYSTEM' | 'HELP' | 'ARCHITECT' | 'THEME_ENGINE' | 'GHOST' | 'RADIO' | 'SUDOKU' |
+  | 'TRANSFORMER'
+  | 'SCRATCHPAD'
+  | 'FOCUS_HUD'
+  | 'DEV_OPTIC'
+  | 'CIPHER_VAULT'
+  | 'CHROMA_LAB'
+  | 'TEMPORAL'
+  | 'SONIC'
+  | 'CALC'
+  | 'ASSET'
+  | 'POLYGLOT'
+  | 'WRITEPAD'
+  | 'WEATHER'
+  | 'VALUTA'
+  | 'SYSTEM'
+  | 'HELP'
+  | 'ARCHITECT'
+  | 'THEME_ENGINE'
+  | 'GHOST'
+  | 'RADIO'
+  | 'SUDOKU'
   // Developer
-  'DOCU_HUB' | 'GIT_PULSE' | 'PROJECT_TRACKER' | 'WEB_TERMINAL' | 'CYBER_EDITOR' |
+  | 'DOCU_HUB'
+  | 'GIT_PULSE'
+  | 'PROJECT_TRACKER'
+  | 'WEB_TERMINAL'
+  | 'CYBER_EDITOR'
   // Researcher
-  'NEWS_FEED' | 'CIPHER_PAD' | 'PDF_VIEWER' | 'RESEARCH_BROWSER' |
+  | 'NEWS_FEED'
+  | 'CIPHER_PAD'
+  | 'PDF_VIEWER'
+  | 'RESEARCH_BROWSER'
   // Financial / Smart Grid
-  'SECURE_CALENDAR' | 'MACRO_NET' | 'CHAIN_PULSE' | 'REG_RADAR' | 'MARKET' |
+  | 'SECURE_CALENDAR'
+  | 'MACRO_NET'
+  | 'CHAIN_PULSE'
+  | 'REG_RADAR'
+  | 'MARKET'
   // New Additions
-  'STRATEGIC' | 'CLIPBOARD';
+  | 'STRATEGIC'
+  | 'CLIPBOARD';
 
 export interface WidgetConfig {
   id: string;
@@ -49,7 +80,7 @@ export interface Task {
 export enum SoundType {
   BROWN_NOISE = 'BROWN_NOISE',
   RAIN = 'RAIN',
-  OFF = 'OFF'
+  OFF = 'OFF',
 }
 
 export interface AppTheme {

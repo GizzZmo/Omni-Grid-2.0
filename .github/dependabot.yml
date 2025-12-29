@@ -1,36 +1,36 @@
 version: 2
 updates:
   # Enable version updates for npm
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
     open-pull-requests-limit: 10
     reviewers:
-      - "GizzZmo"
+      - 'GizzZmo'
     labels:
-      - "dependencies"
-      - "automated"
+      - 'dependencies'
+      - 'automated'
     commit-message:
-      prefix: "chore(deps):"
-      include: "scope"
-    
+      prefix: 'chore(deps):'
+      include: 'scope'
+
   # Enable version updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
     open-pull-requests-limit: 5
     reviewers:
-      - "GizzZmo"
+      - 'GizzZmo'
     labels:
-      - "dependencies"
-      - "github-actions"
-      - "automated"
+      - 'dependencies'
+      - 'github-actions'
+      - 'automated'
     commit-message:
-      prefix: "chore(actions):"
-      include: "scope"
+      prefix: 'chore(actions):'
+      include: 'scope'

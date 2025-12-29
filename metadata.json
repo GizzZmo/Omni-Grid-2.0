@@ -1,7 +1,5 @@
 {
   "name": "Copy of Omni-Grid",
   "description": "A local-first, modular 'Super App' featuring a flexible grid of power tools including file conversion, AI notes, focus management, and developer utilities.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
+  "requestFramePermissions": ["microphone"]
 }

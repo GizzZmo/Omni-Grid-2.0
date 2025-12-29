@@ -1,12 +1,25 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Code2, FileCode, Save, Download, Copy, Check, Sparkles, 
-  FileJson, FileType, Settings, Plus, X, ChevronDown, Wand2,
-  Play, RefreshCw, Zap
+import {
+  Code2,
+  FileCode,
+  Save,
+  Download,
+  Copy,
+  Check,
+  Sparkles,
+  FileJson,
+  FileType,
+  Settings,
+  Plus,
+  X,
+  ChevronDown,
+  Wand2,
+  Play,
+  RefreshCw,
+  Zap,
 } from 'lucide-react';
 import { useAppStore } from '../store';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from '@google/genai';
 import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
 
 interface CodeTab {
@@ -83,7 +96,7 @@ export const CustomWidget: React.FC = () => {
     </div>
   );
 };
-`.trim()
+`.trim(),
   },
   'react-component': {
     name: 'React Component',
@@ -121,7 +134,7 @@ export const Component: React.FC<Props> = ({ title, onAction }) => {
     </div>
   );
 };
-`.trim()
+`.trim(),
   },
   'api-fetch': {
     name: 'API Fetch Template',
@@ -159,7 +172,7 @@ interface User {
 fetchData<User[]>('https://api.example.com/users')
   .then(users => console.log('Users:', users))
   .catch(error => console.error('Error:', error));
-`.trim()
+`.trim(),
   },
   'zustand-store': {
     name: 'Zustand Store',
@@ -199,7 +212,7 @@ export const useStore = create<StoreState>()(
     }
   )
 );
-`.trim()
+`.trim(),
   },
   'custom-hook': {
     name: 'Custom Hook',
@@ -254,18 +267,21 @@ const MyComponent = () => {
   
   return <div>{JSON.stringify(data)}</div>;
 };
-`.trim()
+`.trim(),
   },
 };
 
 export const CYBER_EDITOR_LANGUAGES = DEV_DOCS_LANGUAGES;
 
 export const CyberEditor: React.FC = () => {
-  const { cyberEditorTabs, setCyberEditorTabs, cyberEditorActiveTab, setCyberEditorActiveTab } = useAppStore();
-  
-  const [tabs, setTabs] = useState<CodeTab[]>(cyberEditorTabs || [
-    { id: '1', name: 'untitled.tsx', language: 'typescript', content: '// Start coding...\n' }
-  ]);
+  const { cyberEditorTabs, setCyberEditorTabs, cyberEditorActiveTab, setCyberEditorActiveTab } =
+    useAppStore();
+
+  const [tabs, setTabs] = useState<CodeTab[]>(
+    cyberEditorTabs || [
+      { id: '1', name: 'untitled.tsx', language: 'typescript', content: '// Start coding...\n' },
+    ]
+  );
   const [activeTabId, setActiveTabId] = useState(cyberEditorActiveTab || tabs[0]?.id);
   const [copied, setCopied] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
@@ -286,9 +302,7 @@ export const CyberEditor: React.FC = () => {
   }, [tabs, activeTabId]);
 
   const updateTabContent = (content: string) => {
-    setTabs(tabs.map(t => 
-      t.id === activeTabId ? { ...t, content } : t
-    ));
+    setTabs(tabs.map(t => (t.id === activeTabId ? { ...t, content } : t)));
   };
 
   const addTab = (template?: string) => {
@@ -301,14 +315,14 @@ export const CyberEditor: React.FC = () => {
         id: newId,
         name: `${tmpl.name.toLowerCase().replace(/\s+/g, '-')}.tsx`,
         language: tmpl.language,
-        content: tmpl.content
+        content: tmpl.content,
       };
     } else {
       newTab = {
         id: newId,
         name: `untitled-${tabs.length + 1}.tsx`,
         language: 'typescript',
-        content: '// Start coding...\n'
+        content: '// Start coding...\n',
       };
     }
 
@@ -347,13 +361,15 @@ export const CyberEditor: React.FC = () => {
     try {
       const lines = activeTab.content.split('\n');
       let indentLevel = 0;
-      const formatted = lines.map(line => {
-        const trimmed = line.trim();
-        if (trimmed.match(/^[}\]]/)) indentLevel = Math.max(0, indentLevel - 1);
-        const result = '  '.repeat(indentLevel) + trimmed;
-        if (trimmed.match(/[{[]$/)) indentLevel++;
-        return result;
-      }).join('\n');
+      const formatted = lines
+        .map(line => {
+          const trimmed = line.trim();
+          if (trimmed.match(/^[}\]]/)) indentLevel = Math.max(0, indentLevel - 1);
+          const result = '  '.repeat(indentLevel) + trimmed;
+          if (trimmed.match(/[{[]$/)) indentLevel++;
+          return result;
+        })
+        .join('\n');
       updateTabContent(formatted);
     } catch (e) {
       console.error('Format failed:', e);
@@ -362,12 +378,14 @@ export const CyberEditor: React.FC = () => {
 
   const generateWithAI = async () => {
     if (!aiPrompt.trim()) return;
-    
+
     setAiLoading(true);
     try {
       // Check if API key exists
       if (!process.env.API_KEY) {
-        updateTabContent('// Error: Please add your Gemini API key in .env file (API_KEY=your_key_here)');
+        updateTabContent(
+          '// Error: Please add your Gemini API key in .env file (API_KEY=your_key_here)'
+        );
         setAiLoading(false);
         return;
       }
@@ -375,13 +393,13 @@ export const CyberEditor: React.FC = () => {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Generate ${activeTab.language} code for: ${aiPrompt}. 
       Return ONLY the code without markdown fences or explanations.`;
-      
+
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: prompt,
         config: {
-          systemInstruction: "You are an expert programmer. Generate clean, production-ready code."
-        }
+          systemInstruction: 'You are an expert programmer. Generate clean, production-ready code.',
+        },
       });
 
       let code = response.text || '// Generation failed';
@@ -389,7 +407,7 @@ export const CyberEditor: React.FC = () => {
       if (code.includes('```')) {
         code = code.replace(/```[\w]*\n?/g, '').trim();
       }
-      
+
       updateTabContent(code);
       setAiPrompt('');
     } catch (error) {
@@ -403,9 +421,9 @@ export const CyberEditor: React.FC = () => {
   const improveWithAI = async () => {
     const selection = textareaRef.current?.selectionStart;
     const hasSelection = selection !== textareaRef.current?.selectionEnd;
-    const codeToImprove = hasSelection 
+    const codeToImprove = hasSelection
       ? activeTab.content.substring(
-          textareaRef.current!.selectionStart, 
+          textareaRef.current!.selectionStart,
           textareaRef.current!.selectionEnd
         )
       : activeTab.content;
@@ -422,10 +440,10 @@ export const CyberEditor: React.FC = () => {
 
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Improve this ${activeTab.language} code. Make it more efficient, readable, and follow best practices. Return ONLY the improved code:\n\n${codeToImprove}`;
-      
+
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: prompt
+        contents: prompt,
       });
 
       let improved = response.text || codeToImprove;
@@ -450,9 +468,9 @@ export const CyberEditor: React.FC = () => {
   const explainCode = async () => {
     const selection = textareaRef.current?.selectionStart;
     const hasSelection = selection !== textareaRef.current?.selectionEnd;
-    const codeToExplain = hasSelection 
+    const codeToExplain = hasSelection
       ? activeTab.content.substring(
-          textareaRef.current!.selectionStart, 
+          textareaRef.current!.selectionStart,
           textareaRef.current!.selectionEnd
         )
       : activeTab.content;
@@ -469,19 +487,20 @@ export const CyberEditor: React.FC = () => {
 
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Explain this ${activeTab.language} code in clear, concise terms:\n\n${codeToExplain}`;
-      
+
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: prompt
+        contents: prompt,
       });
 
       const explanation = response.text || 'No explanation available';
-      
+
       // Add explanation as a comment
-      const comment = activeTab.language === 'python' || activeTab.language === 'python'
-        ? `# AI Explanation:\n# ${explanation.split('\n').join('\n# ')}\n\n`
-        : `/* AI Explanation:\n * ${explanation.split('\n').join('\n * ')}\n */\n\n`;
-      
+      const comment =
+        activeTab.language === 'python' || activeTab.language === 'python'
+          ? `# AI Explanation:\n# ${explanation.split('\n').join('\n# ')}\n\n`
+          : `/* AI Explanation:\n * ${explanation.split('\n').join('\n * ')}\n */\n\n`;
+
       updateTabContent(comment + activeTab.content);
     } catch (error) {
       console.error('AI explanation failed:', error);
@@ -499,8 +518,8 @@ export const CyberEditor: React.FC = () => {
             key={tab.id}
             onClick={() => setActiveTabId(tab.id)}
             className={`flex items-center gap-2 px-3 py-2 border-r border-slate-800 cursor-pointer transition-colors min-w-max ${
-              activeTabId === tab.id 
-                ? 'bg-slate-950 text-cyan-400' 
+              activeTabId === tab.id
+                ? 'bg-slate-950 text-cyan-400'
                 : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800'
             }`}
           >
@@ -508,7 +527,10 @@ export const CyberEditor: React.FC = () => {
             <span className="text-[10px]">{tab.name}</span>
             {tabs.length > 1 && (
               <button
-                onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
+                onClick={e => {
+                  e.stopPropagation();
+                  closeTab(tab.id);
+                }}
                 className="hover:text-red-400 transition-colors"
               >
                 <X size={10} />
@@ -536,7 +558,7 @@ export const CyberEditor: React.FC = () => {
               Templates
               <ChevronDown size={10} />
             </button>
-            
+
             {showTemplates && (
               <div className="absolute top-full left-0 mt-1 bg-slate-800 border border-slate-700 rounded shadow-lg z-10 min-w-[200px]">
                 {Object.entries(CODE_TEMPLATES).map(([key, tmpl]) => (
@@ -554,13 +576,17 @@ export const CyberEditor: React.FC = () => {
 
           <select
             value={activeTab.language}
-            onChange={(e) => setTabs(tabs.map(t => 
-              t.id === activeTabId ? { ...t, language: e.target.value } : t
-            ))}
+            onChange={e =>
+              setTabs(
+                tabs.map(t => (t.id === activeTabId ? { ...t, language: e.target.value } : t))
+              )
+            }
             className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 focus:outline-none focus:border-cyan-500"
           >
             {CYBER_EDITOR_LANGUAGES.map(lang => (
-              <option key={lang} value={lang}>{lang}</option>
+              <option key={lang} value={lang}>
+                {lang}
+              </option>
             ))}
           </select>
 
@@ -596,8 +622,8 @@ export const CyberEditor: React.FC = () => {
           <input
             type="text"
             value={aiPrompt}
-            onChange={(e) => setAiPrompt(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && generateWithAI()}
+            onChange={e => setAiPrompt(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && generateWithAI()}
             placeholder="AI Assistant: Describe what you want to generate..."
             className="flex-1 bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[10px] text-slate-300 placeholder-slate-600 focus:outline-none focus:border-fuchsia-500"
           />
@@ -631,7 +657,7 @@ export const CyberEditor: React.FC = () => {
         <textarea
           ref={textareaRef}
           value={activeTab.content}
-          onChange={(e) => updateTabContent(e.target.value)}
+          onChange={e => updateTabContent(e.target.value)}
           className="w-full h-full bg-slate-950 text-slate-200 p-4 resize-none focus:outline-none font-mono text-xs leading-relaxed custom-scrollbar"
           spellCheck={false}
         />

@@ -71,6 +71,7 @@ Omni-Grid is a **local-first, modular Super App** built on React with a focus on
 ### 1. App.tsx (Root Component)
 
 **Responsibilities:**
+
 - Render global header with controls
 - Manage system-level state (freeze, lock, compact mode)
 - Handle backup/restore operations
@@ -78,11 +79,13 @@ Omni-Grid is a **local-first, modular Super App** built on React with a focus on
 - Coordinate background effects (Matrix Rain, gradients)
 
 **Key Features:**
+
 - **Freeze System:** Suspends all interactions for safe backups
 - **Auto-Organize:** Calls AI service to optimize layout
 - **Theme Application:** Injects CSS variables dynamically
 
 **State Subscriptions:**
+
 ```typescript
 const visibleWidgets = useAppStore(s => s.visibleWidgets);
 const settings = useAppStore(s => s.settings);
@@ -93,12 +96,14 @@ const layouts = useAppStore(s => s.layouts);
 ### 2. GridContainer.tsx (Layout Manager)
 
 **Responsibilities:**
+
 - Wrap `react-grid-layout` with responsive breakpoints
 - Instantiate visible widgets based on `visibleWidgets` array
 - Handle layout change events
 - Implement drag-and-drop Cross-Talk protocol
 
 **Grid Configuration:**
+
 ```typescript
 breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
 cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
@@ -108,6 +113,7 @@ compactType={isCompact ? 'vertical' : null}
 
 **Widget Registry:**
 All widgets are registered in `widgetComponents` object:
+
 ```typescript
 const widgetComponents: Record<WidgetType, JSX.Element> = {
   SCRATCHPAD: <WidgetShell id="SCRATCHPAD" title="Neural Scratchpad" ...>
@@ -120,12 +126,14 @@ const widgetComponents: Record<WidgetType, JSX.Element> = {
 ### 3. WidgetShell.tsx (Widget Wrapper)
 
 **Responsibilities:**
+
 - Provide consistent header with icon, title, accent color
 - Handle minimize/maximize states
 - Provide close button
 - Apply consistent styling
 
 **Props Interface:**
+
 ```typescript
 interface WidgetShellProps {
   id: string;
@@ -142,34 +150,35 @@ interface WidgetShellProps {
 **Technology:** Zustand with localStorage middleware
 
 **State Structure:**
+
 ```typescript
 interface AppState {
   // Visibility
   visibleWidgets: WidgetType[];
-  
+
   // Layout (responsive)
   layouts: { lg: GridItemData[], md: ..., sm: ..., xs: ..., xxs: ... };
-  
+
   // Widget-specific data
   scratchpadNotes: Note[];
   tasks: Task[];
   calculatorHistory: string[];
-  
+
   // System settings
   settings: {
     apiKey: string;
     scanlines: boolean;
     matrixRain: boolean;
   };
-  
+
   // Theme
   theme: AppTheme;
-  
+
   // UI state
   isLayoutLocked: boolean;
   isCompact: boolean;
   ghostWidget: GhostData | null;
-  
+
   // Actions
   toggleWidget: (id: WidgetType) => void;
   updateLayout: (newLayout: GridItemData[]) => void;
@@ -179,14 +188,17 @@ interface AppState {
 ```
 
 **Persistence:**
+
 ```typescript
 persist(
-  (set, get) => ({ /* state */ }),
+  (set, get) => ({
+    /* state */
+  }),
   {
     name: 'omni-grid-storage',
     storage: createJSONStorage(() => localStorage),
   }
-)
+);
 ```
 
 ---
@@ -236,6 +248,7 @@ No central state mutation (decoupled)
 **Service Layer:** `services/geminiService.ts`
 
 **Flow:**
+
 ```
 Widget (e.g., NeuralScratchpad)
     ↓
@@ -253,11 +266,13 @@ Saved to localStorage via Zustand
 ```
 
 **Privacy Model:**
+
 - API key stored in localStorage (user-controlled)
 - No intermediate server (direct client ↔ Google)
 - No prompt logging by Omni-Grid (Google's privacy policy applies)
 
 **Models Used:**
+
 - `gemini-1.5-flash-latest` - Fast operations (summarize, translate)
 - `gemini-1.5-pro-latest` - Complex operations (code generation, analysis)
 
@@ -266,6 +281,7 @@ Saved to localStorage via Zustand
 ## 🎨 STYLING ARCHITECTURE
 
 ### Technology Stack
+
 - **TailwindCSS** - Utility-first CSS framework
 - **CSS Variables** - Dynamic theming
 - **Custom Classes** - Special effects (scanlines, scrollbars)
@@ -273,6 +289,7 @@ Saved to localStorage via Zustand
 ### Theme System
 
 **Dynamic CSS Injection:**
+
 ```typescript
 useEffect(() => {
   const root = document.documentElement;
@@ -283,6 +300,7 @@ useEffect(() => {
 ```
 
 **Aesthetic Engine Integration:**
+
 - User can generate themes via AI (text/image input)
 - Presets available (Cyberpunk, Neon, Minimal, etc.)
 - Custom color pickers for manual tweaking
@@ -303,6 +321,7 @@ npm run preview      # Preview production build
 ### Vite Configuration
 
 **Key Settings:**
+
 ```typescript
 // vite.config.ts
 export default defineConfig({
@@ -329,6 +348,7 @@ dist/
 ```
 
 **Deployment:**
+
 - Static files only
 - No server required
 - Can be hosted on: GitHub Pages, Netlify, Vercel, S3, etc.
@@ -339,6 +359,7 @@ dist/
 ## 🔐 SECURITY ARCHITECTURE
 
 ### Data Privacy
+
 1. **Local-First:** No data leaves the browser except AI API calls
 2. **No Analytics:** No tracking, telemetry, or third-party scripts
 3. **API Key Management:** User-controlled, stored in localStorage only
@@ -347,15 +368,19 @@ dist/
 ### Content Security Policy (Recommended)
 
 For production deployment:
+
 ```html
-<meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src 'self'; 
                connect-src 'self' https://generativelanguage.googleapis.com;
                style-src 'self' 'unsafe-inline';
-               script-src 'self';">
+               script-src 'self';"
+/>
 ```
 
 ### localStorage Security
+
 - Sensitive data (API keys) stored in plain text in localStorage
 - Recommendation: Use a strong device/browser password
 - Future enhancement: Add optional password protection layer
@@ -367,6 +392,7 @@ For production deployment:
 ### Optimization Strategies
 
 1. **Selective Re-renders:**
+
    ```typescript
    // Individual selectors to prevent unnecessary re-renders
    const visibleWidgets = useAppStore(s => s.visibleWidgets);
@@ -388,6 +414,7 @@ For production deployment:
 ### Browser Compatibility
 
 **Minimum Requirements:**
+
 - Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 - localStorage support (required)
 - ES2020+ support
@@ -398,6 +425,7 @@ For production deployment:
 ## 🧪 TESTING ARCHITECTURE
 
 ### Current State
+
 - No formal test suite (minimal-change approach)
 - Manual testing via development server
 - Widget isolation makes unit testing feasible
@@ -405,16 +433,19 @@ For production deployment:
 ### Future Testing Strategy
 
 **Unit Tests:**
+
 - Widget components (React Testing Library)
 - Utility functions (Jest)
 - Zustand store actions
 
 **Integration Tests:**
+
 - Widget communication (Cross-Talk)
 - Layout persistence
 - Backup/restore functionality
 
 **E2E Tests:**
+
 - Playwright or Cypress
 - Critical user journeys
 
@@ -427,6 +458,7 @@ For production deployment:
 See [Widget Development Guide](./widget-development.md) for details.
 
 **Key Extension Points:**
+
 1. `types.ts` - Add new `WidgetType`
 2. `widgets/` - Create component
 3. `GridContainer.tsx` - Register widget
@@ -436,6 +468,7 @@ See [Widget Development Guide](./widget-development.md) for details.
 ### Custom Services
 
 Create new files in `services/`:
+
 ```typescript
 // services/myService.ts
 export const myFunction = async (param: string) => {
@@ -444,6 +477,7 @@ export const myFunction = async (param: string) => {
 ```
 
 Import and use in widgets:
+
 ```typescript
 import { myFunction } from '../services/myService';
 ```
@@ -451,6 +485,7 @@ import { myFunction } from '../services/myService';
 ### Styling Extensions
 
 Add custom Tailwind classes in `index.css`:
+
 ```css
 @layer utilities {
   .my-custom-class {
@@ -466,11 +501,13 @@ Add custom Tailwind classes in `index.css`:
 ### Widget Limits
 
 **Practical Limits:**
+
 - ~20-30 widgets per grid (browser performance)
 - ~50-100 items in a single widget (e.g., task list)
 - localStorage limit: ~5-10MB (browser-dependent)
 
 **Optimization for Scale:**
+
 - Implement virtual scrolling for large lists
 - Paginate data-heavy widgets
 - Consider IndexedDB for very large datasets
@@ -480,6 +517,7 @@ Add custom Tailwind classes in `index.css`:
 Current architecture is **single-user, single-device**.
 
 **For Multi-User:**
+
 - Add backend API for state sync
 - Implement authentication layer
 - Replace localStorage with API calls
@@ -490,6 +528,7 @@ Current architecture is **single-user, single-device**.
 ## 🗺️ TECHNOLOGY ROADMAP
 
 ### Current Stack (v2.0)
+
 - React 18.2.0
 - Zustand 4.5.0
 - react-grid-layout 1.4.4
@@ -497,6 +536,7 @@ Current architecture is **single-user, single-device**.
 - TailwindCSS (via CDN in index.html)
 
 ### Future Considerations
+
 - TypeScript strict mode enforcement
 - Component library (shadcn/ui)
 - Testing framework (Vitest + RTL)
@@ -514,6 +554,6 @@ Current architecture is **single-user, single-device**.
 
 ---
 
-*Architecture is not just about structure—it's about philosophy.*
+_Architecture is not just about structure—it's about philosophy._
 
 **[← Back to Documentation Hub](./README.md)**

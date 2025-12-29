@@ -1,14 +1,22 @@
-
 import React, { useState, useEffect } from 'react';
-import { PenTool, FileText, Eraser, Sparkles, Copy, Check, Loader2, ArrowDownToLine } from 'lucide-react';
-import { GoogleGenAI } from "@google/genai";
+import {
+  PenTool,
+  FileText,
+  Eraser,
+  Sparkles,
+  Copy,
+  Check,
+  Loader2,
+  ArrowDownToLine,
+} from 'lucide-react';
+import { GoogleGenAI } from '@google/genai';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const TEMPLATES: Record<string, string> = {
-  'Blank': '',
+  Blank: '',
   'Cover Letter': `[Your Name]
 [Your Address]
 [City, State, Zip]
@@ -36,7 +44,7 @@ Thank you for your time and consideration. I look forward to the possibility of 
 Sincerely,
 
 [Your Name]`,
-  'Resignation': `[Your Name]
+  Resignation: `[Your Name]
 [Date]
 
 [Manager Name]
@@ -94,7 +102,7 @@ Best regards,
 - [ ] [Task] - Assigned to: [Name] - Due: [Date]
 
 **Next Meeting:** [Date/Time]`,
-  'Memo': `**MEMORANDUM**
+  Memo: `**MEMORANDUM**
 
 **TO:** [Recipient(s)]
 **FROM:** [Your Name]
@@ -111,7 +119,7 @@ Best regards,
 
 **Recommendation/Action Required**
 [Clear steps that need to be taken.]`,
-  'Invoice': `INVOICE #[Number]
+  Invoice: `INVOICE #[Number]
 Date: [Date]
 Due Date: [Date]
 
@@ -150,16 +158,16 @@ export const WritePad: React.FC = () => {
   // Sync from store (e.g. reload or reset)
   useEffect(() => {
     if (localContent !== writePadContent) {
-        setLocalContent(writePadContent);
+      setLocalContent(writePadContent);
     }
   }, [writePadContent]);
 
   // Debounce sync to store
   useEffect(() => {
     const handler = setTimeout(() => {
-        if (localContent !== writePadContent) {
-            setWritePadContent(localContent);
-        }
+      if (localContent !== writePadContent) {
+        setWritePadContent(localContent);
+      }
     }, 600);
     return () => clearTimeout(handler);
   }, [localContent, writePadContent, setWritePadContent]);
@@ -195,7 +203,7 @@ export const WritePad: React.FC = () => {
       setWritePadContent(generated);
       setShowPrompt(false);
     } catch (e) {
-      setLocalContent(localContent + "\n\n[AI Generation Failed]");
+      setLocalContent(localContent + '\n\n[AI Generation Failed]');
     } finally {
       setLoading(false);
     }
@@ -203,42 +211,52 @@ export const WritePad: React.FC = () => {
 
   // Cross-Talk Drop Handler
   const handleDrop = async (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragOver(false);
-      const droppedText = e.dataTransfer.getData('text/plain');
-      
-      if (droppedText) {
-          setLoading(true);
-          try {
-             // Grid Intelligence: Cross-Talk Protocol
-             const processedContent = await processCrossTalk(droppedText, 'WritePad');
-             const newContent = localContent ? `${localContent}\n\n${processedContent}` : processedContent;
-             setLocalContent(newContent);
-             setWritePadContent(newContent);
-          } catch (e) {
-             console.error("Cross-Talk failed");
-          } finally {
-             setLoading(false);
-          }
+    e.preventDefault();
+    setIsDragOver(false);
+    const droppedText = e.dataTransfer.getData('text/plain');
+
+    if (droppedText) {
+      setLoading(true);
+      try {
+        // Grid Intelligence: Cross-Talk Protocol
+        const processedContent = await processCrossTalk(droppedText, 'WritePad');
+        const newContent = localContent
+          ? `${localContent}\n\n${processedContent}`
+          : processedContent;
+        setLocalContent(newContent);
+        setWritePadContent(newContent);
+      } catch (e) {
+        console.error('Cross-Talk failed');
+      } finally {
+        setLoading(false);
       }
+    }
   };
 
   return (
     <div className="h-full flex flex-col gap-3">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 bg-slate-900 p-2 rounded-lg border border-slate-800" role="toolbar" aria-label="Editor Toolbar">
-        <select 
+      <div
+        className="flex flex-wrap items-center gap-2 bg-slate-900 p-2 rounded-lg border border-slate-800"
+        role="toolbar"
+        aria-label="Editor Toolbar"
+      >
+        <select
           value={selectedTemplate}
-          onChange={(e) => handleTemplateSelect(e.target.value)}
+          onChange={e => handleTemplateSelect(e.target.value)}
           className="bg-slate-800 text-slate-200 text-xs rounded px-2 py-1 border border-slate-700 outline-none focus:border-rose-500 max-w-[150px]"
           aria-label="Select Template"
         >
-          {Object.keys(TEMPLATES).map(t => <option key={t} value={t}>{t}</option>)}
+          {Object.keys(TEMPLATES).map(t => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
         </select>
 
         <div className="w-[1px] h-4 bg-slate-700 mx-1"></div>
 
-        <button 
+        <button
           onClick={() => setShowPrompt(!showPrompt)}
           className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded font-bold transition-colors ${showPrompt ? 'bg-rose-900/50 text-rose-300' : 'bg-slate-800 text-slate-400 hover:text-rose-400'}`}
           aria-expanded={showPrompt}
@@ -247,8 +265,11 @@ export const WritePad: React.FC = () => {
           <Sparkles size={12} /> AI Draft
         </button>
 
-        <button 
-          onClick={() => { setLocalContent(''); setWritePadContent(''); }}
+        <button
+          onClick={() => {
+            setLocalContent('');
+            setWritePadContent('');
+          }}
           className="ml-auto text-slate-500 hover:text-red-400 transition-colors"
           title="Clear"
           aria-label="Clear Document"
@@ -260,67 +281,73 @@ export const WritePad: React.FC = () => {
       {/* AI Prompt Input (Conditional) */}
       {showPrompt && (
         <div className="flex gap-2 p-2 bg-slate-900/50 border border-rose-900/30 rounded animate-in fade-in slide-in-from-top-2">
-            <input 
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="E.g., 'Write a polite decline email for a wedding invitation'..."
-              className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-rose-500 focus:outline-none"
-              onKeyDown={(e) => e.key === 'Enter' && handleAiDraft()}
-              aria-label="AI Prompt Input"
-            />
-            <button 
-              onClick={handleAiDraft}
-              disabled={loading}
-              className="bg-rose-700 hover:bg-rose-600 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
-              aria-label="Generate Draft"
-            >
-              {loading ? <Loader2 size={12} className="animate-spin"/> : 'Generate'}
-            </button>
+          <input
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+            placeholder="E.g., 'Write a polite decline email for a wedding invitation'..."
+            className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-rose-500 focus:outline-none"
+            onKeyDown={e => e.key === 'Enter' && handleAiDraft()}
+            aria-label="AI Prompt Input"
+          />
+          <button
+            onClick={handleAiDraft}
+            disabled={loading}
+            className="bg-rose-700 hover:bg-rose-600 text-white px-3 py-1 rounded text-xs font-bold disabled:opacity-50"
+            aria-label="Generate Draft"
+          >
+            {loading ? <Loader2 size={12} className="animate-spin" /> : 'Generate'}
+          </button>
         </div>
       )}
 
       {/* Editor */}
-      <div 
+      <div
         className={`flex-1 relative group rounded transition-all duration-300 ${isDragOver ? 'ring-2 ring-rose-500 bg-rose-900/20' : ''}`}
-        onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+        onDragOver={e => {
+          e.preventDefault();
+          setIsDragOver(true);
+        }}
         onDragLeave={() => setIsDragOver(false)}
         onDrop={handleDrop}
       >
         <textarea
           value={localContent}
-          onChange={(e) => setLocalContent(e.target.value)}
+          onChange={e => setLocalContent(e.target.value)}
           className="w-full h-full bg-white text-slate-900 p-6 text-sm font-serif leading-relaxed resize-none focus:outline-none rounded shadow-inner selection:bg-rose-200"
           placeholder="Select a template, start typing, or drop content here to draft automatically..."
           aria-label="Document Editor"
         />
-        
+
         {/* Copy Button Overlay */}
         {localContent && (
-           <button 
-             onClick={handleCopy}
-             className="absolute top-4 right-4 p-2 bg-white/90 border border-slate-200 text-slate-400 hover:text-rose-600 rounded-lg shadow-sm backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
-             title="Copy to Clipboard"
-             aria-label="Copy Content"
-           >
-             {copied ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
-           </button>
+          <button
+            onClick={handleCopy}
+            className="absolute top-4 right-4 p-2 bg-white/90 border border-slate-200 text-slate-400 hover:text-rose-600 rounded-lg shadow-sm backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+            title="Copy to Clipboard"
+            aria-label="Copy Content"
+          >
+            {copied ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
+          </button>
         )}
 
         {/* Drag Overlay Indicator */}
         {isDragOver && (
-            <div className="absolute inset-0 flex items-center justify-center bg-rose-500/10 pointer-events-none backdrop-blur-[1px] rounded">
-                <div className="bg-slate-900 text-rose-400 px-4 py-2 rounded-full shadow-2xl border border-rose-500 flex items-center gap-2 animate-bounce">
-                    <ArrowDownToLine size={16} /> 
-                    <span className="font-bold text-xs">Cross-Talk Active: Drop to Draft</span>
-                </div>
+          <div className="absolute inset-0 flex items-center justify-center bg-rose-500/10 pointer-events-none backdrop-blur-[1px] rounded">
+            <div className="bg-slate-900 text-rose-400 px-4 py-2 rounded-full shadow-2xl border border-rose-500 flex items-center gap-2 animate-bounce">
+              <ArrowDownToLine size={16} />
+              <span className="font-bold text-xs">Cross-Talk Active: Drop to Draft</span>
             </div>
+          </div>
         )}
 
         {/* Loading Indicator */}
         {loading && (
-            <div className="absolute bottom-4 right-4 bg-slate-900 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2" role="status">
-                <Loader2 size={12} className="animate-spin" /> Processing Intent...
-            </div>
+          <div
+            className="absolute bottom-4 right-4 bg-slate-900 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2"
+            role="status"
+          >
+            <Loader2 size={12} className="animate-spin" /> Processing Intent...
+          </div>
         )}
       </div>
     </div>

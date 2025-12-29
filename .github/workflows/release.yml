@@ -19,78 +19,78 @@ jobs:
     name: Build Release Artifacts
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run tests
         run: npm run test:run
-      
+
       - name: Build frontend
         run: npm run build
-      
+
       - name: Setup C++ build environment
         run: sudo apt-get update && sudo apt-get install -y g++ make
-      
+
       - name: Build C++ server
         run: make server
-      
+
       - name: Verify builds
         run: |
           if [ ! -d "dist" ]; then
             echo "❌ Frontend build failed - dist directory not found"
             exit 1
           fi
-          
+
           if [ ! -f "./omnigrid_server" ]; then
             echo "❌ Server build failed - binary not found"
             exit 1
           fi
-          
+
           echo "✅ All builds successful"
-      
+
       - name: Create release archive
         run: |
           set -e
           mkdir -p release
-          
+
           # Copy build artifacts
           cp -r dist release/
           cp omnigrid_server release/
-          
+
           # Copy documentation
           [ -f README.md ] && cp README.md release/
           [ -f DOCUMENTATION.md ] && cp DOCUMENTATION.md release/
           [ -f QUICK_REFERENCE.md ] && cp QUICK_REFERENCE.md release/
           [ -f CONTRIBUTING.md ] && cp CONTRIBUTING.md release/
           [ -f LICENSE ] && cp LICENSE release/
-          
+
           # Copy example env file
           [ -f .env.example ] && cp .env.example release/
-          
+
           # Create archives
           tar -czf omni-grid-release.tar.gz -C release .
           (cd release && zip -r ../omni-grid-release.zip .)
-          
+
           # Generate checksums
           sha256sum omni-grid-release.tar.gz > omni-grid-release.tar.gz.sha256
           sha256sum omni-grid-release.zip > omni-grid-release.zip.sha256
-          
+
           echo "✅ Release archives created"
           ls -lh omni-grid-release.*
-      
+
       - name: Get version
         id: get_version
         run: |
@@ -101,72 +101,72 @@ jobs:
           fi
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Version: ${VERSION}"
-      
+
       - name: Generate release notes
         id: release_notes
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
-          
+
           cat > release_notes.md << EOF
           ## 🚀 Omni-Grid Release ${VERSION}
-          
+
           ### 📦 What's Included
-          
+
           - **Frontend Assets**: Pre-built React application with Vite
           - **C++ Server**: Compiled lightweight HTTP server (no dependencies)
           - **Documentation**: Complete setup and usage guides
           - **Configuration**: Example environment file
-          
+
           ### 🎯 Quick Start
-          
+
           \`\`\`bash
           # Extract the archive
           tar -xzf omni-grid-release.tar.gz
           # or
           unzip omni-grid-release.zip
-          
+
           # Configure environment
           cp .env.example .env
           # Edit .env and add your Gemini API key
-          
+
           # Run the server
           ./omnigrid_server 1234
-          
+
           # Open in browser
           # http://localhost:1234
           \`\`\`
-          
+
           ### 📋 Requirements
-          
+
           - Modern web browser (Chrome, Firefox, Safari, Edge)
           - Google Gemini API Key (for AI features)
           - Linux/macOS or WSL for running the server
-          
+
           ### 🔐 Security
-          
+
           All releases include:
           - SHA-256 checksums for verification
           - CodeQL security scanning
           - Dependency audits
-          
+
           ### 📚 Documentation
-          
+
           - [Full Documentation](./DOCUMENTATION.md)
           - [Quick Reference](./QUICK_REFERENCE.md)
           - [Contributing Guide](./CONTRIBUTING.md)
-          
+
           ### 🔗 Resources
-          
+
           - [GitHub Repository](https://github.com/GizzZmo/Omni-Grid-2.0)
           - [Report Issues](https://github.com/GizzZmo/Omni-Grid-2.0/issues)
           - [Discussions](https://github.com/GizzZmo/Omni-Grid-2.0/discussions)
-          
+
           ---
           *The net is vast and infinite, but your grid is your own.* 🌐
           EOF
-          
+
           cat release_notes.md
-      
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
@@ -183,7 +183,7 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
