@@ -29,6 +29,7 @@ import { DocuHub } from '../widgets/DocuHub';
 import { GitPulse } from '../widgets/GitPulse';
 import { ProjectTracker } from '../widgets/ProjectTracker';
 import { WebTerminal } from '../widgets/WebTerminal';
+import { CyberEditor } from '../widgets/CyberEditor';
 import { NewsFeed } from '../widgets/NewsFeed';
 import { CipherPad } from '../widgets/CipherPad';
 import { PDFViewer } from '../widgets/PDFViewer';
@@ -41,7 +42,7 @@ import { MarketWidget } from '../widgets/MarketWidget';
 import { StrategicBlueprint } from '../widgets/StrategicBlueprint';
 import { ClipboardStream } from '../widgets/ClipboardStream';
 
-import { FileJson, BrainCircuit, Activity, Code2, Lock, Palette, Clock, Music, Calculator, TrendingUp, Languages, PenTool, Cloud, DollarSign, Terminal, HelpCircle, PenTool as PenToolIcon, Wand2, Radio, Grid, Book, GitPullRequest, Layout as LayoutIcon, Globe, Rss, FileText, Calendar, Scale, Briefcase, Clipboard } from 'lucide-react';
+import { FileJson, BrainCircuit, Activity, Code2, Lock, Palette, Clock, Music, Calculator, TrendingUp, Languages, PenTool, Cloud, DollarSign, Terminal, HelpCircle, PenTool as PenToolIcon, Wand2, Radio, Grid, Book, GitPullRequest, Layout as LayoutIcon, Globe, Rss, FileText, Calendar, Scale, Briefcase, Clipboard, FileCode } from 'lucide-react';
 import { downloadJson, uploadJson } from '../utils';
 
 const WidthProvider = (RGL as any).WidthProvider;
@@ -240,6 +241,11 @@ export const GridContainer: React.FC = () => {
     WEB_TERMINAL: (
       <WidgetShell id="WEB_TERMINAL" title="Web Terminal" icon={<Terminal size={14}/>} accentColor="text-slate-400" className="h-full">
         <WebTerminal />
+      </WidgetShell>
+    ),
+    CYBER_EDITOR: (
+      <WidgetShell id="CYBER_EDITOR" title="Cyber Editor" icon={<FileCode size={14}/>} accentColor="text-fuchsia-400" className="h-full">
+        <CyberEditor />
       </WidgetShell>
     ),
     NEWS_FEED: (
