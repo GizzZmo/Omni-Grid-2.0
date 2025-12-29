@@ -1,13 +1,12 @@
-
 # OMNI-GRID // THE SUPER APP
 
 ```text
-   ____  __  __ _   _ ___       ____ ____  ___ ____  
-  / __ \|  \/  | \ | |_ _|     / ___|  _ \|_ _|  _ \ 
+   ____  __  __ _   _ ___       ____ ____  ___ ____
+  / __ \|  \/  | \ | |_ _|     / ___|  _ \|_ _|  _ \
  | |  | | |\/| |  \| || |_____| |  _| |_) || || | | |
  | |__| | |  | | |\  || |_____| |_| |  _ < | || |_| |
-  \____/|_|  |_|_| \_|___|     \____|_| \_\___|____/ 
-                                                       
+  \____/|_|  |_|_| \_|___|     \____|_| \_\___|____/
+
   [ SYSTEM STATUS: ONLINE ]
   [ PROTOCOL: LOCAL-FIRST ]
 ```
@@ -42,48 +41,56 @@
 ## 0x02 // CORE MODULES
 
 ### 🧠 The Neural Suite
-*   **Neural Scratchpad:** AI-augmented note-taking (Refine, Expand, Summarize).
-*   **WritePad:** Auto-drafting for emails and formal documents.
-*   **Polyglot Box:** Instant code translation between 12+ languages.
+
+- **Neural Scratchpad:** AI-augmented note-taking (Refine, Expand, Summarize).
+- **WritePad:** Auto-drafting for emails and formal documents.
+- **Polyglot Box:** Instant code translation between 12+ languages.
 
 ### 💹 The Smart Grid (Financial)
-*   **Asset Command:** Programmable logic for portfolio management.
-*   **Macro Net:** Global M2 Money Supply vs. Asset correlation heatmap.
-*   **Chain Pulse:** Real-time TPS tracking for L1/L2 networks.
-*   **Reg Radar:** Sentiment analysis on regulatory news (SEC/MiCA).
+
+- **Asset Command:** Programmable logic for portfolio management.
+- **Macro Net:** Global M2 Money Supply vs. Asset correlation heatmap.
+- **Chain Pulse:** Real-time TPS tracking for L1/L2 networks.
+- **Reg Radar:** Sentiment analysis on regulatory news (SEC/MiCA).
 
 ### 🛠️ Developer Optic
-*   **Web Terminal:** Sandboxed JavaScript REPL.
-*   **Dev Optic:** JWT decoding and Regex testing.
-*   **Git Pulse:** Pull Request monitoring dashboard.
-*   **Widget Architect:** AI-driven prototype generation for new widgets.
+
+- **Web Terminal:** Sandboxed JavaScript REPL.
+- **Dev Optic:** JWT decoding and Regex testing.
+- **Git Pulse:** Pull Request monitoring dashboard.
+- **Widget Architect:** AI-driven prototype generation for new widgets.
 
 ### 🎨 Creative & Utility
-*   **Aesthetic Engine:** AI-generated UI theming based on text or image vibes.
-*   **Sonic Architecture:** Circle of Fifths theory tool and brown noise generator.
-*   **Cipher Vault:** Local hashing and UUID/Nanoid generation.
+
+- **Aesthetic Engine:** AI-generated UI theming based on text or image vibes.
+- **Sonic Architecture:** Circle of Fifths theory tool and brown noise generator.
+- **Cipher Vault:** Local hashing and UUID/Nanoid generation.
 
 ## 0x03 // INITIALIZATION PROTOCOLS
 
 ### Prerequisites
-*   Node.js 18+
-*   Google Gemini API Key (Required for Neural Link features)
+
+- Node.js 18+
+- Google Gemini API Key (Required for Neural Link features)
 
 ### Installation
 
 1.  **Clone the Repository**
+
     ```bash
     git clone https://github.com/your-username/omni-grid.git
     cd omni-grid
     ```
 
 2.  **Install Dependencies**
+
     ```bash
     npm install
     ```
 
 3.  **Configure Environment**
     Create a `.env` file in the root directory:
+
     ```env
     API_KEY=your_google_gemini_api_key_here
     ```
@@ -95,9 +102,11 @@
     ```
 
 ### Optional: C++ Static Server
+
 If you prefer a standalone HTTP host, compile the lightweight C++ server and serve the built assets (or the root for dev artifacts):
 
 **Using npm scripts (recommended):**
+
 ```bash
 npm run build:all    # Build frontend assets and compile C++ server
 npm run serve        # Run the compiled server (defaults to port 1234)
@@ -105,6 +114,7 @@ npm run serve        # Run the compiled server (defaults to port 1234)
 ```
 
 **Manual compilation:**
+
 ```bash
 make server          # or: g++ -std=c++17 -O2 server/omnigrid_server.cpp -o omnigrid_server
 ./omnigrid_server 1234   # port is optional; defaults to 1234
@@ -115,44 +125,49 @@ The server automatically serves from `dist/` (built assets) if it exists, or fal
 
 ## 0x04 // ARCHITECTURE
 
-*   **State Management:** `Zustand` with `localStorage` persistence.
-*   **Layout:** `react-grid-layout` for draggable, resizable tiles.
-*   **AI Core:** `@google/genai` (Gemini 3.5 Flash/Pro).
-*   **Styling:** TailwindCSS with dynamic CSS variable injection.
+- **State Management:** `Zustand` with `localStorage` persistence.
+- **Layout:** `react-grid-layout` for draggable, resizable tiles.
+- **AI Core:** `@google/genai` (Gemini 3.5 Flash/Pro).
+- **Styling:** TailwindCSS with dynamic CSS variable injection.
 
 ## 0x04.1 // CI/CD PIPELINE
 
 Omni-Grid features a comprehensive automated workflow system:
 
 ### 🔄 Continuous Integration
-*   **Automated Testing:** Vitest test suite with coverage reporting
-*   **Automated Building:** Multi-platform builds (Node.js 18.x, 20.x)
-*   **Type Safety:** TypeScript strict checking on every commit
-*   **Code Quality:** ESLint and Prettier validation
-*   **Performance Monitoring:** Build time and bundle size tracking
+
+- **Automated Testing:** Vitest test suite with coverage reporting
+- **Automated Building:** Multi-platform builds (Node.js 18.x, 20.x)
+- **Type Safety:** TypeScript strict checking on every commit
+- **Code Quality:** ESLint and Prettier validation
+- **Performance Monitoring:** Build time and bundle size tracking
 
 ### 🔒 Security & Quality
-*   **CodeQL Analysis:** Automated security vulnerability scanning (JavaScript & C++)
-*   **Dependency Auditing:** Daily npm security audits with PR alerts
-*   **Dependabot:** Automated dependency updates with auto-merge for safe updates
-*   **Test Coverage:** Automatic coverage reports on PRs
+
+- **CodeQL Analysis:** Automated security vulnerability scanning (JavaScript & C++)
+- **Dependency Auditing:** Daily npm security audits with PR alerts
+- **Dependabot:** Automated dependency updates with auto-merge for safe updates
+- **Test Coverage:** Automatic coverage reports on PRs
 
 ### 📦 Release & Deployment
-*   **Automated Releases:** Tag-triggered release creation with SHA-256 checksums
-*   **Documentation Deployment:** Auto-deploy docs to GitHub Pages
-*   **Performance Reports:** PR-specific build performance analysis with warnings
+
+- **Automated Releases:** Tag-triggered release creation with SHA-256 checksums
+- **Documentation Deployment:** Auto-deploy docs to GitHub Pages
+- **Performance Reports:** PR-specific build performance analysis with warnings
 
 ### 🤖 Automation
-*   **PR Labeling:** Automatic categorization based on changes and size
-*   **Welcome Bot:** First-time contributor greeting and guidance
-*   **Stale Management:** Automated cleanup of inactive issues/PRs
-*   **Status Dashboard:** Real-time workflow health monitoring
+
+- **PR Labeling:** Automatic categorization based on changes and size
+- **Welcome Bot:** First-time contributor greeting and guidance
+- **Stale Management:** Automated cleanup of inactive issues/PRs
+- **Status Dashboard:** Real-time workflow health monitoring
 
 **[View Complete Workflow Documentation](./.github/WORKFLOWS.md) | [Testing Guide](./TESTING.md)**
 
 ## 0x04.2 // DEVELOPMENT COMMANDS
 
 ### Testing
+
 ```bash
 npm test              # Run tests in watch mode
 npm run test:run      # Run tests once (CI mode)
@@ -161,6 +176,7 @@ npm run test:coverage # Generate coverage report
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint          # Run ESLint
 npm run lint:fix      # Auto-fix ESLint issues
@@ -170,6 +186,7 @@ npm run typecheck     # Run TypeScript type checking
 ```
 
 ### Building
+
 ```bash
 npm run build         # Build frontend (Vite)
 npm run build:server  # Build C++ server
@@ -180,9 +197,9 @@ npm run preview       # Preview production build
 
 ## 0x05 // KEYBOARD SHORTCUTS
 
-| Key Combo | Action |
-| :--- | :--- |
-| `Cmd + K` | Trigger AI Refine in Scratchpad |
+| Key Combo     | Action                                              |
+| :------------ | :-------------------------------------------------- |
+| `Cmd + K`     | Trigger AI Refine in Scratchpad                     |
 | `Drag & Drop` | Transfer data between widgets (Cross-Talk Protocol) |
 
 For complete keyboard shortcuts reference, see [Keyboard Shortcuts Guide](./docs/keyboard-shortcuts.md).
@@ -194,6 +211,7 @@ For complete keyboard shortcuts reference, see [Keyboard Shortcuts Guide](./docs
 Comprehensive documentation is available in the `docs/` folder:
 
 ### 📚 Quick Links
+
 - **[Documentation Hub](./docs/README.md)** - Complete documentation index
 - **[Getting Started Guide](./docs/getting-started.md)** - Installation and setup
 - **[Widget Development](./docs/widget-development.md)** - Create custom widgets
@@ -216,6 +234,7 @@ Want to know what's coming next? Check out our comprehensive development roadmap
 **🗺️ [DEVELOPMENT ROADMAP](./ROADMAP.md)** - Complete project roadmap with timelines, milestones, and contribution opportunities
 
 ### Current Focus (Q1 2025)
+
 - 🚧 Music player widget enhancement
 - 🚧 Code editor widget (Monaco integration)
 - 🚧 AI chat widget (Gemini API)
@@ -226,4 +245,5 @@ Want to know what's coming next? Check out our comprehensive development roadmap
 See the [full roadmap](./ROADMAP.md) for detailed timelines, technical milestones, and how you can contribute!
 
 ---
-*Built by [Jon-Arve Constantine / GizzZmo]. Encrypted. Distributed. Free.*
+
+_Built by [Jon-Arve Constantine / GizzZmo]. Encrypted. Distributed. Free._

@@ -1,12 +1,12 @@
 # OMNI-GRID DOCUMENTATION
 
 ```text
-   ____  __  __ _   _ ___       ____ ____  ___ ____  
-  / __ \|  \/  | \ | |_ _|     / ___|  _ \|_ _|  _ \ 
+   ____  __  __ _   _ ___       ____ ____  ___ ____
+  / __ \|  \/  | \ | |_ _|     / ___|  _ \|_ _|  _ \
  | |  | | |\/| |  \| || |_____| |  _| |_) || || | | |
  | |__| | |  | | |\  || |_____| |_| |  _ < | || |_| |
-  \____/|_|  |_|_| \_|___|     \____|_| \_\___|____/ 
-                                                       
+  \____/|_|  |_|_| \_|___|     \____|_| \_\___|____/
+
   [ DOCUMENTATION PORTAL ]
 ```
 
@@ -66,38 +66,45 @@ For developers building on Omni-Grid:
 ## 🎯 BY TOPIC
 
 ### Installation & Setup
+
 - [Getting Started → Prerequisites](./docs/getting-started.md#prerequisites)
 - [Getting Started → Installation](./docs/getting-started.md#installation)
 - [Configuration → Environment Variables](./docs/configuration.md#environment-variables)
 
 ### Using Omni-Grid
+
 - [Getting Started → First Launch](./docs/getting-started.md#first-launch)
 - [Getting Started → Essential Operations](./docs/getting-started.md#essential-operations)
 - [Keyboard Shortcuts → Global Shortcuts](./docs/keyboard-shortcuts.md#global-shortcuts)
 - [FAQ → Usage Questions](./docs/faq.md#usage-questions)
 
 ### Customization
+
 - [Configuration → Theme Configuration](./docs/configuration.md#theme-configuration)
 - [Configuration → Layout Configuration](./docs/configuration.md#layout-configuration)
 - [WIKI → Aesthetic Engine Philosophy](./docs/WIKI.md#7-aesthetic-engine-philosophy)
 
 ### Development
+
 - [Widget Development → Complete Workflow](./docs/widget-development.md#widget-creation-workflow)
 - [Architecture → Core Components](./docs/architecture.md#core-components)
 - [API Reference → State Management](./docs/api-reference.md#state-management)
 - [State Management → Usage Patterns](./docs/state-management.md#usage-patterns)
 
 ### AI Features
+
 - [WIKI → Neural Link](./docs/WIKI.md#2-neural-link-ai-integration)
 - [FAQ → AI Questions](./docs/faq.md#ai-questions)
 - [Configuration → API Configuration](./docs/configuration.md#api-configuration)
 
 ### Troubleshooting
+
 - [Troubleshooting → Common Issues](./docs/troubleshooting.md#common-issues)
 - [FAQ → Technical Questions](./docs/faq.md#technical-questions)
 - [Troubleshooting → Debugging Techniques](./docs/troubleshooting.md#debugging-techniques)
 
 ### Project Planning
+
 - [Roadmap → Milestone Timeline](./ROADMAP.md#milestone-timeline)
 - [Roadmap → Current Sprint](./ROADMAP.md#current-sprint-q1-2025)
 - [Roadmap → Contribution Opportunities](./ROADMAP.md#contribution-opportunities)
@@ -120,24 +127,28 @@ For developers building on Omni-Grid:
 ## 🎓 RECOMMENDED READING PATHS
 
 ### For New Users
+
 1. [Getting Started Guide](./docs/getting-started.md)
 2. [FAQ](./docs/faq.md)
 3. [Keyboard Shortcuts](./docs/keyboard-shortcuts.md)
 4. [Configuration Guide](./docs/configuration.md)
 
 ### For Developers
+
 1. [Architecture Overview](./docs/architecture.md)
 2. [Widget Development Guide](./docs/widget-development.md)
 3. [API Reference](./docs/api-reference.md)
 4. [State Management Guide](./docs/state-management.md)
 
 ### For Contributors
+
 1. [CONTRIBUTING.md](./CONTRIBUTING.md)
 2. [Architecture Overview](./docs/architecture.md)
 3. [Widget Development Guide](./docs/widget-development.md)
 4. [How-To Guide](./docs/HOWTO.md)
 
 ### Deep Dives
+
 1. [WIKI - Knowledge Base](./docs/WIKI.md)
 2. [Architecture → System Blueprint](./docs/architecture.md)
 3. [State Management → Advanced Patterns](./docs/state-management.md)
@@ -147,15 +158,18 @@ For developers building on Omni-Grid:
 ## 🔍 SEARCH TIPS
 
 **In GitHub:**
+
 - Use the search bar with `path:docs/ <your query>`
 - Example: `path:docs/ widget development`
 
 **In Your Editor:**
+
 - Open `docs/` folder
 - Use Find in Files (Cmd+Shift+F or Ctrl+Shift+F)
 - Search across all markdown files
 
 **In Browser:**
+
 - Open any documentation file on GitHub
 - Use Cmd+F (Mac) or Ctrl+F (Windows) to search within page
 
@@ -182,6 +196,7 @@ Found an error or want to improve the docs?
 4. Tag with `documentation` label
 
 **Documentation Guidelines:**
+
 - Use clear, concise language
 - Include code examples where helpful
 - Follow existing formatting style
@@ -219,7 +234,7 @@ docs/
 
 ---
 
-*"The net is vast and infinite, but your grid is your own."*
+_"The net is vast and infinite, but your grid is your own."_
 
 **Documentation Version:** 2.0  
 **Last Updated:** December 2025  
