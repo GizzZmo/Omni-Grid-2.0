@@ -297,6 +297,25 @@
             });
         }
 
+        // --- Helper function for rounded rectangles ---
+        function roundRect(ctx, x, y, w, h, r) {
+            if (ctx.roundRect) {
+                // Use native roundRect if available
+                ctx.roundRect(x, y, w, h, r);
+            } else {
+                // Polyfill for older browsers
+                if (w < 2 * r) r = w / 2;
+                if (h < 2 * r) r = h / 2;
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.arcTo(x + w, y, x + w, y + h, r);
+                ctx.arcTo(x + w, y + h, x, y + h, r);
+                ctx.arcTo(x, y + h, x, y, r);
+                ctx.arcTo(x, y, x + w, y, r);
+                ctx.closePath();
+            }
+        }
+
         // --- Architecture Canvas Visualization ---
         function drawArchitecture() {
             const canvas = document.getElementById('architectureCanvas');
@@ -315,7 +334,7 @@
             
             // 1. Data Source Box
             ctx.fillStyle = '#44403c';
-            ctx.roundRect(20, 20, 100, 260, 8);
+            roundRect(ctx, 20, 20, 100, 260, 8);
             ctx.fill();
             
             // Data lines (abstract)
@@ -338,11 +357,11 @@
 
             // 3. Rendered Items (Inside Viewport)
             ctx.fillStyle = '#2563eb';
-            ctx.roundRect(190, 90, 180, 30, 4);
+            roundRect(ctx, 190, 90, 180, 30, 4);
             ctx.fill();
-            ctx.roundRect(190, 130, 180, 30, 4);
+            roundRect(ctx, 190, 130, 180, 30, 4);
             ctx.fill();
-            ctx.roundRect(190, 170, 180, 30, 4);
+            roundRect(ctx, 190, 170, 180, 30, 4);
             ctx.fill();
             
             // 4. Arrows
@@ -455,8 +474,8 @@
                 div.textContent = i + 1;
                 fragment.appendChild(div);
             }
-            gridPreview.innerHTML = '';
-            gridPreview.appendChild(fragment);
+            // Use replaceChildren for efficient clearing and updating
+            gridPreview.replaceChildren(fragment);
         }
 
         [colInput, gapInput, itemInput].forEach(input => {
@@ -472,23 +491,6 @@
 
         // --- Initialization ---
         window.addEventListener('DOMContentLoaded', () => {
-            // Canvas Shim for custom drawing rounded rect if not supported
-            // Must be defined before any canvas operations
-            if (!CanvasRenderingContext2D.prototype.roundRect) {
-                CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-                    if (w < 2 * r) r = w / 2;
-                    if (h < 2 * r) r = h / 2;
-                    this.beginPath();
-                    this.moveTo(x + r, y);
-                    this.arcTo(x + w, y, x + w, y + h, r);
-                    this.arcTo(x + w, y + h, x, y + h, r);
-                    this.arcTo(x, y + h, x, y, r);
-                    this.arcTo(x, y, x + w, y, r);
-                    this.closePath();
-                    return this;
-                };
-            }
-            
             initPerformanceChart();
             initTrendChart();
             drawArchitecture();
