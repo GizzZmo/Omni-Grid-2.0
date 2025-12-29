@@ -1,36 +1,113 @@
----
 name: 🐛 Bug Report
-about: Report a bug or unexpected behavior
+description: Report a bug or unexpected behavior
 title: '[BUG] '
 labels: ['bug', 'triage']
 assignees: []
----
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Bug Report
+        Thank you for taking the time to report a bug. Please provide as much detail as possible to help us resolve the issue.
 
-## 🐛 Bug Description
-<!-- A clear and concise description of what the bug is -->
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe the bug you encountered
+    validations:
+      required: true
 
-## 📋 Steps to Reproduce
-1. Go to '...'
-2. Click on '...'
-3. See error
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Provide step-by-step instructions to reproduce the issue
+      placeholder: |
+        1. Open the application
+        2. Navigate to specific widget
+        3. Perform action
+        4. Observe the error
+    validations:
+      required: true
 
-## ✅ Expected Behavior
-<!-- What you expected to happen -->
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: Describe what should have happened
+    validations:
+      required: true
 
-## ❌ Actual Behavior
-<!-- What actually happened -->
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: Describe what actually occurred
+    validations:
+      required: true
 
-## 🖼️ Screenshots
-<!-- If applicable, add screenshots to help explain your problem -->
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem
+      placeholder: Drag and drop screenshots here
 
-## 🌐 Environment
-- **OS**: [e.g., macOS 13, Windows 11, Ubuntu 22.04]
-- **Browser**: [e.g., Chrome 120, Firefox 121]
-- **Node.js version**: [e.g., 18.17.0]
-- **Omni-Grid version**: [e.g., v1.0.0]
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: Select your operating system
+      options:
+        - macOS
+        - Windows
+        - Linux (Ubuntu)
+        - Linux (Other)
+        - Other
+    validations:
+      required: true
 
-## 📝 Additional Context
-<!-- Add any other context about the problem here -->
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser are you using?
+      placeholder: 'e.g., Chrome 120, Firefox 121, Safari 17'
+    validations:
+      required: true
 
-## 🔍 Possible Solution
-<!-- Optional: suggestions on how to fix the issue -->
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js Version
+      description: What version of Node.js are you running?
+      placeholder: 'e.g., 18.17.0'
+    validations:
+      required: false
+
+  - type: input
+    id: omnigrid-version
+    attributes:
+      label: Omni-Grid Version
+      description: What version of Omni-Grid are you using?
+      placeholder: 'e.g., v1.0.0'
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: Any additional information that might be helpful
+
+  - type: textarea
+    id: possible-solution
+    attributes:
+      label: Possible Solution
+      description: Optional - Do you have suggestions on how to fix the issue?
+      placeholder: Describe any potential solutions you've considered
