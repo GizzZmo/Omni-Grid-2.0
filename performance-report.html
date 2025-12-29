@@ -310,6 +310,9 @@
             ctx.fillStyle = '#1c1917'; // bg-stone-900 matches container
             ctx.fillRect(0,0, canvas.width, canvas.height);
             
+            // Set font for all text
+            ctx.font = '12px Inter, sans-serif';
+            
             // 1. Data Source Box
             ctx.fillStyle = '#44403c';
             ctx.roundRect(20, 20, 100, 260, 8);
@@ -444,14 +447,16 @@
             gridPreview.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
             gridPreview.style.gap = `${gap}px`;
             
-            // Generate Items
-            gridPreview.innerHTML = '';
+            // Generate Items using DocumentFragment for better performance
+            const fragment = document.createDocumentFragment();
             for(let i=0; i<items; i++) {
                 const div = document.createElement('div');
                 div.className = 'bg-blue-100 border border-blue-200 rounded h-16 flex items-center justify-center text-blue-800 font-medium text-sm transition-all hover:bg-blue-200';
                 div.textContent = i + 1;
-                gridPreview.appendChild(div);
+                fragment.appendChild(div);
             }
+            gridPreview.innerHTML = '';
+            gridPreview.appendChild(fragment);
         }
 
         [colInput, gapInput, itemInput].forEach(input => {
@@ -467,12 +472,8 @@
 
         // --- Initialization ---
         window.addEventListener('DOMContentLoaded', () => {
-            initPerformanceChart();
-            initTrendChart();
-            drawArchitecture();
-            updateDemo();
-            
             // Canvas Shim for custom drawing rounded rect if not supported
+            // Must be defined before any canvas operations
             if (!CanvasRenderingContext2D.prototype.roundRect) {
                 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
                     if (w < 2 * r) r = w / 2;
@@ -487,6 +488,11 @@
                     return this;
                 };
             }
+            
+            initPerformanceChart();
+            initTrendChart();
+            drawArchitecture();
+            updateDemo();
         });
 
     </script>
