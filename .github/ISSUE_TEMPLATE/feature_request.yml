@@ -1,34 +1,78 @@
----
 name: ✨ Feature Request
-about: Suggest a new feature or enhancement
+description: Suggest a new feature or enhancement
 title: '[FEATURE] '
 labels: ['enhancement', 'triage']
 assignees: []
----
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Feature Request
+        Thank you for suggesting a new feature! Please provide detailed information to help us understand your proposal.
 
-## ✨ Feature Description
-<!-- A clear and concise description of the feature you'd like to see -->
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: A clear and concise description of the feature you'd like to see
+      placeholder: Describe the feature you're proposing
+    validations:
+      required: true
 
-## 🎯 Problem Statement
-<!-- What problem does this feature solve? -->
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: Explain the problem or need this feature addresses
+    validations:
+      required: true
 
-## 💡 Proposed Solution
-<!-- How would you like this feature to work? -->
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: Describe your proposed implementation or solution
+    validations:
+      required: true
 
-## 🔄 Alternatives Considered
-<!-- What alternative solutions or features have you considered? -->
+  - type: textarea
+    id: alternatives-considered
+    attributes:
+      label: Alternatives Considered
+      description: What alternative solutions or features have you considered?
+      placeholder: Describe any alternative approaches you've thought about
 
-## 📊 Use Case
-<!-- Describe how you (or others) would use this feature -->
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe how you (or others) would use this feature
+      placeholder: Provide specific examples of how this feature would be used
+    validations:
+      required: true
 
-## 🎨 Design/Mockups
-<!-- Optional: Include any design mockups or wireframes -->
+  - type: textarea
+    id: design-mockups
+    attributes:
+      label: Design/Mockups
+      description: Optional - Include any design mockups or wireframes
+      placeholder: Drag and drop images or describe visual concepts
 
-## 📋 Additional Context
-<!-- Add any other context or screenshots about the feature request here -->
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the feature request
+      placeholder: Any additional information that might be helpful
 
-## ✅ Acceptance Criteria
-<!-- What needs to be done for this feature to be considered complete? -->
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What needs to be done for this feature to be considered complete?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
