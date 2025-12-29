@@ -3,7 +3,7 @@ export type WidgetType =
   // Original
   'TRANSFORMER' | 'SCRATCHPAD' | 'FOCUS_HUD' | 'DEV_OPTIC' | 'CIPHER_VAULT' | 'CHROMA_LAB' | 'TEMPORAL' | 'SONIC' | 'CALC' | 'ASSET' | 'POLYGLOT' | 'WRITEPAD' | 'WEATHER' | 'VALUTA' | 'SYSTEM' | 'HELP' | 'ARCHITECT' | 'THEME_ENGINE' | 'GHOST' | 'RADIO' | 'SUDOKU' |
   // Developer
-  'DOCU_HUB' | 'GIT_PULSE' | 'PROJECT_TRACKER' | 'WEB_TERMINAL' |
+  'DOCU_HUB' | 'GIT_PULSE' | 'PROJECT_TRACKER' | 'WEB_TERMINAL' | 'CYBER_EDITOR' |
   // Researcher
   'NEWS_FEED' | 'CIPHER_PAD' | 'PDF_VIEWER' | 'RESEARCH_BROWSER' |
   // Financial / Smart Grid

@@ -6,7 +6,7 @@ import { optimizeLayout } from './services/gridIntelligence';
 import { MatrixRain } from './components/MatrixRain';
 import { WidgetLauncher } from './components/WidgetLauncher';
 import { CommandPalette } from './components/CommandPalette';
-import { Save, FolderOpen, Lock, Unlock, Sparkles, Loader2, Terminal, HelpCircle, FileJson, BrainCircuit, Activity, Code2, TrendingUp, Music, Wand2, AlignVerticalSpaceAround, Pause, Play, Ghost } from 'lucide-react';
+import { Save, FolderOpen, Lock, Unlock, Sparkles, Loader2, Terminal, HelpCircle, FileJson, BrainCircuit, Activity, Code2, TrendingUp, Music, Wand2, AlignVerticalSpaceAround, Pause, Play, Ghost, FileCode } from 'lucide-react';
 import { downloadJson, uploadJson } from './utils';
 
 const App: React.FC = () => {
@@ -302,6 +302,13 @@ const App: React.FC = () => {
                 icon={<Terminal size={18} />}
                 label="Terminal"
                 color="bg-slate-400"
+              />
+              <DockItem 
+                active={visibleWidgets.includes('CYBER_EDITOR')} 
+                onClick={() => toggleWidget('CYBER_EDITOR')}
+                icon={<FileCode size={18} />}
+                label="Editor"
+                color="bg-fuchsia-500"
               />
 
               <div className="w-[1px] h-8 bg-white/10 mx-1"></div>

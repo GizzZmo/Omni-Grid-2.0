@@ -91,6 +91,12 @@ interface AppState {
   clipboardHistory: string[];
   addToClipboardHistory: (text: string) => void;
   clearClipboardHistory: () => void;
+
+  // CyberEditor
+  cyberEditorTabs: Array<{ id: string; name: string; language: string; content: string }>;
+  setCyberEditorTabs: (tabs: Array<{ id: string; name: string; language: string; content: string }>) => void;
+  cyberEditorActiveTab: string;
+  setCyberEditorActiveTab: (tabId: string) => void;
 }
 
 const DEFAULT_LAYOUT: GridItemData[] = [
@@ -119,20 +125,21 @@ const DEFAULT_LAYOUT: GridItemData[] = [
   { i: 'GIT_PULSE', x: 6, y: 60, w: 6, h: 8 },
   { i: 'PROJECT_TRACKER', x: 0, y: 68, w: 8, h: 8 },
   { i: 'WEB_TERMINAL', x: 8, y: 68, w: 4, h: 8 },
+  { i: 'CYBER_EDITOR', x: 0, y: 76, w: 12, h: 12 },
   // Researcher
-  { i: 'NEWS_FEED', x: 0, y: 76, w: 4, h: 8 },
-  { i: 'CIPHER_PAD', x: 4, y: 76, w: 4, h: 8 },
-  { i: 'PDF_VIEWER', x: 8, y: 76, w: 4, h: 8 },
-  { i: 'RESEARCH_BROWSER', x: 0, y: 84, w: 6, h: 8 },
+  { i: 'NEWS_FEED', x: 0, y: 88, w: 4, h: 8 },
+  { i: 'CIPHER_PAD', x: 4, y: 88, w: 4, h: 8 },
+  { i: 'PDF_VIEWER', x: 8, y: 88, w: 4, h: 8 },
+  { i: 'RESEARCH_BROWSER', x: 0, y: 96, w: 6, h: 8 },
   // Smart Grid
-  { i: 'SECURE_CALENDAR', x: 6, y: 84, w: 6, h: 8 },
-  { i: 'MACRO_NET', x: 0, y: 92, w: 4, h: 8 },
-  { i: 'CHAIN_PULSE', x: 4, y: 92, w: 4, h: 8 },
-  { i: 'REG_RADAR', x: 8, y: 92, w: 4, h: 8 },
-  { i: 'MARKET', x: 0, y: 100, w: 4, h: 8 },
+  { i: 'SECURE_CALENDAR', x: 6, y: 96, w: 6, h: 8 },
+  { i: 'MACRO_NET', x: 0, y: 104, w: 4, h: 8 },
+  { i: 'CHAIN_PULSE', x: 4, y: 104, w: 4, h: 8 },
+  { i: 'REG_RADAR', x: 8, y: 104, w: 4, h: 8 },
+  { i: 'MARKET', x: 0, y: 112, w: 4, h: 8 },
   // New
-  { i: 'STRATEGIC', x: 6, y: 100, w: 6, h: 8 },
-  { i: 'CLIPBOARD', x: 0, y: 108, w: 4, h: 8 },
+  { i: 'STRATEGIC', x: 6, y: 112, w: 6, h: 8 },
+  { i: 'CLIPBOARD', x: 0, y: 120, w: 4, h: 8 },
 ];
 
 const DEFAULT_THEME: AppTheme = {
@@ -210,7 +217,9 @@ export const useAppStore = create<AppState>()(
           rssFeeds: ['https://news.ycombinator.com/rss'],
           calendarEvents: [],
           encryptedNotes: {},
-          clipboardHistory: []
+          clipboardHistory: [],
+          cyberEditorTabs: [{ id: '1', name: 'untitled.tsx', language: 'typescript', content: '// Start coding...\n' }],
+          cyberEditorActiveTab: '1'
       }),
 
       // Grid Intelligence
@@ -312,7 +321,12 @@ export const useAppStore = create<AppState>()(
           const newHistory = [text, ...state.clipboardHistory.filter(t => t !== text)].slice(0, 20);
           return { clipboardHistory: newHistory };
       }),
-      clearClipboardHistory: () => set({ clipboardHistory: [] })
+      clearClipboardHistory: () => set({ clipboardHistory: [] }),
+
+      cyberEditorTabs: [{ id: '1', name: 'untitled.tsx', language: 'typescript', content: '// Start coding...\n' }],
+      setCyberEditorTabs: (tabs) => set({ cyberEditorTabs: tabs }),
+      cyberEditorActiveTab: '1',
+      setCyberEditorActiveTab: (tabId) => set({ cyberEditorActiveTab: tabId })
     }),
     {
       name: 'omni-grid-storage',
