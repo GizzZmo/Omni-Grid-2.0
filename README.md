@@ -79,8 +79,8 @@
 1.  **Clone the Repository**
 
     ```bash
-    git clone https://github.com/your-username/omni-grid.git
-    cd omni-grid
+    git clone https://github.com/GizzZmo/Omni-Grid-2.0.git
+    cd Omni-Grid-2.0
     ```
 
 2.  **Install Dependencies**
@@ -98,8 +98,8 @@
 
 4.  **Ignition**
     ```bash
-    npm run dev -- --port 1234
-    # Access via http://localhost:1234
+    npm run dev
+    # Access via http://localhost:5173 (or pass -- --port 1234 to match the C++ server default)
     ```
 
 ### Optional: C++ Static Server
