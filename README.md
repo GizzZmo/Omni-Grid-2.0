@@ -37,7 +37,7 @@
 
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
-**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
+**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
 
 ## 0x02 // CORE MODULES
 
@@ -201,6 +201,7 @@ Comprehensive documentation is available in the `docs/` folder:
 - **[API Reference](./docs/api-reference.md)** - Complete API documentation
 - **[Configuration Guide](./docs/configuration.md)** - Settings and customization
 - **[State Management](./docs/state-management.md)** - Zustand patterns
+- **[Performance Report](./performance-report.html)** - Interactive performance benchmarks
 - **[FAQ](./docs/faq.md)** - Frequently asked questions
 - **[Troubleshooting](./docs/troubleshooting.md)** - Common issues and solutions
 - **[WIKI](./docs/WIKI.md)** - Core concepts and philosophy
