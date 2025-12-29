@@ -43,7 +43,7 @@ jobs:
 
       - name: Setup Node.js for JavaScript analysis
         if: matrix.language == 'javascript'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20.x
           cache: 'npm'
