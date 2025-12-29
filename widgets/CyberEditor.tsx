@@ -8,8 +8,6 @@ import {
 import { useAppStore } from '../store';
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 interface CodeTab {
   id: string;
   name: string;
@@ -369,6 +367,14 @@ export const CyberEditor: React.FC = () => {
     
     setAiLoading(true);
     try {
+      // Check if API key exists
+      if (!process.env.API_KEY) {
+        updateTabContent('// Error: Please add your Gemini API key in .env file (API_KEY=your_key_here)');
+        setAiLoading(false);
+        return;
+      }
+
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Generate ${activeTab.language} code for: ${aiPrompt}. 
       Return ONLY the code without markdown fences or explanations.`;
       
@@ -410,6 +416,13 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
+      if (!process.env.API_KEY) {
+        console.error('No API key available');
+        setAiLoading(false);
+        return;
+      }
+
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Improve this ${activeTab.language} code. Make it more efficient, readable, and follow best practices. Return ONLY the improved code:\n\n${codeToImprove}`;
       
       const response = await ai.models.generateContent({
@@ -450,6 +463,13 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
+      if (!process.env.API_KEY) {
+        console.error('No API key available');
+        setAiLoading(false);
+        return;
+      }
+
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Explain this ${activeTab.language} code in clear, concise terms:\n\n${codeToExplain}`;
       
       const response = await ai.models.generateContent({
