@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Book, ExternalLink } from 'lucide-react';
+import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
 
 export const DocuHub: React.FC = () => {
   return (
@@ -17,6 +18,10 @@ export const DocuHub: React.FC = () => {
             >
                 Open Source <ExternalLink size={10} />
             </a>
+        </div>
+        <div className="bg-slate-900/60 border-b border-slate-800 px-2 py-1 text-[10px] text-slate-400">
+            <span className="font-semibold text-slate-300 mr-1">DevDocs languages:</span>
+            <span className="leading-relaxed">{DEV_DOCS_LANGUAGES.join(', ')}</span>
         </div>
         {/* We use DevDocs.io as it is a SPA friendly PWA that works well in iframes for this specific "Web Wrapper" widget use case */}
         <iframe 

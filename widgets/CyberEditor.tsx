@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useAppStore } from '../store';
 import { GoogleGenAI } from "@google/genai";
+import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
 
 interface CodeTab {
   id: string;
@@ -257,10 +258,7 @@ const MyComponent = () => {
   },
 };
 
-const LANGUAGES = [
-  'typescript', 'javascript', 'python', 'java', 'cpp', 'rust', 
-  'go', 'html', 'css', 'json', 'markdown', 'sql'
-];
+export const CYBER_EDITOR_LANGUAGES = DEV_DOCS_LANGUAGES;
 
 export const CyberEditor: React.FC = () => {
   const { cyberEditorTabs, setCyberEditorTabs, cyberEditorActiveTab, setCyberEditorActiveTab } = useAppStore();
@@ -561,7 +559,7 @@ export const CyberEditor: React.FC = () => {
             ))}
             className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 focus:outline-none focus:border-cyan-500"
           >
-            {LANGUAGES.map(lang => (
+            {CYBER_EDITOR_LANGUAGES.map(lang => (
               <option key={lang} value={lang}>{lang}</option>
             ))}
           </select>
