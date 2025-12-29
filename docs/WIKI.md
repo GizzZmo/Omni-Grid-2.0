@@ -107,6 +107,65 @@ User Browser → HTTPS → Google Gemini API
 - Review Google's Gemini privacy policy
 - Rotate API keys periodically
 
+### CyberEditor: Advanced Code Development
+
+The **CyberEditor** widget is a powerful, AI-enhanced code editor designed specifically for creating and editing Omni-Grid widgets and general code development.
+
+#### Key Features
+
+**1. Multi-Tab Interface**
+- Work on multiple files simultaneously
+- Each tab maintains independent content and language settings
+- Tab persistence across sessions via localStorage
+
+**2. Code Templates Library**
+- **Omni-Grid Widget Template:** Complete widget boilerplate with best practices
+- **React Component Template:** Standard React functional component structure
+- **API Fetch Template:** Robust async data fetching with error handling
+- **Zustand Store Template:** State management with persistence
+- **Custom Hook Template:** Reusable React hooks pattern
+
+**3. AI-Powered Assistance**
+- **Generate:** Create code from natural language descriptions
+- **Improve:** Refactor code for better performance and readability
+- **Explain:** Add detailed comments explaining code logic
+- Direct integration with Gemini Flash for fast responses
+
+**4. Language Support**
+- TypeScript, JavaScript, Python, Java, C++, Rust, Go
+- HTML, CSS, JSON, Markdown, SQL
+- Automatic syntax context for AI operations
+
+**5. Developer Tools**
+- Code formatting (auto-indentation)
+- Copy/Download functionality
+- Character and line count tracking
+- Status bar with language indicator
+
+#### Use Cases
+
+**Widget Development:**
+```
+1. Select "Omni-Grid Widget" template
+2. Customize widget logic and UI
+3. Use AI to generate specific features
+4. Export and integrate into /widgets directory
+```
+
+**Code Learning:**
+```
+1. Paste unfamiliar code
+2. Click "Explain" for AI-generated comments
+3. Use "Improve" to see best practices
+```
+
+**Rapid Prototyping:**
+```
+1. Describe feature in AI prompt
+2. Generate initial implementation
+3. Iterate with "Improve" until satisfied
+```
+
 ---
 
 ## 3. CROSS-TALK PROTOCOL
