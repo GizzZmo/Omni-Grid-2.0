@@ -60,6 +60,7 @@
 - **Git Pulse:** Pull Request monitoring dashboard.
 - **Widget Architect:** AI-driven prototype generation for new widgets.
 - **CyberEditor:** Advanced code editor with multi-tab support, templates, and AI-powered code generation/improvement for creating Omni-Grid widgets.
+- **Prompt Lab:** Version-controlled prompt workspace with template variables, token/cost telemetry, and side-by-side provider comparisons.
 
 ### 🎨 Creative & Utility
 

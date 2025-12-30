@@ -6,6 +6,13 @@
 - **Icons:** Use `lucide-react` exclusively.
 - **Colors:** Adhere to the `slate-950` background palette. Use vivid accent colors (`cyan`, `emerald`, `fuchsia`, `amber`) for data points.
 
+## 1.1 Local Setup
+
+- Install dependencies: `npm install`
+- Run the UI tests: `npm run test:run`
+- Type safety: `npm run typecheck` (tsconfig is strict)
+- Linting: `npm run lint`
+
 ## 2. Widget Guidelines
 
 - **Isolation:** Widgets should be self-contained. They should not rely on the internal state of other widgets unless communicating via the global Store or Cross-Talk.

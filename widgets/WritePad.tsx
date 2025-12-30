@@ -13,7 +13,13 @@ import { GoogleGenAI } from '@google/genai';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getAi = () => {
+  const apiKey = (import.meta as any).env?.VITE_API_KEY || process.env.API_KEY;
+  if (!apiKey) {
+    throw new Error('API key missing');
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 const TEMPLATES: Record<string, string> = {
   Blank: '',
@@ -190,6 +196,7 @@ export const WritePad: React.FC = () => {
     if (!prompt.trim()) return;
     setLoading(true);
     try {
+      const ai = getAi();
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `Draft a formal document based on this request: "${prompt}". 
@@ -202,8 +209,8 @@ export const WritePad: React.FC = () => {
       setLocalContent(generated);
       setWritePadContent(generated);
       setShowPrompt(false);
-    } catch (e) {
-      setLocalContent(localContent + '\n\n[AI Generation Failed]');
+    } catch (e: any) {
+      setLocalContent(prev => `${prev}\n\n[AI Generation Failed: ${e?.message ?? 'unknown error'}]`);
     } finally {
       setLoading(false);
     }

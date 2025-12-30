@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Terminal, Play, Trash2, AlertTriangle } from 'lucide-react';
+import { Terminal, Play, Trash2 } from 'lucide-react';
 
 export const WebTerminal: React.FC = () => {
   const [history, setHistory] = useState<Array<{ type: 'in' | 'out' | 'err'; content: string }>>([
     { type: 'out', content: 'Omni-Grid JS Runtime Environment v1.0.0' },
     { type: 'out', content: 'Type JavaScript code to execute locally.' },
+    { type: 'out', content: 'Human-in-the-loop guard is enabled.' },
   ]);
   const [input, setInput] = useState('');
+  const [requireConfirm, setRequireConfirm] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,6 +21,14 @@ export const WebTerminal: React.FC = () => {
     const cmd = input;
     setHistory(prev => [...prev, { type: 'in', content: cmd }]);
     setInput('');
+
+    if (requireConfirm) {
+      const allowed = window.confirm('Execute this command inside the sandbox?');
+      if (!allowed) {
+        setHistory(prev => [...prev, { type: 'out', content: 'Command cancelled by operator.' }]);
+        return;
+      }
+    }
 
     try {
       let result = eval(cmd);
@@ -59,6 +69,14 @@ export const WebTerminal: React.FC = () => {
           className="flex-1 bg-transparent border-none outline-none text-slate-200"
           placeholder="console.log('Hello World')"
         />
+        <label className="flex items-center gap-1 text-[10px] text-amber-300">
+          <input
+            type="checkbox"
+            checked={requireConfirm}
+            onChange={e => setRequireConfirm(e.target.checked)}
+          />
+          Guard
+        </label>
         <button onClick={() => setHistory([])} className="text-slate-600 hover:text-red-400">
           <Trash2 size={12} />
         </button>

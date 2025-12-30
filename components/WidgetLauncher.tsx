@@ -32,6 +32,7 @@ import {
   X,
   Briefcase,
   Clipboard,
+  GitBranch,
 } from 'lucide-react';
 
 // Manual mapping of all available widget types to icons and names
@@ -315,6 +316,14 @@ export const WIDGET_REGISTRY = [
     color: 'text-cyan-400',
     bg: 'bg-cyan-900/20',
     border: 'border-cyan-500/50',
+  },
+  {
+    id: 'PROMPT_LAB',
+    name: 'Prompt Lab',
+    icon: GitBranch,
+    color: 'text-fuchsia-400',
+    bg: 'bg-fuchsia-900/20',
+    border: 'border-fuchsia-500/50',
   },
 ];
 
