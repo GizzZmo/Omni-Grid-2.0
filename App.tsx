@@ -26,6 +26,7 @@ import {
   Play,
   Ghost,
   FileCode,
+  GitBranch,
 } from 'lucide-react';
 import { downloadJson, uploadJson } from './utils';
 
@@ -327,6 +328,13 @@ const App: React.FC = () => {
               icon={<Code2 size={18} />}
               label="DevTools"
               color="bg-orange-500"
+            />
+            <DockItem
+              active={visibleWidgets.includes('PROMPT_LAB')}
+              onClick={() => toggleWidget('PROMPT_LAB')}
+              icon={<GitBranch size={18} />}
+              label="Prompt Lab"
+              color="bg-fuchsia-500"
             />
             <DockItem
               active={visibleWidgets.includes('WEB_TERMINAL')}

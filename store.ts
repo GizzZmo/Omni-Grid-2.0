@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { GridItemData, WidgetType, AppTheme, GhostData } from './types';
+import {
+  GridItemData,
+  WidgetType,
+  AppTheme,
+  GhostData,
+  PromptTemplate,
+  PromptVersion,
+} from './types';
+import { estimateTokens } from './services/promptEngine';
 
 interface AppState {
   layouts: { lg: GridItemData[] };
@@ -98,6 +106,17 @@ interface AppState {
   ) => void;
   cyberEditorActiveTab: string;
   setCyberEditorActiveTab: (tabId: string) => void;
+
+  // Prompt Lab
+  promptLibrary: PromptTemplate[];
+  activePromptId: string | null;
+  setActivePrompt: (id: string) => void;
+  updatePromptContent: (id: string, content: string) => void;
+  savePromptVersion: (id: string, note?: string) => void;
+  restorePromptVersion: (id: string, versionId: string) => void;
+  updatePromptVariables: (id: string, variables: Record<string, string>) => void;
+  tagPrompt: (id: string, tags: string[]) => void;
+  addPrompt: (template: PromptTemplate) => void;
 }
 
 const DEFAULT_LAYOUT: GridItemData[] = [
@@ -141,6 +160,7 @@ const DEFAULT_LAYOUT: GridItemData[] = [
   // New
   { i: 'STRATEGIC', x: 6, y: 112, w: 6, h: 8 },
   { i: 'CLIPBOARD', x: 0, y: 120, w: 4, h: 8 },
+  { i: 'PROMPT_LAB', x: 4, y: 120, w: 8, h: 12 },
 ];
 
 const DEFAULT_THEME: AppTheme = {
@@ -160,11 +180,48 @@ const DEFAULT_THEME: AppTheme = {
 // Helper to deep copy layout to avoid mutation issues
 const getCleanLayout = () => JSON.parse(JSON.stringify(DEFAULT_LAYOUT));
 
+const buildVersion = (content: string, note?: string): PromptVersion => ({
+  id: crypto.randomUUID(),
+  content,
+  createdAt: new Date().toISOString(),
+  note,
+  tokens: estimateTokens(content),
+});
+
+const DEFAULT_PROMPTS: PromptTemplate[] = [
+  {
+    id: 'prompt-bug',
+    name: 'Concise Bug Report',
+    tags: ['coding', 'diagnostics'],
+    content:
+      'You are a senior engineer. Summarize the defect, steps to reproduce, expected vs actual, logs, and risk. Use bullet points and keep under 120 words.',
+    variables: {},
+    versions: [buildVersion('Concise bug report template v1')],
+  },
+  {
+    id: 'prompt-story',
+    name: 'Narrative Storyboard',
+    tags: ['creative', 'writing'],
+    content:
+      'Draft a storyboard for {{customer_name}} with 5 beats: hook, conflict, mentor, transformation, and closing CTA. Tone: optimistic cyberpunk. Max 8 sentences.',
+    variables: { customer_name: 'Omni Grid Explorer' },
+    versions: [buildVersion('Storyboard template baseline')],
+  },
+];
+
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
       layouts: { lg: getCleanLayout() },
-      visibleWidgets: ['SYSTEM', 'HELP', 'SCRATCHPAD', 'TRANSFORMER', 'ASSET', 'STRATEGIC'],
+      visibleWidgets: [
+        'SYSTEM',
+        'HELP',
+        'SCRATCHPAD',
+        'TRANSFORMER',
+        'ASSET',
+        'STRATEGIC',
+        'PROMPT_LAB',
+      ],
 
       toggleWidget: (widgetId: string) =>
         set(state => {
@@ -233,6 +290,8 @@ export const useAppStore = create<AppState>()(
             },
           ],
           cyberEditorActiveTab: '1',
+          promptLibrary: DEFAULT_PROMPTS,
+          activePromptId: DEFAULT_PROMPTS[0]?.id ?? null,
         }),
 
       // Grid Intelligence
@@ -354,6 +413,49 @@ export const useAppStore = create<AppState>()(
       setCyberEditorTabs: tabs => set({ cyberEditorTabs: tabs }),
       cyberEditorActiveTab: '1',
       setCyberEditorActiveTab: tabId => set({ cyberEditorActiveTab: tabId }),
+
+      // Prompt Lab
+      promptLibrary: DEFAULT_PROMPTS,
+      activePromptId: DEFAULT_PROMPTS[0]?.id ?? null,
+      setActivePrompt: id => set({ activePromptId: id }),
+      updatePromptContent: (id, content) =>
+        set(state => ({
+          promptLibrary: state.promptLibrary.map(p =>
+            p.id === id ? { ...p, content } : p
+          ),
+        })),
+      savePromptVersion: (id, note) =>
+        set(state => ({
+          promptLibrary: state.promptLibrary.map(p =>
+            p.id === id ? { ...p, versions: [buildVersion(p.content, note), ...p.versions] } : p
+          ),
+        })),
+      restorePromptVersion: (id, versionId) =>
+        set(state => {
+          const template = state.promptLibrary.find(p => p.id === id);
+          const version = template?.versions.find(v => v.id === versionId);
+          if (!template || !version) return {};
+          return {
+            promptLibrary: state.promptLibrary.map(p =>
+              p.id === id ? { ...p, content: version.content } : p
+            ),
+          };
+        }),
+      updatePromptVariables: (id, variables) =>
+        set(state => ({
+          promptLibrary: state.promptLibrary.map(p =>
+            p.id === id ? { ...p, variables } : p
+          ),
+        })),
+      tagPrompt: (id, tags) =>
+        set(state => ({
+          promptLibrary: state.promptLibrary.map(p => (p.id === id ? { ...p, tags } : p)),
+        })),
+      addPrompt: template =>
+        set(state => ({
+          promptLibrary: [template, ...state.promptLibrary],
+          activePromptId: template.id,
+        })),
     }),
     {
       name: 'omni-grid-storage',

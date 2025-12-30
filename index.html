@@ -17,6 +17,17 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/react-resizable/3.0.4/css/styles.css"
     />
+    <script>
+      const isLocal =
+        location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      if (isLocal) {
+        window.process = window.process || { env: {} };
+        window.process.env = window.process.env || {};
+        if (!window.process.env.API_KEY) {
+          window.process.env.API_KEY = 'AI-FAKE-KEY-123';
+        }
+      }
+    </script>
     <style id="theme-root">
       :root {
         --color-bg: #0f0518;

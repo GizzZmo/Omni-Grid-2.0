@@ -40,6 +40,7 @@ import { RegRadar } from '../widgets/RegRadar';
 import { MarketWidget } from '../widgets/MarketWidget';
 import { StrategicBlueprint } from '../widgets/StrategicBlueprint';
 import { ClipboardStream } from '../widgets/ClipboardStream';
+import { PromptLab } from '../widgets/PromptLab';
 
 import {
   FileJson,
@@ -73,6 +74,7 @@ import {
   Briefcase,
   Clipboard,
   FileCode,
+  GitBranch,
 } from 'lucide-react';
 import { downloadJson, uploadJson } from '../utils';
 
@@ -541,6 +543,17 @@ export const GridContainer: React.FC = () => {
           className="h-full"
         >
           <ClipboardStream />
+        </WidgetShell>
+      ),
+      PROMPT_LAB: (
+        <WidgetShell
+          id="PROMPT_LAB"
+          title="Prompt Lab"
+          icon={<GitBranch size={14} />}
+          accentColor="text-fuchsia-400"
+          className="h-full"
+        >
+          <PromptLab />
         </WidgetShell>
       ),
     }),

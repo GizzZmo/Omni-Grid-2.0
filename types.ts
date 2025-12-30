@@ -40,7 +40,9 @@ export type WidgetType =
   | 'MARKET'
   // New Additions
   | 'STRATEGIC'
-  | 'CLIPBOARD';
+  | 'CLIPBOARD'
+  // Prompt Workspace
+  | 'PROMPT_LAB';
 
 export interface WidgetConfig {
   id: string;
@@ -95,4 +97,47 @@ export interface AppTheme {
   };
   font: string;
   radius: string;
+}
+
+export interface PromptVersion {
+  id: string;
+  content: string;
+  createdAt: string;
+  note?: string;
+  tokens: number;
+}
+
+export interface PromptTemplate {
+  id: string;
+  name: string;
+  content: string;
+  tags: string[];
+  versions: PromptVersion[];
+  variables: Record<string, string>;
+}
+
+export interface PromptMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+export interface CompletionResponse {
+  providerId: string;
+  output: string;
+  tokens: {
+    input: number;
+    output: number;
+  };
+  cost: number;
+  latencyMs: number;
+}
+
+export interface AIProvider {
+  id: string;
+  name: string;
+  model: string;
+  costPer1kTokens: number;
+  latencyMs?: number;
+  run: (prompt: string) => Promise<CompletionResponse>;
+  estimateTokens: (text: string) => number;
 }
