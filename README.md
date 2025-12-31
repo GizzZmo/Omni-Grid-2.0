@@ -98,6 +98,8 @@ API_KEY=your_google_gemini_api_key_here
 E2B_API_KEY=your_e2b_api_key_here
 ```
 
+`API_KEY` powers Gemini-based assistants, while `E2B_API_KEY` is used for sandboxed Python execution.
+
 4.  **Ignition**
     ```bash
     npm run dev

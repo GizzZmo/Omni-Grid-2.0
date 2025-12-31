@@ -273,6 +273,7 @@ const MyComponent = () => {
 };
 
 export const CYBER_EDITOR_LANGUAGES = DEV_DOCS_LANGUAGES;
+const SANDBOX_NO_OUTPUT = 'Execution completed with no output.';
 
 export const CyberEditor: React.FC = () => {
   const { cyberEditorTabs, setCyberEditorTabs, cyberEditorActiveTab, setCyberEditorActiveTab } =
@@ -399,7 +400,7 @@ export const CyberEditor: React.FC = () => {
 
     try {
       const result = await executePythonInSandbox(activeTab.content);
-      setSandboxResult(result.output || 'Execution completed with no output.');
+      setSandboxResult(result.output || SANDBOX_NO_OUTPUT);
       if (result.error) {
         setSandboxError(result.error);
       }
@@ -712,7 +713,7 @@ export const CyberEditor: React.FC = () => {
               sandboxError ? 'text-rose-400' : 'text-emerald-300'
             }`}
           >
-            {sandboxError ? sandboxError : sandboxResult || 'Execution completed with no output.'}
+            {sandboxError ? sandboxError : sandboxResult || SANDBOX_NO_OUTPUT}
           </pre>
         </div>
       )}

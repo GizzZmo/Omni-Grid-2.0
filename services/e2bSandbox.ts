@@ -65,6 +65,9 @@ export const executePythonInSandbox = async (
     await fetchImpl(`${E2B_API_BASE}/sandboxes/${sandboxId}`, {
       method: 'DELETE',
       headers,
-    }).catch(() => undefined);
+    }).catch(error => {
+      console.warn('E2B sandbox teardown failed', error);
+      return undefined;
+    });
   }
 };
