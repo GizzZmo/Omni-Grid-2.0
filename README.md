@@ -93,9 +93,10 @@
 3.  **Configure Environment**
     Create a `.env` file in the root directory:
 
-    ```env
-    API_KEY=your_google_gemini_api_key_here
-    ```
+```env
+API_KEY=your_google_gemini_api_key_here
+E2B_API_KEY=your_e2b_api_key_here
+```
 
 4.  **Ignition**
     ```bash
