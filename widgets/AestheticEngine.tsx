@@ -4,7 +4,7 @@ import { useAppStore } from '../store';
 import { AppTheme } from '../types';
 import { getGenAIClient } from '../services/geminiService';
 
-const ai = getGenAIClient();
+const getAi = () => getGenAIClient();
 
 export const AestheticEngine: React.FC = () => {
   const { setTheme, theme } = useAppStore();
@@ -49,13 +49,15 @@ export const AestheticEngine: React.FC = () => {
 
   const generateTheme = async (imageBase64?: string) => {
     if (!prompt.trim() && !imageBase64) return;
-    if (!ai) {
-      console.warn('Aesthetic Engine requires an API key to generate themes.');
-      return;
-    }
     setLoading(true);
 
     try {
+      const ai = getAi();
+      if (!ai) {
+        console.warn('Aesthetic Engine requires an API key to generate themes.');
+        setLoading(false);
+        return;
+      }
       let userPrompt = '';
       if (imageBase64) {
         userPrompt = 'Extract a color palette and aesthetic from this image. ';

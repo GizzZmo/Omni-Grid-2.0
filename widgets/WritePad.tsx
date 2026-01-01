@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   PenTool,
   FileText,
@@ -13,12 +13,27 @@ import { GoogleGenAI } from '@google/genai';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
 
-const getAi = () => {
-  const apiKey = (import.meta as any).env?.VITE_API_KEY || process.env.API_KEY;
-  if (!apiKey) {
+const resolveGeminiKey = (userKey?: string) => {
+  const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
+  const runtimeEnv = (typeof window !== 'undefined' && (window as any).process?.env) || {};
+  return (
+    userKey ||
+    metaEnv.VITE_API_KEY ||
+    metaEnv.GEMINI_API_KEY ||
+    runtimeEnv.GEMINI_API_KEY ||
+    runtimeEnv.API_KEY ||
+    process.env.GEMINI_API_KEY ||
+    process.env.API_KEY ||
+    ''
+  );
+};
+
+const getAi = (apiKey?: string) => {
+  const key = resolveGeminiKey(apiKey);
+  if (!key) {
     throw new Error('API key missing');
   }
-  return new GoogleGenAI({ apiKey });
+  return new GoogleGenAI({ apiKey: key });
 };
 
 const TEMPLATES: Record<string, string> = {
@@ -152,6 +167,7 @@ Payment Methods: [Bank Transfer/PayPal]`,
 
 export const WritePad: React.FC = () => {
   const { writePadContent, setWritePadContent } = useAppStore();
+  const geminiApiKey = useAppStore(s => s.settings.geminiApiKey);
   // Performance: Local state
   const [localContent, setLocalContent] = useState(writePadContent);
   const [selectedTemplate, setSelectedTemplate] = useState('Blank');
@@ -160,6 +176,7 @@ export const WritePad: React.FC = () => {
   const [prompt, setPrompt] = useState('');
   const [showPrompt, setShowPrompt] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Sync from store (e.g. reload or reset)
   useEffect(() => {
@@ -196,7 +213,7 @@ export const WritePad: React.FC = () => {
     if (!prompt.trim()) return;
     setLoading(true);
     try {
-      const ai = getAi();
+      const ai = getAi(geminiApiKey);
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `Draft a formal document based on this request: "${prompt}". 
@@ -240,6 +257,28 @@ export const WritePad: React.FC = () => {
     }
   };
 
+  const handleFileOpen = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const text = await file.text();
+    setLocalContent(text);
+    setWritePadContent(text);
+  };
+
+  const handleSaveFile = () => {
+    const blob = new Blob([localContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'writepad.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="h-full flex flex-col gap-3">
       {/* Toolbar */}
@@ -264,6 +303,23 @@ export const WritePad: React.FC = () => {
         <div className="w-[1px] h-4 bg-slate-700 mx-1"></div>
 
         <button
+          onClick={handleFileOpen}
+          className="flex items-center gap-1 text-[10px] px-2 py-1 rounded font-bold transition-colors bg-slate-800 text-slate-400 hover:text-emerald-400"
+          aria-label="Open File"
+        >
+          <FileText size={12} /> Open
+        </button>
+        <button
+          onClick={handleSaveFile}
+          className="flex items-center gap-1 text-[10px] px-2 py-1 rounded font-bold transition-colors bg-slate-800 text-slate-400 hover:text-emerald-400"
+          aria-label="Save File"
+        >
+          <ArrowDownToLine size={12} /> Save
+        </button>
+
+        <div className="w-[1px] h-4 bg-slate-700 mx-1"></div>
+
+        <button
           onClick={() => setShowPrompt(!showPrompt)}
           className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded font-bold transition-colors ${showPrompt ? 'bg-rose-900/50 text-rose-300' : 'bg-slate-800 text-slate-400 hover:text-rose-400'}`}
           aria-expanded={showPrompt}
@@ -284,6 +340,14 @@ export const WritePad: React.FC = () => {
           <Eraser size={14} />
         </button>
       </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".txt,.md,.json,.ts,.tsx,.js,.py,.csv,.html"
+        className="hidden"
+        onChange={handleFileChange}
+      />
 
       {/* AI Prompt Input (Conditional) */}
       {showPrompt && (

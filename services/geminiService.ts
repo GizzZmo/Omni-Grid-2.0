@@ -1,6 +1,12 @@
 import { GoogleGenAI } from '@google/genai';
+import { useAppStore } from '../store';
 
-const resolveApiKey = () => {
+const resolveApiKey = (overrideKey?: string) => {
+  if (overrideKey?.trim()) return overrideKey.trim();
+
+  const storeKey = useAppStore.getState()?.settings?.geminiApiKey;
+  if (storeKey) return storeKey;
+
   const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
   const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
   const browserEnv =
@@ -12,23 +18,29 @@ const resolveApiKey = () => {
     nodeEnv.GEMINI_API_KEY ||
     nodeEnv.API_KEY ||
     browserEnv.GEMINI_API_KEY ||
-    browserEnv.API_KEY
+    browserEnv.API_KEY ||
+    ''
   );
 };
 
-let aiInitialized = false;
 let ai: GoogleGenAI | null = null;
+let cachedKey: string | null = null;
 
-export const getGenAIClient = (): GoogleGenAI | null => {
-  if (aiInitialized) return ai;
+export const getGenAIClient = (overrideKey?: string): GoogleGenAI | null => {
+  const apiKey = resolveApiKey(overrideKey);
+  if (!apiKey) {
+    ai = null;
+    cachedKey = null;
+    return null;
+  }
 
-  const apiKey = resolveApiKey();
-  ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
-  aiInitialized = true;
+  if (!ai || cachedKey !== apiKey) {
+    ai = new GoogleGenAI({ apiKey });
+    cachedKey = apiKey;
+  }
+
   return ai;
 };
-
-const client = getGenAIClient();
 
 export async function refineText(
   text: string,
@@ -57,6 +69,7 @@ export async function refineText(
       break;
   }
 
+  const client = getGenAIClient();
   if (!client) {
     return text;
   }

@@ -14,7 +14,7 @@ import {
 import { useAppStore } from '../store';
 import { getGenAIClient } from '../services/geminiService';
 
-const ai = getGenAIClient();
+const getAi = () => getGenAIClient();
 
 const ASSET_CONTEXT: Record<string, string> = {
   NOK: 'The Physical Layer: 5G/6G IP Fortress & B2B Infrastructure.',
@@ -58,6 +58,7 @@ export const AssetCommand: React.FC = () => {
   };
 
   const analyzeSmartGrid = async () => {
+    const ai = getAi();
     if (!ai) {
       setIntelResult('Neural Link offline (missing API key).');
       return;

@@ -3,8 +3,6 @@ import { Command, Loader2, Terminal, Search, Zap } from 'lucide-react';
 import { useAppStore } from '../store';
 import { getGenAIClient } from '../services/geminiService';
 
-const ai = getGenAIClient();
-
 export const CommandPalette: React.FC = () => {
   const { isCmdPaletteOpen, setCmdPaletteOpen, toggleWidget, resetAll, toggleLayoutLock } =
     useAppStore();
@@ -34,6 +32,7 @@ export const CommandPalette: React.FC = () => {
 
   const executeCommand = async () => {
     if (!input.trim()) return;
+    const ai = getGenAIClient();
     if (!ai) {
       console.warn('AI Command Processor is offline (missing API key).');
       setInput('');

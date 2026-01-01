@@ -1,12 +1,11 @@
 import { GridItemData, GhostData } from '../types';
 import { getGenAIClient } from './geminiService';
 
-const ai = getGenAIClient();
-
 export async function optimizeLayout(
   currentLayout: GridItemData[],
   visibleWidgets: string[]
 ): Promise<{ layout: GridItemData[]; ghost?: GhostData }> {
+  const ai = getGenAIClient();
   if (!ai) {
     return { layout: currentLayout };
   }
@@ -61,6 +60,7 @@ export async function processCrossTalk(
   droppedText: string,
   targetWidgetType: string
 ): Promise<string> {
+  const ai = getGenAIClient();
   if (!ai) {
     return droppedText;
   }
