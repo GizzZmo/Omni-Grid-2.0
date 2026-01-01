@@ -23,6 +23,7 @@ import { useAppStore } from '../store';
 import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
 import { executePythonInSandbox } from '../services/e2bSandbox';
 import { getGenAIClient } from '../services/geminiService';
+import { COMMON_FILE_ACCEPTS } from './fileAccepts';
 
 interface CodeTab {
   id: string;
@@ -610,7 +611,7 @@ export const CyberEditor: React.FC = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".txt,.md,.json,.js,.jsx,.ts,.tsx,.py,.go,.rs,.java,.kt,.php,.sql,.yml,.yaml,.html,.css"
+        accept={COMMON_FILE_ACCEPTS}
         className="hidden"
         onChange={handleFileChange}
       />

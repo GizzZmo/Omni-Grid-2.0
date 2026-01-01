@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PenTool, FileText, Eraser, Sparkles, Copy, Check, Loader2, ArrowDownToLine } from 'lucide-react';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
+import { COMMON_FILE_ACCEPTS } from './fileAccepts';
 import { getGenAIClient } from '../services/geminiService';
 
 const TEMPLATES: Record<string, string> = {
@@ -314,7 +315,7 @@ export const WritePad: React.FC = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".txt,.md,.json,.ts,.tsx,.js,.jsx,.py,.csv,.html,.css,.go,.rs,.java,.kt,.php,.sql,.yml,.yaml"
+        accept={COMMON_FILE_ACCEPTS}
         className="hidden"
         onChange={handleFileChange}
       />

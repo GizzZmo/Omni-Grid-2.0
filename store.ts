@@ -35,17 +35,16 @@ const resolveEnvE2BKey = () => {
 };
 
 const syncRuntimeKey = (key: 'API_KEY' | 'E2B_API_KEY' | 'GEMINI_API_KEY', value: string) => {
-  if (!value) return;
   if (typeof process !== 'undefined') {
     process.env = process.env || {};
-    process.env[key] = value;
+    process.env[key] = value || '';
   }
   if (typeof window !== 'undefined') {
     (window as any).process = (window as any).process || { env: {} };
     (window as any).process.env = (window as any).process.env || {};
-    (window as any).process.env[key] = value;
+    (window as any).process.env[key] = value || '';
     if (key === 'E2B_API_KEY') {
-      (window as any).E2B_API_KEY = value;
+      (window as any).E2B_API_KEY = value || '';
     }
   }
 };
