@@ -1,4 +1,10 @@
 const E2B_API_BASE = 'https://api.e2b.dev/v1';
+const getRuntimeApiKey = () => {
+  if (typeof window !== 'undefined' && (window as any).E2B_API_KEY) {
+    return (window as any).E2B_API_KEY as string;
+  }
+  return process.env.E2B_API_KEY;
+};
 
 export interface SandboxExecutionResult {
   output: string;
@@ -13,7 +19,7 @@ export const executePythonInSandbox = async (
     throw new Error('No code provided for sandbox execution.');
   }
 
-  const apiKey = process.env.E2B_API_KEY;
+  const apiKey = getRuntimeApiKey();
   if (!apiKey) {
     throw new Error('Missing E2B_API_KEY for sandbox execution.');
   }

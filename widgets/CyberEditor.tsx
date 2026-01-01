@@ -404,8 +404,9 @@ export const CyberEditor: React.FC = () => {
       if (result.error) {
         setSandboxError(result.error);
       }
-    } catch (error: any) {
-      setSandboxError(error?.message || 'Sandbox execution failed.');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Sandbox execution failed.';
+      setSandboxError(message);
     } finally {
       setSandboxRunning(false);
     }
