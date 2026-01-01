@@ -20,9 +20,9 @@ import {
   FolderOpen,
 } from 'lucide-react';
 import { useAppStore } from '../store';
-import { GoogleGenAI } from '@google/genai';
 import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
 import { executePythonInSandbox } from '../services/e2bSandbox';
+import { getGenAIClient } from '../services/geminiService';
 
 interface CodeTab {
   id: string;
@@ -273,21 +273,6 @@ const MyComponent = () => {
   },
 };
 
-const resolveGeminiKey = (userKey?: string) => {
-  const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
-  const runtimeEnv = (typeof window !== 'undefined' && (window as any).process?.env) || {};
-  return (
-    userKey ||
-    metaEnv.VITE_API_KEY ||
-    metaEnv.GEMINI_API_KEY ||
-    runtimeEnv.GEMINI_API_KEY ||
-    runtimeEnv.API_KEY ||
-    process.env.GEMINI_API_KEY ||
-    process.env.API_KEY ||
-    ''
-  );
-};
-
 export const CYBER_EDITOR_LANGUAGES = DEV_DOCS_LANGUAGES;
 const SANDBOX_NO_OUTPUT = 'Execution completed with no output.';
 
@@ -370,12 +355,6 @@ export const CyberEditor: React.FC = () => {
     }
   };
 
-  const getGeminiClient = () => {
-    const apiKey = resolveGeminiKey(geminiApiKey);
-    if (!apiKey) return null;
-    return new GoogleGenAI({ apiKey });
-  };
-
   const addTab = (template?: string) => {
     const newId = Date.now().toString();
     let newTab: CodeTab;
@@ -419,8 +398,8 @@ export const CyberEditor: React.FC = () => {
     };
     setTabs([...tabs, newTab]);
     setActiveTabId(newId);
-    if (e.target) {
-      e.target.value = '';
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -505,7 +484,7 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
-      const ai = getGeminiClient();
+      const ai = getGenAIClient(geminiApiKey);
       if (!ai) {
         updateTabContent(
           '// Error: Please add your Gemini API key in System Settings before generating.'
@@ -554,7 +533,7 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
-      const ai = getGeminiClient();
+      const ai = getGenAIClient(geminiApiKey);
       if (!ai) {
         console.error('No API key available');
         setAiLoading(false);
@@ -600,7 +579,7 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
-      const ai = getGeminiClient();
+      const ai = getGenAIClient(geminiApiKey);
       if (!ai) {
         console.error('No API key available');
         setAiLoading(false);

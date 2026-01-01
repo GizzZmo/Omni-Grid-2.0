@@ -35,6 +35,7 @@ const resolveEnvE2BKey = () => {
 };
 
 const syncRuntimeKey = (key: 'API_KEY' | 'E2B_API_KEY' | 'GEMINI_API_KEY', value: string) => {
+  if (!value) return;
   if (typeof process !== 'undefined') {
     process.env = process.env || {};
     process.env[key] = value;

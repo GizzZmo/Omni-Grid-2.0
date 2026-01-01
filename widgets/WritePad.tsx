@@ -1,40 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  PenTool,
-  FileText,
-  Eraser,
-  Sparkles,
-  Copy,
-  Check,
-  Loader2,
-  ArrowDownToLine,
-} from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
+import { PenTool, FileText, Eraser, Sparkles, Copy, Check, Loader2, ArrowDownToLine } from 'lucide-react';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
-
-const resolveGeminiKey = (userKey?: string) => {
-  const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
-  const runtimeEnv = (typeof window !== 'undefined' && (window as any).process?.env) || {};
-  return (
-    userKey ||
-    metaEnv.VITE_API_KEY ||
-    metaEnv.GEMINI_API_KEY ||
-    runtimeEnv.GEMINI_API_KEY ||
-    runtimeEnv.API_KEY ||
-    process.env.GEMINI_API_KEY ||
-    process.env.API_KEY ||
-    ''
-  );
-};
-
-const getAi = (apiKey?: string) => {
-  const key = resolveGeminiKey(apiKey);
-  if (!key) {
-    throw new Error('API key missing');
-  }
-  return new GoogleGenAI({ apiKey: key });
-};
+import { getGenAIClient } from '../services/geminiService';
 
 const TEMPLATES: Record<string, string> = {
   Blank: '',
@@ -167,7 +135,6 @@ Payment Methods: [Bank Transfer/PayPal]`,
 
 export const WritePad: React.FC = () => {
   const { writePadContent, setWritePadContent } = useAppStore();
-  const geminiApiKey = useAppStore(s => s.settings.geminiApiKey);
   // Performance: Local state
   const [localContent, setLocalContent] = useState(writePadContent);
   const [selectedTemplate, setSelectedTemplate] = useState('Blank');
@@ -213,7 +180,10 @@ export const WritePad: React.FC = () => {
     if (!prompt.trim()) return;
     setLoading(true);
     try {
-      const ai = getAi(geminiApiKey);
+      const ai = getGenAIClient();
+      if (!ai) {
+        throw new Error('API key missing');
+      }
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `Draft a formal document based on this request: "${prompt}". 
@@ -274,7 +244,7 @@ export const WritePad: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'writepad.txt';
+    a.download = `writepad-${new Date().toISOString().slice(0, 10)}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
