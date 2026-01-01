@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Command, Loader2, Terminal, Search, Zap } from 'lucide-react';
 import { useAppStore } from '../store';
-import { GoogleGenAI } from '@google/genai';
+import { getGenAIClient } from '../services/geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 export const CommandPalette: React.FC = () => {
   const { isCmdPaletteOpen, setCmdPaletteOpen, toggleWidget, resetAll, toggleLayoutLock } =
@@ -34,6 +34,11 @@ export const CommandPalette: React.FC = () => {
 
   const executeCommand = async () => {
     if (!input.trim()) return;
+    if (!ai) {
+      console.warn('AI Command Processor is offline (missing API key).');
+      setInput('');
+      return;
+    }
     setLoading(true);
 
     try {

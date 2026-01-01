@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { Palette, Image as ImageIcon, Wand2, Upload, Loader2, RefreshCw } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
 import { useAppStore } from '../store';
 import { AppTheme } from '../types';
+import { getGenAIClient } from '../services/geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 export const AestheticEngine: React.FC = () => {
   const { setTheme, theme } = useAppStore();
@@ -49,6 +49,10 @@ export const AestheticEngine: React.FC = () => {
 
   const generateTheme = async (imageBase64?: string) => {
     if (!prompt.trim() && !imageBase64) return;
+    if (!ai) {
+      console.warn('Aesthetic Engine requires an API key to generate themes.');
+      return;
+    }
     setLoading(true);
 
     try {

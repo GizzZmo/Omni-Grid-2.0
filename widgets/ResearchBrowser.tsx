@@ -8,9 +8,9 @@ import {
   Link as LinkIcon,
   AlertCircle,
 } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
+import { getGenAIClient } from '../services/geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 export const ResearchBrowser: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -25,6 +25,12 @@ export const ResearchBrowser: React.FC = () => {
     setLoading(true);
     setContent(null);
     setError(null);
+
+    if (!ai) {
+      setError('Research Uplink requires a configured API key.');
+      setLoading(false);
+      return;
+    }
 
     try {
       // Using gemini-3-flash-preview for low latency research tasks

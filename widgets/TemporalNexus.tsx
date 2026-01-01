@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Calendar, History, RefreshCcw, Loader2 } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
+import { getGenAIClient } from '../services/geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 export const TemporalNexus: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -17,6 +17,11 @@ export const TemporalNexus: React.FC = () => {
 
   const fetchHistory = async () => {
     if (historyData && historyData.length > 10) return; // Cache simple check
+
+    if (!ai) {
+      setHistoryData('Temporal Uplink requires a configured API key.');
+      return;
+    }
 
     setLoading(true);
     try {
