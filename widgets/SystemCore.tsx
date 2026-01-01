@@ -18,8 +18,17 @@ import {
 import { useAppStore } from '../store';
 
 export const SystemCore: React.FC = () => {
-  const { logs, resetAll, addLog, settings, toggleSetting, visibleWidgets, toggleWidget } =
-    useAppStore();
+  const {
+    logs,
+    resetAll,
+    addLog,
+    settings,
+    toggleSetting,
+    visibleWidgets,
+    toggleWidget,
+    setGeminiApiKey,
+    setE2bApiKey,
+  } = useAppStore();
   const [activeTab, setActiveTab] = useState<
     'STATUS' | 'TASKS' | 'LOGS' | 'SETTINGS' | 'MANIFESTO'
   >('STATUS');
@@ -88,18 +97,24 @@ export const SystemCore: React.FC = () => {
           </div>
 
           {/* API Key Status (Read Only) */}
-          <div className="bg-slate-900/50 p-2 border border-slate-800">
-            <div className="text-[10px] text-slate-500 uppercase mb-1 flex items-center gap-2">
+          <div className="bg-slate-900/50 p-2 border border-slate-800 flex flex-col gap-2">
+            <div className="text-[10px] text-slate-500 uppercase flex items-center gap-2">
               <Key size={10} /> Neural Link Status
             </div>
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-3 text-xs">
               <div
-                className={`w-2 h-2 rounded-full ${process.env.API_KEY ? 'bg-emerald-500 shadow-[0_0_5px_#10b981]' : 'bg-red-500'}`}
+                className={`w-2 h-2 rounded-full ${settings.geminiApiKey ? 'bg-emerald-500 shadow-[0_0_5px_#10b981]' : 'bg-red-500'}`}
               ></div>
               <span className="text-slate-300">
-                {process.env.API_KEY
-                  ? 'UPLINK ESTABLISHED (ENV)'
-                  : 'UPLINK OFFLINE - CHECK ENV VARS'}
+                {settings.geminiApiKey ? 'Gemini Ready' : 'Gemini Key Missing'}
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-xs">
+              <div
+                className={`w-2 h-2 rounded-full ${settings.e2bApiKey ? 'bg-emerald-500 shadow-[0_0_5px_#10b981]' : 'bg-red-500'}`}
+              ></div>
+              <span className="text-slate-300">
+                {settings.e2bApiKey ? 'E2B Sandbox Ready' : 'E2B Key Missing'}
               </span>
             </div>
           </div>
@@ -194,6 +209,48 @@ export const SystemCore: React.FC = () => {
                 className={`absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full transition-transform ${settings.sound ? 'translate-x-4' : 'translate-x-0'}`}
               ></div>
             </button>
+          </div>
+
+          <div className="flex flex-col gap-2 p-2 bg-slate-900/50 border border-slate-800 rounded">
+            <div className="flex items-center gap-2 text-xs text-slate-300">
+              <Key size={14} className="text-emerald-500" /> Gemini API Key
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="password"
+                value={settings.geminiApiKey}
+                onChange={e => setGeminiApiKey(e.target.value.trim())}
+                placeholder="Enter Google Gemini API key"
+                className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none"
+              />
+              <button
+                onClick={() => setGeminiApiKey('')}
+                className="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded border border-slate-700 hover:border-emerald-500 hover:text-emerald-400 transition-colors"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 p-2 bg-slate-900/50 border border-slate-800 rounded">
+            <div className="flex items-center gap-2 text-xs text-slate-300">
+              <Key size={14} className="text-cyan-500" /> E2B API Key
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="password"
+                value={settings.e2bApiKey}
+                onChange={e => setE2bApiKey(e.target.value.trim())}
+                placeholder="Enter E2B sandbox API key"
+                className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none"
+              />
+              <button
+                onClick={() => setE2bApiKey('')}
+                className="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded border border-slate-700 hover:border-cyan-500 hover:text-cyan-300 transition-colors"
+              >
+                Clear
+              </button>
+            </div>
           </div>
 
           {/* Danger Zone moved here */}

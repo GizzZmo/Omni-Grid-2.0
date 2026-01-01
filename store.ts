@@ -10,6 +10,55 @@ import {
 } from './types';
 import { estimateTokens } from './services/promptEngine';
 
+const resolveEnvGeminiKey = () => {
+  const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
+  const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
+  const browserEnv =
+    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
+
+  return (
+    metaEnv.VITE_API_KEY ||
+    metaEnv.GEMINI_API_KEY ||
+    nodeEnv.GEMINI_API_KEY ||
+    nodeEnv.API_KEY ||
+    browserEnv.GEMINI_API_KEY ||
+    browserEnv.API_KEY ||
+    ''
+  );
+};
+
+const resolveEnvE2BKey = () => {
+  const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
+  const browserEnv =
+    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
+  return nodeEnv.E2B_API_KEY || browserEnv.E2B_API_KEY || '';
+};
+
+const syncRuntimeKey = (key: 'API_KEY' | 'E2B_API_KEY' | 'GEMINI_API_KEY', value: string) => {
+  if (typeof process !== 'undefined') {
+    process.env = process.env || {};
+    process.env[key] = value || '';
+  }
+  if (typeof window !== 'undefined') {
+    (window as any).process = (window as any).process || { env: {} };
+    (window as any).process.env = (window as any).process.env || {};
+    (window as any).process.env[key] = value || '';
+    if (key === 'E2B_API_KEY') {
+      (window as any).E2B_API_KEY = value || '';
+    }
+  }
+};
+
+const DEFAULT_SETTINGS = {
+  scanlines: true,
+  sound: true,
+  geminiApiKey: resolveEnvGeminiKey(),
+  e2bApiKey: resolveEnvE2BKey(),
+};
+syncRuntimeKey('API_KEY', DEFAULT_SETTINGS.geminiApiKey);
+syncRuntimeKey('GEMINI_API_KEY', DEFAULT_SETTINGS.geminiApiKey);
+syncRuntimeKey('E2B_API_KEY', DEFAULT_SETTINGS.e2bApiKey);
+
 interface AppState {
   layouts: { lg: GridItemData[] };
   visibleWidgets: string[];
@@ -39,8 +88,12 @@ interface AppState {
   settings: {
     scanlines: boolean;
     sound: boolean;
+    geminiApiKey: string;
+    e2bApiKey: string;
   };
   toggleSetting: (key: 'scanlines' | 'sound') => void;
+  setGeminiApiKey: (key: string) => void;
+  setE2bApiKey: (key: string) => void;
 
   // Theme
   theme: AppTheme;
@@ -264,34 +317,40 @@ export const useAppStore = create<AppState>()(
 
       setGlobalState: newState => set(state => ({ ...state, ...newState })),
       resetAll: () =>
-        set({
-          layouts: { lg: getCleanLayout() },
-          visibleWidgets: ['SYSTEM', 'HELP'],
-          scratchpadContent: '',
-          tasks: [],
-          tickers: ['BTC', 'ETH', 'SOL', 'USDT', 'NOK'],
-          writePadContent: '',
-          weatherLocation: '',
-          isLayoutLocked: false,
-          isCompact: false,
-          theme: DEFAULT_THEME,
-          ghostWidget: null,
-          gitToken: '',
-          rssFeeds: ['https://news.ycombinator.com/rss'],
-          calendarEvents: [],
-          encryptedNotes: {},
-          clipboardHistory: [],
-          cyberEditorTabs: [
-            {
-              id: '1',
-              name: 'untitled.tsx',
-              language: 'typescript',
-              content: '// Start coding...\n',
-            },
-          ],
-          cyberEditorActiveTab: '1',
-          promptLibrary: DEFAULT_PROMPTS,
-          activePromptId: DEFAULT_PROMPTS[0]?.id ?? null,
+        set(() => {
+          syncRuntimeKey('API_KEY', DEFAULT_SETTINGS.geminiApiKey);
+          syncRuntimeKey('GEMINI_API_KEY', DEFAULT_SETTINGS.geminiApiKey);
+          syncRuntimeKey('E2B_API_KEY', DEFAULT_SETTINGS.e2bApiKey);
+          return {
+            layouts: { lg: getCleanLayout() },
+            visibleWidgets: ['SYSTEM', 'HELP'],
+            scratchpadContent: '',
+            tasks: [],
+            tickers: ['BTC', 'ETH', 'SOL', 'USDT', 'NOK'],
+            writePadContent: '',
+            weatherLocation: '',
+            isLayoutLocked: false,
+            isCompact: false,
+            theme: DEFAULT_THEME,
+            ghostWidget: null,
+            gitToken: '',
+            rssFeeds: ['https://news.ycombinator.com/rss'],
+            calendarEvents: [],
+            encryptedNotes: {},
+            clipboardHistory: [],
+            settings: { ...DEFAULT_SETTINGS },
+            cyberEditorTabs: [
+              {
+                id: '1',
+                name: 'untitled.tsx',
+                language: 'typescript',
+                content: '// Start coding...\n',
+              },
+            ],
+            cyberEditorActiveTab: '1',
+            promptLibrary: DEFAULT_PROMPTS,
+            activePromptId: DEFAULT_PROMPTS[0]?.id ?? null,
+          };
         }),
 
       // Grid Intelligence
@@ -318,14 +377,24 @@ export const useAppStore = create<AppState>()(
       setCmdPaletteOpen: open => set({ isCmdPaletteOpen: open }),
 
       // Settings
-      settings: {
-        scanlines: true,
-        sound: true,
-      },
+      settings: { ...DEFAULT_SETTINGS },
       toggleSetting: key =>
         set(state => ({
           settings: { ...state.settings, [key]: !state.settings[key] },
         })),
+      setGeminiApiKey: key => {
+        syncRuntimeKey('API_KEY', key);
+        syncRuntimeKey('GEMINI_API_KEY', key);
+        return set(state => ({
+          settings: { ...state.settings, geminiApiKey: key },
+        }));
+      },
+      setE2bApiKey: key => {
+        syncRuntimeKey('E2B_API_KEY', key);
+        return set(state => ({
+          settings: { ...state.settings, e2bApiKey: key },
+        }));
+      },
 
       // Theme
       theme: DEFAULT_THEME,
