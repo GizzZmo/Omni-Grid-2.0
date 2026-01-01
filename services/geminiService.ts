@@ -1,10 +1,34 @@
 import { GoogleGenAI } from '@google/genai';
 
-const apiKey =
-  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_KEY) ||
-  (typeof process !== 'undefined' ? process.env?.API_KEY : undefined);
+const resolveApiKey = () => {
+  const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
+  const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
+  const browserEnv =
+    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
 
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+  return (
+    metaEnv.VITE_API_KEY ||
+    metaEnv.GEMINI_API_KEY ||
+    nodeEnv.GEMINI_API_KEY ||
+    nodeEnv.API_KEY ||
+    browserEnv.GEMINI_API_KEY ||
+    browserEnv.API_KEY
+  );
+};
+
+let aiInitialized = false;
+let ai: GoogleGenAI | null = null;
+
+export const getGenAIClient = (): GoogleGenAI | null => {
+  if (aiInitialized) return ai;
+
+  const apiKey = resolveApiKey();
+  ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+  aiInitialized = true;
+  return ai;
+};
+
+const client = getGenAIClient();
 
 export async function refineText(
   text: string,
@@ -33,12 +57,12 @@ export async function refineText(
       break;
   }
 
-  if (!ai) {
+  if (!client) {
     return text;
   }
 
   try {
-    const response = await ai.models.generateContent({
+    const response = await client.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {

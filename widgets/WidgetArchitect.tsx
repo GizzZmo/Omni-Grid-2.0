@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { PenTool, Box, Play, Cpu, Layers, Code, ArrowRight } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
 import { useAppStore } from '../store';
+import { getGenAIClient } from '../services/geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 export const WidgetArchitect: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'BLUEPRINT' | 'CODE' | 'GRAPH'>('BLUEPRINT');
@@ -16,6 +16,11 @@ export const WidgetArchitect: React.FC = () => {
 
   const generatePrototype = async () => {
     if (!prompt.trim()) return;
+    if (!ai) {
+      setGeneratedCode('// AI Architect unavailable. Configure an API key to generate code.');
+      setLogicNodes([]);
+      return;
+    }
     setLoading(true);
     setActiveTab('CODE');
     setGeneratedCode('// Initializing Architect Core...\n// Analyzing Semantic Intent...\n');

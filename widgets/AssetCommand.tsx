@@ -11,10 +11,10 @@ import {
   AlertTriangle,
   Lightbulb,
 } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
 import { useAppStore } from '../store';
+import { getGenAIClient } from '../services/geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 const ASSET_CONTEXT: Record<string, string> = {
   NOK: 'The Physical Layer: 5G/6G IP Fortress & B2B Infrastructure.',
@@ -58,6 +58,11 @@ export const AssetCommand: React.FC = () => {
   };
 
   const analyzeSmartGrid = async () => {
+    if (!ai) {
+      setIntelResult('Neural Link offline (missing API key).');
+      return;
+    }
+
     setLoading(true);
     setIntelResult('');
     try {

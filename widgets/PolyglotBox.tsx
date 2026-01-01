@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowRight, Copy, Check, Loader2, Play, Terminal } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
+import { getGenAIClient } from '../services/geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 const LANGUAGES = [
   'Python',
@@ -31,6 +31,11 @@ export const PolyglotBox: React.FC = () => {
 
   const handleTranslate = async () => {
     if (!inputCode.trim()) return;
+
+    if (!ai) {
+      setOutputCode('// Translation unavailable. Configure an API key to enable Polyglot Box.');
+      return;
+    }
 
     setLoading(true);
     setOutputCode(''); // Clear previous output

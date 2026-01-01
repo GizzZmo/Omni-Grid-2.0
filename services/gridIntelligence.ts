@@ -1,12 +1,16 @@
-import { GoogleGenAI } from '@google/genai';
 import { GridItemData, GhostData } from '../types';
+import { getGenAIClient } from './geminiService';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = getGenAIClient();
 
 export async function optimizeLayout(
   currentLayout: GridItemData[],
   visibleWidgets: string[]
 ): Promise<{ layout: GridItemData[]; ghost?: GhostData }> {
+  if (!ai) {
+    return { layout: currentLayout };
+  }
+
   const prompt = `
     Act as a UI/UX expert specializing in "Bento Box" grid layouts.
     
@@ -57,6 +61,10 @@ export async function processCrossTalk(
   droppedText: string,
   targetWidgetType: string
 ): Promise<string> {
+  if (!ai) {
+    return droppedText;
+  }
+
   const prompt = `
         Context: The user dragged and dropped the following text: "${droppedText}" into the "${targetWidgetType}" widget.
         
