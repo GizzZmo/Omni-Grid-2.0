@@ -398,9 +398,6 @@ export const CyberEditor: React.FC = () => {
     };
     setTabs([...tabs, newTab]);
     setActiveTabId(newId);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   };
 
   const closeTab = (id: string) => {

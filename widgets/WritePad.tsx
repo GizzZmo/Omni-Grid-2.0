@@ -314,7 +314,7 @@ export const WritePad: React.FC = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".txt,.md,.json,.ts,.tsx,.js,.py,.csv,.html"
+        accept=".txt,.md,.json,.ts,.tsx,.js,.jsx,.py,.csv,.html,.css,.go,.rs,.java,.kt,.php,.sql,.yml,.yaml"
         className="hidden"
         onChange={handleFileChange}
       />
