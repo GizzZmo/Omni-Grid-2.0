@@ -1,7 +1,13 @@
+declare global {
+  interface Window {
+    E2B_API_KEY?: string;
+  }
+}
+
 const E2B_API_BASE = 'https://api.e2b.dev/v1';
 const getRuntimeApiKey = () => {
-  if (typeof window !== 'undefined' && (window as any).E2B_API_KEY) {
-    return (window as any).E2B_API_KEY as string;
+  if (typeof window !== 'undefined' && window.E2B_API_KEY) {
+    return window.E2B_API_KEY;
   }
   return process.env.E2B_API_KEY;
 };

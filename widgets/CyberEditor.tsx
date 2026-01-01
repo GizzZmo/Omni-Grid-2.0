@@ -714,7 +714,7 @@ export const CyberEditor: React.FC = () => {
               sandboxError ? 'text-rose-400' : 'text-emerald-300'
             }`}
           >
-            {sandboxError ? sandboxError : sandboxResult || SANDBOX_NO_OUTPUT}
+            {sandboxError || sandboxResult || SANDBOX_NO_OUTPUT}
           </pre>
         </div>
       )}
