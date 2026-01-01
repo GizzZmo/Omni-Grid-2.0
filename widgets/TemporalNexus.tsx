@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Clock, Calendar, History, RefreshCcw, Loader2 } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
-const getAi = () => getGenAIClient();
+const ai = getGenAIClient();
 
 export const TemporalNexus: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -18,14 +18,13 @@ export const TemporalNexus: React.FC = () => {
   const fetchHistory = async () => {
     if (historyData && historyData.length > 10) return; // Cache simple check
 
+    if (!ai) {
+      setHistoryData('Temporal Uplink requires a configured API key.');
+      return;
+    }
+
     setLoading(true);
     try {
-      const ai = getAi();
-      if (!ai) {
-        setHistoryData('Temporal Uplink requires a configured API key.');
-        setLoading(false);
-        return;
-      }
       const today = time.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
       const prompt = `Tell me 3 significant historical events that happened on ${today} in history. Format as a bulleted list. Keep it concise. Also, tell me one interesting fact about this specific day of the week.`;
 

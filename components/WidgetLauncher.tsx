@@ -33,7 +33,6 @@ import {
   Briefcase,
   Clipboard,
   GitBranch,
-  FileCode,
 } from 'lucide-react';
 
 // Manual mapping of all available widget types to icons and names
@@ -229,14 +228,6 @@ export const WIDGET_REGISTRY = [
     color: 'text-slate-400',
     bg: 'bg-slate-900/20',
     border: 'border-slate-500/50',
-  },
-  {
-    id: 'CYBER_EDITOR',
-    name: 'Cyber Editor',
-    icon: FileCode,
-    color: 'text-fuchsia-400',
-    bg: 'bg-fuchsia-900/20',
-    border: 'border-fuchsia-500/50',
   },
   {
     id: 'NEWS_FEED',

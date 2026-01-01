@@ -17,13 +17,11 @@ import {
   Play,
   RefreshCw,
   Zap,
-  FolderOpen,
 } from 'lucide-react';
 import { useAppStore } from '../store';
+import { GoogleGenAI } from '@google/genai';
 import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
 import { executePythonInSandbox } from '../services/e2bSandbox';
-import { getGenAIClient } from '../services/geminiService';
-import { COMMON_FILE_ACCEPTS } from './fileAccepts';
 
 interface CodeTab {
   id: string;
@@ -280,7 +278,6 @@ const SANDBOX_NO_OUTPUT = 'Execution completed with no output.';
 export const CyberEditor: React.FC = () => {
   const { cyberEditorTabs, setCyberEditorTabs, cyberEditorActiveTab, setCyberEditorActiveTab } =
     useAppStore();
-  const geminiApiKey = useAppStore(s => s.settings.geminiApiKey);
 
   const [tabs, setTabs] = useState<CodeTab[]>(
     cyberEditorTabs || [
@@ -297,7 +294,6 @@ export const CyberEditor: React.FC = () => {
   const [sandboxError, setSandboxError] = useState<string | null>(null);
   const [sandboxRunning, setSandboxRunning] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const activeTab = tabs.find(t => t.id === activeTabId) || tabs[0];
 
@@ -312,48 +308,6 @@ export const CyberEditor: React.FC = () => {
 
   const updateTabContent = (content: string) => {
     setTabs(tabs.map(t => (t.id === activeTabId ? { ...t, content } : t)));
-  };
-
-  const detectLanguageFromFilename = (filename: string) => {
-    const ext = filename.split('.').pop()?.toLowerCase();
-    switch (ext) {
-      case 'js':
-      case 'mjs':
-      case 'cjs':
-        return 'javascript';
-      case 'ts':
-      case 'tsx':
-        return 'typescript';
-      case 'py':
-        return 'python';
-      case 'json':
-        return 'json';
-      case 'html':
-        return 'html';
-      case 'css':
-        return 'css';
-      case 'sql':
-        return 'sql';
-      case 'rb':
-        return 'ruby';
-      case 'go':
-        return 'go';
-      case 'rs':
-        return 'rust';
-      case 'java':
-        return 'java';
-      case 'kt':
-        return 'kotlin';
-      case 'php':
-        return 'php';
-      case 'yaml':
-      case 'yml':
-        return 'yaml';
-      case 'md':
-        return 'markdown';
-      default:
-        return 'markdown';
-    }
   };
 
   const addTab = (template?: string) => {
@@ -380,25 +334,6 @@ export const CyberEditor: React.FC = () => {
     setTabs([...tabs, newTab]);
     setActiveTabId(newId);
     setShowTemplates(false);
-  };
-
-  const handleOpenFile = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const text = await file.text();
-    const newId = Date.now().toString();
-    const newTab: CodeTab = {
-      id: newId,
-      name: file.name,
-      language: detectLanguageFromFilename(file.name),
-      content: text,
-    };
-    setTabs([...tabs, newTab]);
-    setActiveTabId(newId);
   };
 
   const closeTab = (id: string) => {
@@ -482,14 +417,16 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
-      const ai = getGenAIClient(geminiApiKey);
-      if (!ai) {
+      // Check if API key exists
+      if (!process.env.API_KEY) {
         updateTabContent(
-          '// Error: Please add your Gemini API key in System Settings before generating.'
+          '// Error: Please add your Gemini API key in .env file (API_KEY=your_key_here)'
         );
         setAiLoading(false);
         return;
       }
+
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Generate ${activeTab.language} code for: ${aiPrompt}. 
       Return ONLY the code without markdown fences or explanations.`;
 
@@ -531,12 +468,13 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
-      const ai = getGenAIClient(geminiApiKey);
-      if (!ai) {
+      if (!process.env.API_KEY) {
         console.error('No API key available');
         setAiLoading(false);
         return;
       }
+
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Improve this ${activeTab.language} code. Make it more efficient, readable, and follow best practices. Return ONLY the improved code:\n\n${codeToImprove}`;
 
       const response = await ai.models.generateContent({
@@ -577,12 +515,13 @@ export const CyberEditor: React.FC = () => {
 
     setAiLoading(true);
     try {
-      const ai = getGenAIClient(geminiApiKey);
-      if (!ai) {
+      if (!process.env.API_KEY) {
         console.error('No API key available');
         setAiLoading(false);
         return;
       }
+
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Explain this ${activeTab.language} code in clear, concise terms:\n\n${codeToExplain}`;
 
       const response = await ai.models.generateContent({
@@ -608,13 +547,6 @@ export const CyberEditor: React.FC = () => {
 
   return (
     <div className="h-full flex flex-col bg-slate-950 font-mono text-xs">
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept={COMMON_FILE_ACCEPTS}
-        className="hidden"
-        onChange={handleFileChange}
-      />
       {/* Tab Bar */}
       <div className="flex items-center bg-slate-900 border-b border-slate-800 overflow-x-auto">
         {tabs.map(tab => (
@@ -716,13 +648,6 @@ export const CyberEditor: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={handleOpenFile}
-            className="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-[10px] text-slate-300 transition-colors"
-            title="Open File"
-          >
-            <FolderOpen size={10} />
-          </button>
           <button
             onClick={copyCode}
             className="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-[10px] text-slate-300 transition-colors"

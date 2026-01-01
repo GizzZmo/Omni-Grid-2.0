@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
-const getAi = () => getGenAIClient();
+const ai = getGenAIClient();
 
 export const ResearchBrowser: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -26,13 +26,13 @@ export const ResearchBrowser: React.FC = () => {
     setContent(null);
     setError(null);
 
+    if (!ai) {
+      setError('Research Uplink requires a configured API key.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const ai = getAi();
-      if (!ai) {
-        setError('Research Uplink requires a configured API key.');
-        setLoading(false);
-        return;
-      }
       // Using gemini-3-flash-preview for low latency research tasks
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',

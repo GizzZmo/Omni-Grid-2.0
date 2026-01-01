@@ -1,5 +1,3 @@
-import { useAppStore } from '../store';
-
 declare global {
   interface Window {
     E2B_API_KEY?: string;
@@ -8,9 +6,6 @@ declare global {
 
 const E2B_API_BASE = 'https://api.e2b.dev/v1';
 const getRuntimeApiKey = () => {
-  const storeKey = useAppStore.getState()?.settings?.e2bApiKey;
-  if (storeKey) return storeKey;
-
   if (typeof window !== 'undefined' && window.E2B_API_KEY) {
     return window.E2B_API_KEY;
   }

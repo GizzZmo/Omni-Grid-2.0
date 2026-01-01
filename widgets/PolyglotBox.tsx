@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, Copy, Check, Loader2, Play, Terminal } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
-const getAi = () => getGenAIClient();
+const ai = getGenAIClient();
 
 const LANGUAGES = [
   'Python',
@@ -32,16 +32,15 @@ export const PolyglotBox: React.FC = () => {
   const handleTranslate = async () => {
     if (!inputCode.trim()) return;
 
+    if (!ai) {
+      setOutputCode('// Translation unavailable. Configure an API key to enable Polyglot Box.');
+      return;
+    }
+
     setLoading(true);
     setOutputCode(''); // Clear previous output
 
     try {
-      const ai = getAi();
-      if (!ai) {
-        setOutputCode('// Translation unavailable. Configure an API key to enable Polyglot Box.');
-        setLoading(false);
-        return;
-      }
       const prompt = `Translate the following ${sourceLang} code to ${targetLang}. 
       Do not include any explanations, markdown formatting (like \`\`\`), or comments unless necessary for the code to run. 
       Just return the raw code.

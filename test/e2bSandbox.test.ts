@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { executePythonInSandbox } from '../services/e2bSandbox';
-import { useAppStore } from '../store';
 
 const ORIGINAL_API_KEY = process.env.E2B_API_KEY;
 
@@ -68,23 +67,5 @@ describe('executePythonInSandbox', () => {
     await expect(
       executePythonInSandbox('print("no key")', vi.fn() as any)
     ).rejects.toThrow('Missing E2B_API_KEY');
-  });
-
-  it('prefers API key from store settings when env is empty', async () => {
-    const previousKey = useAppStore.getState().settings.e2bApiKey;
-    useAppStore.getState().setE2bApiKey('store-key');
-    process.env.E2B_API_KEY = '';
-
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce({ ok: true, json: async () => ({ id: 'sbx-store' }) })
-      .mockResolvedValueOnce({ ok: true, json: async () => ({ output: 'ok' }) })
-      .mockResolvedValueOnce({ ok: true, json: async () => ({}) });
-
-    await executePythonInSandbox('print("store")', fetchMock as any);
-
-    expect(fetchMock.mock.calls[0]?.[1]?.headers?.Authorization).toBe('Bearer store-key');
-
-    useAppStore.getState().setE2bApiKey(previousKey);
   });
 });

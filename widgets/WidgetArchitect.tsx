@@ -3,7 +3,7 @@ import { PenTool, Box, Play, Cpu, Layers, Code, ArrowRight } from 'lucide-react'
 import { useAppStore } from '../store';
 import { getGenAIClient } from '../services/geminiService';
 
-const getAi = () => getGenAIClient();
+const ai = getGenAIClient();
 
 export const WidgetArchitect: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'BLUEPRINT' | 'CODE' | 'GRAPH'>('BLUEPRINT');
@@ -16,7 +16,6 @@ export const WidgetArchitect: React.FC = () => {
 
   const generatePrototype = async () => {
     if (!prompt.trim()) return;
-    const ai = getAi();
     if (!ai) {
       setGeneratedCode('// AI Architect unavailable. Configure an API key to generate code.');
       setLogicNodes([]);
