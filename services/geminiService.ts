@@ -1,6 +1,10 @@
 import { GoogleGenAI } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const apiKey =
+  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_KEY) ||
+  (typeof process !== 'undefined' ? process.env?.API_KEY : undefined);
+
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 export async function refineText(
   text: string,
@@ -27,6 +31,10 @@ export async function refineText(
     case 'TONE':
       prompt = `Rewrite the following text to sound more "Cyberpunk/Hacker" but keep the meaning intact:\n\n"${text}"`;
       break;
+  }
+
+  if (!ai) {
+    return text;
   }
 
   try {

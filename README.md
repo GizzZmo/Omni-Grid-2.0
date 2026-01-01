@@ -65,7 +65,7 @@
 ### 🎨 Creative & Utility
 
 - **Aesthetic Engine:** AI-generated UI theming based on text or image vibes.
-- **Sonic Architecture:** Circle of Fifths theory tool and brown noise generator.
+- **Sonic Architecture:** Circle of Fifths theory tool with brown noise and a local playlist player.
 - **Cipher Vault:** Local hashing and UUID/Nanoid generation.
 
 ## 0x03 // INITIALIZATION PROTOCOLS
