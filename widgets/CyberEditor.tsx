@@ -21,6 +21,7 @@ import {
 import { useAppStore } from '../store';
 import { GoogleGenAI } from '@google/genai';
 import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
+import { executePythonInSandbox } from '../services/e2bSandbox';
 
 interface CodeTab {
   id: string;
@@ -272,6 +273,7 @@ const MyComponent = () => {
 };
 
 export const CYBER_EDITOR_LANGUAGES = DEV_DOCS_LANGUAGES;
+const SANDBOX_NO_OUTPUT = 'Execution completed with no output.';
 
 export const CyberEditor: React.FC = () => {
   const { cyberEditorTabs, setCyberEditorTabs, cyberEditorActiveTab, setCyberEditorActiveTab } =
@@ -288,6 +290,9 @@ export const CyberEditor: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
+  const [sandboxResult, setSandboxResult] = useState('');
+  const [sandboxError, setSandboxError] = useState<string | null>(null);
+  const [sandboxRunning, setSandboxRunning] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const activeTab = tabs.find(t => t.id === activeTabId) || tabs[0];
@@ -373,6 +378,37 @@ export const CyberEditor: React.FC = () => {
       updateTabContent(formatted);
     } catch (e) {
       console.error('Format failed:', e);
+    }
+  };
+
+  const runSandboxed = async () => {
+    if (activeTab.language !== 'python') {
+      setSandboxError('Sandbox execution is only available for Python.');
+      setSandboxResult('');
+      return;
+    }
+
+    if (!activeTab.content.trim()) {
+      setSandboxError('Add Python code to execute in the sandbox.');
+      setSandboxResult('');
+      return;
+    }
+
+    setSandboxRunning(true);
+    setSandboxError(null);
+    setSandboxResult('');
+
+    try {
+      const result = await executePythonInSandbox(activeTab.content);
+      setSandboxResult(result.output || SANDBOX_NO_OUTPUT);
+      if (result.error) {
+        setSandboxError(result.error);
+      }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Sandbox execution failed.';
+      setSandboxError(message);
+    } finally {
+      setSandboxRunning(false);
     }
   };
 
@@ -597,6 +633,18 @@ export const CyberEditor: React.FC = () => {
             <RefreshCw size={10} className="inline mr-1" />
             Format
           </button>
+          <button
+            onClick={runSandboxed}
+            disabled={sandboxRunning || activeTab.language !== 'python'}
+            className="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-[10px] text-slate-300 transition-colors disabled:opacity-50"
+          >
+            {sandboxRunning ? (
+              <RefreshCw size={10} className="inline mr-1 animate-spin" />
+            ) : (
+              <Play size={10} className="inline mr-1" />
+            )}
+            Run
+          </button>
         </div>
 
         <div className="flex items-center gap-2">
@@ -651,6 +699,25 @@ export const CyberEditor: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {(sandboxRunning || sandboxResult || sandboxError) && (
+        <div className="bg-slate-900/40 border-b border-slate-800 px-3 py-2">
+          <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1">
+            <span className="flex items-center gap-1 text-cyan-300">
+              <Play size={10} />
+              E2B Sandbox
+            </span>
+            {sandboxRunning && <RefreshCw size={10} className="animate-spin text-cyan-300" />}
+          </div>
+          <pre
+            className={`whitespace-pre-wrap text-[11px] font-mono ${
+              sandboxError ? 'text-rose-400' : 'text-emerald-300'
+            }`}
+          >
+            {sandboxError || sandboxResult || SANDBOX_NO_OUTPUT}
+          </pre>
+        </div>
+      )}
 
       {/* Code Editor */}
       <div className="flex-1 overflow-hidden">
