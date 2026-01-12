@@ -33,9 +33,9 @@ Use the “Wiki Link” column when creating GitHub Wiki pages (e.g., `[[Getting
 
 ## 🛠️ How to Publish to GitHub Wiki
 
-1. Create pages in this folder and name them to match the wiki links above (e.g., `Getting-Started.md`).
+1. Use this folder as a staging area and create page copies that match the wiki links above (e.g., `Getting-Started.md`).
 2. Copy the contents from the corresponding source docs to keep the wiki in sync.
-3. Push the pages to the GitHub Wiki repository for this project (e.g., `{owner}/{repo}.wiki`) or paste via the GitHub UI.
+3. Sync those staged pages to the GitHub Wiki repository for this project (e.g., `{owner}/{repo}.wiki`) or paste via the GitHub UI.
 4. Keep updates single-sourced by editing the main docs first, then syncing the wiki pages.
 
 ## 🤝 Contributing
@@ -44,4 +44,4 @@ Use the “Wiki Link” column when creating GitHub Wiki pages (e.g., `[[Getting
 - Favor links back to the canonical docs instead of duplicating long content.
 - Tag documentation PRs with `documentation` for quick review.
 
-_"The net is vast and infinite, but your grid is your own."_ 
+_"The net is vast and infinite, but your grid is your own."_
