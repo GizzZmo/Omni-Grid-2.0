@@ -197,15 +197,16 @@ export const WritePad: React.FC = () => {
       setLocalContent(generated);
       setWritePadContent(generated);
       setShowPrompt(false);
-    } catch (e: any) {
-      setLocalContent(prev => `${prev}\n\n[AI Generation Failed: ${e?.message ?? 'unknown error'}]`);
+    } catch (e: unknown) {
+      const error = e as { message?: string };
+      setLocalContent((prev: string) => `${prev}\n\n[AI Generation Failed: ${error?.message ?? 'unknown error'}]`);
     } finally {
       setLoading(false);
     }
   };
 
   // Cross-Talk Drop Handler
-  const handleDrop = async (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragOver(false);
     const droppedText = e.dataTransfer.getData('text/plain');
@@ -260,7 +261,7 @@ export const WritePad: React.FC = () => {
       >
         <select
           value={selectedTemplate}
-          onChange={e => handleTemplateSelect(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleTemplateSelect(e.target.value)}
           className="bg-slate-800 text-slate-200 text-xs rounded px-2 py-1 border border-slate-700 outline-none focus:border-rose-500 max-w-[150px]"
           aria-label="Select Template"
         >
@@ -325,10 +326,10 @@ export const WritePad: React.FC = () => {
         <div className="flex gap-2 p-2 bg-slate-900/50 border border-rose-900/30 rounded animate-in fade-in slide-in-from-top-2">
           <input
             value={prompt}
-            onChange={e => setPrompt(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPrompt(e.target.value)}
             placeholder="E.g., 'Write a polite decline email for a wedding invitation'..."
             className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-rose-500 focus:outline-none"
-            onKeyDown={e => e.key === 'Enter' && handleAiDraft()}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleAiDraft()}
             aria-label="AI Prompt Input"
           />
           <button
@@ -345,7 +346,7 @@ export const WritePad: React.FC = () => {
       {/* Editor */}
       <div
         className={`flex-1 relative group rounded transition-all duration-300 ${isDragOver ? 'ring-2 ring-rose-500 bg-rose-900/20' : ''}`}
-        onDragOver={e => {
+        onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
           e.preventDefault();
           setIsDragOver(true);
         }}
@@ -354,7 +355,7 @@ export const WritePad: React.FC = () => {
       >
         <textarea
           value={localContent}
-          onChange={e => setLocalContent(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setLocalContent(e.target.value)}
           className="w-full h-full bg-white text-slate-900 p-6 text-sm font-serif leading-relaxed resize-none focus:outline-none rounded shadow-inner selection:bg-rose-200"
           placeholder="Select a template, start typing, or drop content here to draft automatically..."
           aria-label="Document Editor"
