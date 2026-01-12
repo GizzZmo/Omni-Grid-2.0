@@ -4,6 +4,7 @@ import { useAppStore } from '../store';
 import { getGenAIClient } from '../services/geminiService';
 
 const getAi = () => getGenAIClient();
+const TABS = ['BLUEPRINT', 'CODE', 'GRAPH'] as const;
 
 export const WidgetArchitect: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'BLUEPRINT' | 'CODE' | 'GRAPH'>('BLUEPRINT');
@@ -70,7 +71,7 @@ export const WidgetArchitect: React.FC = () => {
     <div className="h-full flex flex-col gap-3 font-mono">
       {/* Tabs */}
       <div className="flex bg-slate-900 p-1 rounded-lg">
-        {(['BLUEPRINT', 'CODE', 'GRAPH'] as const).map(tab => (
+        {TABS.map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}

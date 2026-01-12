@@ -198,8 +198,8 @@ export const WritePad: React.FC = () => {
       setWritePadContent(generated);
       setShowPrompt(false);
     } catch (e: unknown) {
-      const error = e as { message?: string };
-      setLocalContent((prev: string) => `${prev}\n\n[AI Generation Failed: ${error?.message ?? 'unknown error'}]`);
+      const error = e instanceof Error ? e : new Error(String(e));
+      setLocalContent((prev: string) => `${prev}\n\n[AI Generation Failed: ${error.message ?? 'unknown error'}]`);
     } finally {
       setLoading(false);
     }
