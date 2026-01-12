@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import React, { useState, useEffect, useRef } from 'react';
 import { PenTool, FileText, Eraser, Sparkles, Copy, Check, Loader2, ArrowDownToLine } from 'lucide-react';
 import { useAppStore } from '../store';

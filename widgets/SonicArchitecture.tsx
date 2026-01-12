@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Music,
@@ -12,6 +13,22 @@ import {
   Waves,
   ListMusic,
 } from 'lucide-react';
+
+const createBrownNoiseBuffer = (ctx: AudioContext) => {
+  const bufferSize = ctx.sampleRate * 2;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const output = buffer.getChannelData(0);
+  let lastOut = 0;
+
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    output[i] = (lastOut + 0.02 * white) / 1.02;
+    lastOut = output[i];
+    output[i] *= 3.5;
+  }
+
+  return buffer;
+};
 
 type Track = {
   id: number;
@@ -128,18 +145,7 @@ export const SonicArchitecture: React.FC = () => {
 
     stopBrownNoise();
 
-    const bufferSize = ctx.sampleRate * 2;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const output = buffer.getChannelData(0);
-    let lastOut = 0;
-
-    for (let i = 0; i < bufferSize; i++) {
-      const white = Math.random() * 2 - 1;
-      output[i] = (lastOut + 0.02 * white) / 1.02;
-      lastOut = output[i];
-      output[i] *= 3.5;
-    }
-
+    const buffer = createBrownNoiseBuffer(ctx);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
     source.loop = true;
