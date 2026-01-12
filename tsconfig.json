@@ -6,17 +6,19 @@
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "types": ["node"],
-    "moduleResolution": "bundler",
+    "types": ["node", "react", "react-dom"],
+    "moduleResolution": "node",
     "isolatedModules": true,
     "moduleDetection": "force",
     "allowJs": true,
     "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["./*"]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "strict": true
-  }
+  },
+  "include": ["widgets/**/*", "components/**/*", "services/**/*", "index.tsx", "App.tsx", "types.ts", "store.ts", "utils.ts", "types/**/*.d.ts"]
 }

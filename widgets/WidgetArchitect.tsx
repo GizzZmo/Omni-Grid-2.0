@@ -4,6 +4,7 @@ import { useAppStore } from '../store';
 import { getGenAIClient } from '../services/geminiService';
 
 const getAi = () => getGenAIClient();
+const TABS = ['BLUEPRINT', 'CODE', 'GRAPH'] as const;
 
 export const WidgetArchitect: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'BLUEPRINT' | 'CODE' | 'GRAPH'>('BLUEPRINT');
@@ -70,10 +71,10 @@ export const WidgetArchitect: React.FC = () => {
     <div className="h-full flex flex-col gap-3 font-mono">
       {/* Tabs */}
       <div className="flex bg-slate-900 p-1 rounded-lg">
-        {['BLUEPRINT', 'CODE', 'GRAPH'].map(tab => (
+        {TABS.map(tab => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab as any)}
+            onClick={() => setActiveTab(tab)}
             className={`flex-1 text-[10px] font-bold py-1 rounded transition-colors ${activeTab === tab ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:text-slate-300'}`}
           >
             {tab}
@@ -92,7 +93,7 @@ export const WidgetArchitect: React.FC = () => {
             </div>
             <textarea
               value={prompt}
-              onChange={e => setPrompt(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
               placeholder="Describe your widget... e.g. 'A crypto tracker that alerts me when ETH drops below $2000 using CoinGecko API'"
               className="w-full h-32 bg-slate-950 border border-slate-800 rounded p-3 text-xs text-slate-200 resize-none focus:outline-none focus:border-indigo-500 transition-colors"
             />
