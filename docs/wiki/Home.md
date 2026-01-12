@@ -11,7 +11,7 @@ Welcome to the Omni-Grid wiki. This space provides a high-level map to the exist
 
 - **Launch the App:** `npm install && npm run dev`
 - **Docs Hub:** [Documentation Index](../README.md)
-- **Quick Reference:** [Ops Cheatsheet](../../QUICK_REFERENCE.md)
+- **Quick Reference:** [Ops Cheatsheet (repo root)](../../QUICK_REFERENCE.md)
 - **FAQ:** [Common Questions](../faq.md)
 
 ## 🧭 Navigation Map
@@ -35,7 +35,7 @@ Use the “Wiki Link” column when creating GitHub Wiki pages (e.g., `[[Getting
 
 1. Create pages in this folder and name them to match the wiki links above (e.g., `Getting-Started.md`).
 2. Copy the contents from the corresponding source docs to keep the wiki in sync.
-3. Push the pages to the GitHub Wiki repository (`GizzZmo/Omni-Grid-2.0.wiki`) or paste via the GitHub UI.
+3. Push the pages to the GitHub Wiki repository for this project (e.g., `{owner}/{repo}.wiki`) or paste via the GitHub UI.
 4. Keep updates single-sourced by editing the main docs first, then syncing the wiki pages.
 
 ## 🤝 Contributing
