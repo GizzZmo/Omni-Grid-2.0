@@ -30,12 +30,13 @@ Welcome to the Omni-Grid wiki. This space provides a high-level map to the exist
 | Keyboard Shortcuts   | [[Keyboard Shortcuts]]                      | [docs/keyboard-shortcuts.md](../keyboard-shortcuts.md) |
 
 Use the “Wiki Link” column when creating GitHub Wiki pages (e.g., `[[Getting Started]]` becomes a page). The “Source Doc” column points to the authoritative markdown already in the repo.
+> Links here are relative to the repository. When publishing to the GitHub Wiki, convert them to absolute GitHub URLs.
 
 ## 🛠️ How to Publish to GitHub Wiki
 
 1. Use this folder as a staging area and create page copies that match the wiki links above (e.g., `Getting-Started.md`).
 2. Copy the contents from the corresponding source docs to keep the wiki in sync.
-3. Sync those staged pages to the GitHub Wiki repository for this project (`GizzZmo/Omni-Grid-2.0.wiki`) or paste via the GitHub UI.
+3. Sync those staged pages to the GitHub Wiki repository for your fork (current project: `GizzZmo/Omni-Grid-2.0.wiki`) or paste via the GitHub UI.
 4. Keep updates single-sourced by editing the main docs first, then syncing the wiki pages.
 
 ## 🤝 Contributing
