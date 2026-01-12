@@ -228,6 +228,7 @@ Comprehensive documentation is available in the `docs/` folder:
 - **[FAQ](./docs/faq.md)** - Frequently asked questions
 - **[Troubleshooting](./docs/troubleshooting.md)** - Common issues and solutions
 - **[WIKI](./docs/WIKI.md)** - Core concepts and philosophy
+- **[GitHub Wiki (Home)](https://github.com/GizzZmo/Omni-Grid-2.0/wiki)** - Quick navigation map and page links
 - **[How-To Guide](./docs/HOWTO.md)** - Practical recipes
 
 ---
