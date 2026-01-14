@@ -1,6 +1,15 @@
 /// <reference lib="dom" />
 import React, { useState, useEffect, useRef } from 'react';
-import { PenTool, FileText, Eraser, Sparkles, Copy, Check, Loader2, ArrowDownToLine } from 'lucide-react';
+import {
+  PenTool,
+  FileText,
+  Eraser,
+  Sparkles,
+  Copy,
+  Check,
+  Loader2,
+  ArrowDownToLine,
+} from 'lucide-react';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
 import { COMMON_FILE_ACCEPTS } from './fileAccepts';
@@ -262,7 +271,9 @@ export const WritePad: React.FC = () => {
       >
         <select
           value={selectedTemplate}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleTemplateSelect(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            handleTemplateSelect(e.target.value)
+          }
           className="bg-slate-800 text-slate-200 text-xs rounded px-2 py-1 border border-slate-700 outline-none focus:border-rose-500 max-w-[150px]"
           aria-label="Select Template"
         >
@@ -330,7 +341,9 @@ export const WritePad: React.FC = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPrompt(e.target.value)}
             placeholder="E.g., 'Write a polite decline email for a wedding invitation'..."
             className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-rose-500 focus:outline-none"
-            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleAiDraft()}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+              e.key === 'Enter' && handleAiDraft()
+            }
             aria-label="AI Prompt Input"
           />
           <button

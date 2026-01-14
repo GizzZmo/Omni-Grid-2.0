@@ -13,8 +13,7 @@ import { estimateTokens } from './services/promptEngine';
 const resolveEnvGeminiKey = () => {
   const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
   const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
-  const browserEnv =
-    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
+  const browserEnv = (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
 
   return (
     metaEnv.VITE_API_KEY ||
@@ -29,8 +28,7 @@ const resolveEnvGeminiKey = () => {
 
 const resolveEnvE2BKey = () => {
   const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
-  const browserEnv =
-    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
+  const browserEnv = (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
   return nodeEnv.E2B_API_KEY || browserEnv.E2B_API_KEY || '';
 };
 
@@ -489,9 +487,7 @@ export const useAppStore = create<AppState>()(
       setActivePrompt: id => set({ activePromptId: id }),
       updatePromptContent: (id, content) =>
         set(state => ({
-          promptLibrary: state.promptLibrary.map(p =>
-            p.id === id ? { ...p, content } : p
-          ),
+          promptLibrary: state.promptLibrary.map(p => (p.id === id ? { ...p, content } : p)),
         })),
       savePromptVersion: (id, note) =>
         set(state => ({
@@ -512,9 +508,7 @@ export const useAppStore = create<AppState>()(
         }),
       updatePromptVariables: (id, variables) =>
         set(state => ({
-          promptLibrary: state.promptLibrary.map(p =>
-            p.id === id ? { ...p, variables } : p
-          ),
+          promptLibrary: state.promptLibrary.map(p => (p.id === id ? { ...p, variables } : p)),
         })),
       tagPrompt: (id, tags) =>
         set(state => ({
