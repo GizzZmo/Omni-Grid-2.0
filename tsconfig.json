@@ -20,5 +20,15 @@
     "noEmit": true,
     "strict": true
   },
-  "include": ["widgets/**/*", "components/**/*", "services/**/*", "index.tsx", "App.tsx", "types.ts", "store.ts", "utils.ts", "types/**/*.d.ts"]
+  "include": [
+    "widgets/**/*",
+    "components/**/*",
+    "services/**/*",
+    "index.tsx",
+    "App.tsx",
+    "types.ts",
+    "store.ts",
+    "utils.ts",
+    "types/**/*.d.ts"
+  ]
 }

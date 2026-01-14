@@ -65,9 +65,9 @@ describe('executePythonInSandbox', () => {
   it('throws when E2B API key is missing', async () => {
     process.env.E2B_API_KEY = '';
 
-    await expect(
-      executePythonInSandbox('print("no key")', vi.fn() as any)
-    ).rejects.toThrow('Missing E2B_API_KEY');
+    await expect(executePythonInSandbox('print("no key")', vi.fn() as any)).rejects.toThrow(
+      'Missing E2B_API_KEY'
+    );
   });
 
   it('prefers API key from store settings when env is empty', async () => {

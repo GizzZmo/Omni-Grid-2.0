@@ -79,9 +79,7 @@ export const PromptLab: React.FC = () => {
   }, [compiledPrompt, currentPrompt, selectedProviders]);
 
   const toggleProvider = (id: string) => {
-    setSelectedProviders(prev =>
-      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
-    );
+    setSelectedProviders(prev => (prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]));
   };
 
   const onSaveVersion = useCallback(() => {
@@ -130,7 +128,8 @@ export const PromptLab: React.FC = () => {
     currentPrompt && selectedVersion
       ? currentPrompt.versions.find(v => v.id === selectedVersion)
       : latestVersion;
-  const diffs = currentPrompt && versionToDiff ? diffText(versionToDiff.content, currentPrompt.content) : [];
+  const diffs =
+    currentPrompt && versionToDiff ? diffText(versionToDiff.content, currentPrompt.content) : [];
 
   return (
     <div className="h-full grid grid-cols-12 gap-4 text-xs text-slate-200">
@@ -342,15 +341,13 @@ export const PromptLab: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-[12px]">{label}</span>
                     <span className="text-[10px] text-slate-500">
-                      {result.tokens.input}→{result.tokens.output} tokens · ${result.cost.toFixed(4)} ·{' '}
-                      {result.latencyMs}ms
+                      {result.tokens.input}→{result.tokens.output} tokens · $
+                      {result.cost.toFixed(4)} · {result.latencyMs}ms
                     </span>
                   </div>
                 );
               })()}
-              <pre className="whitespace-pre-wrap text-[11px] text-slate-100">
-                {result.output}
-              </pre>
+              <pre className="whitespace-pre-wrap text-[11px] text-slate-100">{result.output}</pre>
             </div>
           ))}
           {!Object.values(results).length && (
@@ -375,12 +372,15 @@ export const PromptLab: React.FC = () => {
                 <option value="">Latest</option>
                 {currentPrompt.versions.map(v => (
                   <option key={v.id} value={v.id}>
-                    {new Date(v.createdAt).toLocaleString()} · {v.tokens} tok {v.note ? `· ${v.note}` : ''}
+                    {new Date(v.createdAt).toLocaleString()} · {v.tokens} tok{' '}
+                    {v.note ? `· ${v.note}` : ''}
                   </option>
                 ))}
               </select>
               <button
-                onClick={() => selectedVersion && restorePromptVersion(currentPrompt.id, selectedVersion)}
+                onClick={() =>
+                  selectedVersion && restorePromptVersion(currentPrompt.id, selectedVersion)
+                }
                 disabled={!selectedVersion}
                 className="px-2 py-1 bg-amber-700/30 border border-amber-500/40 rounded text-[11px] disabled:opacity-50"
               >
@@ -401,8 +401,8 @@ export const PromptLab: React.FC = () => {
                     line.type === 'added'
                       ? 'text-emerald-300'
                       : line.type === 'removed'
-                      ? 'text-rose-300'
-                      : 'text-slate-200'
+                        ? 'text-rose-300'
+                        : 'text-slate-200'
                   }`}
                 >
                   {line.type === 'added' ? '+' : line.type === 'removed' ? '-' : ' '} {line.value}
