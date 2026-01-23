@@ -82,6 +82,10 @@ interface AppState {
   isCmdPaletteOpen: boolean;
   setCmdPaletteOpen: (open: boolean) => void;
 
+  // Settings Panel
+  isSettingsPanelOpen: boolean;
+  setSettingsPanelOpen: (open: boolean) => void;
+
   // Settings
   settings: {
     scanlines: boolean;
@@ -373,6 +377,9 @@ export const useAppStore = create<AppState>()(
       // Command Palette
       isCmdPaletteOpen: false,
       setCmdPaletteOpen: open => set({ isCmdPaletteOpen: open }),
+
+      isSettingsPanelOpen: false,
+      setSettingsPanelOpen: open => set({ isSettingsPanelOpen: open }),
 
       // Settings
       settings: { ...DEFAULT_SETTINGS },
