@@ -36,7 +36,7 @@
 
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
-**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🗺️ [ROADMAP](./ROADMAP.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
+**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🗺️ [ROADMAP](./ROADMAP.md) | 🎯 [PROJECT BLUEPRINT](./PROJECT_BLUEPRINT.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
 
 ## 0x02 // CORE MODULES
 
