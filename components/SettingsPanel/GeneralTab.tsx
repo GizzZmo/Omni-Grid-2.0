@@ -5,6 +5,7 @@ import { Power, RefreshCw, Clock } from 'lucide-react';
 export const GeneralTab: React.FC = () => {
   const settings = useAppStore(s => s.settings);
   const toggleSetting = useAppStore(s => s.toggleSetting);
+  const setStartupBehavior = useAppStore(s => s.setStartupBehavior);
 
   return (
     <div className="space-y-6">
@@ -98,7 +99,8 @@ export const GeneralTab: React.FC = () => {
                 type="radio"
                 name="startup"
                 value="restore"
-                defaultChecked
+                checked={settings.startupBehavior === 'restore'}
+                onChange={e => setStartupBehavior(e.target.value as any)}
                 className="text-cyan-500 focus:ring-cyan-500"
               />
               <span>Restore previous session</span>
@@ -108,6 +110,8 @@ export const GeneralTab: React.FC = () => {
                 type="radio"
                 name="startup"
                 value="default"
+                checked={settings.startupBehavior === 'default'}
+                onChange={e => setStartupBehavior(e.target.value as any)}
                 className="text-cyan-500 focus:ring-cyan-500"
               />
               <span>Load default layout</span>
@@ -117,6 +121,8 @@ export const GeneralTab: React.FC = () => {
                 type="radio"
                 name="startup"
                 value="empty"
+                checked={settings.startupBehavior === 'empty'}
+                onChange={e => setStartupBehavior(e.target.value as any)}
                 className="text-cyan-500 focus:ring-cyan-500"
               />
               <span>Start with empty grid</span>

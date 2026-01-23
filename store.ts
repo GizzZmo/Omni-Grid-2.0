@@ -7,6 +7,7 @@ import {
   GhostData,
   PromptTemplate,
   PromptVersion,
+  StartupBehavior,
 } from './types';
 import { estimateTokens } from './services/promptEngine';
 
@@ -52,6 +53,7 @@ const DEFAULT_SETTINGS = {
   sound: true,
   geminiApiKey: resolveEnvGeminiKey(),
   e2bApiKey: resolveEnvE2BKey(),
+  startupBehavior: 'restore' as StartupBehavior,
 };
 syncRuntimeKey('API_KEY', DEFAULT_SETTINGS.geminiApiKey);
 syncRuntimeKey('GEMINI_API_KEY', DEFAULT_SETTINGS.geminiApiKey);
@@ -92,10 +94,12 @@ interface AppState {
     sound: boolean;
     geminiApiKey: string;
     e2bApiKey: string;
+    startupBehavior: StartupBehavior;
   };
   toggleSetting: (key: 'scanlines' | 'sound') => void;
   setGeminiApiKey: (key: string) => void;
   setE2bApiKey: (key: string) => void;
+  setStartupBehavior: (behavior: StartupBehavior) => void;
 
   // Theme
   theme: AppTheme;
@@ -398,6 +402,11 @@ export const useAppStore = create<AppState>()(
         syncRuntimeKey('E2B_API_KEY', key);
         return set(state => ({
           settings: { ...state.settings, e2bApiKey: key },
+        }));
+      },
+      setStartupBehavior: behavior => {
+        set(state => ({
+          settings: { ...state.settings, startupBehavior: behavior },
         }));
       },
 
