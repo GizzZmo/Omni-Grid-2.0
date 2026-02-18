@@ -27,14 +27,14 @@ Omni-Grid-2.0/
 
 ### Available Variables
 
-#### API_KEY (Optional)
+#### GEMINI_API_KEY (Optional)
 
 **Purpose:** Google Gemini API key for AI-powered features
 
 **Format:**
 
 ```env
-API_KEY=AIzaSyXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
+GEMINI_API_KEY=AIzaSyXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
 ```
 
 **How to obtain:**
@@ -45,15 +45,67 @@ API_KEY=AIzaSyXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
 4. Generate API key
 5. Copy to `.env` file
 
-**Features requiring API key:**
+**Features requiring this key:**
 
 - Neural Scratchpad (Refine, Expand, Summarize)
 - WritePad (Document drafting)
 - Polyglot Box (Code translation)
 - Widget Architect (Prototype generation)
 - Aesthetic Engine (AI theme generation)
+- PromptLab (AI prompt testing)
 
-**Note:** If not set in `.env`, you can add it later via System Core widget settings.
+**Note:** If not set in `.env`, you can add it later via System Core widget settings. The code also supports legacy `API_KEY` for backwards compatibility.
+
+#### E2B_API_KEY (Optional)
+
+**Purpose:** E2B Sandbox API key for secure Python code execution
+
+**Format:**
+
+```env
+E2B_API_KEY=e2b_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+**How to obtain:**
+
+1. Visit https://e2b.dev/
+2. Sign up for an account
+3. Navigate to API Keys section
+4. Generate a new API key
+5. Copy to `.env` file
+
+**Features requiring this key:**
+
+- Web Terminal (Python code execution in sandboxed environment)
+- Code execution features in CyberEditor
+
+**Runtime Injection:** You can also inject this key at runtime via `window.E2B_API_KEY` if you prefer not to bundle it in the client.
+
+**Note:** If not provided, Python execution features will be disabled but other Web Terminal features will still work.
+
+#### PORT (Optional)
+
+**Purpose:** Custom development server port
+
+**Format:**
+
+```env
+PORT=3000
+```
+
+**Default:** 3000
+
+#### NODE_ENV (Optional)
+
+**Purpose:** Node environment mode
+
+**Format:**
+
+```env
+NODE_ENV=development
+```
+
+**Options:** `development`, `production`, `test`
 
 ### Security Best Practices
 
@@ -71,7 +123,8 @@ API_KEY=AIzaSyXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
 
 ```env
 # .env.example
-API_KEY=your_google_gemini_api_key_here
+GEMINI_API_KEY=your_google_gemini_api_key_here
+E2B_API_KEY=your_e2b_api_key_here
 ```
 
 ---

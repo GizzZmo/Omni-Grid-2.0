@@ -54,8 +54,20 @@ If you want to use AI-powered features, create a `.env` file in the root directo
 
 ```bash
 # .env
-API_KEY=your_google_gemini_api_key_here
+GEMINI_API_KEY=your_google_gemini_api_key_here
+E2B_API_KEY=your_e2b_api_key_here
 ```
+
+**API Keys Explained:**
+
+- **`GEMINI_API_KEY`** (Required for AI features): Powers Neural Scratchpad, WritePad, Polyglot Box, Widget Architect, and other AI-augmented widgets.
+  - Get your key at: https://makersuite.google.com/app/apikey
+  - Free tier available for personal use
+
+- **`E2B_API_KEY`** (Optional): Enables sandboxed Python code execution in the Web Terminal widget.
+  - Get your key at: https://e2b.dev/
+  - If not provided, Python execution features will be disabled
+  - Can also be injected at runtime via `window.E2B_API_KEY`
 
 **Important:** Never commit your `.env` file to version control. It's already in `.gitignore`.
 
