@@ -52,6 +52,8 @@
 - **Macro Net:** Global M2 Money Supply vs. Asset correlation heatmap.
 - **Chain Pulse:** Real-time TPS tracking for L1/L2 networks.
 - **Reg Radar:** Sentiment analysis on regulatory news (SEC/MiCA).
+- **Market Widget:** Real-time market data feeds and price tracking.
+- **Valuta Exchange:** Currency converter with real-time exchange rates across 12+ currencies.
 
 ### 🛠️ Developer Optic
 
@@ -67,6 +69,23 @@
 - **Aesthetic Engine:** AI-generated UI theming based on text or image vibes.
 - **Sonic Architecture:** Circle of Fifths theory tool with brown noise and a local playlist player.
 - **Cipher Vault:** Local hashing and UUID/Nanoid generation.
+- **Chroma Lab:** Color palette generator with Tailwind-compatible shade variations.
+- **Clipboard Stream:** Clipboard history manager with drag-and-drop support.
+- **Quantum Calc:** Scientific calculator with expression parsing and history.
+- **Weather Station:** Real-time weather conditions for any location.
+- **Signal Radio:** Audio player with frequency-responsive visualizer.
+
+### 📊 Productivity & Research
+
+- **Focus HUD:** Pomodoro timer and task tracking.
+- **Temporal Nexus:** Time zone converter and world clock.
+- **Secure Calendar:** Local-first event scheduling.
+- **Strategic Blueprint:** Project planning canvas.
+- **News Feed:** Aggregated news streams.
+- **Research Browser:** In-app web browsing.
+- **PDF Viewer:** Document reader and viewer.
+- **Help Desk:** Comprehensive help system with Wiki, Q&A, and step-by-step guides.
+- **Sudoku Grid:** Sudoku puzzle game with difficulty levels and timer.
 
 ## 0x03 // INITIALIZATION PROTOCOLS
 
