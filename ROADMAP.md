@@ -39,6 +39,8 @@
 
 ## 🎯 CURRENT SPRINT (Q1 2025)
 
+> **📘 [VIEW DETAILED PROJECT BLUEPRINT](./PROJECT_BLUEPRINT.md)** - Complete implementation plan with task breakdowns, technical specs, and sprint planning.
+
 ### ✅ Completed Items
 
 - [x] **Core widget system architecture**

@@ -38,6 +38,12 @@ New to Omni-Grid? Start here:
    - Upcoming features
    - Contribution opportunities
 
+4. **[Project Blueprint](./PROJECT_BLUEPRINT.md)**
+   - Detailed task breakdown and implementation plans
+   - Technical specifications for each feature
+   - Sprint planning and dependencies
+   - Testing and success criteria
+
 ---
 
 ## 📖 USER GUIDES

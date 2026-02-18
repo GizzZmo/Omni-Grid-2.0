@@ -85,6 +85,8 @@ export enum SoundType {
   OFF = 'OFF',
 }
 
+export type StartupBehavior = 'restore' | 'default' | 'empty';
+
 export interface AppTheme {
   name: string;
   colors: {
