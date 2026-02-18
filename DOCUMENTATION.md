@@ -124,9 +124,9 @@ For developers building on Omni-Grid:
 - **Total Lines:** ~23,400
 - **Topics Covered:** 100+
 - **Roadmap Phases:** 5
-- **Widgets Documented:** 35+
+- **Widgets Documented:** 38 (all widgets)
 - **Code Examples:** 150+
-- **Last Updated:** 2025
+- **Last Updated:** February 2026
 
 ---
 
@@ -243,5 +243,5 @@ docs/
 _"The net is vast and infinite, but your grid is your own."_
 
 **Documentation Version:** 2.0  
-**Last Updated:** December 2025  
+**Last Updated:** February 2026  
 **Maintained by:** Jon-Arve Constantine / GizzZmo

@@ -69,10 +69,12 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 #### 🛠️ Developer Optic (Engineering Tools)
 
 - **Web Terminal** - Sandboxed JavaScript REPL
+- **CyberEditor** - Multi-tab code editor with AI-powered generation, improvement, and explanation
 - **Dev Optic** - JWT decoder and regex tester
 - **Git Pulse** - PR monitoring dashboard
 - **Docu Hub** - Documentation navigator
 - **Project Tracker** - Task management system
+- **PromptLab** - Advanced prompt engineering tool for A/B testing across AI providers
 
 #### 🎨 Creative & Utility
 
@@ -80,6 +82,12 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 - **Sonic Architecture** - Music theory tools and ambient sound
 - **Cipher Vault** - Hashing and UUID generation
 - **Universal Transformer** - Data format conversion (CSV/JSON/XML)
+- **ChromaLab** - Color palette generator with Tailwind-compatible shade variations
+- **ClipboardStream** - Clipboard history manager with drag-and-drop support
+- **QuantumCalc** - Scientific calculator with expression parsing and history
+- **ValutaExchange** - Currency converter with real-time exchange rates
+- **WeatherStation** - Real-time weather conditions for any location
+- **SignalRadio** - Audio player with frequency-responsive visualizer
 
 #### 📊 Productivity
 
@@ -94,6 +102,11 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 - **Research Browser** - In-app web browsing
 - **PDF Viewer** - Document reader
 - **Cipher Pad** - Encrypted notes
+- **HelpDesk** - Comprehensive help system with Wiki, Q&A, and guides
+
+#### 🎮 Entertainment & Games
+
+- **SudokuGrid** - Sudoku puzzle game with difficulty levels and timer
 
 ---
 
@@ -128,5 +141,5 @@ Cyberpunk-inspired UI with maximalist information density and minimal chrome.
 _"The net is vast and infinite, but your grid is your own."_
 
 **Version:** 2.0  
-**Last Updated:** 2025  
+**Last Updated:** February 2026  
 **Maintained by:** Jon-Arve Constantine / GizzZmo

@@ -70,12 +70,14 @@ npm run dev
 
 ## 🎯 WIDGET CATEGORIES
 
-**Neural Suite (AI):** Scratchpad, WritePad, Polyglot Box  
-**Smart Grid (Finance):** Asset Command, Macro Net, Chain Pulse, Market  
-**Developer:** Web Terminal, Dev Optic, Git Pulse, Docu Hub  
-**Creative:** Aesthetic Engine, Sonic Architecture, Cipher Vault  
-**Productivity:** Focus HUD, Temporal Nexus, Secure Calendar  
-**Research:** News Feed, PDF Viewer, Research Browser
+**Neural Suite (AI):** Scratchpad, WritePad, Polyglot Box, Widget Architect  
+**Smart Grid (Finance):** Asset Command, Macro Net, Chain Pulse, Market, Valuta Exchange  
+**Developer:** Web Terminal, CyberEditor, Dev Optic, Git Pulse, Docu Hub, PromptLab  
+**Creative:** Aesthetic Engine, Sonic Architecture, Cipher Vault, Chroma Lab, Signal Radio  
+**Productivity:** Focus HUD, Temporal Nexus, Secure Calendar, Strategic Blueprint, Help Desk  
+**Research:** News Feed, PDF Viewer, Research Browser, Clipboard Stream  
+**Utility:** Quantum Calc, Weather Station, Cipher Pad, Universal Transformer  
+**Games:** Sudoku Grid
 
 ---
 
