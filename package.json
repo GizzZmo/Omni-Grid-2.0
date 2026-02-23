@@ -23,7 +23,7 @@
   "dependencies": {
     "@google/genai": "^1.34.0",
     "lucide-react": "0.263.1",
-    "react": "18.2.0",
+    "react": "19.2.3",
     "react-dom": "18.2.0",
     "react-grid-layout": "1.4.4",
     "zustand": "4.5.0"
