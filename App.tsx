@@ -28,6 +28,7 @@ import {
   Ghost,
   FileCode,
   GitBranch,
+  MessageSquare,
 } from 'lucide-react';
 import { downloadJson, uploadJson } from './utils';
 
@@ -405,6 +406,13 @@ const App: React.FC = () => {
               icon={<Wand2 size={18} />}
               label="Aesthetic"
               color="bg-pink-500"
+            />
+            <DockItem
+              active={visibleWidgets.includes('NEURAL_CHAT')}
+              onClick={() => toggleWidget('NEURAL_CHAT')}
+              icon={<MessageSquare size={18} />}
+              label="AI Chat"
+              color="bg-fuchsia-500"
             />
           </div>
         </div>
