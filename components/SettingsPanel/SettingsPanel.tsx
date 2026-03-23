@@ -64,9 +64,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
         <div className="flex items-center justify-between px-6 py-4 border-b border-cyan-500/30">
           <div className="flex items-center gap-3">
             <Settings className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-lg font-bold text-cyan-400 uppercase tracking-wider">
-              Settings
-            </h2>
+            <h2 className="text-lg font-bold text-cyan-400 uppercase tracking-wider">Settings</h2>
           </div>
           <button
             onClick={onClose}
@@ -111,9 +109,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
 
         {/* Footer */}
         <div className="px-6 py-3 border-t border-cyan-500/30 bg-slate-950/50 flex justify-between items-center">
-          <div className="text-xs text-slate-500">
-            Settings are saved automatically
-          </div>
+          <div className="text-xs text-slate-500">Settings are saved automatically</div>
           <button
             onClick={onClose}
             className="px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded text-sm font-medium transition-colors"

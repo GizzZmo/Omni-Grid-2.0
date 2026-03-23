@@ -23,7 +23,7 @@ export const GeneralTab: React.FC = () => {
         <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
           Visual Effects
         </h4>
-        
+
         <div className="flex items-center justify-between py-3 px-4 bg-slate-900/50 rounded border border-slate-800">
           <div className="flex items-center gap-3">
             <Power className="w-4 h-4 text-cyan-400" />
@@ -84,7 +84,7 @@ export const GeneralTab: React.FC = () => {
         <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
           Startup Behavior
         </h4>
-        
+
         <div className="py-3 px-4 bg-slate-900/50 rounded border border-slate-800">
           <div className="flex items-center gap-3 mb-3">
             <Clock className="w-4 h-4 text-cyan-400" />
@@ -136,14 +136,12 @@ export const GeneralTab: React.FC = () => {
         <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
           Data Persistence
         </h4>
-        
+
         <div className="py-3 px-4 bg-slate-900/50 rounded border border-slate-800">
           <div className="text-xs text-slate-400 mb-2">
             Your data is automatically saved to browser local storage
           </div>
-          <div className="text-xs text-cyan-400">
-            ✓ Auto-save enabled (continuous)
-          </div>
+          <div className="text-xs text-cyan-400">✓ Auto-save enabled (continuous)</div>
         </div>
       </div>
     </div>

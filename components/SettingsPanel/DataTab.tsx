@@ -54,7 +54,7 @@ export const DataTab: React.FC = () => {
         <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
           Backup & Restore
         </h4>
-        
+
         <div className="space-y-3">
           <button
             onClick={handleExport}
@@ -85,7 +85,7 @@ export const DataTab: React.FC = () => {
         <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
           Storage Information
         </h4>
-        
+
         <div className="py-4 px-4 bg-slate-900/50 rounded border border-slate-800">
           <div className="flex items-center gap-3 mb-3">
             <HardDrive className="w-4 h-4 text-cyan-400" />
@@ -113,10 +113,8 @@ export const DataTab: React.FC = () => {
 
       {/* Danger Zone */}
       <div className="space-y-4">
-        <h4 className="text-xs font-semibold text-red-400 uppercase tracking-wider">
-          Danger Zone
-        </h4>
-        
+        <h4 className="text-xs font-semibold text-red-400 uppercase tracking-wider">Danger Zone</h4>
+
         <div className="py-4 px-4 bg-red-950/20 rounded border border-red-500/30">
           <button
             onClick={handleClearData}

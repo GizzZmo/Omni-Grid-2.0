@@ -61,7 +61,9 @@ export const WeatherExampleWidget: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Cloud size={14} className="text-sky-400" />
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Weather</span>
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+            Weather
+          </span>
         </div>
         <button
           onClick={fetchWeather}
@@ -87,9 +89,7 @@ export const WeatherExampleWidget: React.FC = () => {
       )}
 
       {error && (
-        <div className="flex-1 flex items-center justify-center text-red-400 text-xs">
-          {error}
-        </div>
+        <div className="flex-1 flex items-center justify-center text-red-400 text-xs">{error}</div>
       )}
 
       {weather && !loading && (
@@ -100,9 +100,7 @@ export const WeatherExampleWidget: React.FC = () => {
           <span className="text-sm text-sky-400">
             {WMO_CODES[weather.weathercode] ?? 'Unknown'}
           </span>
-          <span className="text-xs text-slate-500">
-            Wind: {weather.windspeed} km/h
-          </span>
+          <span className="text-xs text-slate-500">Wind: {weather.windspeed} km/h</span>
         </div>
       )}
     </div>

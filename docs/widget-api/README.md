@@ -16,11 +16,11 @@ Omni-Grid widgets are self-contained React components rendered inside a **Widget
 
 ## Contents
 
-| Document | Description |
-|---|---|
+| Document                                | Description                                  |
+| --------------------------------------- | -------------------------------------------- |
 | [Getting Started](./getting-started.md) | Create your first widget in under 10 minutes |
-| [API Reference](./api-reference.md) | Full TypeScript interfaces and store API |
-| [Examples](./examples/) | Working widget examples |
+| [API Reference](./api-reference.md)     | Full TypeScript interfaces and store API     |
+| [Examples](./examples/)                 | Working widget examples                      |
 
 ## Quick Start
 
@@ -29,9 +29,7 @@ Omni-Grid widgets are self-contained React components rendered inside a **Widget
 import React from 'react';
 
 export const HelloWorld: React.FC = () => (
-  <div className="h-full flex items-center justify-center text-cyan-400">
-    Hello, Omni-Grid!
-  </div>
+  <div className="h-full flex items-center justify-center text-cyan-400">Hello, Omni-Grid!</div>
 );
 ```
 

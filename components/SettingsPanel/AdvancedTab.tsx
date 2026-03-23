@@ -14,9 +14,7 @@ export const AdvancedTab: React.FC = () => {
         <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wide mb-4">
           Advanced Settings
         </h3>
-        <p className="text-xs text-slate-400 mb-6">
-          Configure API keys and developer options
-        </p>
+        <p className="text-xs text-slate-400 mb-6">Configure API keys and developer options</p>
       </div>
 
       {/* API Keys */}
@@ -25,7 +23,7 @@ export const AdvancedTab: React.FC = () => {
           <Key className="w-3 h-3" />
           API Configuration
         </h4>
-        
+
         <div className="space-y-4">
           {/* Gemini API Key */}
           <div className="py-3 px-4 bg-slate-900/50 rounded border border-slate-800">
@@ -91,7 +89,7 @@ export const AdvancedTab: React.FC = () => {
           <Code2 className="w-3 h-3" />
           Developer Options
         </h4>
-        
+
         <div className="flex items-center justify-between py-3 px-4 bg-slate-900/50 rounded border border-slate-800">
           <div>
             <div className="text-sm text-slate-200 font-medium">Developer Mode</div>
@@ -127,7 +125,7 @@ export const AdvancedTab: React.FC = () => {
           <Zap className="w-3 h-3" />
           Performance
         </h4>
-        
+
         <div className="py-3 px-4 bg-slate-900/50 rounded border border-slate-800">
           <div className="text-xs text-slate-400 space-y-2">
             <div className="flex justify-between">

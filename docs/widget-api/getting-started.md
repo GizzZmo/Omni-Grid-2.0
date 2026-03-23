@@ -39,7 +39,7 @@ In `types.ts`, add your widget type to the `WidgetType` union:
 ```typescript
 export type WidgetType =
   // ... existing types ...
-  | 'MY_WIDGET';
+  'MY_WIDGET';
 ```
 
 ## Step 3 — Add Default Layout Position
@@ -145,15 +145,15 @@ if (ai) {
 
 ## WidgetShell Props
 
-| Prop | Type | Required | Description |
-|---|---|---|---|
-| `id` | `string` | ✅ | Unique widget ID matching `WidgetType` |
-| `title` | `string` | ✅ | Displayed in the widget header |
-| `icon` | `ReactNode` | ✅ | Lucide icon for the header |
-| `accentColor` | `string` | ✅ | Tailwind text color class |
-| `className` | `string` | ✗ | Additional CSS classes |
-| `onExport` | `() => void` | ✗ | Enables export button in header |
-| `onImport` | `() => void` | ✗ | Enables import button in header |
+| Prop          | Type         | Required | Description                            |
+| ------------- | ------------ | -------- | -------------------------------------- |
+| `id`          | `string`     | ✅       | Unique widget ID matching `WidgetType` |
+| `title`       | `string`     | ✅       | Displayed in the widget header         |
+| `icon`        | `ReactNode`  | ✅       | Lucide icon for the header             |
+| `accentColor` | `string`     | ✅       | Tailwind text color class              |
+| `className`   | `string`     | ✗        | Additional CSS classes                 |
+| `onExport`    | `() => void` | ✗        | Enables export button in header        |
+| `onImport`    | `() => void` | ✗        | Enables import button in header        |
 
 ## Styling Conventions
 

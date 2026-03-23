@@ -60,7 +60,7 @@ export const WidgetsTab: React.FC = () => {
             <Grid3x3 className="w-3 h-3" />
             {category.name}
           </h4>
-          
+
           <div className="space-y-2">
             {category.widgets.map(widget => {
               const isVisible = visibleWidgets.includes(widget.id);

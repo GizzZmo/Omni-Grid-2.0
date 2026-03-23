@@ -21,9 +21,7 @@ describe('NeuralChat', () => {
 
   it('renders the message input and send button', () => {
     render(<NeuralChat />);
-    expect(
-      screen.getByPlaceholderText(/type a message/i)
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/type a message/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /send message/i })).toBeInTheDocument();
   });
 

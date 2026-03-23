@@ -128,10 +128,18 @@ export const DevOptic: React.FC = () => {
           {jwtData && (
             <>
               {/* Token status badge */}
-              <div className={`flex items-center gap-1 text-[10px] rounded px-2 py-1 font-mono ${jwtData.isExpired ? 'bg-red-950/40 border border-red-800/50 text-red-400' : 'bg-emerald-950/40 border border-emerald-800/50 text-emerald-400'}`}>
-                {jwtData.isExpired
-                  ? <><AlertTriangle size={10} /> TOKEN EXPIRED</>
-                  : <><CheckCircle2 size={10} /> TOKEN VALID (signature not verified)</>}
+              <div
+                className={`flex items-center gap-1 text-[10px] rounded px-2 py-1 font-mono ${jwtData.isExpired ? 'bg-red-950/40 border border-red-800/50 text-red-400' : 'bg-emerald-950/40 border border-emerald-800/50 text-emerald-400'}`}
+              >
+                {jwtData.isExpired ? (
+                  <>
+                    <AlertTriangle size={10} /> TOKEN EXPIRED
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 size={10} /> TOKEN VALID (signature not verified)
+                  </>
+                )}
               </div>
 
               {/* Header section */}
@@ -143,7 +151,11 @@ export const DevOptic: React.FC = () => {
                     className="p-0.5 text-slate-500 hover:text-slate-300 transition-colors"
                     aria-label="Copy header"
                   >
-                    {jwtCopied === 'header' ? <Check size={10} className="text-emerald-400" /> : <Copy size={10} />}
+                    {jwtCopied === 'header' ? (
+                      <Check size={10} className="text-emerald-400" />
+                    ) : (
+                      <Copy size={10} />
+                    )}
                   </button>
                 </div>
                 <table className="w-full text-[10px] font-mono">
@@ -167,7 +179,11 @@ export const DevOptic: React.FC = () => {
                     className="p-0.5 text-slate-500 hover:text-slate-300 transition-colors"
                     aria-label="Copy payload"
                   >
-                    {jwtCopied === 'payload' ? <Check size={10} className="text-emerald-400" /> : <Copy size={10} />}
+                    {jwtCopied === 'payload' ? (
+                      <Check size={10} className="text-emerald-400" />
+                    ) : (
+                      <Copy size={10} />
+                    )}
                   </button>
                 </div>
                 <table className="w-full text-[10px] font-mono">
@@ -180,7 +196,9 @@ export const DevOptic: React.FC = () => {
                             <span className="ml-1 text-slate-700">({CLAIM_LABELS[k]})</span>
                           )}
                         </td>
-                        <td className={`px-2 py-1 break-all ${k === 'exp' && jwtData.isExpired ? 'text-red-400' : 'text-orange-300'}`}>
+                        <td
+                          className={`px-2 py-1 break-all ${k === 'exp' && jwtData.isExpired ? 'text-red-400' : 'text-orange-300'}`}
+                        >
                           {formatClaimValue(k, v)}
                         </td>
                       </tr>

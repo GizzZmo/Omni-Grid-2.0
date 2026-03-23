@@ -7,28 +7,57 @@
 ```typescript
 // types.ts
 export type WidgetType =
-  | 'SYSTEM' | 'HELP' | 'TRANSFORMER' | 'SCRATCHPAD' | 'FOCUS_HUD'
-  | 'DEV_OPTIC' | 'CIPHER_VAULT' | 'CHROMA_LAB' | 'TEMPORAL' | 'SONIC'
-  | 'CALC' | 'ASSET' | 'POLYGLOT' | 'WRITEPAD' | 'WEATHER' | 'VALUTA'
-  | 'ARCHITECT' | 'THEME_ENGINE' | 'GHOST' | 'RADIO' | 'SUDOKU'
-  | 'DOCU_HUB' | 'GIT_PULSE' | 'PROJECT_TRACKER' | 'WEB_TERMINAL'
-  | 'CYBER_EDITOR' | 'NEWS_FEED' | 'CIPHER_PAD' | 'PDF_VIEWER'
-  | 'RESEARCH_BROWSER' | 'SECURE_CALENDAR' | 'MACRO_NET' | 'CHAIN_PULSE'
-  | 'REG_RADAR' | 'MARKET' | 'STRATEGIC' | 'CLIPBOARD' | 'PROMPT_LAB'
-  | 'NEURAL_CHAT'
-  // Add your widget type here
-  ;
+  | 'SYSTEM'
+  | 'HELP'
+  | 'TRANSFORMER'
+  | 'SCRATCHPAD'
+  | 'FOCUS_HUD'
+  | 'DEV_OPTIC'
+  | 'CIPHER_VAULT'
+  | 'CHROMA_LAB'
+  | 'TEMPORAL'
+  | 'SONIC'
+  | 'CALC'
+  | 'ASSET'
+  | 'POLYGLOT'
+  | 'WRITEPAD'
+  | 'WEATHER'
+  | 'VALUTA'
+  | 'ARCHITECT'
+  | 'THEME_ENGINE'
+  | 'GHOST'
+  | 'RADIO'
+  | 'SUDOKU'
+  | 'DOCU_HUB'
+  | 'GIT_PULSE'
+  | 'PROJECT_TRACKER'
+  | 'WEB_TERMINAL'
+  | 'CYBER_EDITOR'
+  | 'NEWS_FEED'
+  | 'CIPHER_PAD'
+  | 'PDF_VIEWER'
+  | 'RESEARCH_BROWSER'
+  | 'SECURE_CALENDAR'
+  | 'MACRO_NET'
+  | 'CHAIN_PULSE'
+  | 'REG_RADAR'
+  | 'MARKET'
+  | 'STRATEGIC'
+  | 'CLIPBOARD'
+  | 'PROMPT_LAB'
+  | 'NEURAL_CHAT';
+// Add your widget type here
 ```
 
 ### `GridItemData`
 
 ```typescript
 interface GridItemData {
-  i: string;   // widget ID (must match WidgetType)
-  x: number;   // column start (0–11)
-  y: number;   // row start
-  w: number;   // width in columns (1–12)
-  h: number;   // height in row units (1 unit = 30px)
+  i: string; // widget ID (must match WidgetType)
+  x: number; // column start (0–11)
+  y: number; // row start
+  w: number; // width in columns (1–12)
+  h: number; // height in row units (1 unit = 30px)
 }
 ```
 
@@ -38,15 +67,15 @@ interface GridItemData {
 interface AppTheme {
   name: string;
   colors: {
-    background: string;  // hex color
-    surface: string;     // hex color
-    primary: string;     // hex color
-    secondary: string;   // hex color
-    text: string;        // hex color
-    accent: string;      // hex color
+    background: string; // hex color
+    surface: string; // hex color
+    primary: string; // hex color
+    secondary: string; // hex color
+    text: string; // hex color
+    accent: string; // hex color
   };
-  font: string;    // CSS font-family
-  radius: string;  // CSS border-radius value
+  font: string; // CSS font-family
+  radius: string; // CSS border-radius value
 }
 ```
 
@@ -109,12 +138,12 @@ const refined = await refineText(text, 'REFINE'); // REFINE | EXPAND | TRANSLATE
 
 The grid uses **12 columns** with a **30px row height** and **16px gutters**.
 
-| Widget Size | w | h |
-|---|---|---|
-| Small | 3–4 | 4–6 |
-| Medium | 4–6 | 6–8 |
-| Large | 6–8 | 8–12 |
-| Full width | 12 | 8+ |
+| Widget Size | w   | h    |
+| ----------- | --- | ---- |
+| Small       | 3–4 | 4–6  |
+| Medium      | 4–6 | 6–8  |
+| Large       | 6–8 | 8–12 |
+| Full width  | 12  | 8+   |
 
 ## File Utilities
 
@@ -136,12 +165,12 @@ uploadJson(data => {
 
 The active theme injects these CSS custom properties:
 
-| Variable | Description |
-|---|---|
-| `--color-bg` | Background color |
-| `--color-surface` | Surface/card color |
-| `--color-primary` | Primary accent |
-| `--color-secondary` | Secondary accent |
-| `--color-text` | Text color |
-| `--color-accent` | Success/highlight |
-| `--radius` | Border radius |
+| Variable            | Description        |
+| ------------------- | ------------------ |
+| `--color-bg`        | Background color   |
+| `--color-surface`   | Surface/card color |
+| `--color-primary`   | Primary accent     |
+| `--color-secondary` | Secondary accent   |
+| `--color-text`      | Text color         |
+| `--color-accent`    | Success/highlight  |
+| `--radius`          | Border radius      |

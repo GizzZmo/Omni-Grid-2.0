@@ -155,10 +155,7 @@ const App: React.FC = () => {
       {/* Overlays */}
       {showLauncher && <WidgetLauncher onClose={() => setShowLauncher(false)} />}
       <CommandPalette />
-      <SettingsPanel 
-        isOpen={isSettingsPanelOpen} 
-        onClose={() => setSettingsPanelOpen(false)} 
-      />
+      <SettingsPanel isOpen={isSettingsPanelOpen} onClose={() => setSettingsPanelOpen(false)} />
 
       {/* Global Header / Controls */}
       <div
