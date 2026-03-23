@@ -126,9 +126,7 @@ export const AppearanceTab: React.FC = () => {
                 <div className="text-xs text-slate-500">{desc}</div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs font-mono text-slate-400">
-                  {customColors[key]}
-                </span>
+                <span className="text-xs font-mono text-slate-400">{customColors[key]}</span>
                 <input
                   type="color"
                   value={customColors[key]}

@@ -122,7 +122,13 @@ export const FocusHUD: React.FC = () => {
         }
       } else if (soundType === SoundType.RAIN) {
         // Rain simulation: pink-noise base with random amplitude spikes
-        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+        let b0 = 0,
+          b1 = 0,
+          b2 = 0,
+          b3 = 0,
+          b4 = 0,
+          b5 = 0,
+          b6 = 0;
         for (let i = 0; i < bufferSize; i++) {
           const white = Math.random() * 2 - 1;
           // Paul Kellet's pink-noise filter coefficients
@@ -183,7 +189,8 @@ export const FocusHUD: React.FC = () => {
     }
   };
 
-  const SoundIcon = soundType === SoundType.RAIN ? CloudRain : soundType === SoundType.BROWN_NOISE ? Wind : VolumeX;
+  const SoundIcon =
+    soundType === SoundType.RAIN ? CloudRain : soundType === SoundType.BROWN_NOISE ? Wind : VolumeX;
 
   return (
     <div className="h-full flex flex-col gap-4">

@@ -17,8 +17,7 @@ export const NeuralChat: React.FC = () => {
     {
       id: '0',
       role: 'assistant',
-      content:
-        'Neural link established. How can I assist you today, operator?',
+      content: 'Neural link established. How can I assist you today, operator?',
       timestamp: Date.now(),
     },
   ]);
@@ -72,10 +71,7 @@ export const NeuralChat: React.FC = () => {
 
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: [
-          ...history,
-          { role: 'user', parts: [{ text }] },
-        ],
+        contents: [...history, { role: 'user', parts: [{ text }] }],
         config: { systemInstruction: SYSTEM_INSTRUCTION },
       });
 
