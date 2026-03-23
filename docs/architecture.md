@@ -21,14 +21,14 @@ Omni-Grid is a **local-first, modular Super App** built on React with a focus on
 
 ### Widget Catalogue (39 modules)
 
-| Category | Widget IDs |
-|:---------|:-----------|
-| **Neural Suite** | `SCRATCHPAD`, `WRITEPAD`, `POLYGLOT`, `ARCHITECT`, `NEURAL_CHAT` |
-| **Smart Grid** | `ASSET`, `MACRO_NET`, `CHAIN_PULSE`, `REG_RADAR`, `MARKET`, `VALUTA` |
-| **Developer Optic** | `WEB_TERMINAL`, `DEV_OPTIC`, `GIT_PULSE`, `DOCU_HUB`, `PROJECT_TRACKER`, `CYBER_EDITOR`, `PROMPT_LAB` |
-| **Creative & Utility** | `THEME_ENGINE`, `SONIC`, `CIPHER_VAULT`, `CHROMA_LAB`, `CLIPBOARD`, `CALC`, `WEATHER`, `RADIO` |
+| Category                    | Widget IDs                                                                                                     |
+| :-------------------------- | :------------------------------------------------------------------------------------------------------------- |
+| **Neural Suite**            | `SCRATCHPAD`, `WRITEPAD`, `POLYGLOT`, `ARCHITECT`, `NEURAL_CHAT`                                               |
+| **Smart Grid**              | `ASSET`, `MACRO_NET`, `CHAIN_PULSE`, `REG_RADAR`, `MARKET`, `VALUTA`                                           |
+| **Developer Optic**         | `WEB_TERMINAL`, `DEV_OPTIC`, `GIT_PULSE`, `DOCU_HUB`, `PROJECT_TRACKER`, `CYBER_EDITOR`, `PROMPT_LAB`          |
+| **Creative & Utility**      | `THEME_ENGINE`, `SONIC`, `CIPHER_VAULT`, `CHROMA_LAB`, `CLIPBOARD`, `CALC`, `WEATHER`, `RADIO`                 |
 | **Productivity & Research** | `FOCUS_HUD`, `TEMPORAL`, `SECURE_CALENDAR`, `STRATEGIC`, `NEWS_FEED`, `RESEARCH_BROWSER`, `PDF_VIEWER`, `HELP` |
-| **System** | `TRANSFORMER`, `SYSTEM`, `CIPHER_PAD`, `SUDOKU`, `GHOST` |
+| **System**                  | `TRANSFORMER`, `SYSTEM`, `CIPHER_PAD`, `SUDOKU`, `GHOST`                                                       |
 
 ---
 

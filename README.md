@@ -1,8 +1,6 @@
 # OMNI-GRID // THE SUPER APP
 
-
 https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
-
 
 ```text
    ____  __  __ _   _ ___       ____ ____  ___ ____
@@ -50,25 +48,25 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 
 ![Dashboard Overview](./docs/screenshots/dashboard-overview.svg)
 
-*The main Omni-Grid dashboard with live widgets: System Core, Neural Scratchpad, Focus HUD, Market Widget, Valuta Exchange, Weather Station and more.*
+_The main Omni-Grid dashboard with live widgets: System Core, Neural Scratchpad, Focus HUD, Market Widget, Valuta Exchange, Weather Station and more._
 
 ### 🚀 Widget Launcher
 
 ![Widget Launcher](./docs/screenshots/widget-launcher.svg)
 
-*The Widget Launcher — search and activate any of the 39 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System).*
+_The Widget Launcher — search and activate any of the 39 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System)._
 
 ### 🛠️ Developer Tools
 
 ![Developer Tools](./docs/screenshots/developer-tools.svg)
 
-*CyberEditor with AI-powered code generation, Prompt Lab for provider comparison, Neural Chat, and Git Pulse PR monitoring — all on one screen.*
+_CyberEditor with AI-powered code generation, Prompt Lab for provider comparison, Neural Chat, and Git Pulse PR monitoring — all on one screen._
 
 ### 📊 Smart Grid & Creative Tools
 
 ![Smart Grid & Creative](./docs/screenshots/smart-grid-creative.svg)
 
-*Macro Net M2 correlation heatmap, Asset Command portfolio tracker, Reg Radar sentiment analysis, Sonic Architecture with Circle of Fifths, and Strategic Blueprint Kanban board.*
+_Macro Net M2 correlation heatmap, Asset Command portfolio tracker, Reg Radar sentiment analysis, Sonic Architecture with Circle of Fifths, and Strategic Blueprint Kanban board._
 
 </div>
 
