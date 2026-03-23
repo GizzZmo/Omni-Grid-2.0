@@ -76,6 +76,8 @@ export default [
         OscillatorNode: 'readonly',
         AnalyserNode: 'readonly',
         MediaStreamAudioSourceNode: 'readonly',
+        localStorage: 'readonly',
+        CryptoKey: 'readonly',
       },
     },
     plugins: {
