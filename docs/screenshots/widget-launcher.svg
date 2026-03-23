@@ -1,0 +1,234 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <defs>
+    <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d946ef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background (blurred/dimmed dashboard behind) -->
+  <rect width="1280" height="800" fill="#020617" opacity="0.85"/>
+  <!-- Backdrop blur overlay -->
+  <rect width="1280" height="800" fill="#000000" opacity="0.5"/>
+
+  <!-- Header (still visible) -->
+  <rect x="0" y="0" width="1280" height="56" fill="#020617" opacity="0.95"/>
+  <text x="24" y="36" font-family="'Share Tech Mono', monospace" font-size="26" font-weight="bold" fill="url(#header-grad)">OMNI-GRID</text>
+
+  <!-- ========== LAUNCHER MODAL ========== -->
+  <rect x="200" y="60" width="880" height="680" rx="6" fill="#0f172a" stroke="#d946ef" stroke-width="1.5" stroke-opacity="0.8"/>
+
+  <!-- Launcher header -->
+  <rect x="200" y="60" width="880" height="50" rx="6" fill="#1a0a2e"/>
+  <line x1="200" y1="110" x2="1080" y2="110" stroke="#d946ef" stroke-width="0.8" stroke-opacity="0.5"/>
+  <text x="640" y="91" text-anchor="middle" font-family="'Share Tech Mono', monospace" font-size="18" fill="#e879f9" font-weight="bold" letter-spacing="4">[ WIDGET LAUNCHER ]</text>
+  <text x="640" y="107" text-anchor="middle" font-family="monospace" font-size="9" fill="#7c3aed" letter-spacing="2">SELECT A MODULE TO ACTIVATE</text>
+
+  <!-- Close button -->
+  <circle cx="1060" cy="85" r="12" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="1060" y="90" text-anchor="middle" font-family="monospace" font-size="12" fill="#94a3b8">✕</text>
+
+  <!-- Search bar -->
+  <rect x="230" y="120" width="820" height="32" rx="4" fill="#0d1b2a" stroke="#d946ef" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="255" y="140" font-family="monospace" font-size="9" fill="#475569">🔍</text>
+  <text x="275" y="140" font-family="monospace" font-size="10" fill="#64748b">Search widgets... (e.g., "neural", "market", "editor")</text>
+
+  <!-- Category tabs -->
+  <rect x="230" y="162" width="820" height="28" rx="3" fill="#0d1b2a"/>
+  <rect x="232" y="164" width="80" height="24" rx="3" fill="#4a044e" stroke="#d946ef" stroke-width="0.7"/>
+  <text x="272" y="180" text-anchor="middle" font-family="monospace" font-size="8" fill="#e879f9" font-weight="bold">ALL (39)</text>
+  <rect x="318" y="164" width="84" height="24" rx="3" fill="none"/>
+  <text x="360" y="180" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748b">🧠 NEURAL (5)</text>
+  <rect x="408" y="164" width="84" height="24" rx="3" fill="none"/>
+  <text x="450" y="180" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748b">💹 FINANCE (7)</text>
+  <rect x="498" y="164" width="90" height="24" rx="3" fill="none"/>
+  <text x="543" y="180" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748b">🛠️ DEV (8)</text>
+  <rect x="594" y="164" width="94" height="24" rx="3" fill="none"/>
+  <text x="641" y="180" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748b">🎨 CREATIVE (7)</text>
+  <rect x="694" y="164" width="94" height="24" rx="3" fill="none"/>
+  <text x="741" y="180" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748b">📊 RESEARCH (7)</text>
+  <rect x="794" y="164" width="84" height="24" rx="3" fill="none"/>
+  <text x="836" y="180" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748b">⚙️ SYSTEM (5)</text>
+
+  <!-- Widget grid -->
+  <!-- Row 1 -->
+  <!-- Neural Scratchpad -->
+  <rect x="230" y="200" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#d946ef" stroke-width="0.8" stroke-opacity="0.6"/>
+  <rect x="230" y="200" width="165" height="28" rx="4" fill="#d946ef" fill-opacity="0.12"/>
+  <text x="248" y="218" font-family="monospace" font-size="18">🧠</text>
+  <text x="278" y="218" font-family="'Share Tech Mono', monospace" font-size="9" fill="#e879f9" font-weight="bold">NEURAL</text>
+  <text x="278" y="229" font-family="'Share Tech Mono', monospace" font-size="9" fill="#e879f9" font-weight="bold">SCRATCHPAD</text>
+  <text x="248" y="248" font-family="monospace" font-size="7" fill="#64748b">AI-augmented note-</text>
+  <text x="248" y="260" font-family="monospace" font-size="7" fill="#64748b">taking with Refine,</text>
+  <text x="248" y="272" font-family="monospace" font-size="7" fill="#64748b">Expand &amp; Summarize.</text>
+  <rect x="248" y="278" width="36" height="14" rx="6" fill="#4a044e"/>
+  <text x="266" y="288" text-anchor="middle" font-family="monospace" font-size="6" fill="#e9d5ff">AI</text>
+  <rect x="340" y="278" width="46" height="14" rx="3" fill="#d946ef" fill-opacity="0.3" stroke="#d946ef" stroke-width="0.5"/>
+  <text x="363" y="288" text-anchor="middle" font-family="monospace" font-size="7" fill="#e879f9">⊕ ADD</text>
+  <circle cx="382" cy="203" r="5" fill="#d946ef" opacity="0.9"/><!-- active indicator -->
+
+  <!-- WritePad -->
+  <rect x="405" y="200" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#d946ef" stroke-width="0.8" stroke-opacity="0.6"/>
+  <rect x="405" y="200" width="165" height="28" rx="4" fill="#d946ef" fill-opacity="0.1"/>
+  <text x="423" y="218" font-family="monospace" font-size="18">✍️</text>
+  <text x="453" y="220" font-family="'Share Tech Mono', monospace" font-size="9" fill="#e879f9" font-weight="bold">WRITEPAD</text>
+  <text x="423" y="248" font-family="monospace" font-size="7" fill="#64748b">Auto-drafting for</text>
+  <text x="423" y="260" font-family="monospace" font-size="7" fill="#64748b">emails and formal</text>
+  <text x="423" y="272" font-family="monospace" font-size="7" fill="#64748b">documents.</text>
+  <rect x="423" y="278" width="36" height="14" rx="6" fill="#4a044e"/>
+  <text x="441" y="288" text-anchor="middle" font-family="monospace" font-size="6" fill="#e9d5ff">AI</text>
+  <rect x="515" y="278" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="538" y="288" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Polyglot Box -->
+  <rect x="580" y="200" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#06b6d4" stroke-width="0.8" stroke-opacity="0.6"/>
+  <rect x="580" y="200" width="165" height="28" rx="4" fill="#06b6d4" fill-opacity="0.08"/>
+  <text x="598" y="218" font-family="monospace" font-size="18">🔄</text>
+  <text x="628" y="220" font-family="'Share Tech Mono', monospace" font-size="9" fill="#67e8f9" font-weight="bold">POLYGLOT BOX</text>
+  <text x="598" y="248" font-family="monospace" font-size="7" fill="#64748b">Code translation</text>
+  <text x="598" y="260" font-family="monospace" font-size="7" fill="#64748b">across 12+ languages.</text>
+  <text x="598" y="272" font-family="monospace" font-size="7" fill="#64748b">AI-powered.</text>
+  <rect x="598" y="278" width="36" height="14" rx="6" fill="#0c3a5a"/>
+  <text x="616" y="288" text-anchor="middle" font-family="monospace" font-size="6" fill="#bae6fd">AI</text>
+  <rect x="690" y="278" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="713" y="288" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- CyberEditor -->
+  <rect x="755" y="200" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#06b6d4" stroke-width="0.8" stroke-opacity="0.6"/>
+  <rect x="755" y="200" width="165" height="28" rx="4" fill="#06b6d4" fill-opacity="0.08"/>
+  <text x="773" y="218" font-family="monospace" font-size="18">💻</text>
+  <text x="803" y="220" font-family="'Share Tech Mono', monospace" font-size="9" fill="#67e8f9" font-weight="bold">CYBER EDITOR</text>
+  <text x="773" y="248" font-family="monospace" font-size="7" fill="#64748b">Multi-tab code editor</text>
+  <text x="773" y="260" font-family="monospace" font-size="7" fill="#64748b">with AI generation,</text>
+  <text x="773" y="272" font-family="monospace" font-size="7" fill="#64748b">improvement &amp; explain.</text>
+  <rect x="773" y="278" width="36" height="14" rx="6" fill="#0c3a5a"/>
+  <text x="791" y="288" text-anchor="middle" font-family="monospace" font-size="6" fill="#bae6fd">AI</text>
+  <rect x="865" y="278" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="888" y="288" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Row 2 -->
+  <!-- Market Widget -->
+  <rect x="230" y="332" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.6"/>
+  <rect x="230" y="332" width="165" height="28" rx="4" fill="#10b981" fill-opacity="0.08"/>
+  <text x="248" y="350" font-family="monospace" font-size="18">📈</text>
+  <text x="278" y="352" font-family="'Share Tech Mono', monospace" font-size="9" fill="#34d399" font-weight="bold">MARKET WIDGET</text>
+  <text x="248" y="380" font-family="monospace" font-size="7" fill="#64748b">Real-time market data</text>
+  <text x="248" y="392" font-family="monospace" font-size="7" fill="#64748b">feeds and price</text>
+  <text x="248" y="404" font-family="monospace" font-size="7" fill="#64748b">tracking.</text>
+  <rect x="340" y="410" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="363" y="420" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Focus HUD -->
+  <rect x="405" y="332" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="405" y="332" width="165" height="28" rx="4" fill="#10b981" fill-opacity="0.06"/>
+  <text x="423" y="350" font-family="monospace" font-size="18">⏱</text>
+  <text x="453" y="352" font-family="'Share Tech Mono', monospace" font-size="9" fill="#34d399" font-weight="bold">FOCUS HUD</text>
+  <text x="423" y="380" font-family="monospace" font-size="7" fill="#64748b">Pomodoro timer and</text>
+  <text x="423" y="392" font-family="monospace" font-size="7" fill="#64748b">task tracking with</text>
+  <text x="423" y="404" font-family="monospace" font-size="7" fill="#64748b">session history.</text>
+  <circle cx="557" cy="339" r="5" fill="#10b981" opacity="0.9"/>
+  <rect x="515" y="410" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="538" y="420" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Sonic Architecture -->
+  <rect x="580" y="332" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#818cf8" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="580" y="332" width="165" height="28" rx="4" fill="#818cf8" fill-opacity="0.06"/>
+  <text x="598" y="350" font-family="monospace" font-size="18">🎵</text>
+  <text x="628" y="352" font-family="'Share Tech Mono', monospace" font-size="9" fill="#a5b4fc" font-weight="bold">SONIC ARCH.</text>
+  <text x="598" y="380" font-family="monospace" font-size="7" fill="#64748b">Circle of Fifths tool,</text>
+  <text x="598" y="392" font-family="monospace" font-size="7" fill="#64748b">brown noise &amp;</text>
+  <text x="598" y="404" font-family="monospace" font-size="7" fill="#64748b">local music player.</text>
+  <rect x="690" y="410" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="713" y="420" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Prompt Lab -->
+  <rect x="755" y="332" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#d946ef" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="755" y="332" width="165" height="28" rx="4" fill="#d946ef" fill-opacity="0.06"/>
+  <text x="773" y="350" font-family="monospace" font-size="18">🔬</text>
+  <text x="803" y="352" font-family="'Share Tech Mono', monospace" font-size="9" fill="#e879f9" font-weight="bold">PROMPT LAB</text>
+  <text x="773" y="380" font-family="monospace" font-size="7" fill="#64748b">Version-controlled</text>
+  <text x="773" y="392" font-family="monospace" font-size="7" fill="#64748b">prompt workspace</text>
+  <text x="773" y="404" font-family="monospace" font-size="7" fill="#64748b">w/ cost telemetry.</text>
+  <rect x="773" y="410" width="36" height="14" rx="6" fill="#4a044e"/>
+  <text x="791" y="420" text-anchor="middle" font-family="monospace" font-size="6" fill="#e9d5ff">AI</text>
+  <rect x="865" y="410" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="888" y="420" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Row 3 -->
+  <!-- Web Terminal -->
+  <rect x="230" y="464" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="230" y="464" width="165" height="28" rx="4" fill="#10b981" fill-opacity="0.06"/>
+  <text x="248" y="482" font-family="monospace" font-size="18">⚡</text>
+  <text x="278" y="484" font-family="'Share Tech Mono', monospace" font-size="9" fill="#34d399" font-weight="bold">WEB TERMINAL</text>
+  <text x="248" y="512" font-family="monospace" font-size="7" fill="#64748b">Sandboxed JavaScript</text>
+  <text x="248" y="524" font-family="monospace" font-size="7" fill="#64748b">REPL with E2B</text>
+  <text x="248" y="536" font-family="monospace" font-size="7" fill="#64748b">Python sandbox.</text>
+  <rect x="340" y="542" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="363" y="552" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Chroma Lab -->
+  <rect x="405" y="464" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#f59e0b" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="405" y="464" width="165" height="28" rx="4" fill="#f59e0b" fill-opacity="0.06"/>
+  <text x="423" y="482" font-family="monospace" font-size="18">🎨</text>
+  <text x="453" y="484" font-family="'Share Tech Mono', monospace" font-size="9" fill="#fbbf24" font-weight="bold">CHROMA LAB</text>
+  <text x="423" y="512" font-family="monospace" font-size="7" fill="#64748b">Color palette gen</text>
+  <text x="423" y="524" font-family="monospace" font-size="7" fill="#64748b">with Tailwind-compat.</text>
+  <text x="423" y="536" font-family="monospace" font-size="7" fill="#64748b">shade variations.</text>
+  <rect x="515" y="542" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="538" y="552" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Aesthetic Engine -->
+  <rect x="580" y="464" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#d946ef" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="580" y="464" width="165" height="28" rx="4" fill="#d946ef" fill-opacity="0.06"/>
+  <text x="598" y="482" font-family="monospace" font-size="18">✨</text>
+  <text x="628" y="484" font-family="'Share Tech Mono', monospace" font-size="9" fill="#e879f9" font-weight="bold">AESTHETIC ENGINE</text>
+  <text x="598" y="512" font-family="monospace" font-size="7" fill="#64748b">AI-generated UI</text>
+  <text x="598" y="524" font-family="monospace" font-size="7" fill="#64748b">theming from text</text>
+  <text x="598" y="536" font-family="monospace" font-size="7" fill="#64748b">or image vibes.</text>
+  <rect x="598" y="542" width="36" height="14" rx="6" fill="#4a044e"/>
+  <text x="616" y="552" text-anchor="middle" font-family="monospace" font-size="6" fill="#e9d5ff">AI</text>
+  <rect x="690" y="542" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="713" y="552" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Neural Chat -->
+  <rect x="755" y="464" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#d946ef" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="755" y="464" width="165" height="28" rx="4" fill="#d946ef" fill-opacity="0.08"/>
+  <text x="773" y="482" font-family="monospace" font-size="18">💬</text>
+  <text x="803" y="484" font-family="'Share Tech Mono', monospace" font-size="9" fill="#e879f9" font-weight="bold">NEURAL CHAT</text>
+  <text x="773" y="512" font-family="monospace" font-size="7" fill="#64748b">AI chat interface</text>
+  <text x="773" y="524" font-family="monospace" font-size="7" fill="#64748b">powered by Gemini</text>
+  <text x="773" y="536" font-family="monospace" font-size="7" fill="#64748b">Flash/Pro.</text>
+  <rect x="773" y="542" width="36" height="14" rx="6" fill="#4a044e"/>
+  <text x="791" y="552" text-anchor="middle" font-family="monospace" font-size="6" fill="#e9d5ff">AI</text>
+  <rect x="865" y="542" width="46" height="14" rx="3" fill="#d946ef" fill-opacity="0.3" stroke="#d946ef" stroke-width="0.5"/>
+  <text x="888" y="552" text-anchor="middle" font-family="monospace" font-size="7" fill="#e879f9">⊕ ADD</text>
+
+  <!-- Row 4 (partial/more) -->
+  <!-- Git Pulse -->
+  <rect x="230" y="596" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#06b6d4" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="230" y="596" width="165" height="28" rx="4" fill="#06b6d4" fill-opacity="0.06"/>
+  <text x="248" y="614" font-family="monospace" font-size="18">🔀</text>
+  <text x="278" y="616" font-family="'Share Tech Mono', monospace" font-size="9" fill="#67e8f9" font-weight="bold">GIT PULSE</text>
+  <text x="248" y="644" font-family="monospace" font-size="7" fill="#64748b">Pull Request</text>
+  <text x="248" y="656" font-family="monospace" font-size="7" fill="#64748b">monitoring dashboard</text>
+  <text x="248" y="668" font-family="monospace" font-size="7" fill="#64748b">for GitHub repos.</text>
+  <rect x="340" y="674" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="363" y="684" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Secure Calendar -->
+  <rect x="405" y="596" width="165" height="120" rx="4" fill="#0d1b2a" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="405" y="596" width="165" height="28" rx="4" fill="#10b981" fill-opacity="0.06"/>
+  <text x="423" y="614" font-family="monospace" font-size="18">📅</text>
+  <text x="453" y="616" font-family="'Share Tech Mono', monospace" font-size="9" fill="#34d399" font-weight="bold">SECURE CALENDAR</text>
+  <text x="423" y="644" font-family="monospace" font-size="7" fill="#64748b">Local-first event</text>
+  <text x="423" y="656" font-family="monospace" font-size="7" fill="#64748b">scheduling. No</text>
+  <text x="423" y="668" font-family="monospace" font-size="7" fill="#64748b">cloud sync needed.</text>
+  <rect x="515" y="674" width="46" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="538" y="684" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">⊕ ADD</text>
+
+  <!-- Widget count info -->
+  <rect x="230" y="726" width="820" height="4" rx="2" fill="#1e293b"/>
+  <rect x="230" y="726" width="420" height="4" rx="2" fill="#d946ef" fill-opacity="0.5"/>
+  <text x="640" y="752" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Showing 12 of 39 widgets · Drag widgets onto the grid or click ⊕ ADD to activate</text>
+  <text x="640" y="726" text-anchor="middle" font-family="monospace" font-size="8" fill="#7c3aed">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■</text>
+</svg>

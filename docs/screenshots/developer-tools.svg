@@ -1,0 +1,276 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <defs>
+    <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d946ef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="grid-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0f172a" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="800" fill="#020617"/>
+  <rect width="1280" height="800" fill="url(#grid-pattern)" opacity="0.4"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1280" height="56" fill="#020617" opacity="0.95"/>
+  <text x="24" y="36" font-family="'Share Tech Mono', monospace" font-size="26" font-weight="bold" fill="url(#header-grad)">OMNI-GRID</text>
+  <text x="176" y="34" font-family="monospace" font-size="9" fill="#7c3aed" letter-spacing="2">[ LAUNCHER ]</text>
+
+  <!-- ========== CYBER EDITOR WIDGET ========== -->
+  <rect x="16" y="72" width="840" height="440" rx="4" fill="#0f172a" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.6"/>
+  <rect x="16" y="72" width="840" height="28" rx="4" fill="#0c4a6e" fill-opacity="0.3"/>
+  <line x1="16" y1="100" x2="856" y2="100" stroke="#06b6d4" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="30" y="91" font-family="'Share Tech Mono', monospace" font-size="10" fill="#67e8f9" letter-spacing="2" font-weight="bold">◈ CYBER EDITOR</text>
+  <!-- AI badge -->
+  <rect x="808" y="78" width="28" height="14" rx="7" fill="#7c3aed" opacity="0.8"/>
+  <text x="822" y="88" text-anchor="middle" font-family="monospace" font-size="7" fill="#e9d5ff">AI</text>
+  <!-- Tabs -->
+  <rect x="16" y="100" width="840" height="22" fill="#0d1b2a"/>
+  <rect x="18" y="102" width="90" height="18" rx="2" fill="#0f172a" stroke="#06b6d4" stroke-width="0.5"/>
+  <text x="63" y="114" text-anchor="middle" font-family="monospace" font-size="7" fill="#67e8f9">widget.tsx</text>
+  <text x="120" y="114" font-family="monospace" font-size="7" fill="#064444">×</text>
+  <rect x="128" y="102" width="80" height="18" rx="2" fill="#0a1628" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="168" y="114" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">store.ts</text>
+  <rect x="216" y="102" width="70" height="18" rx="2" fill="#0a1628" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="251" y="114" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">types.ts</text>
+  <text x="296" y="114" font-family="monospace" font-size="9" fill="#334155">⊕</text>
+  <!-- Sidebar -->
+  <rect x="16" y="122" width="130" height="390" fill="#0a1020" fill-opacity="0.5"/>
+  <line x1="146" y1="122" x2="146" y2="512" stroke="#1e293b" stroke-width="0.5"/>
+  <text x="22" y="138" font-family="monospace" font-size="7" fill="#475569">EXPLORER</text>
+  <text x="22" y="154" font-family="monospace" font-size="7" fill="#64748b">📁 src</text>
+  <text x="30" y="168" font-family="monospace" font-size="7" fill="#64748b">📁 widgets</text>
+  <text x="38" y="182" font-family="monospace" font-size="7" fill="#67e8f9">  📄 widget.tsx</text>
+  <text x="38" y="196" font-family="monospace" font-size="7" fill="#64748b">  📄 store.ts</text>
+  <text x="38" y="210" font-family="monospace" font-size="7" fill="#64748b">  📄 types.ts</text>
+  <text x="30" y="224" font-family="monospace" font-size="7" fill="#64748b">📁 components</text>
+  <text x="30" y="238" font-family="monospace" font-size="7" fill="#64748b">📁 services</text>
+  <text x="22" y="252" font-family="monospace" font-size="7" fill="#64748b">📄 App.tsx</text>
+  <text x="22" y="266" font-family="monospace" font-size="7" fill="#64748b">📄 index.tsx</text>
+  <!-- AI controls panel -->
+  <text x="22" y="360" font-family="monospace" font-size="7" fill="#475569">AI ACTIONS</text>
+  <rect x="22" y="366" width="110" height="18" rx="2" fill="#4a044e" stroke="#d946ef" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="77" y="378" text-anchor="middle" font-family="monospace" font-size="7" fill="#e879f9">✦ GENERATE</text>
+  <rect x="22" y="390" width="110" height="18" rx="2" fill="#0c2a3a" stroke="#06b6d4" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="77" y="402" text-anchor="middle" font-family="monospace" font-size="7" fill="#67e8f9">⚡ IMPROVE</text>
+  <rect x="22" y="414" width="110" height="18" rx="2" fill="#0a1e1a" stroke="#10b981" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="77" y="426" text-anchor="middle" font-family="monospace" font-size="7" fill="#34d399">🔍 EXPLAIN</text>
+  <rect x="22" y="438" width="110" height="18" rx="2" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="77" y="450" text-anchor="middle" font-family="monospace" font-size="7" fill="#a5b4fc">✎ FIX BUGS</text>
+  <!-- Code area -->
+  <rect x="148" y="122" width="708" height="390" fill="#0a1020"/>
+  <!-- Line numbers -->
+  <rect x="148" y="122" width="32" height="390" fill="#0d1525"/>
+  <line x1="180" y1="122" x2="180" y2="512" stroke="#1e293b" stroke-width="0.5"/>
+  <text x="162" y="137" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">1</text>
+  <text x="162" y="151" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">2</text>
+  <text x="162" y="165" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">3</text>
+  <text x="162" y="179" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">4</text>
+  <text x="162" y="193" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">5</text>
+  <text x="162" y="207" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">6</text>
+  <text x="162" y="221" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">7</text>
+  <text x="162" y="235" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">8</text>
+  <text x="162" y="249" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">9</text>
+  <text x="162" y="263" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">10</text>
+  <text x="162" y="277" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">11</text>
+  <text x="162" y="291" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">12</text>
+  <text x="162" y="305" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">13</text>
+  <text x="162" y="319" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">14</text>
+  <text x="162" y="333" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">15</text>
+  <text x="162" y="347" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">16</text>
+  <text x="162" y="361" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">17</text>
+  <text x="162" y="375" text-anchor="middle" font-family="monospace" font-size="7" fill="#334155">18</text>
+  <!-- Code content -->
+  <text x="188" y="137" font-family="monospace" font-size="8" fill="#818cf8">import</text>
+  <text x="228" y="137" font-family="monospace" font-size="8" fill="#e2e8f0"> React </text>
+  <text x="260" y="137" font-family="monospace" font-size="8" fill="#818cf8">from</text>
+  <text x="284" y="137" font-family="monospace" font-size="8" fill="#86efac"> 'react'</text>
+  <text x="188" y="151" font-family="monospace" font-size="8" fill="#818cf8">import</text>
+  <text x="228" y="151" font-family="monospace" font-size="8" fill="#e2e8f0"> \{ useAppStore \} </text>
+  <text x="350" y="151" font-family="monospace" font-size="8" fill="#818cf8">from</text>
+  <text x="374" y="151" font-family="monospace" font-size="8" fill="#86efac"> '../store'</text>
+  <text x="188" y="165" font-family="monospace" font-size="8" fill="#64748b">// Custom widget component</text>
+  <text x="188" y="179" font-family="monospace" font-size="8" fill="#818cf8">const</text>
+  <text x="218" y="179" font-family="monospace" font-size="8" fill="#67e8f9"> MyWidget</text>
+  <text x="270" y="179" font-family="monospace" font-size="8" fill="#e2e8f0">: React.FC = () =&gt; \{</text>
+  <text x="188" y="193" font-family="monospace" font-size="8" fill="#818cf8">  const</text>
+  <text x="220" y="193" font-family="monospace" font-size="8" fill="#e2e8f0"> theme</text>
+  <text x="250" y="193" font-family="monospace" font-size="8" fill="#e2e8f0"> = useAppStore(</text>
+  <text x="348" y="193" font-family="monospace" font-size="8" fill="#fbbf24">s</text>
+  <text x="356" y="193" font-family="monospace" font-size="8" fill="#e2e8f0"> =&gt; s.theme)</text>
+  <text x="188" y="207" font-family="monospace" font-size="8" fill="#64748b">  // Access global theme colors</text>
+  <!-- highlighted line -->
+  <rect x="148" y="210" width="708" height="14" fill="#0c2a3a" opacity="0.5"/>
+  <text x="188" y="221" font-family="monospace" font-size="8" fill="#818cf8">  return</text>
+  <text x="222" y="221" font-family="monospace" font-size="8" fill="#e2e8f0"> (</text>
+  <text x="188" y="235" font-family="monospace" font-size="8" fill="#e2e8f0">    &lt;</text>
+  <text x="196" y="235" font-family="monospace" font-size="8" fill="#f87171">div</text>
+  <text x="220" y="235" font-family="monospace" font-size="8" fill="#fbbf24"> className</text>
+  <text x="276" y="235" font-family="monospace" font-size="8" fill="#e2e8f0">=</text>
+  <text x="282" y="235" font-family="monospace" font-size="8" fill="#86efac">"widget-container"</text>
+  <text x="378" y="235" font-family="monospace" font-size="8" fill="#e2e8f0">&gt;</text>
+  <text x="188" y="249" font-family="monospace" font-size="8" fill="#e2e8f0">      &lt;</text>
+  <text x="200" y="249" font-family="monospace" font-size="8" fill="#f87171">h2</text>
+  <text x="218" y="249" font-family="monospace" font-size="8" fill="#e2e8f0">&gt;</text>
+  <text x="224" y="249" font-family="monospace" font-size="8" fill="#e2e8f0">Hello Omni-Grid!&lt;/</text>
+  <text x="348" y="249" font-family="monospace" font-size="8" fill="#f87171">h2</text>
+  <text x="366" y="249" font-family="monospace" font-size="8" fill="#e2e8f0">&gt;</text>
+  <text x="188" y="263" font-family="monospace" font-size="8" fill="#e2e8f0">      &lt;</text>
+  <text x="200" y="263" font-family="monospace" font-size="8" fill="#f87171">p</text>
+  <text x="208" y="263" font-family="monospace" font-size="8" fill="#fbbf24"> style</text>
+  <text x="238" y="263" font-family="monospace" font-size="8" fill="#e2e8f0">=\{\{</text>
+  <text x="258" y="263" font-family="monospace" font-size="8" fill="#fbbf24">color</text>
+  <text x="288" y="263" font-family="monospace" font-size="8" fill="#e2e8f0">: theme.colors.primary\}\}&gt;</text>
+  <text x="188" y="277" font-family="monospace" font-size="8" fill="#e2e8f0">        Theme: \{theme.name\}</text>
+  <text x="188" y="291" font-family="monospace" font-size="8" fill="#e2e8f0">      &lt;/</text>
+  <text x="212" y="291" font-family="monospace" font-size="8" fill="#f87171">p</text>
+  <text x="220" y="291" font-family="monospace" font-size="8" fill="#e2e8f0">&gt;</text>
+  <text x="188" y="305" font-family="monospace" font-size="8" fill="#e2e8f0">    &lt;/</text>
+  <text x="208" y="305" font-family="monospace" font-size="8" fill="#f87171">div</text>
+  <text x="232" y="305" font-family="monospace" font-size="8" fill="#e2e8f0">&gt;</text>
+  <text x="188" y="319" font-family="monospace" font-size="8" fill="#e2e8f0">  )</text>
+  <text x="188" y="333" font-family="monospace" font-size="8" fill="#e2e8f0">\}</text>
+  <!-- cursor -->
+  <rect x="204" y="335" width="1.5" height="12" fill="#67e8f9" opacity="0.9"/>
+  <text x="188" y="347" font-family="monospace" font-size="8" fill="#64748b"></text>
+  <text x="188" y="361" font-family="monospace" font-size="8" fill="#818cf8">export</text>
+  <text x="220" y="361" font-family="monospace" font-size="8" fill="#818cf8"> default</text>
+  <text x="260" y="361" font-family="monospace" font-size="8" fill="#67e8f9"> MyWidget</text>
+  <!-- Status bar -->
+  <rect x="148" y="492" width="708" height="20" fill="#0d1525"/>
+  <line x1="148" y1="492" x2="856" y2="492" stroke="#1e293b" stroke-width="0.5"/>
+  <text x="156" y="505" font-family="monospace" font-size="7" fill="#475569">TypeScript React</text>
+  <text x="280" y="505" font-family="monospace" font-size="7" fill="#10b981">● ESLint: OK</text>
+  <text x="360" y="505" font-family="monospace" font-size="7" fill="#10b981">● TypeScript: OK</text>
+  <text x="480" y="505" font-family="monospace" font-size="7" fill="#475569">Ln 18, Col 2</text>
+  <text x="580" y="505" font-family="monospace" font-size="7" fill="#475569">UTF-8</text>
+  <text x="660" y="505" font-family="monospace" font-size="7" fill="#475569">Spaces: 2</text>
+  <text x="750" y="505" font-family="monospace" font-size="7" fill="#334155">widget.tsx</text>
+
+  <!-- ========== PROMPT LAB WIDGET ========== -->
+  <rect x="872" y="72" width="392" height="440" rx="4" fill="#0f172a" stroke="#d946ef" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="872" y="72" width="392" height="28" rx="4" fill="#4a044e" fill-opacity="0.3"/>
+  <line x1="872" y1="100" x2="1264" y2="100" stroke="#d946ef" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="886" y="91" font-family="'Share Tech Mono', monospace" font-size="10" fill="#e879f9" letter-spacing="2" font-weight="bold">◈ PROMPT LAB</text>
+  <rect x="1234" y="78" width="28" height="14" rx="7" fill="#7c3aed" opacity="0.8"/>
+  <text x="1248" y="88" text-anchor="middle" font-family="monospace" font-size="7" fill="#e9d5ff">AI</text>
+  <!-- Prompt Lab content -->
+  <text x="886" y="118" font-family="monospace" font-size="7" fill="#475569">// PROMPT TEMPLATE</text>
+  <rect x="886" y="124" width="362" height="80" rx="2" fill="#0d1b2a" stroke="#4a044e" stroke-width="0.5"/>
+  <text x="896" y="138" font-family="monospace" font-size="7" fill="#e2e8f0">You are an expert {{role}} assistant.</text>
+  <text x="896" y="152" font-family="monospace" font-size="7" fill="#e2e8f0">Your task is to {{task}}.</text>
+  <text x="896" y="166" font-family="monospace" font-size="7" fill="#64748b">Use the following context:</text>
+  <text x="896" y="180" font-family="monospace" font-size="7" fill="#67e8f9">{{context}}</text>
+  <text x="896" y="194" font-family="monospace" font-size="7" fill="#64748b">Respond in {{format}} format.</text>
+  <!-- Variables -->
+  <text x="886" y="218" font-family="monospace" font-size="7" fill="#475569">// VARIABLES</text>
+  <text x="886" y="232" font-family="monospace" font-size="7" fill="#d946ef">role</text>
+  <text x="916" y="232" font-family="monospace" font-size="7" fill="#475569">=</text>
+  <rect x="928" y="222" width="100" height="16" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="936" y="233" font-family="monospace" font-size="7" fill="#e2e8f0">TypeScript dev</text>
+  <text x="886" y="252" font-family="monospace" font-size="7" fill="#d946ef">task</text>
+  <text x="916" y="252" font-family="monospace" font-size="7" fill="#475569">=</text>
+  <rect x="928" y="242" width="100" height="16" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="936" y="253" font-family="monospace" font-size="7" fill="#e2e8f0">review this code</text>
+  <text x="886" y="272" font-family="monospace" font-size="7" fill="#d946ef">format</text>
+  <text x="926" y="272" font-family="monospace" font-size="7" fill="#475569">=</text>
+  <rect x="938" y="262" width="100" height="16" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="946" y="273" font-family="monospace" font-size="7" fill="#e2e8f0">markdown</text>
+  <!-- Provider comparison -->
+  <text x="886" y="300" font-family="monospace" font-size="7" fill="#475569">// PROVIDER COMPARISON</text>
+  <rect x="886" y="306" width="174" height="90" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="896" y="320" font-family="monospace" font-size="7" fill="#06b6d4">GEMINI FLASH</text>
+  <text x="896" y="336" font-family="monospace" font-size="7" fill="#64748b">Tokens: 1,247</text>
+  <text x="896" y="350" font-family="monospace" font-size="7" fill="#64748b">Cost: $0.0002</text>
+  <text x="896" y="364" font-family="monospace" font-size="7" fill="#64748b">Latency: 1.2s</text>
+  <text x="896" y="378" font-family="monospace" font-size="7" fill="#10b981">● Score: 94/100</text>
+  <rect x="1068" y="306" width="174" height="90" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="1078" y="320" font-family="monospace" font-size="7" fill="#e879f9">GEMINI PRO</text>
+  <text x="1078" y="336" font-family="monospace" font-size="7" fill="#64748b">Tokens: 1,891</text>
+  <text x="1078" y="350" font-family="monospace" font-size="7" fill="#64748b">Cost: $0.0028</text>
+  <text x="1078" y="364" font-family="monospace" font-size="7" fill="#64748b">Latency: 3.4s</text>
+  <text x="1078" y="378" font-family="monospace" font-size="7" fill="#10b981">● Score: 98/100</text>
+  <!-- Run button -->
+  <rect x="886" y="406" width="362" height="28" rx="3" fill="#4a044e" stroke="#d946ef" stroke-width="0.8" stroke-opacity="0.7"/>
+  <text x="1067" y="424" text-anchor="middle" font-family="'Share Tech Mono', monospace" font-size="10" fill="#e879f9" letter-spacing="2">▶ RUN COMPARISON</text>
+  <!-- Version history -->
+  <text x="886" y="450" font-family="monospace" font-size="7" fill="#475569">VERSION HISTORY</text>
+  <text x="886" y="464" font-family="monospace" font-size="7" fill="#64748b">v3 (current)</text>
+  <text x="1060" y="464" font-family="monospace" font-size="7" fill="#475569">2 hrs ago</text>
+  <text x="886" y="478" font-family="monospace" font-size="7" fill="#334155">v2</text>
+  <text x="1060" y="478" font-family="monospace" font-size="7" fill="#334155">1 day ago</text>
+  <text x="886" y="492" font-family="monospace" font-size="7" fill="#334155">v1</text>
+  <text x="1060" y="492" font-family="monospace" font-size="7" fill="#334155">3 days ago</text>
+
+  <!-- ========== NEURAL CHAT WIDGET ========== -->
+  <rect x="16" y="524" width="840" height="252" rx="4" fill="#0f172a" stroke="#d946ef" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="16" y="524" width="840" height="28" rx="4" fill="#4a044e" fill-opacity="0.3"/>
+  <line x1="16" y1="552" x2="856" y2="552" stroke="#d946ef" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="30" y="543" font-family="'Share Tech Mono', monospace" font-size="10" fill="#e879f9" letter-spacing="2" font-weight="bold">◈ NEURAL CHAT</text>
+  <rect x="808" y="530" width="28" height="14" rx="7" fill="#7c3aed" opacity="0.8"/>
+  <text x="822" y="540" text-anchor="middle" font-family="monospace" font-size="7" fill="#e9d5ff">AI</text>
+  <!-- Chat messages -->
+  <rect x="30" y="558" width="650" height="50" rx="3" fill="#0d1b2a" stroke="#1e293b" stroke-width="0.5"/>
+  <text x="46" y="572" font-family="monospace" font-size="8" fill="#64748b">USER</text>
+  <text x="90" y="572" font-family="monospace" font-size="7" fill="#475569">2 min ago</text>
+  <text x="46" y="588" font-family="monospace" font-size="8" fill="#e2e8f0">Can you explain how the Cross-Talk Protocol works in Omni-Grid?</text>
+  <!-- AI response -->
+  <rect x="160" y="616" width="676" height="80" rx="3" fill="#1a0a2e" stroke="#7c3aed" stroke-width="0.5" stroke-opacity="0.6"/>
+  <rect x="160" y="616" width="676" height="18" rx="3" fill="#4a044e" fill-opacity="0.2"/>
+  <text x="176" y="629" font-family="monospace" font-size="7" fill="#a78bfa">GEMINI 2.0 FLASH</text>
+  <text x="300" y="629" font-family="monospace" font-size="7" fill="#475569">just now</text>
+  <text x="176" y="645" font-family="monospace" font-size="8" fill="#e2e8f0">The Cross-Talk Protocol enables widgets to share data via drag-and-drop.</text>
+  <text x="176" y="659" font-family="monospace" font-size="8" fill="#e2e8f0">When you drag content from one widget and drop it onto another, a custom</text>
+  <text x="176" y="673" font-family="monospace" font-size="8" fill="#e2e8f0">DragEvent payload carries the widget type and data. The receiving widget</text>
+  <text x="176" y="687" font-family="monospace" font-size="8" fill="#e2e8f0">processes the payload and updates its state accordingly.</text>
+  <!-- Input area -->
+  <rect x="30" y="706" width="766" height="30" rx="3" fill="#0d1b2a" stroke="#4a044e" stroke-width="0.8" stroke-opacity="0.6"/>
+  <text x="46" y="724" font-family="monospace" font-size="8" fill="#64748b">Ask Gemini anything about your workspace...</text>
+  <rect x="768" y="710" width="20" height="20" rx="2" fill="#4a044e" stroke="#d946ef" stroke-width="0.5"/>
+  <text x="778" y="724" text-anchor="middle" font-family="monospace" font-size="10" fill="#e879f9">▶</text>
+
+  <!-- ========== GIT PULSE (right of chat) ========== -->
+  <rect x="872" y="524" width="392" height="252" rx="4" fill="#0f172a" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="872" y="524" width="392" height="28" rx="4" fill="#0c4a6e" fill-opacity="0.2"/>
+  <line x1="872" y1="552" x2="1264" y2="552" stroke="#06b6d4" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="886" y="543" font-family="'Share Tech Mono', monospace" font-size="10" fill="#67e8f9" letter-spacing="2" font-weight="bold">◈ GIT PULSE</text>
+  <!-- PR list -->
+  <text x="886" y="568" font-family="monospace" font-size="7" fill="#475569">GizzZmo/Omni-Grid-2.0 · 3 OPEN PRs</text>
+  <line x1="886" y1="574" x2="1256" y2="574" stroke="#1e293b" stroke-width="0.5"/>
+  <!-- PR 1 -->
+  <rect x="886" y="578" width="370" height="44" rx="2" fill="#0a1628"/>
+  <circle cx="898" cy="592" r="5" fill="#10b981"/>
+  <text x="910" y="588" font-family="monospace" font-size="8" fill="#e2e8f0">#42 feat: Add NEURAL CHAT widget</text>
+  <text x="910" y="600" font-family="monospace" font-size="7" fill="#64748b">copilot/neural-chat · 2 hrs ago</text>
+  <text x="910" y="612" font-family="monospace" font-size="7" fill="#34d399">+847 lines   </text>
+  <text x="970" y="612" font-family="monospace" font-size="7" fill="#ef4444">-23 lines</text>
+  <!-- PR 2 -->
+  <rect x="886" y="628" width="370" height="44" rx="2" fill="#0d1b2a"/>
+  <circle cx="898" cy="642" r="5" fill="#10b981"/>
+  <text x="910" y="638" font-family="monospace" font-size="8" fill="#e2e8f0">#41 update: Documentation &amp; screenshots</text>
+  <text x="910" y="650" font-family="monospace" font-size="7" fill="#64748b">copilot/update-docs · 5 hrs ago</text>
+  <text x="910" y="662" font-family="monospace" font-size="7" fill="#34d399">+1,204 lines   </text>
+  <text x="984" y="662" font-family="monospace" font-size="7" fill="#ef4444">-156 lines</text>
+  <!-- PR 3 -->
+  <rect x="886" y="678" width="370" height="44" rx="2" fill="#0d1b2a"/>
+  <circle cx="898" cy="692" r="5" fill="#f59e0b"/>
+  <text x="910" y="688" font-family="monospace" font-size="8" fill="#e2e8f0">#40 fix: Market widget rate refresh</text>
+  <text x="910" y="700" font-family="monospace" font-size="7" fill="#64748b">copilot/fix-market · 1 day ago</text>
+  <text x="910" y="712" font-family="monospace" font-size="7" fill="#34d399">+12 lines   </text>
+  <text x="956" y="712" font-family="monospace" font-size="7" fill="#ef4444">-5 lines</text>
+  <!-- Repo input -->
+  <rect x="886" y="730" width="370" height="28" rx="3" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="898" y="747" font-family="monospace" font-size="8" fill="#64748b">GizzZmo/Omni-Grid-2.0</text>
+  <rect x="1228" y="734" width="22" height="20" rx="2" fill="#0c4a6e" stroke="#06b6d4" stroke-width="0.5"/>
+  <text x="1239" y="748" text-anchor="middle" font-family="monospace" font-size="9" fill="#67e8f9">↻</text>
+
+  <!-- Status Bar -->
+  <rect x="0" y="770" width="1280" height="30" fill="#0f172a" opacity="0.95"/>
+  <line x1="0" y1="770" x2="1280" y2="770" stroke="#1e293b" stroke-width="1"/>
+  <text x="16" y="788" font-family="monospace" font-size="8" fill="#475569">// DEVELOPER TOOLS VIEW</text>
+  <circle cx="200" cy="784" r="4" fill="#10b981"/>
+  <text x="210" y="788" font-family="monospace" font-size="8" fill="#34d399">ONLINE</text>
+  <text x="900" y="788" font-family="monospace" font-size="8" fill="#334155">Press Ctrl+K for Command Palette | Ctrl+, for Settings</text>
+</svg>

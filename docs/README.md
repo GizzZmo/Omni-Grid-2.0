@@ -14,6 +14,13 @@
 
 Welcome to the Omni-Grid documentation center. This knowledge base is designed to help you understand, use, and extend the Omni-Grid Super App platform.
 
+### 🖼️ Screenshots
+
+- **[Dashboard Overview](./screenshots/dashboard-overview.svg)** - Main grid with active widgets
+- **[Widget Launcher](./screenshots/widget-launcher.svg)** - Browse and activate all 39 modules
+- **[Developer Tools](./screenshots/developer-tools.svg)** - CyberEditor, Prompt Lab, Neural Chat, Git Pulse
+- **[Smart Grid & Creative](./screenshots/smart-grid-creative.svg)** - Financial & creative widgets
+
 ### 🚀 Getting Started
 
 - **[Getting Started Guide](./getting-started.md)** - Installation, setup, and first steps

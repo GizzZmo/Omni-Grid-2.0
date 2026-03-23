@@ -24,7 +24,7 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 
 [![Release](https://img.shields.io/github/v/release/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=00ff88)](https://github.com/GizzZmo/Omni-Grid-2.0/releases)
 [![License](https://img.shields.io/github/license/GizzZmo/Omni-Grid-2.0?style=flat-square&color=00ccff)](./LICENSE)
-[![Node Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?style=flat-square&logo=node.js)](https://nodejs.org)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen?style=flat-square&logo=node.js)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
 [![Stars](https://img.shields.io/github/stars/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=yellow)](https://github.com/GizzZmo/Omni-Grid-2.0/stargazers)
@@ -41,6 +41,38 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
 **📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🗺️ [ROADMAP](./ROADMAP.md) | 🎯 [PROJECT BLUEPRINT](./PROJECT_BLUEPRINT.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
+
+## 0x01.1 // SCREENSHOTS
+
+<div align="center">
+
+### 🖥️ Dashboard Overview
+
+![Dashboard Overview](./docs/screenshots/dashboard-overview.svg)
+
+*The main Omni-Grid dashboard with live widgets: System Core, Neural Scratchpad, Focus HUD, Market Widget, Valuta Exchange, Weather Station and more.*
+
+### 🚀 Widget Launcher
+
+![Widget Launcher](./docs/screenshots/widget-launcher.svg)
+
+*The Widget Launcher — search and activate any of the 39 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System).*
+
+### 🛠️ Developer Tools
+
+![Developer Tools](./docs/screenshots/developer-tools.svg)
+
+*CyberEditor with AI-powered code generation, Prompt Lab for provider comparison, Neural Chat, and Git Pulse PR monitoring — all on one screen.*
+
+### 📊 Smart Grid & Creative Tools
+
+![Smart Grid & Creative](./docs/screenshots/smart-grid-creative.svg)
+
+*Macro Net M2 correlation heatmap, Asset Command portfolio tracker, Reg Radar sentiment analysis, Sonic Architecture with Circle of Fifths, and Strategic Blueprint Kanban board.*
+
+</div>
+
+---
 
 ## 0x02 // CORE MODULES
 
@@ -95,7 +127,7 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js **20+** (required; Vite 8 / Vitest use `node:util styleText` which requires Node 20+)
 - Google Gemini API Key (Required for Neural Link features)
 
 ### Installation

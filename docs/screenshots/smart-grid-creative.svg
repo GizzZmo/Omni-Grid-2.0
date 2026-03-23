@@ -1,0 +1,302 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <defs>
+    <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d946ef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="grid-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0f172a" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="800" fill="#020617"/>
+  <rect width="1280" height="800" fill="url(#grid-pattern)" opacity="0.4"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1280" height="56" fill="#020617" opacity="0.95"/>
+  <text x="24" y="36" font-family="'Share Tech Mono', monospace" font-size="26" font-weight="bold" fill="url(#header-grad)">OMNI-GRID</text>
+  <text x="176" y="34" font-family="monospace" font-size="9" fill="#7c3aed" letter-spacing="2">[ LAUNCHER ]</text>
+
+  <!-- ========== MACRO NET ========== -->
+  <rect x="16" y="72" width="400" height="350" rx="4" fill="#0f172a" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="16" y="72" width="400" height="28" rx="4" fill="#06b6d4" fill-opacity="0.08"/>
+  <line x1="16" y1="100" x2="416" y2="100" stroke="#06b6d4" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="30" y="91" font-family="'Share Tech Mono', monospace" font-size="10" fill="#67e8f9" letter-spacing="2" font-weight="bold">◈ MACRO NET</text>
+  <!-- Y-axis labels -->
+  <text x="32" y="120" font-family="monospace" font-size="7" fill="#475569">M2 SUPPLY vs ASSET CORRELATION</text>
+  <text x="20" y="160" font-family="monospace" font-size="7" fill="#64748b" transform="rotate(-90, 20, 160)">M2 Growth</text>
+  <!-- Chart area -->
+  <rect x="50" y="115" width="354" height="220" fill="#0a1020" stroke="#1e293b" stroke-width="0.5"/>
+  <!-- Grid lines -->
+  <line x1="50" y1="170" x2="404" y2="170" stroke="#1e3a5f" stroke-width="0.3"/>
+  <line x1="50" y1="225" x2="404" y2="225" stroke="#1e3a5f" stroke-width="0.3"/>
+  <line x1="50" y1="280" x2="404" y2="280" stroke="#1e3a5f" stroke-width="0.3"/>
+  <!-- M2 line (blue) -->
+  <polyline points="50,240 94,232 138,224 182,236 226,220 270,212 314,218 358,210 404,205" fill="none" stroke="#06b6d4" stroke-width="2" stroke-opacity="0.8"/>
+  <!-- BTC correlation line (fuchsia) -->
+  <polyline points="50,260 94,248 138,240 182,255 226,235 270,222 314,228 358,218 404,210" fill="none" stroke="#d946ef" stroke-width="1.5" stroke-opacity="0.8"/>
+  <!-- S&P 500 line (green) -->
+  <polyline points="50,270 94,265 138,260 182,268 226,252 270,248 314,254 358,244 404,242" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.8"/>
+  <!-- Legend -->
+  <line x1="58" y1="346" x2="80" y2="346" stroke="#06b6d4" stroke-width="2"/>
+  <text x="85" y="349" font-family="monospace" font-size="7" fill="#67e8f9">M2 Supply</text>
+  <line x1="150" y1="346" x2="172" y2="346" stroke="#d946ef" stroke-width="2"/>
+  <text x="177" y="349" font-family="monospace" font-size="7" fill="#e879f9">BTC</text>
+  <line x1="220" y1="346" x2="242" y2="346" stroke="#10b981" stroke-width="2"/>
+  <text x="247" y="349" font-family="monospace" font-size="7" fill="#34d399">S&amp;P 500</text>
+  <!-- X-axis labels -->
+  <text x="50" y="352" font-family="monospace" font-size="6" fill="#334155">2020</text>
+  <text x="140" y="352" font-family="monospace" font-size="6" fill="#334155">2021</text>
+  <text x="230" y="352" font-family="monospace" font-size="6" fill="#334155">2022</text>
+  <text x="320" y="352" font-family="monospace" font-size="6" fill="#334155">2023</text>
+  <text x="380" y="352" font-family="monospace" font-size="6" fill="#334155">2024</text>
+  <!-- Correlation score -->
+  <text x="30" y="392" font-family="monospace" font-size="8" fill="#475569">CORRELATION SCORE:</text>
+  <text x="200" y="392" font-family="'Share Tech Mono', monospace" font-size="10" fill="#fbbf24" font-weight="bold">0.87</text>
+  <text x="240" y="392" font-family="monospace" font-size="7" fill="#64748b">(BTC vs M2 — HIGH)</text>
+  <text x="30" y="410" font-family="monospace" font-size="8" fill="#475569">30-DAY CHANGE:</text>
+  <text x="200" y="410" font-family="'Share Tech Mono', monospace" font-size="10" fill="#34d399" font-weight="bold">+4.2%</text>
+
+  <!-- ========== ASSET COMMAND ========== -->
+  <rect x="432" y="72" width="400" height="350" rx="4" fill="#0f172a" stroke="#10b981" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="432" y="72" width="400" height="28" rx="4" fill="#10b981" fill-opacity="0.06"/>
+  <line x1="432" y1="100" x2="832" y2="100" stroke="#10b981" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="446" y="91" font-family="'Share Tech Mono', monospace" font-size="10" fill="#34d399" letter-spacing="2" font-weight="bold">◈ ASSET COMMAND</text>
+  <!-- Portfolio display -->
+  <text x="446" y="118" font-family="monospace" font-size="7" fill="#475569">PORTFOLIO OVERVIEW</text>
+  <text x="700" y="118" font-family="'Share Tech Mono', monospace" font-size="11" fill="#34d399" font-weight="bold">$142,830.44</text>
+  <text x="700" y="132" font-family="monospace" font-size="7" fill="#34d399">+$3,241.10 (+2.32%) today</text>
+  <line x1="446" y1="136" x2="824" y2="136" stroke="#1e293b" stroke-width="0.5"/>
+  <!-- Asset rows -->
+  <text x="446" y="152" font-family="monospace" font-size="8" fill="#fbbf24">₿ BTC</text>
+  <rect x="540" y="142" width="160" height="14" rx="2" fill="#1e293b"/>
+  <rect x="540" y="142" width="112" height="14" rx="2" fill="#fbbf24" fill-opacity="0.25"/>
+  <text x="450" y="162" font-family="monospace" font-size="7" fill="#64748b">1.24 BTC</text>
+  <text x="630" y="162" font-family="'Share Tech Mono', monospace" font-size="9" fill="#fbbf24">$83,641</text>
+  <text x="730" y="162" font-family="monospace" font-size="7" fill="#34d399">+2.34%</text>
+  <text x="800" y="162" font-family="monospace" font-size="7" fill="#64748b">58.6%</text>
+  <line x1="446" y1="168" x2="824" y2="168" stroke="#1e293b" stroke-width="0.3"/>
+  <text x="446" y="184" font-family="monospace" font-size="8" fill="#67e8f9">Ξ ETH</text>
+  <rect x="540" y="174" width="160" height="14" rx="2" fill="#1e293b"/>
+  <rect x="540" y="174" width="72" height="14" rx="2" fill="#67e8f9" fill-opacity="0.2"/>
+  <text x="450" y="194" font-family="monospace" font-size="7" fill="#64748b">8.5 ETH</text>
+  <text x="630" y="194" font-family="'Share Tech Mono', monospace" font-size="9" fill="#67e8f9">$32,642</text>
+  <text x="730" y="194" font-family="monospace" font-size="7" fill="#34d399">+1.12%</text>
+  <text x="800" y="194" font-family="monospace" font-size="7" fill="#64748b">22.9%</text>
+  <line x1="446" y1="200" x2="824" y2="200" stroke="#1e293b" stroke-width="0.3"/>
+  <text x="446" y="216" font-family="monospace" font-size="8" fill="#e879f9">◎ SOL</text>
+  <rect x="540" y="206" width="160" height="14" rx="2" fill="#1e293b"/>
+  <rect x="540" y="206" width="40" height="14" rx="2" fill="#e879f9" fill-opacity="0.2"/>
+  <text x="450" y="226" font-family="monospace" font-size="7" fill="#64748b">120 SOL</text>
+  <text x="630" y="226" font-family="'Share Tech Mono', monospace" font-size="9" fill="#e879f9">$17,439</text>
+  <text x="730" y="226" font-family="monospace" font-size="7" fill="#ef4444">-0.87%</text>
+  <text x="800" y="226" font-family="monospace" font-size="7" fill="#64748b">12.2%</text>
+  <line x1="446" y1="232" x2="824" y2="232" stroke="#1e293b" stroke-width="0.3"/>
+  <!-- Donut chart -->
+  <circle cx="540" cy="290" r="50" fill="none" stroke="#fbbf24" stroke-width="16" stroke-dasharray="218 157" stroke-dashoffset="0" transform="rotate(-90, 540, 290)"/>
+  <circle cx="540" cy="290" r="50" fill="none" stroke="#67e8f9" stroke-width="16" stroke-dasharray="85 290" stroke-dashoffset="-218" transform="rotate(-90, 540, 290)"/>
+  <circle cx="540" cy="290" r="50" fill="none" stroke="#e879f9" stroke-width="16" stroke-dasharray="46 329" stroke-dashoffset="-303" transform="rotate(-90, 540, 290)"/>
+  <text x="540" y="285" text-anchor="middle" font-family="monospace" font-size="7" fill="#94a3b8">TOTAL</text>
+  <text x="540" y="297" text-anchor="middle" font-family="'Share Tech Mono', monospace" font-size="8" fill="#e2e8f0">$142.8k</text>
+  <!-- Programmable logic note -->
+  <text x="620" y="260" font-family="monospace" font-size="7" fill="#475569">// PROGRAMMABLE LOGIC</text>
+  <rect x="620" y="266" width="196" height="80" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="630" y="280" font-family="monospace" font-size="7" fill="#64748b">IF btc_weight &gt; 60%</text>
+  <text x="630" y="294" font-family="monospace" font-size="7" fill="#64748b">  ALERT: Rebalance</text>
+  <text x="630" y="308" font-family="monospace" font-size="7" fill="#64748b">IF eth_price &lt; 3500</text>
+  <text x="630" y="322" font-family="monospace" font-size="7" fill="#10b981">  ✓ DCA trigger</text>
+  <text x="630" y="336" font-family="monospace" font-size="7" fill="#64748b">RISK SCORE: LOW</text>
+
+  <!-- ========== REG RADAR ========== -->
+  <rect x="848" y="72" width="416" height="350" rx="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="848" y="72" width="416" height="28" rx="4" fill="#f59e0b" fill-opacity="0.06"/>
+  <line x1="848" y1="100" x2="1264" y2="100" stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="862" y="91" font-family="'Share Tech Mono', monospace" font-size="10" fill="#fbbf24" letter-spacing="2" font-weight="bold">◈ REG RADAR</text>
+  <text x="862" y="116" font-family="monospace" font-size="7" fill="#475569">REGULATORY SENTIMENT ANALYSIS — SEC/MiCA/CFTC</text>
+  <!-- Sentiment gauge -->
+  <text x="862" y="140" font-family="monospace" font-size="8" fill="#64748b">OVERALL SENTIMENT:</text>
+  <rect x="862" y="148" width="380" height="18" rx="3" fill="#1e293b"/>
+  <rect x="862" y="148" width="270" height="18" rx="3" fill="#f59e0b" fill-opacity="0.35"/>
+  <text x="1052" y="162" text-anchor="middle" font-family="'Share Tech Mono', monospace" font-size="10" fill="#fbbf24" font-weight="bold">CAUTIOUS (71%)</text>
+  <!-- News items -->
+  <line x1="862" y1="174" x2="1256" y2="174" stroke="#1e293b" stroke-width="0.5"/>
+  <rect x="862" y="178" width="10" height="10" rx="2" fill="#ef4444"/>
+  <text x="878" y="188" font-family="monospace" font-size="8" fill="#e2e8f0">SEC proposes new crypto exchange disclosure rules</text>
+  <text x="878" y="200" font-family="monospace" font-size="7" fill="#64748b">Reuters · 2 hrs ago · Sentiment: BEARISH (-0.72)</text>
+  <line x1="862" y1="206" x2="1256" y2="206" stroke="#1e293b" stroke-width="0.3"/>
+  <rect x="862" y="210" width="10" height="10" rx="2" fill="#10b981"/>
+  <text x="878" y="220" font-family="monospace" font-size="8" fill="#e2e8f0">EU MiCA framework moves to final implementation phase</text>
+  <text x="878" y="232" font-family="monospace" font-size="7" fill="#64748b">Bloomberg · 5 hrs ago · Sentiment: BULLISH (+0.61)</text>
+  <line x1="862" y1="238" x2="1256" y2="238" stroke="#1e293b" stroke-width="0.3"/>
+  <rect x="862" y="242" width="10" height="10" rx="2" fill="#f59e0b"/>
+  <text x="878" y="252" font-family="monospace" font-size="8" fill="#e2e8f0">CFTC clarifies DeFi oversight guidelines</text>
+  <text x="878" y="264" font-family="monospace" font-size="7" fill="#64748b">CoinDesk · 8 hrs ago · Sentiment: NEUTRAL (+0.12)</text>
+  <line x1="862" y1="270" x2="1256" y2="270" stroke="#1e293b" stroke-width="0.3"/>
+  <rect x="862" y="274" width="10" height="10" rx="2" fill="#10b981"/>
+  <text x="878" y="284" font-family="monospace" font-size="8" fill="#e2e8f0">Bitcoin ETF inflows reach $1.2B in single session</text>
+  <text x="878" y="296" font-family="monospace" font-size="7" fill="#64748b">The Block · 12 hrs ago · Sentiment: BULLISH (+0.89)</text>
+  <line x1="862" y1="302" x2="1256" y2="302" stroke="#1e293b" stroke-width="0.3"/>
+  <rect x="862" y="306" width="10" height="10" rx="2" fill="#ef4444"/>
+  <text x="878" y="316" font-family="monospace" font-size="8" fill="#e2e8f0">Congress subcommittee debates stablecoin legislation</text>
+  <text x="878" y="328" font-family="monospace" font-size="7" fill="#64748b">Politico · 1 day ago · Sentiment: BEARISH (-0.45)</text>
+  <!-- Sentiment histogram -->
+  <text x="862" y="355" font-family="monospace" font-size="7" fill="#475569">7-DAY SENTIMENT TREND</text>
+  <polyline points="862,405 895,398 928,410 961,395 994,388 1027,400 1060,385 1093,378 1126,390 1159,382 1192,374 1225,386 1258,372" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.8"/>
+  <line x1="862" y1="390" x2="1260" y2="390" stroke="#1e293b" stroke-width="0.3" stroke-dasharray="3,3"/>
+  <text x="862" y="418" font-family="monospace" font-size="6" fill="#334155">Mo</text>
+  <text x="925" y="418" font-family="monospace" font-size="6" fill="#334155">Tu</text>
+  <text x="988" y="418" font-family="monospace" font-size="6" fill="#334155">We</text>
+  <text x="1051" y="418" font-family="monospace" font-size="6" fill="#334155">Th</text>
+  <text x="1114" y="418" font-family="monospace" font-size="6" fill="#334155">Fr</text>
+  <text x="1177" y="418" font-family="monospace" font-size="6" fill="#334155">Sa</text>
+  <text x="1240" y="418" font-family="monospace" font-size="6" fill="#334155">Su</text>
+
+  <!-- ========== SONIC ARCHITECTURE ========== -->
+  <rect x="16" y="436" width="620" height="340" rx="4" fill="#0f172a" stroke="#818cf8" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="16" y="436" width="620" height="28" rx="4" fill="#818cf8" fill-opacity="0.06"/>
+  <line x1="16" y1="464" x2="636" y2="464" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="30" y="455" font-family="'Share Tech Mono', monospace" font-size="10" fill="#a5b4fc" letter-spacing="2" font-weight="bold">◈ SONIC ARCHITECTURE</text>
+  <!-- Circle of Fifths -->
+  <circle cx="200" cy="600" r="110" fill="none" stroke="#1e293b" stroke-width="20"/>
+  <!-- C -->
+  <circle cx="200" cy="490" r="16" fill="#818cf8" fill-opacity="0.6" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="200" y="495" text-anchor="middle" font-family="monospace" font-size="10" fill="white" font-weight="bold">C</text>
+  <!-- G -->
+  <circle cx="254" cy="505" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="254" y="510" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5b4fc">G</text>
+  <!-- D -->
+  <circle cx="294" cy="545" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="294" y="550" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5b4fc">D</text>
+  <!-- A -->
+  <circle cx="310" cy="600" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="310" y="605" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5b4fc">A</text>
+  <!-- F -->
+  <circle cx="146" cy="505" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="146" y="510" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5b4fc">F</text>
+  <!-- Bb -->
+  <circle cx="106" cy="545" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="106" y="550" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5b4fc">Bb</text>
+  <!-- E -->
+  <circle cx="294" cy="655" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="294" y="660" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5b4fc">E</text>
+  <!-- F# -->
+  <circle cx="200" cy="710" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="200" y="715" text-anchor="middle" font-family="monospace" font-size="9" fill="#a5b4fc">F#</text>
+  <!-- Db -->
+  <circle cx="90" cy="600" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="90" y="605" text-anchor="middle" font-family="monospace" font-size="9" fill="#a5b4fc">Db</text>
+  <!-- Ab -->
+  <circle cx="106" cy="655" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="106" y="660" text-anchor="middle" font-family="monospace" font-size="9" fill="#a5b4fc">Ab</text>
+  <!-- B -->
+  <circle cx="254" cy="695" r="16" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="254" y="700" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5b4fc">B</text>
+  <!-- Eb -->
+  <circle cx="310" cy="655" r="0" /><!-- placeholder -->
+  <!-- Controls -->
+  <text x="30" y="482" font-family="monospace" font-size="7" fill="#475569">KEY: C MAJOR</text>
+  <text x="30" y="496" font-family="monospace" font-size="7" fill="#a5b4fc">SCALE: MAJOR</text>
+  <!-- Waveform visualizer right side -->
+  <text x="400" y="482" font-family="monospace" font-size="7" fill="#475569">AUDIO VISUALIZER</text>
+  <rect x="380" y="488" width="240" height="80" rx="2" fill="#0a1020" stroke="#1e293b" stroke-width="0.5"/>
+  <!-- Waveform bars -->
+  <rect x="388" y="532" width="4" height="16" rx="1" fill="#818cf8" opacity="0.6"/>
+  <rect x="396" y="524" width="4" height="24" rx="1" fill="#818cf8" opacity="0.7"/>
+  <rect x="404" y="516" width="4" height="32" rx="1" fill="#818cf8" opacity="0.8"/>
+  <rect x="412" y="510" width="4" height="38" rx="1" fill="#a5b4fc" opacity="0.9"/>
+  <rect x="420" y="508" width="4" height="40" rx="1" fill="#a5b4fc"/>
+  <rect x="428" y="504" width="4" height="44" rx="1" fill="#818cf8" opacity="0.9"/>
+  <rect x="436" y="512" width="4" height="36" rx="1" fill="#818cf8" opacity="0.8"/>
+  <rect x="444" y="518" width="4" height="30" rx="1" fill="#818cf8" opacity="0.7"/>
+  <rect x="452" y="526" width="4" height="22" rx="1" fill="#818cf8" opacity="0.6"/>
+  <rect x="460" y="522" width="4" height="26" rx="1" fill="#818cf8" opacity="0.7"/>
+  <rect x="468" y="514" width="4" height="34" rx="1" fill="#a5b4fc" opacity="0.8"/>
+  <rect x="476" y="506" width="4" height="42" rx="1" fill="#a5b4fc" opacity="0.9"/>
+  <rect x="484" y="508" width="4" height="40" rx="1" fill="#818cf8"/>
+  <rect x="492" y="516" width="4" height="32" rx="1" fill="#818cf8" opacity="0.8"/>
+  <rect x="500" y="528" width="4" height="20" rx="1" fill="#818cf8" opacity="0.6"/>
+  <rect x="508" y="520" width="4" height="28" rx="1" fill="#818cf8" opacity="0.7"/>
+  <rect x="516" y="514" width="4" height="34" rx="1" fill="#818cf8" opacity="0.8"/>
+  <rect x="524" y="506" width="4" height="42" rx="1" fill="#a5b4fc" opacity="0.9"/>
+  <rect x="532" y="512" width="4" height="36" rx="1" fill="#818cf8" opacity="0.8"/>
+  <rect x="540" y="524" width="4" height="24" rx="1" fill="#818cf8" opacity="0.6"/>
+  <rect x="548" y="532" width="4" height="16" rx="1" fill="#818cf8" opacity="0.5"/>
+  <rect x="556" y="534" width="4" height="14" rx="1" fill="#818cf8" opacity="0.4"/>
+  <rect x="564" y="526" width="4" height="22" rx="1" fill="#818cf8" opacity="0.5"/>
+  <!-- Brown noise / ambient controls -->
+  <text x="380" y="588" font-family="monospace" font-size="7" fill="#475569">AMBIENT SOUND</text>
+  <rect x="380" y="594" width="68" height="18" rx="3" fill="#1e1b4b" stroke="#818cf8" stroke-width="0.6" stroke-opacity="0.5"/>
+  <text x="414" y="607" text-anchor="middle" font-family="monospace" font-size="7" fill="#a5b4fc">🎵 BROWN</text>
+  <rect x="456" y="594" width="62" height="18" rx="3" fill="#0a1020" stroke="#334155" stroke-width="0.5"/>
+  <text x="487" y="607" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">🌊 PINK</text>
+  <rect x="526" y="594" width="62" height="18" rx="3" fill="#0a1020" stroke="#334155" stroke-width="0.5"/>
+  <text x="557" y="607" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748b">🌧 WHITE</text>
+  <!-- Playlist -->
+  <text x="380" y="632" font-family="monospace" font-size="7" fill="#475569">NOW PLAYING</text>
+  <rect x="380" y="638" width="240" height="18" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="390" y="650" font-family="monospace" font-size="7" fill="#e2e8f0">♫ Midnight Drive - Synthwave Mix</text>
+  <text x="580" y="650" font-family="monospace" font-size="8" fill="#818cf8">▐▌</text>
+  <!-- Progress bar -->
+  <rect x="380" y="660" width="240" height="4" rx="2" fill="#1e293b"/>
+  <rect x="380" y="660" width="112" height="4" rx="2" fill="#818cf8" fill-opacity="0.7"/>
+  <text x="380" y="676" font-family="monospace" font-size="6" fill="#64748b">1:45</text>
+  <text x="596" y="676" font-family="monospace" font-size="6" fill="#64748b">3:12</text>
+  <text x="380" y="692" font-family="monospace" font-size="7" fill="#64748b">⏮  ◀◀  ▐▐  ▶▶  ⏭  🔀  🔁</text>
+  <text x="550" y="692" font-family="monospace" font-size="7" fill="#64748b">Vol: ████░░░</text>
+
+  <!-- ========== STRATEGIC BLUEPRINT ========== -->
+  <rect x="652" y="436" width="612" height="340" rx="4" fill="#0f172a" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="652" y="436" width="612" height="28" rx="4" fill="#06b6d4" fill-opacity="0.06"/>
+  <line x1="652" y1="464" x2="1264" y2="464" stroke="#06b6d4" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="666" y="455" font-family="'Share Tech Mono', monospace" font-size="10" fill="#67e8f9" letter-spacing="2" font-weight="bold">◈ STRATEGIC BLUEPRINT</text>
+  <!-- Kanban columns -->
+  <!-- BACKLOG -->
+  <rect x="662" y="470" width="140" height="280" rx="3" fill="#0a1628" stroke="#1e3a5f" stroke-width="0.5"/>
+  <text x="732" y="484" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748b" font-weight="bold">BACKLOG (4)</text>
+  <rect x="668" y="490" width="128" height="44" rx="2" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="674" y="504" font-family="monospace" font-size="7" fill="#94a3b8">Mobile responsive</text>
+  <text x="674" y="518" font-family="monospace" font-size="7" fill="#475569">design overhaul</text>
+  <text x="674" y="530" font-family="monospace" font-size="6" fill="#334155">P2 · UX</text>
+  <rect x="668" y="540" width="128" height="44" rx="2" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+  <text x="674" y="554" font-family="monospace" font-size="7" fill="#94a3b8">WebSocket real-time</text>
+  <text x="674" y="568" font-family="monospace" font-size="7" fill="#475569">data sync</text>
+  <text x="674" y="580" font-family="monospace" font-size="6" fill="#334155">P1 · INFRA</text>
+  <!-- IN PROGRESS -->
+  <rect x="810" y="470" width="140" height="280" rx="3" fill="#0c2a1e" stroke="#10b981" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="880" y="484" text-anchor="middle" font-family="monospace" font-size="8" fill="#34d399" font-weight="bold">IN PROGRESS (3)</text>
+  <rect x="816" y="490" width="128" height="44" rx="2" fill="#0a2018" stroke="#10b981" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="822" y="504" font-family="monospace" font-size="7" fill="#e2e8f0">Docs &amp; screenshots</text>
+  <text x="822" y="518" font-family="monospace" font-size="7" fill="#475569">update</text>
+  <text x="822" y="530" font-family="monospace" font-size="6" fill="#34d399">P1 · DOCS ● ACTIVE</text>
+  <rect x="816" y="540" width="128" height="44" rx="2" fill="#0a2018" stroke="#10b981" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="822" y="554" font-family="monospace" font-size="7" fill="#e2e8f0">Neural Chat widget</text>
+  <text x="822" y="568" font-family="monospace" font-size="7" fill="#475569">implementation</text>
+  <text x="822" y="580" font-family="monospace" font-size="6" fill="#34d399">P1 · FEAT ● ACTIVE</text>
+  <!-- REVIEW -->
+  <rect x="958" y="470" width="140" height="280" rx="3" fill="#0c1a3a" stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.4"/>
+  <text x="1028" y="484" text-anchor="middle" font-family="monospace" font-size="8" fill="#fbbf24" font-weight="bold">REVIEW (2)</text>
+  <rect x="964" y="490" width="128" height="44" rx="2" fill="#0a1628" stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.5"/>
+  <text x="970" y="504" font-family="monospace" font-size="7" fill="#e2e8f0">Market widget rate</text>
+  <text x="970" y="518" font-family="monospace" font-size="7" fill="#475569">refresh optimization</text>
+  <text x="970" y="530" font-family="monospace" font-size="6" fill="#fbbf24">P2 · FIX</text>
+  <!-- DONE -->
+  <rect x="1106" y="470" width="148" height="280" rx="3" fill="#0a1a0a" stroke="#1e3a1e" stroke-width="0.5"/>
+  <text x="1180" y="484" text-anchor="middle" font-family="monospace" font-size="8" fill="#475569" font-weight="bold">DONE (7)</text>
+  <rect x="1112" y="490" width="134" height="44" rx="2" fill="#111a11" stroke="#1e3a1e" stroke-width="0.5"/>
+  <text x="1118" y="504" font-family="monospace" font-size="7" fill="#64748b">CyberEditor AI</text>
+  <text x="1118" y="518" font-family="monospace" font-size="7" fill="#334155">integration</text>
+  <text x="1118" y="530" font-family="monospace" font-size="6" fill="#334155">✓ DONE</text>
+  <rect x="1112" y="540" width="134" height="44" rx="2" fill="#111a11" stroke="#1e3a1e" stroke-width="0.5"/>
+  <text x="1118" y="554" font-family="monospace" font-size="7" fill="#64748b">Valuta Exchange</text>
+  <text x="1118" y="568" font-family="monospace" font-size="7" fill="#334155">widget</text>
+  <text x="1118" y="580" font-family="monospace" font-size="6" fill="#334155">✓ DONE</text>
+
+  <!-- Status Bar -->
+  <rect x="0" y="770" width="1280" height="30" fill="#0f172a" opacity="0.95"/>
+  <line x1="0" y1="770" x2="1280" y2="770" stroke="#1e293b" stroke-width="1"/>
+  <text x="16" y="788" font-family="monospace" font-size="8" fill="#475569">// SMART GRID &amp; CREATIVE TOOLS</text>
+  <circle cx="200" cy="784" r="4" fill="#10b981"/>
+  <text x="210" y="788" font-family="monospace" font-size="8" fill="#34d399">ONLINE</text>
+  <text x="900" y="788" font-family="monospace" font-size="8" fill="#334155">Press Ctrl+K for Command Palette | Ctrl+, for Settings</text>
+</svg>
