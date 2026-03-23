@@ -16,20 +16,21 @@ Welcome to the Omni-Grid wiki. This space provides a high-level map to the exist
 
 ## 🧭 Navigation Map
 
-| Topic                | Wiki Link                                   | Source Doc                                  |
-| -------------------- | ------------------------------------------- | ------------------------------------------- |
-| Getting Started      | [[Getting Started]]                         | [docs/getting-started.md](../getting-started.md) |
-| Configuration        | [[Configuration]]                           | [docs/configuration.md](../configuration.md) |
-| Architecture         | [[Architecture]]                            | [docs/architecture.md](../architecture.md) |
-| Widget Development   | [[Widget Development]]                      | [docs/widget-development.md](../widget-development.md) |
-| API Reference        | [[API Reference]]                           | [docs/api-reference.md](../api-reference.md) |
-| State Management     | [[State Management]]                        | [docs/state-management.md](../state-management.md) |
-| How-To Guides        | [[How-To Recipes]]                          | [docs/HOWTO.md](../HOWTO.md) |
-| Knowledge Base       | [[Core Concepts (WIKI)]]                    | [docs/WIKI.md](../WIKI.md) |
-| Troubleshooting      | [[Troubleshooting]]                         | [docs/troubleshooting.md](../troubleshooting.md) |
-| Keyboard Shortcuts   | [[Keyboard Shortcuts]]                      | [docs/keyboard-shortcuts.md](../keyboard-shortcuts.md) |
+| Topic              | Wiki Link                | Source Doc                                             |
+| ------------------ | ------------------------ | ------------------------------------------------------ |
+| Getting Started    | [[Getting Started]]      | [docs/getting-started.md](../getting-started.md)       |
+| Configuration      | [[Configuration]]        | [docs/configuration.md](../configuration.md)           |
+| Architecture       | [[Architecture]]         | [docs/architecture.md](../architecture.md)             |
+| Widget Development | [[Widget Development]]   | [docs/widget-development.md](../widget-development.md) |
+| API Reference      | [[API Reference]]        | [docs/api-reference.md](../api-reference.md)           |
+| State Management   | [[State Management]]     | [docs/state-management.md](../state-management.md)     |
+| How-To Guides      | [[How-To Recipes]]       | [docs/HOWTO.md](../HOWTO.md)                           |
+| Knowledge Base     | [[Core Concepts (WIKI)]] | [docs/WIKI.md](../WIKI.md)                             |
+| Troubleshooting    | [[Troubleshooting]]      | [docs/troubleshooting.md](../troubleshooting.md)       |
+| Keyboard Shortcuts | [[Keyboard Shortcuts]]   | [docs/keyboard-shortcuts.md](../keyboard-shortcuts.md) |
 
 Use the “Wiki Link” column when creating GitHub Wiki pages (e.g., `[[Getting Started]]` becomes a page). The “Source Doc” column points to the authoritative markdown already in the repo.
+
 > Links here are relative to the repository. When publishing to the GitHub Wiki, convert them to absolute GitHub URLs.
 
 ## 🛠️ How to Publish to GitHub Wiki
