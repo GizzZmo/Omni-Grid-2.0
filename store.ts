@@ -7,14 +7,14 @@ import {
   GhostData,
   PromptTemplate,
   PromptVersion,
+  StartupBehavior,
 } from './types';
 import { estimateTokens } from './services/promptEngine';
 
 const resolveEnvGeminiKey = () => {
   const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
   const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
-  const browserEnv =
-    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
+  const browserEnv = (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
 
   return (
     metaEnv.VITE_API_KEY ||
@@ -29,8 +29,7 @@ const resolveEnvGeminiKey = () => {
 
 const resolveEnvE2BKey = () => {
   const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
-  const browserEnv =
-    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
+  const browserEnv = (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
   return nodeEnv.E2B_API_KEY || browserEnv.E2B_API_KEY || '';
 };
 
@@ -54,6 +53,7 @@ const DEFAULT_SETTINGS = {
   sound: true,
   geminiApiKey: resolveEnvGeminiKey(),
   e2bApiKey: resolveEnvE2BKey(),
+  startupBehavior: 'restore' as StartupBehavior,
 };
 syncRuntimeKey('API_KEY', DEFAULT_SETTINGS.geminiApiKey);
 syncRuntimeKey('GEMINI_API_KEY', DEFAULT_SETTINGS.geminiApiKey);
@@ -84,16 +84,22 @@ interface AppState {
   isCmdPaletteOpen: boolean;
   setCmdPaletteOpen: (open: boolean) => void;
 
+  // Settings Panel
+  isSettingsPanelOpen: boolean;
+  setSettingsPanelOpen: (open: boolean) => void;
+
   // Settings
   settings: {
     scanlines: boolean;
     sound: boolean;
     geminiApiKey: string;
     e2bApiKey: string;
+    startupBehavior: StartupBehavior;
   };
   toggleSetting: (key: 'scanlines' | 'sound') => void;
   setGeminiApiKey: (key: string) => void;
   setE2bApiKey: (key: string) => void;
+  setStartupBehavior: (behavior: StartupBehavior) => void;
 
   // Theme
   theme: AppTheme;
@@ -214,6 +220,8 @@ const DEFAULT_LAYOUT: GridItemData[] = [
   { i: 'STRATEGIC', x: 6, y: 112, w: 6, h: 8 },
   { i: 'CLIPBOARD', x: 0, y: 120, w: 4, h: 8 },
   { i: 'PROMPT_LAB', x: 4, y: 120, w: 8, h: 12 },
+  // AI Chat
+  { i: 'NEURAL_CHAT', x: 0, y: 132, w: 6, h: 12 },
 ];
 
 const DEFAULT_THEME: AppTheme = {
@@ -376,6 +384,9 @@ export const useAppStore = create<AppState>()(
       isCmdPaletteOpen: false,
       setCmdPaletteOpen: open => set({ isCmdPaletteOpen: open }),
 
+      isSettingsPanelOpen: false,
+      setSettingsPanelOpen: open => set({ isSettingsPanelOpen: open }),
+
       // Settings
       settings: { ...DEFAULT_SETTINGS },
       toggleSetting: key =>
@@ -393,6 +404,11 @@ export const useAppStore = create<AppState>()(
         syncRuntimeKey('E2B_API_KEY', key);
         return set(state => ({
           settings: { ...state.settings, e2bApiKey: key },
+        }));
+      },
+      setStartupBehavior: behavior => {
+        set(state => ({
+          settings: { ...state.settings, startupBehavior: behavior },
         }));
       },
 
@@ -489,9 +505,7 @@ export const useAppStore = create<AppState>()(
       setActivePrompt: id => set({ activePromptId: id }),
       updatePromptContent: (id, content) =>
         set(state => ({
-          promptLibrary: state.promptLibrary.map(p =>
-            p.id === id ? { ...p, content } : p
-          ),
+          promptLibrary: state.promptLibrary.map(p => (p.id === id ? { ...p, content } : p)),
         })),
       savePromptVersion: (id, note) =>
         set(state => ({
@@ -512,9 +526,7 @@ export const useAppStore = create<AppState>()(
         }),
       updatePromptVariables: (id, variables) =>
         set(state => ({
-          promptLibrary: state.promptLibrary.map(p =>
-            p.id === id ? { ...p, variables } : p
-          ),
+          promptLibrary: state.promptLibrary.map(p => (p.id === id ? { ...p, variables } : p)),
         })),
       tagPrompt: (id, tags) =>
         set(state => ({

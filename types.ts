@@ -42,7 +42,9 @@ export type WidgetType =
   | 'STRATEGIC'
   | 'CLIPBOARD'
   // Prompt Workspace
-  | 'PROMPT_LAB';
+  | 'PROMPT_LAB'
+  // AI Chat
+  | 'NEURAL_CHAT';
 
 export interface WidgetConfig {
   id: string;
@@ -84,6 +86,8 @@ export enum SoundType {
   RAIN = 'RAIN',
   OFF = 'OFF',
 }
+
+export type StartupBehavior = 'restore' | 'default' | 'empty';
 
 export interface AppTheme {
   name: string;

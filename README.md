@@ -13,7 +13,7 @@
 
 <div align="center">
 
-[![CI](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml)
+[![CI](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml)
 [![Dependency Audit](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml)
 [![Performance](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml/badge.svg?event=pull_request)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml)
@@ -36,7 +36,7 @@
 
 > **Philosophy:** "The net is vast and infinite, but your grid is your own."
 
-**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🗺️ [ROADMAP](./ROADMAP.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
+**📚 [FULL DOCUMENTATION](./DOCUMENTATION.md) | 🗺️ [ROADMAP](./ROADMAP.md) | 🎯 [PROJECT BLUEPRINT](./PROJECT_BLUEPRINT.md) | 🚀 [QUICK START](./QUICK_REFERENCE.md) | ❓ [FAQ](./docs/faq.md) | 📊 [PERFORMANCE REPORT](./performance-report.html) | 🔄 [CI/CD WORKFLOWS](./.github/WORKFLOWS.md)**
 
 ## 0x02 // CORE MODULES
 
@@ -52,6 +52,8 @@
 - **Macro Net:** Global M2 Money Supply vs. Asset correlation heatmap.
 - **Chain Pulse:** Real-time TPS tracking for L1/L2 networks.
 - **Reg Radar:** Sentiment analysis on regulatory news (SEC/MiCA).
+- **Market Widget:** Real-time market data feeds and price tracking.
+- **Valuta Exchange:** Currency converter with real-time exchange rates across 12+ currencies.
 
 ### 🛠️ Developer Optic
 
@@ -67,6 +69,23 @@
 - **Aesthetic Engine:** AI-generated UI theming based on text or image vibes.
 - **Sonic Architecture:** Circle of Fifths theory tool with brown noise and a local playlist player.
 - **Cipher Vault:** Local hashing and UUID/Nanoid generation.
+- **Chroma Lab:** Color palette generator with Tailwind-compatible shade variations.
+- **Clipboard Stream:** Clipboard history manager with drag-and-drop support.
+- **Quantum Calc:** Scientific calculator with expression parsing and history.
+- **Weather Station:** Real-time weather conditions for any location.
+- **Signal Radio:** Audio player with frequency-responsive visualizer.
+
+### 📊 Productivity & Research
+
+- **Focus HUD:** Pomodoro timer and task tracking.
+- **Temporal Nexus:** Time zone converter and world clock.
+- **Secure Calendar:** Local-first event scheduling.
+- **Strategic Blueprint:** Project planning canvas.
+- **News Feed:** Aggregated news streams.
+- **Research Browser:** In-app web browsing.
+- **PDF Viewer:** Document reader and viewer.
+- **Help Desk:** Comprehensive help system with Wiki, Q&A, and step-by-step guides.
+- **Sudoku Grid:** Sudoku puzzle game with difficulty levels and timer.
 
 ## 0x03 // INITIALIZATION PROTOCOLS
 
@@ -94,11 +113,13 @@
     Create a `.env` file in the root directory:
 
 ```env
-API_KEY=your_google_gemini_api_key_here
+GEMINI_API_KEY=your_google_gemini_api_key_here
 E2B_API_KEY=your_e2b_api_key_here
 ```
 
-`API_KEY` powers Gemini-based assistants, while `E2B_API_KEY` is used for sandboxed Python execution. You can also inject `window.E2B_API_KEY` at runtime if you prefer not to bake the sandbox key into the client bundle.
+`GEMINI_API_KEY` powers Gemini-based assistants (Neural Scratchpad, WritePad, Polyglot Box, Widget Architect, etc.), while `E2B_API_KEY` is optional and used for sandboxed Python execution in the Web Terminal widget. You can also inject `window.E2B_API_KEY` at runtime if you prefer not to bake the sandbox key into the client bundle.
+
+> **Note:** The code also supports legacy `API_KEY` for backwards compatibility, but `GEMINI_API_KEY` is the recommended variable name.
 
 4.  **Ignition**
     ```bash
