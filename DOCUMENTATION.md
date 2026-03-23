@@ -16,6 +16,24 @@ Welcome! This is your gateway to comprehensive Omni-Grid documentation.
 
 ---
 
+## 🖼️ SCREENSHOTS
+
+<div align="center">
+
+| Dashboard Overview | Widget Launcher |
+|:-:|:-:|
+| ![Dashboard](./docs/screenshots/dashboard-overview.svg) | ![Widget Launcher](./docs/screenshots/widget-launcher.svg) |
+| *Main dashboard with active widgets* | *Browse and activate 39 modules* |
+
+| Developer Tools | Smart Grid & Creative |
+|:-:|:-:|
+| ![Developer Tools](./docs/screenshots/developer-tools.svg) | ![Smart Grid](./docs/screenshots/smart-grid-creative.svg) |
+| *CyberEditor, Prompt Lab, Neural Chat, Git Pulse* | *Macro Net, Asset Command, Reg Radar, Sonic Architecture* |
+
+</div>
+
+---
+
 ## 🚀 GETTING STARTED
 
 New to Omni-Grid? Start here:

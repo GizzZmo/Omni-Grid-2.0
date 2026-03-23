@@ -9,6 +9,8 @@
 
 Omni-Grid is a **local-first, modular Super App** built on React with a focus on privacy, extensibility, and high-density information display. The architecture follows a **hub-and-spoke model** where widgets are independent modules coordinated by a central state manager.
 
+> See [screenshots](./screenshots/) for visual examples of the dashboard and individual widget categories.
+
 ### Core Principles
 
 1. **Local-First:** All data persists in browser localStorage. No cloud dependencies.
@@ -16,6 +18,17 @@ Omni-Grid is a **local-first, modular Super App** built on React with a focus on
 3. **Cross-Talk Protocol:** Widgets communicate via drag-and-drop events.
 4. **AI Integration:** Direct client-to-API calls (no proxy server).
 5. **Responsive Grid:** Dynamic layout with drag/resize capabilities.
+
+### Widget Catalogue (39 modules)
+
+| Category | Widget IDs |
+|:---------|:-----------|
+| **Neural Suite** | `SCRATCHPAD`, `WRITEPAD`, `POLYGLOT`, `ARCHITECT`, `NEURAL_CHAT` |
+| **Smart Grid** | `ASSET`, `MACRO_NET`, `CHAIN_PULSE`, `REG_RADAR`, `MARKET`, `VALUTA` |
+| **Developer Optic** | `WEB_TERMINAL`, `DEV_OPTIC`, `GIT_PULSE`, `DOCU_HUB`, `PROJECT_TRACKER`, `CYBER_EDITOR`, `PROMPT_LAB` |
+| **Creative & Utility** | `THEME_ENGINE`, `SONIC`, `CIPHER_VAULT`, `CHROMA_LAB`, `CLIPBOARD`, `CALC`, `WEATHER`, `RADIO` |
+| **Productivity & Research** | `FOCUS_HUD`, `TEMPORAL`, `SECURE_CALENDAR`, `STRATEGIC`, `NEWS_FEED`, `RESEARCH_BROWSER`, `PDF_VIEWER`, `HELP` |
+| **System** | `TRANSFORMER`, `SYSTEM`, `CIPHER_PAD`, `SUDOKU`, `GHOST` |
 
 ---
 
