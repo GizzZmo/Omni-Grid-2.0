@@ -41,6 +41,7 @@ import { MarketWidget } from '../widgets/MarketWidget';
 import { StrategicBlueprint } from '../widgets/StrategicBlueprint';
 import { ClipboardStream } from '../widgets/ClipboardStream';
 import { PromptLab } from '../widgets/PromptLab';
+import { NeuralChat } from '../widgets/NeuralChat';
 
 import {
   FileJson,
@@ -75,6 +76,7 @@ import {
   Clipboard,
   FileCode,
   GitBranch,
+  MessageSquare,
 } from 'lucide-react';
 import { downloadJson, uploadJson } from '../utils';
 
@@ -554,6 +556,17 @@ export const GridContainer: React.FC = () => {
           className="h-full"
         >
           <PromptLab />
+        </WidgetShell>
+      ),
+      NEURAL_CHAT: (
+        <WidgetShell
+          id="NEURAL_CHAT"
+          title="Neural Chat"
+          icon={<MessageSquare size={14} />}
+          accentColor="text-fuchsia-400"
+          className="h-full"
+        >
+          <NeuralChat />
         </WidgetShell>
       ),
     }),
