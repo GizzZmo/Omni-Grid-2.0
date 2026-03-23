@@ -2,6 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { FocusHUD } from '../widgets/FocusHUD';
 
+type AudioContextState = 'suspended' | 'running' | 'closed';
+
 // Stub AudioContext so the noise-generation effect doesn't crash in jsdom.
 // Using a class so it can be used with `new`.
 const mockGain = { gain: { value: 0 }, connect: vi.fn() };
