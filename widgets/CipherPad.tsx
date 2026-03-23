@@ -9,14 +9,14 @@ async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKe
     new TextEncoder().encode(passphrase),
     'PBKDF2',
     false,
-    ['deriveKey'],
+    ['deriveKey']
   );
   return crypto.subtle.deriveKey(
     { name: 'PBKDF2', salt, iterations: 100_000, hash: 'SHA-256' },
     keyMaterial,
     { name: 'AES-GCM', length: 256 },
     false,
-    ['encrypt', 'decrypt'],
+    ['encrypt', 'decrypt']
   );
 }
 
@@ -27,7 +27,7 @@ async function encryptContent(plaintext: string, passphrase: string): Promise<st
   const cipherBuffer = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv },
     key,
-    new TextEncoder().encode(plaintext),
+    new TextEncoder().encode(plaintext)
   );
   const combined = new Uint8Array(salt.byteLength + iv.byteLength + cipherBuffer.byteLength);
   combined.set(salt, 0);
@@ -120,7 +120,10 @@ export const CipherPad: React.FC = () => {
         <input
           type="password"
           value={key}
-          onChange={e => { setKey(e.target.value); setError(''); }}
+          onChange={e => {
+            setKey(e.target.value);
+            setError('');
+          }}
           disabled={!locked}
           placeholder="Session Encryption Key"
           className="flex-1 bg-transparent text-xs text-white outline-none placeholder-slate-600"
@@ -143,7 +146,9 @@ export const CipherPad: React.FC = () => {
       {locked ? (
         <div className="flex-1 flex flex-col items-center justify-center text-slate-600 gap-2 border border-dashed border-slate-800 rounded bg-slate-900/20">
           <FileKey size={32} />
-          <span className="text-xs">{vault ? 'Content Encrypted (AES-GCM)' : 'No content — unlock to write'}</span>
+          <span className="text-xs">
+            {vault ? 'Content Encrypted (AES-GCM)' : 'No content — unlock to write'}
+          </span>
         </div>
       ) : (
         <textarea

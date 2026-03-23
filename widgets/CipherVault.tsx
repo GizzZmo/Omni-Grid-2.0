@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Lock, Fingerprint, Hash, Copy, Check, ShieldCheck, ShieldOff, KeyRound } from 'lucide-react';
+import {
+  Lock,
+  Fingerprint,
+  Hash,
+  Copy,
+  Check,
+  ShieldCheck,
+  ShieldOff,
+  KeyRound,
+} from 'lucide-react';
 
 // ── AES-GCM helpers ──────────────────────────────────────────────────────────
 
@@ -9,14 +18,14 @@ async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKe
     new TextEncoder().encode(passphrase),
     'PBKDF2',
     false,
-    ['deriveKey'],
+    ['deriveKey']
   );
   return crypto.subtle.deriveKey(
     { name: 'PBKDF2', salt, iterations: 100_000, hash: 'SHA-256' },
     keyMaterial,
     { name: 'AES-GCM', length: 256 },
     false,
-    ['encrypt', 'decrypt'],
+    ['encrypt', 'decrypt']
   );
 }
 
@@ -27,7 +36,7 @@ async function aesGcmEncrypt(plaintext: string, passphrase: string): Promise<str
   const cipherBuffer = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv },
     key,
-    new TextEncoder().encode(plaintext),
+    new TextEncoder().encode(plaintext)
   );
   // Pack: salt(16) ‖ iv(12) ‖ ciphertext
   const combined = new Uint8Array(salt.byteLength + iv.byteLength + cipherBuffer.byteLength);
@@ -118,7 +127,7 @@ export const CipherVault: React.FC = () => {
       setEncryptError(
         encryptMode === 'DECRYPT'
           ? 'Decryption failed — wrong passphrase or corrupt ciphertext.'
-          : 'Encryption failed.',
+          : 'Encryption failed.'
       );
     } finally {
       setEncryptLoading(false);
@@ -214,13 +223,21 @@ export const CipherVault: React.FC = () => {
           {/* Encrypt / Decrypt sub-toggle */}
           <div className="flex bg-slate-950 p-1 rounded border border-slate-800 gap-1">
             <button
-              onClick={() => { setEncryptMode('ENCRYPT'); setEncryptOutput(''); setEncryptError(''); }}
+              onClick={() => {
+                setEncryptMode('ENCRYPT');
+                setEncryptOutput('');
+                setEncryptError('');
+              }}
               className={`flex-1 py-1 flex items-center justify-center gap-1 text-xs font-bold rounded transition-colors ${encryptMode === 'ENCRYPT' ? 'bg-emerald-700 text-white' : 'text-slate-500 hover:text-slate-300'}`}
             >
               <ShieldCheck size={10} /> Encrypt
             </button>
             <button
-              onClick={() => { setEncryptMode('DECRYPT'); setEncryptOutput(''); setEncryptError(''); }}
+              onClick={() => {
+                setEncryptMode('DECRYPT');
+                setEncryptOutput('');
+                setEncryptError('');
+              }}
               className={`flex-1 py-1 flex items-center justify-center gap-1 text-xs font-bold rounded transition-colors ${encryptMode === 'DECRYPT' ? 'bg-amber-700 text-white' : 'text-slate-500 hover:text-slate-300'}`}
             >
               <ShieldOff size={10} /> Decrypt
@@ -243,7 +260,11 @@ export const CipherVault: React.FC = () => {
           <textarea
             value={encryptInput}
             onChange={e => setEncryptInput(e.target.value)}
-            placeholder={encryptMode === 'ENCRYPT' ? 'Plaintext to encrypt...' : 'Base64 ciphertext to decrypt...'}
+            placeholder={
+              encryptMode === 'ENCRYPT'
+                ? 'Plaintext to encrypt...'
+                : 'Base64 ciphertext to decrypt...'
+            }
             className="flex-1 bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono resize-none focus:outline-none focus:border-emerald-500 min-h-[60px]"
           />
 
@@ -252,7 +273,11 @@ export const CipherVault: React.FC = () => {
             disabled={encryptLoading || !encryptInput.trim()}
             className="py-1.5 bg-emerald-800 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-bold rounded transition-colors"
           >
-            {encryptLoading ? 'Processing…' : encryptMode === 'ENCRYPT' ? 'Encrypt (AES-GCM)' : 'Decrypt (AES-GCM)'}
+            {encryptLoading
+              ? 'Processing…'
+              : encryptMode === 'ENCRYPT'
+                ? 'Encrypt (AES-GCM)'
+                : 'Decrypt (AES-GCM)'}
           </button>
 
           {encryptError && (
@@ -272,7 +297,11 @@ export const CipherVault: React.FC = () => {
                 onClick={handleEncryptCopy}
                 className="absolute top-6 right-2 p-1 bg-slate-800 rounded hover:bg-slate-700 text-slate-300 transition-colors"
               >
-                {encryptCopied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
+                {encryptCopied ? (
+                  <Check size={12} className="text-emerald-500" />
+                ) : (
+                  <Copy size={12} />
+                )}
               </button>
             </div>
           )}
