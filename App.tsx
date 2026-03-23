@@ -5,6 +5,7 @@ import { optimizeLayout } from './services/gridIntelligence';
 import { MatrixRain } from './components/MatrixRain';
 import { WidgetLauncher } from './components/WidgetLauncher';
 import { CommandPalette } from './components/CommandPalette';
+import { SettingsPanel } from './components/SettingsPanel';
 import {
   Save,
   FolderOpen,
@@ -27,6 +28,7 @@ import {
   Ghost,
   FileCode,
   GitBranch,
+  MessageSquare,
 } from 'lucide-react';
 import { downloadJson, uploadJson } from './utils';
 
@@ -44,6 +46,8 @@ const App: React.FC = () => {
   const layouts = useAppStore(s => s.layouts);
   const updateLayout = useAppStore(s => s.updateLayout);
   const setGhostWidget = useAppStore(s => s.setGhostWidget);
+  const isSettingsPanelOpen = useAppStore(s => s.isSettingsPanelOpen);
+  const setSettingsPanelOpen = useAppStore(s => s.setSettingsPanelOpen);
 
   const [organizing, setOrganizing] = useState(false);
   const [showLauncher, setShowLauncher] = useState(false);
@@ -98,6 +102,19 @@ const App: React.FC = () => {
     }
   };
 
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+, or Ctrl+, for Settings
+      if ((e.metaKey || e.ctrlKey) && e.key === ',') {
+        e.preventDefault();
+        setSettingsPanelOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setSettingsPanelOpen]);
+
   // Apply theme on load
   useEffect(() => {
     const root = document.documentElement;
@@ -138,6 +155,10 @@ const App: React.FC = () => {
       {/* Overlays */}
       {showLauncher && <WidgetLauncher onClose={() => setShowLauncher(false)} />}
       <CommandPalette />
+      <SettingsPanel 
+        isOpen={isSettingsPanelOpen} 
+        onClose={() => setSettingsPanelOpen(false)} 
+      />
 
       {/* Global Header / Controls */}
       <div
@@ -385,6 +406,13 @@ const App: React.FC = () => {
               icon={<Wand2 size={18} />}
               label="Aesthetic"
               color="bg-pink-500"
+            />
+            <DockItem
+              active={visibleWidgets.includes('NEURAL_CHAT')}
+              onClick={() => toggleWidget('NEURAL_CHAT')}
+              icon={<MessageSquare size={18} />}
+              label="AI Chat"
+              color="bg-fuchsia-500"
             />
           </div>
         </div>

@@ -34,6 +34,7 @@ import {
   Clipboard,
   GitBranch,
   FileCode,
+  MessageSquare,
 } from 'lucide-react';
 
 // Manual mapping of all available widget types to icons and names
@@ -330,6 +331,14 @@ export const WIDGET_REGISTRY = [
     id: 'PROMPT_LAB',
     name: 'Prompt Lab',
     icon: GitBranch,
+    color: 'text-fuchsia-400',
+    bg: 'bg-fuchsia-900/20',
+    border: 'border-fuchsia-500/50',
+  },
+  {
+    id: 'NEURAL_CHAT',
+    name: 'Neural Chat',
+    icon: MessageSquare,
     color: 'text-fuchsia-400',
     bg: 'bg-fuchsia-900/20',
     border: 'border-fuchsia-500/50',

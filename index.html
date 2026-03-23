@@ -18,8 +18,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/react-resizable/3.0.4/css/styles.css"
     />
     <script>
-      const isLocal =
-        location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
       if (isLocal) {
         window.process = window.process || { env: {} };
         window.process.env = window.process.env || {};

@@ -9,8 +9,7 @@ const resolveApiKey = (overrideKey?: string) => {
 
   const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
   const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
-  const browserEnv =
-    (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
+  const browserEnv = (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
 
   return (
     metaEnv.VITE_API_KEY ||

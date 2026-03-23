@@ -1,18 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Volume2, Plus, Trash2, CheckCircle2, Circle } from 'lucide-react';
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Volume2,
+  VolumeX,
+  Plus,
+  Trash2,
+  CheckCircle2,
+  Circle,
+  CloudRain,
+  Wind,
+} from 'lucide-react';
 import { useAppStore } from '../store';
 import { SoundType } from '../types';
+
+// Cycles through ambient sound modes: OFF → BROWN_NOISE → RAIN → OFF
+const nextSoundType = (current: SoundType): SoundType => {
+  if (current === SoundType.OFF) return SoundType.BROWN_NOISE;
+  if (current === SoundType.BROWN_NOISE) return SoundType.RAIN;
+  return SoundType.OFF;
+};
+
+const SOUND_LABELS: Record<SoundType, string> = {
+  [SoundType.OFF]: 'OFF',
+  [SoundType.BROWN_NOISE]: 'BROWN',
+  [SoundType.RAIN]: 'RAIN',
+};
 
 export const FocusHUD: React.FC = () => {
   // Timer State
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isActive, setIsActive] = useState(false);
   const [mode, setMode] = useState<'FOCUS' | 'BREAK'>('FOCUS');
+  const [sessions, setSessions] = useState(0);
 
   // Audio State
   const [soundType, setSoundType] = useState<SoundType>(SoundType.OFF);
+  const [volume, setVolume] = useState(0.15);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const noiseNodeRef = useRef<AudioNode | null>(null);
+  const noiseNodeRef = useRef<AudioBufferSourceNode | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
 
   // Tasks State
@@ -30,8 +57,8 @@ export const FocusHUD: React.FC = () => {
       // Use setTimeout to defer state updates out of the effect
       setTimeout(() => {
         setIsActive(false);
-        // Determine next mode
         if (mode === 'FOCUS') {
+          setSessions(s => s + 1);
           setMode('BREAK');
           setTimeLeft(5 * 60);
         } else {
@@ -55,7 +82,7 @@ export const FocusHUD: React.FC = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Audio Logic (Brown Noise Generator)
+  // Audio Logic — Brown Noise & Rain Generator
   useEffect(() => {
     const handleAudio = async () => {
       if (soundType === SoundType.OFF) {
@@ -74,17 +101,18 @@ export const FocusHUD: React.FC = () => {
         await ctx.resume();
       }
 
-      // Cleanup previous noise
+      // Cleanup previous noise node
       if (noiseNodeRef.current) {
         noiseNodeRef.current.disconnect();
+        noiseNodeRef.current = null;
       }
 
-      // Create Brown Noise
-      const bufferSize = ctx.sampleRate * 2; // 2 seconds buffer
+      const bufferSize = ctx.sampleRate * 2; // 2-second looping buffer
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
 
       if (soundType === SoundType.BROWN_NOISE) {
+        // Brown (red) noise: each sample is a weighted sum of the previous sample
         let lastOut = 0;
         for (let i = 0; i < bufferSize; i++) {
           const white = Math.random() * 2 - 1;
@@ -92,20 +120,37 @@ export const FocusHUD: React.FC = () => {
           lastOut = data[i];
           data[i] *= 3.5; // Compensate for gain loss
         }
+      } else if (soundType === SoundType.RAIN) {
+        // Rain simulation: pink-noise base with random amplitude spikes
+        let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          // Paul Kellet's pink-noise filter coefficients
+          b0 = 0.99886 * b0 + white * 0.0555179;
+          b1 = 0.99332 * b1 + white * 0.0750759;
+          b2 = 0.969 * b2 + white * 0.153852;
+          b3 = 0.8665 * b3 + white * 0.3104856;
+          b4 = 0.55 * b4 + white * 0.5329522;
+          b5 = -0.7616 * b5 - white * 0.016898;
+          const pink = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+          b6 = white * 0.115926;
+          // Add occasional amplitude spikes to simulate individual raindrops
+          const drop = Math.random() < 0.002 ? (Math.random() * 2 - 1) * 0.4 : 0;
+          data[i] = (pink * 0.11 + drop) * 0.5;
+        }
       }
-      // Simple White/Pink approximation for Rain would go here, simplified to Brown for demo stability
 
       const noise = ctx.createBufferSource();
       noise.buffer = buffer;
       noise.loop = true;
 
-      // Lowpass filter to smooth it out further
+      // Lowpass filter to soften the texture
       const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 800;
+      filter.frequency.value = soundType === SoundType.RAIN ? 4000 : 800;
 
       const gain = ctx.createGain();
-      gain.gain.value = 0.15; // Volume
+      gain.gain.value = volume;
       gainNodeRef.current = gain;
 
       noise.connect(filter);
@@ -121,7 +166,14 @@ export const FocusHUD: React.FC = () => {
     return () => {
       if (audioContextRef.current) audioContextRef.current.suspend();
     };
-  }, [soundType]);
+  }, [soundType]); // volume is intentionally excluded: a separate effect handles live gain updates without restarting the buffer
+
+  // Live volume adjustment without restarting the noise node
+  useEffect(() => {
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = volume;
+    }
+  }, [volume]);
 
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,42 +183,71 @@ export const FocusHUD: React.FC = () => {
     }
   };
 
+  const SoundIcon = soundType === SoundType.RAIN ? CloudRain : soundType === SoundType.BROWN_NOISE ? Wind : VolumeX;
+
   return (
     <div className="h-full flex flex-col gap-4">
       {/* Timer Section */}
       <div className="flex flex-col items-center justify-center bg-slate-950/50 rounded-lg p-4 border border-slate-800">
-        <div className="text-xs font-bold text-slate-500 tracking-widest mb-1">
-          {mode === 'FOCUS' ? 'DEEP WORK' : 'REST'}
+        <div className="flex items-center gap-2 mb-1">
+          <div className="text-xs font-bold text-slate-500 tracking-widest">
+            {mode === 'FOCUS' ? 'DEEP WORK' : 'REST'}
+          </div>
+          {sessions > 0 && (
+            <div className="text-[10px] text-cyan-600 font-mono bg-cyan-950/50 px-1.5 py-0.5 rounded">
+              {sessions} {sessions === 1 ? 'session' : 'sessions'}
+            </div>
+          )}
         </div>
         <div
           className={`text-4xl font-mono font-bold mb-3 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`}
         >
           {formatTime(timeLeft)}
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <button
             onClick={toggleTimer}
+            aria-label={isActive ? 'Pause timer' : 'Start timer'}
             className="p-2 bg-slate-800 rounded-full hover:bg-slate-700 text-slate-200"
           >
             {isActive ? <Pause size={16} /> : <Play size={16} />}
           </button>
           <button
             onClick={resetTimer}
+            aria-label="Reset timer"
             className="p-2 bg-slate-800 rounded-full hover:bg-slate-700 text-slate-200"
           >
             <RotateCcw size={16} />
           </button>
           <button
-            onClick={() =>
-              setSoundType(
-                soundType === SoundType.BROWN_NOISE ? SoundType.OFF : SoundType.BROWN_NOISE
-              )
-            }
+            onClick={() => setSoundType(nextSoundType(soundType))}
+            aria-label={`Ambient sound: ${SOUND_LABELS[soundType]}`}
+            title={`Ambient: ${SOUND_LABELS[soundType]}`}
             className={`p-2 rounded-full transition-colors ${soundType !== SoundType.OFF ? 'bg-cyan-900/50 text-cyan-400' : 'bg-slate-800 text-slate-500'}`}
           >
-            <Volume2 size={16} />
+            <SoundIcon size={16} />
           </button>
         </div>
+
+        {/* Volume slider — shown only when a sound is active */}
+        {soundType !== SoundType.OFF && (
+          <div className="flex items-center gap-2 mt-3 w-full px-2">
+            <Volume2 size={10} className="text-slate-600 shrink-0" />
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={e => setVolume(parseFloat(e.target.value))}
+              aria-label="Ambient volume"
+              className="flex-1 h-1 accent-cyan-500 cursor-pointer"
+            />
+            <span className="text-[10px] text-slate-600 w-6 text-right font-mono">
+              {Math.round(volume * 100)}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Tasks Section */}
