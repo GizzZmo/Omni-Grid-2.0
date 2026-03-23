@@ -12,7 +12,7 @@ import {
 
 // ── AES-GCM helpers ──────────────────────────────────────────────────────────
 
-async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKey> {
+async function deriveKey(passphrase: string, salt: Uint8Array<ArrayBuffer>): Promise<CryptoKey> {
   const keyMaterial = await crypto.subtle.importKey(
     'raw',
     new TextEncoder().encode(passphrase),
@@ -30,8 +30,8 @@ async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKe
 }
 
 async function aesGcmEncrypt(plaintext: string, passphrase: string): Promise<string> {
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const salt = crypto.getRandomValues(new Uint8Array(16) as Uint8Array<ArrayBuffer>);
+  const iv = crypto.getRandomValues(new Uint8Array(12) as Uint8Array<ArrayBuffer>);
   const key = await deriveKey(passphrase, salt);
   const cipherBuffer = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv },
