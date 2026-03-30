@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Editor, { OnMount } from '@monaco-editor/react';
 import {
   Code2,
   FileCode,
@@ -24,6 +25,21 @@ import { DEV_DOCS_LANGUAGES } from './devdocsLanguages';
 import { executePythonInSandbox } from '../services/e2bSandbox';
 import { getGenAIClient } from '../services/geminiService';
 import { COMMON_FILE_ACCEPTS } from './fileAccepts';
+
+const toMonacoLanguage = (lang: string): string => {
+  const map: Record<string, string> = {
+    bash: 'shell',
+    node: 'javascript',
+    docker: 'dockerfile',
+    sass: 'scss',
+    clojure: 'clojure',
+    elixir: 'plaintext',
+    erlang: 'plaintext',
+    haskell: 'plaintext',
+    graphql: 'graphql',
+  };
+  return map[lang] ?? lang;
+};
 
 interface CodeTab {
   id: string;
@@ -296,7 +312,9 @@ export const CyberEditor: React.FC = () => {
   const [sandboxResult, setSandboxResult] = useState('');
   const [sandboxError, setSandboxError] = useState<string | null>(null);
   const [sandboxRunning, setSandboxRunning] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [tabSize, setTabSize] = useState(2);
+  const [wordWrap, setWordWrap] = useState<'on' | 'off'>('off');
+  const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const activeTab = tabs.find(t => t.id === activeTabId) || tabs[0];
@@ -518,14 +536,7 @@ export const CyberEditor: React.FC = () => {
   };
 
   const improveWithAI = async () => {
-    const selection = textareaRef.current?.selectionStart;
-    const hasSelection = selection !== textareaRef.current?.selectionEnd;
-    const codeToImprove = hasSelection
-      ? activeTab.content.substring(
-          textareaRef.current!.selectionStart,
-          textareaRef.current!.selectionEnd
-        )
-      : activeTab.content;
+    const codeToImprove = activeTab.content;
 
     if (!codeToImprove.trim()) return;
 
@@ -549,13 +560,7 @@ export const CyberEditor: React.FC = () => {
         improved = improved.replace(/```[\w]*\n?/g, '').trim();
       }
 
-      if (hasSelection) {
-        const before = activeTab.content.substring(0, textareaRef.current!.selectionStart);
-        const after = activeTab.content.substring(textareaRef.current!.selectionEnd);
-        updateTabContent(before + improved + after);
-      } else {
-        updateTabContent(improved);
-      }
+      updateTabContent(improved);
     } catch (error) {
       console.error('AI improvement failed:', error);
     } finally {
@@ -564,14 +569,7 @@ export const CyberEditor: React.FC = () => {
   };
 
   const explainCode = async () => {
-    const selection = textareaRef.current?.selectionStart;
-    const hasSelection = selection !== textareaRef.current?.selectionEnd;
-    const codeToExplain = hasSelection
-      ? activeTab.content.substring(
-          textareaRef.current!.selectionStart,
-          textareaRef.current!.selectionEnd
-        )
-      : activeTab.content;
+    const codeToExplain = activeTab.content;
 
     if (!codeToExplain.trim()) return;
 
@@ -735,8 +733,43 @@ export const CyberEditor: React.FC = () => {
           >
             <Download size={10} />
           </button>
+          <button
+            onClick={() => setShowSettings(!showSettings)}
+            className={`px-2 py-1 rounded text-[10px] transition-colors ${showSettings ? 'bg-cyan-900/50 border border-cyan-500/50 text-cyan-400' : 'bg-slate-800 hover:bg-slate-700 text-slate-300'}`}
+            title="Editor Settings"
+          >
+            <Settings size={10} />
+          </button>
         </div>
       </div>
+
+      {/* Settings Panel */}
+      {showSettings && (
+        <div className="bg-slate-900/60 border-b border-slate-800 px-3 py-2 flex items-center gap-4">
+          <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Settings</span>
+          <label className="flex items-center gap-1 text-[10px] text-slate-400">
+            Tab Size:
+            <select
+              value={tabSize}
+              onChange={e => setTabSize(Number(e.target.value))}
+              className="ml-1 bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-[10px] text-slate-300 focus:outline-none focus:border-cyan-500"
+            >
+              {[2, 4, 8].map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </label>
+          <label className="flex items-center gap-1 text-[10px] text-slate-400">
+            Word Wrap:
+            <select
+              value={wordWrap}
+              onChange={e => setWordWrap(e.target.value as 'on' | 'off')}
+              className="ml-1 bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-[10px] text-slate-300 focus:outline-none focus:border-cyan-500"
+            >
+              <option value="off">Off</option>
+              <option value="on">On</option>
+            </select>
+          </label>
+        </div>
+      )}
 
       {/* AI Assistant Bar */}
       <div className="bg-slate-900/30 border-b border-slate-800 px-3 py-2">
@@ -796,12 +829,23 @@ export const CyberEditor: React.FC = () => {
 
       {/* Code Editor */}
       <div className="flex-1 overflow-hidden">
-        <textarea
-          ref={textareaRef}
+        <Editor
+          height="100%"
+          language={toMonacoLanguage(activeTab.language)}
           value={activeTab.content}
-          onChange={e => updateTabContent(e.target.value)}
-          className="w-full h-full bg-slate-950 text-slate-200 p-4 resize-none focus:outline-none font-mono text-xs leading-relaxed custom-scrollbar"
-          spellCheck={false}
+          theme="vs-dark"
+          onChange={val => updateTabContent(val ?? '')}
+          onMount={(editor) => { editorRef.current = editor; }}
+          options={{
+            minimap: { enabled: false },
+            fontSize: 13,
+            lineNumbers: 'on',
+            wordWrap: wordWrap,
+            tabSize: tabSize,
+            scrollBeyondLastLine: false,
+            smoothScrolling: true,
+            fontFamily: 'JetBrains Mono, Fira Code, monospace',
+          }}
         />
       </div>
 
