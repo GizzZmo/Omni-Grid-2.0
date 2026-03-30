@@ -18,6 +18,11 @@ const WELCOME_MESSAGE: ChatMessage = {
 
 const STORAGE_KEY = 'omni-chat-history';
 
+const generateId = (): string =>
+  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
 const loadMessages = (): ChatMessage[] => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -60,7 +65,7 @@ export const NeuralChat: React.FC = () => {
     if (!text || loading) return;
 
     const userMsg: ChatMessage = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'user',
       content: text,
       timestamp: Date.now(),
@@ -73,7 +78,7 @@ export const NeuralChat: React.FC = () => {
     const ai = getGenAIClient();
     if (!ai) {
       const errMsg: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content:
           'No API key detected. Add your Gemini API key in **Settings → Advanced** to enable AI responses.',
@@ -93,7 +98,7 @@ export const NeuralChat: React.FC = () => {
           parts: [{ text: m.content }],
         }));
 
-      const assistantMsgId = crypto.randomUUID();
+      const assistantMsgId = generateId();
       setMessages(prev => [
         ...prev,
         { id: assistantMsgId, role: 'assistant', content: '', timestamp: Date.now() },
@@ -118,7 +123,7 @@ export const NeuralChat: React.FC = () => {
       }
     } catch (e) {
       const errMsg: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Error communicating with AI: ${e instanceof Error ? e.message : 'Unknown error'}`,
         timestamp: Date.now(),
@@ -156,7 +161,7 @@ export const NeuralChat: React.FC = () => {
 
   const newSession = () => {
     const welcome: ChatMessage = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'assistant',
       content: 'New session initialized. Neural link established. Ready for your commands, operator.',
       timestamp: Date.now(),

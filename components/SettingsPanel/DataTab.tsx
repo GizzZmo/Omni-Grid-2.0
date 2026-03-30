@@ -65,15 +65,18 @@ export const DataTab: React.FC = () => {
     try {
       // Extract the layout param from a full URL or a raw base64 string
       let encoded = importLink.trim();
-      if (encoded.includes('?') || encoded.startsWith('http')) {
-        const url = new URL(
-          encoded.startsWith('http') ? encoded : `https://placeholder.invalid?${encoded}`
-        );
-        encoded = url.searchParams.get('layout') ?? encoded;
+      if (encoded.startsWith('http')) {
+        // Full URL - parse directly
+        const url = new URL(encoded);
+        encoded = url.searchParams.get('layout') ?? '';
+      } else if (encoded.includes('?')) {
+        // Query string portion only (e.g., "layout=abc") - prepend scheme to parse
+        const url = new URL(`https://placeholder.invalid?${encoded.replace(/^.*\?/, '')}`);
+        encoded = url.searchParams.get('layout') ?? '';
       }
       if (!encoded) { setImportError('No layout data found in link.'); return; }
       const payload = JSON.parse(decodeURIComponent(atob(encoded)));
-      if (!payload.layouts && !payload.visibleWidgets) { setImportError('Invalid layout data.'); return; }
+      if (!payload.layouts || !payload.visibleWidgets) { setImportError('Invalid layout data.'); return; }
       if (confirm('Import layout from shared link? Current layout will be replaced.')) {
         setGlobalState(payload);
         setImportLink('');
