@@ -42,6 +42,11 @@ const PRIORITY_COLORS: Record<string, string> = {
 
 const PRIORITY_CYCLE: Array<Task['priority']> = [undefined, 'low', 'medium', 'high'];
 
+const generateId = (): string =>
+  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
 const loadBoard = (): Board => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -74,7 +79,7 @@ export const ProjectTracker: React.FC = () => {
   const addTask = (lane: keyof Board) => {
     const text = newTaskText.trim();
     if (!text) { setAddingIn(null); return; }
-    const task: Task = { id: crypto.randomUUID(), text, createdAt: Date.now() };
+    const task: Task = { id: generateId(), text, createdAt: Date.now() };
     setBoard(prev => ({ ...prev, [lane]: [...prev[lane], task] }));
     setNewTaskText('');
     setAddingIn(null);

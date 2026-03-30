@@ -27,6 +27,8 @@ import { getGenAIClient } from '../services/geminiService';
 import { COMMON_FILE_ACCEPTS } from './fileAccepts';
 
 const toMonacoLanguage = (lang: string): string => {
+  // Map languages that don't have native Monaco editor support to their closest equivalent.
+  // Languages like elixir, erlang, haskell have no built-in Monaco grammar and fall back to plaintext.
   const map: Record<string, string> = {
     bash: 'shell',
     node: 'javascript',
