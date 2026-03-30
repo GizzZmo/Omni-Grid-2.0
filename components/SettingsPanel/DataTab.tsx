@@ -1,10 +1,13 @@
-import React from 'react';
-import { Download, Upload, Trash2, HardDrive } from 'lucide-react';
+import React, { useState } from 'react';
+import { Download, Upload, Trash2, HardDrive, Share2, Link } from 'lucide-react';
 import { downloadJson, uploadJson } from '../../utils';
 import { useAppStore } from '../../store';
 
 export const DataTab: React.FC = () => {
   const setGlobalState = useAppStore(s => s.setGlobalState);
+  const [shareSuccess, setShareSuccess] = useState(false);
+  const [importLink, setImportLink] = useState('');
+  const [importError, setImportError] = useState('');
 
   const handleExport = () => {
     const currentState = useAppStore.getState();
@@ -35,6 +38,52 @@ export const DataTab: React.FC = () => {
         localStorage.clear();
         window.location.reload();
       }
+    }
+  };
+
+  const handleGenerateShareLink = () => {
+    try {
+      const state = useAppStore.getState();
+      const payload = {
+        layouts: state.layouts,
+        visibleWidgets: state.visibleWidgets,
+        theme: state.theme,
+      };
+      const encoded = btoa(encodeURIComponent(JSON.stringify(payload)));
+      const url = `${window.location.origin}${window.location.pathname}?layout=${encoded}`;
+      navigator.clipboard.writeText(url).then(() => {
+        setShareSuccess(true);
+        setTimeout(() => setShareSuccess(false), 3000);
+      });
+    } catch {
+      alert('Failed to generate share link.');
+    }
+  };
+
+  const handleImportFromLink = () => {
+    setImportError('');
+    try {
+      // Extract the layout param from a full URL or a raw base64 string
+      let encoded = importLink.trim();
+      if (encoded.startsWith('http')) {
+        // Full URL - parse directly
+        const url = new URL(encoded);
+        encoded = url.searchParams.get('layout') ?? '';
+      } else if (encoded.includes('?')) {
+        // Query string portion only (e.g., "layout=abc") - prepend scheme to parse
+        const url = new URL(`https://placeholder.invalid?${encoded.replace(/^.*\?/, '')}`);
+        encoded = url.searchParams.get('layout') ?? '';
+      }
+      if (!encoded) { setImportError('No layout data found in link.'); return; }
+      const payload = JSON.parse(decodeURIComponent(atob(encoded)));
+      if (!payload.layouts || !payload.visibleWidgets) { setImportError('Invalid layout data.'); return; }
+      if (confirm('Import layout from shared link? Current layout will be replaced.')) {
+        setGlobalState(payload);
+        setImportLink('');
+        alert('Layout imported successfully!');
+      }
+    } catch {
+      setImportError('Invalid share link. Please check and try again.');
     }
   };
 
@@ -107,6 +156,56 @@ export const DataTab: React.FC = () => {
           </div>
           <div className="mt-3 pt-3 border-t border-slate-800 text-xs text-slate-500">
             Your data is stored locally in your browser and never sent to any server.
+          </div>
+        </div>
+      </div>
+
+      {/* Share Layout */}
+      <div className="space-y-4">
+        <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+          Share Layout
+        </h4>
+
+        <div className="space-y-3">
+          <button
+            onClick={handleGenerateShareLink}
+            className="w-full flex items-center gap-3 py-3 px-4 bg-fuchsia-500/10 hover:bg-fuchsia-500/20 border border-fuchsia-500/30 rounded transition-colors text-left"
+          >
+            <Share2 className="w-5 h-5 text-fuchsia-400" />
+            <div className="flex-1">
+              <div className="text-sm text-fuchsia-400 font-medium">
+                {shareSuccess ? '✓ Link Copied!' : 'Generate Share Link'}
+              </div>
+              <div className="text-xs text-slate-400">
+                Encode layout + widgets + theme to clipboard URL
+              </div>
+            </div>
+          </button>
+
+          <div className="space-y-2">
+            <div className="text-xs text-slate-400 flex items-center gap-2">
+              <Link className="w-3 h-3" />
+              Import from shared link:
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={importLink}
+                onChange={e => { setImportLink(e.target.value); setImportError(''); }}
+                placeholder="Paste share link or ?layout=... parameter"
+                className="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:border-fuchsia-500/60 transition-colors"
+              />
+              <button
+                onClick={handleImportFromLink}
+                disabled={!importLink.trim()}
+                className="px-3 py-2 bg-fuchsia-600 hover:bg-fuchsia-500 disabled:opacity-40 disabled:cursor-not-allowed rounded text-xs text-white transition-colors"
+              >
+                Import
+              </button>
+            </div>
+            {importError && (
+              <p className="text-xs text-red-400">{importError}</p>
+            )}
           </div>
         </div>
       </div>

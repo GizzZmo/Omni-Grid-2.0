@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Trash2, Loader2, Copy, Check, MessageSquare } from 'lucide-react';
+import { Send, Bot, User, Trash2, Loader2, Copy, Check, MessageSquare, Plus } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
 interface ChatMessage {
@@ -9,23 +9,52 @@ interface ChatMessage {
   timestamp: number;
 }
 
+const WELCOME_MESSAGE: ChatMessage = {
+  id: '0',
+  role: 'assistant',
+  content: 'Neural link established. How can I assist you today, operator?',
+  timestamp: Date.now(),
+};
+
+const STORAGE_KEY = 'omni-chat-history';
+
+const generateId = (): string =>
+  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
+const loadMessages = (): ChatMessage[] => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as ChatMessage[];
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return [WELCOME_MESSAGE];
+};
+
 const SYSTEM_INSTRUCTION =
   'You are a helpful AI assistant embedded in Omni-Grid, a cyberpunk-themed productivity dashboard. Be concise, practical, and slightly cyberpunk in tone. Format code with markdown code blocks.';
 
 export const NeuralChat: React.FC = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: '0',
-      role: 'assistant',
-      content: 'Neural link established. How can I assist you today, operator?',
-      timestamp: Date.now(),
-    },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>(loadMessages);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Persist messages to localStorage on change
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch {
+      // ignore storage errors
+    }
+  }, [messages]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView?.({ behavior: 'smooth' });
@@ -36,7 +65,7 @@ export const NeuralChat: React.FC = () => {
     if (!text || loading) return;
 
     const userMsg: ChatMessage = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'user',
       content: text,
       timestamp: Date.now(),
@@ -49,7 +78,7 @@ export const NeuralChat: React.FC = () => {
     const ai = getGenAIClient();
     if (!ai) {
       const errMsg: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content:
           'No API key detected. Add your Gemini API key in **Settings → Advanced** to enable AI responses.',
@@ -69,22 +98,32 @@ export const NeuralChat: React.FC = () => {
           parts: [{ text: m.content }],
         }));
 
-      const response = await ai.models.generateContent({
+      const assistantMsgId = generateId();
+      setMessages(prev => [
+        ...prev,
+        { id: assistantMsgId, role: 'assistant', content: '', timestamp: Date.now() },
+      ]);
+
+      // Use streaming response
+      const stream = await ai.models.generateContentStream({
         model: 'gemini-3-flash-preview',
         contents: [...history, { role: 'user', parts: [{ text }] }],
         config: { systemInstruction: SYSTEM_INSTRUCTION },
       });
 
-      const assistantMsg: ChatMessage = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: response.text || 'No response received.',
-        timestamp: Date.now(),
-      };
-      setMessages(prev => [...prev, assistantMsg]);
+      for await (const chunk of stream) {
+        const chunkText = chunk.text ?? '';
+        if (chunkText) {
+          setMessages(prev =>
+            prev.map(m =>
+              m.id === assistantMsgId ? { ...m, content: m.content + chunkText } : m
+            )
+          );
+        }
+      }
     } catch (e) {
       const errMsg: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Error communicating with AI: ${e instanceof Error ? e.message : 'Unknown error'}`,
         timestamp: Date.now(),
@@ -110,14 +149,25 @@ export const NeuralChat: React.FC = () => {
   };
 
   const clearChat = () => {
-    setMessages([
-      {
-        id: '0',
-        role: 'assistant',
-        content: 'Memory wiped. Neural link re-established. How can I assist you?',
-        timestamp: Date.now(),
-      },
-    ]);
+    const welcome: ChatMessage = {
+      id: '0',
+      role: 'assistant',
+      content: 'Memory wiped. Neural link re-established. How can I assist you?',
+      timestamp: Date.now(),
+    };
+    setMessages([welcome]);
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+  };
+
+  const newSession = () => {
+    const welcome: ChatMessage = {
+      id: generateId(),
+      role: 'assistant',
+      content: 'New session initialized. Neural link established. Ready for your commands, operator.',
+      timestamp: Date.now(),
+    };
+    setMessages([welcome]);
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
   };
 
   // Simple markdown-like rendering: bold and code blocks
@@ -187,13 +237,23 @@ export const NeuralChat: React.FC = () => {
             {messages.length - 1} msg{messages.length - 1 !== 1 ? 's' : ''}
           </span>
         </div>
-        <button
-          onClick={clearChat}
-          aria-label="Clear chat history"
-          className="p-1 text-slate-600 hover:text-red-400 transition-colors"
-        >
-          <Trash2 size={12} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={newSession}
+            aria-label="New session"
+            title="New session"
+            className="p-1 text-slate-600 hover:text-cyan-400 transition-colors"
+          >
+            <Plus size={12} />
+          </button>
+          <button
+            onClick={clearChat}
+            aria-label="Clear chat history"
+            className="p-1 text-slate-600 hover:text-red-400 transition-colors"
+          >
+            <Trash2 size={12} />
+          </button>
+        </div>
       </div>
 
       {/* Messages */}
