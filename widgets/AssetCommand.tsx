@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  TrendingUp,
-  Plus,
-  Brain,
-  Trash2,
-  Loader2,
-  Coins,
-  Zap,
-  Lightbulb,
-} from 'lucide-react';
+import { TrendingUp, Plus, Brain, Trash2, Loader2, Coins, Zap, Lightbulb } from 'lucide-react';
 import { useAppStore } from '../store';
 import { getGenAIClient } from '../services/geminiService';
 

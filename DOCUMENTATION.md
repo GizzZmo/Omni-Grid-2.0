@@ -254,24 +254,25 @@ docs/
 
 Omni-Grid 2.0 includes an official Suno AI generated theme song and three integration points:
 
-| Widget | Integration |
-|--------|------------|
-| **Suno Player** | Dedicated widget — native HTML5 audio, seek bar, volume, cover art, and embedded Suno iframe view |
-| **Sonic Architecture** | ⚡ Demo button loads the theme directly into the playlist player |
-| **Signal Radio** | ⚡ Omni-Grid Theme preset station plays the track via the Suno CDN |
+| Widget                 | Integration                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------- |
+| **Suno Player**        | Dedicated widget — native HTML5 audio, seek bar, volume, cover art, and embedded Suno iframe view |
+| **Sonic Architecture** | ⚡ Demo button loads the theme directly into the playlist player                                  |
+| **Signal Radio**       | ⚡ Omni-Grid Theme preset station plays the track via the Suno CDN                                |
 
 ### Official Theme
+
 - **Song:** Omni-Grid 2.0 — Official Theme
 - **Artist:** Omni-Grid AI (Suno)
 - **URL:** [https://suno.com/song/652af4a0-378e-4967-a762-09b9ed7ac9fb](https://suno.com/song/652af4a0-378e-4967-a762-09b9ed7ac9fb)
 - **Tags:** `cyberpunk`, `synthwave`, `AI-generated`
 
 ### Using the Suno Player
+
 1. Open the **Widget Launcher** (grid icon in the dock)
 2. Find and activate **Suno Player**
 3. Use the **Player tab** for native HTML5 audio with seek/volume controls
 4. Use the **Suno Embed tab** to view the full Suno song page in-widget
-
 
 ## 📚 EXTERNAL RESOURCES
 
