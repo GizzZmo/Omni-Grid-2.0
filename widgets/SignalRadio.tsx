@@ -1,11 +1,28 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Radio, Signal, Disc, Volume2, Mic, MicOff, Activity } from 'lucide-react';
 
-const STATIONS = [{ name: 'Jon Arve Sets', url: 'https://soundcloud.com/jon_arve/sets' }];
+type StationType = 'soundcloud' | 'suno';
+type Station = { name: string; url: string; type: StationType; audioUrl?: string };
+
+const STATIONS: Station[] = [
+  {
+    name: 'Jon Arve Sets',
+    url: 'https://soundcloud.com/jon_arve/sets',
+    type: 'soundcloud',
+  },
+  {
+    name: '⚡ Omni-Grid Theme (Suno AI)',
+    url: 'https://suno.com/song/652af4a0-378e-4967-a762-09b9ed7ac9fb',
+    type: 'suno',
+    audioUrl: 'https://cdn1.suno.ai/652af4a0-378e-4967-a762-09b9ed7ac9fb.mp3',
+  },
+];
 
 export const SignalRadio: React.FC = () => {
-  const [currentStation, setCurrentStation] = useState(STATIONS[0]);
+  const [currentStation, setCurrentStation] = useState<Station>(STATIONS[0]);
   const [micActive, setMicActive] = useState(false);
+  const [sunoPlaying, setSunoPlaying] = useState(false);
+  const sunoAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -20,8 +37,8 @@ export const SignalRadio: React.FC = () => {
     []
   );
 
-  // Construct iframe src
-  const src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(currentStation.url)}&color=%2306b6d4&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+  // Construct iframe src (only for SoundCloud stations)
+  const soundcloudSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(currentStation.url)}&color=%2306b6d4&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
 
   const toggleVisualizer = async () => {
     if (micActive) {
@@ -98,9 +115,11 @@ export const SignalRadio: React.FC = () => {
 
   // Cleanup
   useEffect(() => {
+    const sunoAudio = sunoAudioRef.current;
     return () => {
       if (audioContextRef.current) audioContextRef.current.close();
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+      if (sunoAudio) sunoAudio.pause();
     };
   }, []);
 
@@ -170,7 +189,14 @@ export const SignalRadio: React.FC = () => {
           value={currentStation.name}
           onChange={e => {
             const s = STATIONS.find(st => st.name === e.target.value);
-            if (s) setCurrentStation(s);
+            if (s) {
+              // Stop Suno audio when switching away
+              if (sunoAudioRef.current) {
+                sunoAudioRef.current.pause();
+                setSunoPlaying(false);
+              }
+              setCurrentStation(s);
+            }
           }}
           className="bg-slate-900 border border-slate-800 rounded p-2 text-xs text-slate-200 outline-none focus:border-cyan-500 font-mono"
         >
@@ -184,27 +210,81 @@ export const SignalRadio: React.FC = () => {
 
       {/* Player Embed */}
       <div className="flex-1 bg-black rounded-lg overflow-hidden border border-slate-800 relative">
-        <iframe
-          width="100%"
-          height="100%"
-          scrolling="no"
-          frameBorder="no"
-          allow="autoplay; microphone"
-          src={src}
-          className="absolute inset-0"
-          title="Signal Radio Player"
-        ></iframe>
+        {currentStation.type === 'soundcloud' ? (
+          <iframe
+            width="100%"
+            height="100%"
+            scrolling="no"
+            frameBorder="no"
+            allow="autoplay; microphone"
+            src={soundcloudSrc}
+            className="absolute inset-0"
+            title="Signal Radio Player"
+          />
+        ) : (
+          /* Suno AI station — native audio player */
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-4 bg-gradient-to-br from-slate-950 via-fuchsia-950/20 to-slate-950">
+            <div className="text-center">
+              <div className="text-xs font-bold text-fuchsia-300 mb-1">⚡ Suno AI Track</div>
+              <div className="text-[10px] text-slate-400">Omni-Grid 2.0 — Official Theme</div>
+            </div>
+            <button
+              onClick={() => {
+                const audio = sunoAudioRef.current;
+                if (!audio) return;
+                if (sunoPlaying) {
+                  audio.pause();
+                  setSunoPlaying(false);
+                } else {
+                  audio.play().then(() => setSunoPlaying(true)).catch(() => setSunoPlaying(false));
+                }
+              }}
+              className="w-14 h-14 flex items-center justify-center rounded-full bg-fuchsia-700 hover:bg-fuchsia-600 text-white border border-fuchsia-500 shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all"
+              aria-label={sunoPlaying ? 'Pause Suno track' : 'Play Suno track'}
+            >
+              {sunoPlaying ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+              )}
+            </button>
+            {sunoPlaying && (
+              <div className="flex gap-[3px] items-end h-6">
+                {[4, 7, 5, 9, 6, 8, 4].map((h, i) => (
+                  <div
+                    key={i}
+                    className="w-1 bg-fuchsia-400 rounded-sm animate-pulse"
+                    style={{ height: `${h * 2}px`, animationDelay: `${i * 0.15}s` }}
+                  />
+                ))}
+              </div>
+            )}
+            <a
+              href={currentStation.url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-[10px] text-slate-600 hover:text-fuchsia-400 transition-colors"
+            >
+              Open on Suno.com ↗
+            </a>
+            <audio
+              ref={sunoAudioRef}
+              src={currentStation.audioUrl}
+              onEnded={() => setSunoPlaying(false)}
+            />
+          </div>
+        )}
       </div>
 
       {/* Footer Info */}
       <div className="flex items-center justify-between text-[10px] text-slate-600 px-1">
         <div className="flex items-center gap-1">
-          <Disc size={10} className={micActive ? 'animate-spin' : ''} />
+          <Disc size={10} className={micActive || sunoPlaying ? 'animate-spin' : ''} />
           <span>{currentStation.name}</span>
         </div>
         <div className="flex items-center gap-1">
           <Volume2 size={10} />
-          <span>SoundCloud Embed</span>
+          <span>{currentStation.type === 'suno' ? 'Suno AI' : 'SoundCloud Embed'}</span>
         </div>
       </div>
     </div>

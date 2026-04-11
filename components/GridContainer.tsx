@@ -42,6 +42,7 @@ import { StrategicBlueprint } from '../widgets/StrategicBlueprint';
 import { ClipboardStream } from '../widgets/ClipboardStream';
 import { PromptLab } from '../widgets/PromptLab';
 import { NeuralChat } from '../widgets/NeuralChat';
+import { SunoPlayer } from '../widgets/SunoPlayer';
 
 import {
   FileJson,
@@ -52,6 +53,7 @@ import {
   Palette,
   Clock,
   Music,
+  Music2,
   Calculator,
   TrendingUp,
   Languages,
@@ -567,6 +569,17 @@ export const GridContainer: React.FC = () => {
           className="h-full"
         >
           <NeuralChat />
+        </WidgetShell>
+      ),
+      SUNO_PLAYER: (
+        <WidgetShell
+          id="SUNO_PLAYER"
+          title="Suno Player"
+          icon={<Music2 size={14} />}
+          accentColor="text-fuchsia-400"
+          className="h-full"
+        >
+          <SunoPlayer />
         </WidgetShell>
       ),
     }),

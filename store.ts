@@ -222,6 +222,8 @@ const DEFAULT_LAYOUT: GridItemData[] = [
   { i: 'PROMPT_LAB', x: 4, y: 120, w: 8, h: 12 },
   // AI Chat
   { i: 'NEURAL_CHAT', x: 0, y: 132, w: 6, h: 12 },
+  // Music
+  { i: 'SUNO_PLAYER', x: 6, y: 132, w: 6, h: 12 },
 ];
 
 const DEFAULT_THEME: AppTheme = {
