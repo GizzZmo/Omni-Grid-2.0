@@ -115,9 +115,7 @@ export const NeuralChat: React.FC = () => {
         const chunkText = chunk.text ?? '';
         if (chunkText) {
           setMessages(prev =>
-            prev.map(m =>
-              m.id === assistantMsgId ? { ...m, content: m.content + chunkText } : m
-            )
+            prev.map(m => (m.id === assistantMsgId ? { ...m, content: m.content + chunkText } : m))
           );
         }
       }
@@ -156,18 +154,27 @@ export const NeuralChat: React.FC = () => {
       timestamp: Date.now(),
     };
     setMessages([welcome]);
-    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
   };
 
   const newSession = () => {
     const welcome: ChatMessage = {
       id: generateId(),
       role: 'assistant',
-      content: 'New session initialized. Neural link established. Ready for your commands, operator.',
+      content:
+        'New session initialized. Neural link established. Ready for your commands, operator.',
       timestamp: Date.now(),
     };
     setMessages([welcome]);
-    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
   };
 
   // Simple markdown-like rendering: bold and code blocks

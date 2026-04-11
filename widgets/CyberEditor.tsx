@@ -748,7 +748,9 @@ export const CyberEditor: React.FC = () => {
       {/* Settings Panel */}
       {showSettings && (
         <div className="bg-slate-900/60 border-b border-slate-800 px-3 py-2 flex items-center gap-4">
-          <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Settings</span>
+          <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+            Settings
+          </span>
           <label className="flex items-center gap-1 text-[10px] text-slate-400">
             Tab Size:
             <select
@@ -756,7 +758,11 @@ export const CyberEditor: React.FC = () => {
               onChange={e => setTabSize(Number(e.target.value))}
               className="ml-1 bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-[10px] text-slate-300 focus:outline-none focus:border-cyan-500"
             >
-              {[2, 4, 8].map(s => <option key={s} value={s}>{s}</option>)}
+              {[2, 4, 8].map(s => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
             </select>
           </label>
           <label className="flex items-center gap-1 text-[10px] text-slate-400">
@@ -837,7 +843,9 @@ export const CyberEditor: React.FC = () => {
           value={activeTab.content}
           theme="vs-dark"
           onChange={val => updateTabContent(val ?? '')}
-          onMount={(editor) => { editorRef.current = editor; }}
+          onMount={editor => {
+            editorRef.current = editor;
+          }}
           options={{
             minimap: { enabled: false },
             fontSize: 13,

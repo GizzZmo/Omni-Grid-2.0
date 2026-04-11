@@ -30,7 +30,12 @@ const DEFAULT_BOARD: Board = {
 const LANE_META: { key: keyof Board; label: string; color: string; headerColor: string }[] = [
   { key: 'backlog', label: 'Backlog', color: 'border-slate-700', headerColor: 'text-slate-400' },
   { key: 'todo', label: 'Todo', color: 'border-cyan-800/50', headerColor: 'text-cyan-400' },
-  { key: 'progress', label: 'In Progress', color: 'border-fuchsia-800/50', headerColor: 'text-fuchsia-400' },
+  {
+    key: 'progress',
+    label: 'In Progress',
+    color: 'border-fuchsia-800/50',
+    headerColor: 'text-fuchsia-400',
+  },
   { key: 'done', label: 'Done', color: 'border-emerald-800/50', headerColor: 'text-emerald-400' },
 ];
 
@@ -51,7 +56,9 @@ const loadBoard = (): Board => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw) as Board;
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   return DEFAULT_BOARD;
 };
 
@@ -65,7 +72,11 @@ export const ProjectTracker: React.FC = () => {
   const editInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(board)); } catch { /* ignore */ }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(board));
+    } catch {
+      /* ignore */
+    }
   }, [board]);
 
   useEffect(() => {
@@ -78,7 +89,10 @@ export const ProjectTracker: React.FC = () => {
 
   const addTask = (lane: keyof Board) => {
     const text = newTaskText.trim();
-    if (!text) { setAddingIn(null); return; }
+    if (!text) {
+      setAddingIn(null);
+      return;
+    }
     const task: Task = { id: generateId(), text, createdAt: Date.now() };
     setBoard(prev => ({ ...prev, [lane]: [...prev[lane], task] }));
     setNewTaskText('');
@@ -99,7 +113,7 @@ export const ProjectTracker: React.FC = () => {
     if (text) {
       setBoard(prev => ({
         ...prev,
-        [lane]: prev[lane].map(t => t.id === editingId ? { ...t, text } : t),
+        [lane]: prev[lane].map(t => (t.id === editingId ? { ...t, text } : t)),
       }));
     }
     setEditingId(null);
@@ -111,7 +125,7 @@ export const ProjectTracker: React.FC = () => {
     const next = PRIORITY_CYCLE[(idx + 1) % PRIORITY_CYCLE.length];
     setBoard(prev => ({
       ...prev,
-      [lane]: prev[lane].map(t => t.id === id ? { ...t, priority: next } : t),
+      [lane]: prev[lane].map(t => (t.id === id ? { ...t, priority: next } : t)),
     }));
   };
 
@@ -146,7 +160,10 @@ export const ProjectTracker: React.FC = () => {
                   {board[key].length}
                 </span>
                 <button
-                  onClick={() => { setAddingIn(key); setNewTaskText(''); }}
+                  onClick={() => {
+                    setAddingIn(key);
+                    setNewTaskText('');
+                  }}
                   className="text-slate-600 hover:text-slate-300 transition-colors"
                   title={`Add task to ${label}`}
                 >
@@ -175,7 +192,10 @@ export const ProjectTracker: React.FC = () => {
                       onBlur={() => commitEdit(key)}
                       onKeyDown={e => {
                         if (e.key === 'Enter') commitEdit(key);
-                        if (e.key === 'Escape') { setEditingId(null); setEditingText(''); }
+                        if (e.key === 'Escape') {
+                          setEditingId(null);
+                          setEditingText('');
+                        }
                       }}
                       className="w-full bg-slate-700 border border-slate-500 rounded px-1 py-0.5 text-[10px] text-slate-200 focus:outline-none focus:border-cyan-500"
                     />
@@ -185,9 +205,15 @@ export const ProjectTracker: React.FC = () => {
                       <button
                         onClick={() => cyclePriority(key, task.id, task.priority)}
                         className={`mt-0.5 w-2 h-2 rounded-full shrink-0 transition-colors ${
-                          task.priority ? PRIORITY_COLORS[task.priority] : 'bg-slate-600 hover:bg-slate-500'
+                          task.priority
+                            ? PRIORITY_COLORS[task.priority]
+                            : 'bg-slate-600 hover:bg-slate-500'
                         }`}
-                        title={task.priority ? `Priority: ${task.priority}` : 'No priority (click to set)'}
+                        title={
+                          task.priority
+                            ? `Priority: ${task.priority}`
+                            : 'No priority (click to set)'
+                        }
                       />
                       <span className="flex-1 text-[10px] text-slate-300 leading-snug break-words">
                         {task.text}
@@ -213,7 +239,10 @@ export const ProjectTracker: React.FC = () => {
                     onChange={e => setNewTaskText(e.target.value)}
                     onKeyDown={e => {
                       if (e.key === 'Enter') addTask(key);
-                      if (e.key === 'Escape') { setAddingIn(null); setNewTaskText(''); }
+                      if (e.key === 'Escape') {
+                        setAddingIn(null);
+                        setNewTaskText('');
+                      }
                     }}
                     onBlur={() => addTask(key)}
                     placeholder="Task name..."
@@ -226,8 +255,13 @@ export const ProjectTracker: React.FC = () => {
             {/* Drop zone hint */}
             <div
               className="mx-2 mb-2 h-6 border border-dashed border-slate-800 rounded flex items-center justify-center text-slate-700 hover:border-slate-700 hover:text-slate-500 transition-colors shrink-0"
-              onDragOver={e => { e.preventDefault(); e.currentTarget.classList.add('border-cyan-700', 'text-cyan-600'); }}
-              onDragLeave={e => { e.currentTarget.classList.remove('border-cyan-700', 'text-cyan-600'); }}
+              onDragOver={e => {
+                e.preventDefault();
+                e.currentTarget.classList.add('border-cyan-700', 'text-cyan-600');
+              }}
+              onDragLeave={e => {
+                e.currentTarget.classList.remove('border-cyan-700', 'text-cyan-600');
+              }}
               onDrop={e => {
                 e.currentTarget.classList.remove('border-cyan-700', 'text-cyan-600');
                 const data = JSON.parse(e.dataTransfer.getData('task') || '{}');
