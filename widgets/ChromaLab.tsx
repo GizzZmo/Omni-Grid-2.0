@@ -10,8 +10,11 @@ function hexToRgb(hex: string): [number, number, number] {
 
 // Convert RGB [0,255] to HSL [0,360 / 0,100 / 0,100]
 function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
-  const rn = r / 255, gn = g / 255, bn = b / 255;
-  const max = Math.max(rn, gn, bn), min = Math.min(rn, gn, bn);
+  const rn = r / 255,
+    gn = g / 255,
+    bn = b / 255;
+  const max = Math.max(rn, gn, bn),
+    min = Math.min(rn, gn, bn);
   const l = (max + min) / 2;
   if (max === min) return [0, 0, Math.round(l * 100)];
   const d = max - min;
@@ -25,17 +28,27 @@ function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
 
 // Convert HSL to hex string
 function hslToHex(h: number, s: number, l: number): string {
-  const ln = l / 100, sn = s / 100;
+  const ln = l / 100,
+    sn = s / 100;
   const k = (n: number) => (n + h / 30) % 12;
   const a = sn * Math.min(ln, 1 - ln);
-  const f = (n: number) => Math.round(255 * (ln - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1))));
+  const f = (n: number) =>
+    Math.round(255 * (ln - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1))));
   return `#${[f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
 // Lightness targets for Tailwind-style shade scale
 const SHADE_LIGHTNESS: Record<string, number> = {
-  '50': 96, '100': 92, '200': 82, '300': 68,
-  '400': 55, '500': 44, '600': 35, '700': 28, '800': 20, '900': 13,
+  '50': 96,
+  '100': 92,
+  '200': 82,
+  '300': 68,
+  '400': 55,
+  '500': 44,
+  '600': 35,
+  '700': 28,
+  '800': 20,
+  '900': 13,
 };
 
 function generateShades(hex: string) {
@@ -85,8 +98,12 @@ export const ChromaLab: React.FC = () => {
       </div>
 
       <div className="text-[10px] text-slate-500 font-mono flex gap-3 px-1">
-        <span>HSL({h}°, {s}%, {l}%)</span>
-        <span>RGB({r}, {g}, {b})</span>
+        <span>
+          HSL({h}°, {s}%, {l}%)
+        </span>
+        <span>
+          RGB({r}, {g}, {b})
+        </span>
       </div>
 
       <div className="flex-1 flex flex-col gap-0.5 overflow-y-auto custom-scrollbar pr-1">
@@ -113,7 +130,10 @@ export const ChromaLab: React.FC = () => {
                 {shade.hex.toUpperCase()}
               </span>
               {copiedKey === shade.w ? (
-                <Check size={10} style={{ color: SHADE_LIGHTNESS[shade.w] > 50 ? '#000' : '#fff' }} />
+                <Check
+                  size={10}
+                  style={{ color: SHADE_LIGHTNESS[shade.w] > 50 ? '#000' : '#fff' }}
+                />
               ) : (
                 <Copy
                   size={10}

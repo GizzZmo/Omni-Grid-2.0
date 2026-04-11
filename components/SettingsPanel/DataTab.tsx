@@ -74,9 +74,15 @@ export const DataTab: React.FC = () => {
         const url = new URL(`https://placeholder.invalid?${encoded.replace(/^.*\?/, '')}`);
         encoded = url.searchParams.get('layout') ?? '';
       }
-      if (!encoded) { setImportError('No layout data found in link.'); return; }
+      if (!encoded) {
+        setImportError('No layout data found in link.');
+        return;
+      }
       const payload = JSON.parse(decodeURIComponent(atob(encoded)));
-      if (!payload.layouts || !payload.visibleWidgets) { setImportError('Invalid layout data.'); return; }
+      if (!payload.layouts || !payload.visibleWidgets) {
+        setImportError('Invalid layout data.');
+        return;
+      }
       if (confirm('Import layout from shared link? Current layout will be replaced.')) {
         setGlobalState(payload);
         setImportLink('');
@@ -191,7 +197,10 @@ export const DataTab: React.FC = () => {
               <input
                 type="text"
                 value={importLink}
-                onChange={e => { setImportLink(e.target.value); setImportError(''); }}
+                onChange={e => {
+                  setImportLink(e.target.value);
+                  setImportError('');
+                }}
                 placeholder="Paste share link or ?layout=... parameter"
                 className="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:border-fuchsia-500/60 transition-colors"
               />
@@ -203,9 +212,7 @@ export const DataTab: React.FC = () => {
                 Import
               </button>
             </div>
-            {importError && (
-              <p className="text-xs text-red-400">{importError}</p>
-            )}
+            {importError && <p className="text-xs text-red-400">{importError}</p>}
           </div>
         </div>
       </div>
