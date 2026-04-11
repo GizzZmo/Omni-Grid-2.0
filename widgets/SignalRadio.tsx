@@ -33,7 +33,7 @@ export const SignalRadio: React.FC = () => {
   // Memoize random heights to avoid calling Math.random during render
   const visualizerHeights = useMemo(
     () => Array.from({ length: 20 }, () => 20 + Math.random() * 30),
-     
+
     []
   );
 
@@ -236,16 +236,24 @@ export const SignalRadio: React.FC = () => {
                   audio.pause();
                   setSunoPlaying(false);
                 } else {
-                  audio.play().then(() => setSunoPlaying(true)).catch(() => setSunoPlaying(false));
+                  audio
+                    .play()
+                    .then(() => setSunoPlaying(true))
+                    .catch(() => setSunoPlaying(false));
                 }
               }}
               className="w-14 h-14 flex items-center justify-center rounded-full bg-fuchsia-700 hover:bg-fuchsia-600 text-white border border-fuchsia-500 shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all"
               aria-label={sunoPlaying ? 'Pause Suno track' : 'Play Suno track'}
             >
               {sunoPlaying ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" />
+                  <rect x="14" y="4" width="4" height="16" />
+                </svg>
               ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
               )}
             </button>
             {sunoPlaying && (

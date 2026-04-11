@@ -172,7 +172,13 @@ export const AestheticEngine: React.FC = () => {
           >
             <ImageIcon className="text-slate-600 mb-2" />
             <span className="text-xs text-slate-500">Upload Image</span>
-            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
           </div>
         )}
 

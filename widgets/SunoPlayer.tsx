@@ -28,7 +28,10 @@ export const SunoPlayer: React.FC = () => {
       audio.pause();
       setPlaying(false);
     } else {
-      audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      audio
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => setPlaying(false));
     }
   };
 
@@ -132,9 +135,7 @@ export const SunoPlayer: React.FC = () => {
               aria-label="Seek"
               className="flex-1 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-fuchsia-500"
             />
-            <span className="text-[10px] text-slate-500 w-8 font-mono">
-              {formatTime(duration)}
-            </span>
+            <span className="text-[10px] text-slate-500 w-8 font-mono">{formatTime(duration)}</span>
           </div>
 
           {/* Controls */}
