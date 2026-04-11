@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppStore } from '../../store';
 import { Power, RefreshCw, Clock } from 'lucide-react';
+import type { StartupBehavior } from '../../types';
 
 export const GeneralTab: React.FC = () => {
   const settings = useAppStore(s => s.settings);
@@ -100,7 +101,7 @@ export const GeneralTab: React.FC = () => {
                 name="startup"
                 value="restore"
                 checked={settings.startupBehavior === 'restore'}
-                onChange={e => setStartupBehavior(e.target.value as any)}
+                onChange={e => setStartupBehavior(e.target.value as StartupBehavior)}
                 className="text-cyan-500 focus:ring-cyan-500"
               />
               <span>Restore previous session</span>
@@ -111,7 +112,7 @@ export const GeneralTab: React.FC = () => {
                 name="startup"
                 value="default"
                 checked={settings.startupBehavior === 'default'}
-                onChange={e => setStartupBehavior(e.target.value as any)}
+                onChange={e => setStartupBehavior(e.target.value as StartupBehavior)}
                 className="text-cyan-500 focus:ring-cyan-500"
               />
               <span>Load default layout</span>
@@ -122,7 +123,7 @@ export const GeneralTab: React.FC = () => {
                 name="startup"
                 value="empty"
                 checked={settings.startupBehavior === 'empty'}
-                onChange={e => setStartupBehavior(e.target.value as any)}
+                onChange={e => setStartupBehavior(e.target.value as StartupBehavior)}
                 className="text-cyan-500 focus:ring-cyan-500"
               />
               <span>Start with empty grid</span>

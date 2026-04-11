@@ -36,6 +36,14 @@ type Track = {
   url: string;
 };
 
+const DEMO_TRACKS: Track[] = [
+  {
+    id: -1,
+    name: 'Omni-Grid 2.0 — Official Theme (Suno AI)',
+    url: 'https://cdn1.suno.ai/652af4a0-378e-4967-a762-09b9ed7ac9fb.mp3',
+  },
+];
+
 export const SonicArchitecture: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'THEORY' | 'TOOLS'>('THEORY');
   const [rootNote, setRootNote] = useState('C');
@@ -427,21 +435,38 @@ export const SonicArchitecture: React.FC = () => {
               <span className="text-xs font-bold text-slate-400 uppercase flex items-center gap-1">
                 <ListMusic size={12} /> Playlist ({playlist.length})
               </span>
-              <label
-                htmlFor="sonic-upload"
-                className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-fuchsia-700 text-fuchsia-300 bg-fuchsia-900/40 cursor-pointer"
-              >
-                <Upload size={12} /> Add Tracks
-                <input
-                  id="sonic-upload"
-                  aria-label="Add tracks"
-                  type="file"
-                  accept="audio/*"
-                  multiple
-                  className="hidden"
-                  onChange={e => handleFileUpload(e.target.files)}
-                />
-              </label>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => {
+                    setPlaylist(prev => {
+                      const alreadyLoaded = prev.some(t => t.id === DEMO_TRACKS[0].id);
+                      if (alreadyLoaded) return prev;
+                      const updated = [...prev, ...DEMO_TRACKS];
+                      if (prev.length === 0) setCurrentTrackIndex(0);
+                      return updated;
+                    });
+                  }}
+                  className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-purple-700 text-purple-300 bg-purple-900/40 hover:bg-purple-800/40 transition-colors"
+                  title="Load Omni-Grid 2.0 official theme (Suno AI)"
+                >
+                  ⚡ Demo
+                </button>
+                <label
+                  htmlFor="sonic-upload"
+                  className="flex items-center gap-1 text-xs px-2 py-1 rounded border border-fuchsia-700 text-fuchsia-300 bg-fuchsia-900/40 cursor-pointer"
+                >
+                  <Upload size={12} /> Add Tracks
+                  <input
+                    id="sonic-upload"
+                    aria-label="Add tracks"
+                    type="file"
+                    accept="audio/*"
+                    multiple
+                    className="hidden"
+                    onChange={e => handleFileUpload(e.target.files)}
+                  />
+                </label>
+              </div>
             </div>
 
             <div className="flex items-center gap-2">

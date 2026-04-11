@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, Activity, Zap, Box } from 'lucide-react';
+import { Layers, Activity, Zap } from 'lucide-react';
 
 export const ChainPulse: React.FC = () => {
   return (

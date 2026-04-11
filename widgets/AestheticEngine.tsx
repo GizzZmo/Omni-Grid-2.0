@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Palette, Image as ImageIcon, Wand2, Upload, Loader2, RefreshCw } from 'lucide-react';
+import { Image as ImageIcon, Wand2, Loader2 } from 'lucide-react';
 import { useAppStore } from '../store';
 import { AppTheme } from '../types';
 import { getGenAIClient } from '../services/geminiService';
@@ -11,7 +11,7 @@ export const AestheticEngine: React.FC = () => {
   const [activeMode, setActiveMode] = useState<'TEXT' | 'IMAGE'>('TEXT');
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
-  const [previewTheme, setPreviewTheme] = useState<AppTheme | null>(null);
+  const [_previewTheme, setPreviewTheme] = useState<AppTheme | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const applyTheme = (newTheme: AppTheme) => {
@@ -172,7 +172,7 @@ export const AestheticEngine: React.FC = () => {
           >
             <ImageIcon className="text-slate-600 mb-2" />
             <span className="text-xs text-slate-500">Upload Image</span>
-            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" />
+            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
           </div>
         )}
 

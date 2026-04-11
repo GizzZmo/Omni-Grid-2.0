@@ -54,7 +54,7 @@ _The main Omni-Grid dashboard with live widgets: System Core, Neural Scratchpad,
 
 ![Widget Launcher](./docs/screenshots/widget-launcher.svg)
 
-_The Widget Launcher — search and activate any of the 39 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System)._
+_The Widget Launcher — search and activate any of the 40 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System)._
 
 ### 🛠️ Developer Tools
 
@@ -101,13 +101,14 @@ _Macro Net M2 correlation heatmap, Asset Command portfolio tracker, Reg Radar se
 ### 🎨 Creative & Utility
 
 - **Aesthetic Engine:** AI-generated UI theming based on text or image vibes.
-- **Sonic Architecture:** Circle of Fifths theory tool with brown noise and a local playlist player.
+- **Sonic Architecture:** Circle of Fifths theory tool with brown noise and a local playlist player. Includes a **⚡ Demo** button that loads the [Omni-Grid 2.0 Official Theme](https://suno.com/song/652af4a0-378e-4967-a762-09b9ed7ac9fb) from Suno AI.
 - **Cipher Vault:** Local hashing and UUID/Nanoid generation.
 - **Chroma Lab:** Color palette generator with Tailwind-compatible shade variations.
 - **Clipboard Stream:** Clipboard history manager with drag-and-drop support.
 - **Quantum Calc:** Scientific calculator with expression parsing and history.
 - **Weather Station:** Real-time weather conditions for any location.
-- **Signal Radio:** Audio player with frequency-responsive visualizer.
+- **Signal Radio:** Audio player with frequency-responsive visualizer. Includes an **⚡ Omni-Grid Theme** Suno AI preset station.
+- **Suno Player:** Dedicated player for the [Omni-Grid 2.0 Official Theme](https://suno.com/song/652af4a0-378e-4967-a762-09b9ed7ac9fb) — native audio playback with seek/volume controls, cover art, and an embedded Suno iframe view.
 
 ### 📊 Productivity & Research
 

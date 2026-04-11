@@ -44,7 +44,9 @@ export type WidgetType =
   // Prompt Workspace
   | 'PROMPT_LAB'
   // AI Chat
-  | 'NEURAL_CHAT';
+  | 'NEURAL_CHAT'
+  // Music
+  | 'SUNO_PLAYER';
 
 export interface WidgetConfig {
   id: string;
