@@ -16,7 +16,7 @@ export const SignalRadio: React.FC = () => {
   // Memoize random heights to avoid calling Math.random during render
   const visualizerHeights = useMemo(
     () => Array.from({ length: 20 }, () => 20 + Math.random() * 30),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     []
   );
 

@@ -6,9 +6,7 @@ import {
   Trash2,
   Loader2,
   Coins,
-  Play,
   Zap,
-  AlertTriangle,
   Lightbulb,
 } from 'lucide-react';
 import { useAppStore } from '../store';
@@ -67,7 +65,6 @@ export const AssetCommand: React.FC = () => {
     setLoading(true);
     setIntelResult('');
     try {
-      const list = tickers.join(', ');
       const context = tickers
         .map(t => `${t}: ${ASSET_CONTEXT[t] || 'Speculative Asset'}`)
         .join('\n');
@@ -91,7 +88,7 @@ export const AssetCommand: React.FC = () => {
         contents: prompt,
       });
       setIntelResult(response.text || 'Neural Link Analysis unavailable.');
-    } catch (e) {
+    } catch {
       setIntelResult('Neural Link Failed.');
     } finally {
       setLoading(false);

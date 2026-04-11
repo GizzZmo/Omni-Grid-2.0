@@ -11,7 +11,6 @@ import {
   FolderOpen,
   Lock,
   Unlock,
-  Sparkles,
   Loader2,
   Terminal,
   HelpCircle,

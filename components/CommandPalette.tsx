@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Command, Loader2, Terminal, Search, Zap } from 'lucide-react';
+import { Loader2, Terminal, Search, Zap } from 'lucide-react';
 import { useAppStore } from '../store';
 import { getGenAIClient } from '../services/geminiService';
 
