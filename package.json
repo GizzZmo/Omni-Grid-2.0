@@ -57,6 +57,7 @@
     "vitest": "^4.1.0"
   },
   "overrides": {
-    "flatted": "3.4.2"
+    "flatted": "3.4.2",
+    "dompurify": "3.3.3"
   }
 }
