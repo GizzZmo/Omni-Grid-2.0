@@ -100,7 +100,7 @@ export const ChromaLab: React.FC = () => {
             <div className="flex items-center gap-2">
               <span
                 className="text-[10px] font-mono font-bold"
-                style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000' : '#fff' }}
+                style={{ color: SHADE_LIGHTNESS[shade.w] > 50 ? '#000' : '#fff' }}
               >
                 {shade.w}
               </span>
@@ -108,17 +108,17 @@ export const ChromaLab: React.FC = () => {
             <div className="flex items-center gap-2">
               <span
                 className="text-[10px] font-mono"
-                style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000000aa' : '#ffffffaa' }}
+                style={{ color: SHADE_LIGHTNESS[shade.w] > 50 ? '#000000aa' : '#ffffffaa' }}
               >
                 {shade.hex.toUpperCase()}
               </span>
               {copiedKey === shade.w ? (
-                <Check size={10} style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000' : '#fff' }} />
+                <Check size={10} style={{ color: SHADE_LIGHTNESS[shade.w] > 50 ? '#000' : '#fff' }} />
               ) : (
                 <Copy
                   size={10}
                   className="opacity-0 group-hover:opacity-70 transition-opacity"
-                  style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000' : '#fff' }}
+                  style={{ color: SHADE_LIGHTNESS[shade.w] > 50 ? '#000' : '#fff' }}
                 />
               )}
             </div>
