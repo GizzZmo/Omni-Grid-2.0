@@ -98,6 +98,8 @@ export default [
       'react-hooks/preserve-manual-memoization': 'off',
       'react-hooks/unsupported-syntax': 'off',
       'react-compiler/react-compiler': 'off',
+      // Downgrade purity rule: it incorrectly flags Date.now() in event handlers
+      'react-hooks/purity': 'warn',
     },
     settings: {
       react: {

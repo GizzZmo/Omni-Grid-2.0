@@ -1,36 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Palette, Copy, Check, Pipette } from 'lucide-react';
+
+// Convert hex to RGB components
+function hexToRgb(hex: string): [number, number, number] {
+  const clean = hex.replace('#', '');
+  const n = parseInt(clean.length === 3 ? clean.replace(/./g, '$&$&') : clean, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+// Convert RGB [0,255] to HSL [0,360 / 0,100 / 0,100]
+function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+  const rn = r / 255, gn = g / 255, bn = b / 255;
+  const max = Math.max(rn, gn, bn), min = Math.min(rn, gn, bn);
+  const l = (max + min) / 2;
+  if (max === min) return [0, 0, Math.round(l * 100)];
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === rn) h = ((gn - bn) / d + (gn < bn ? 6 : 0)) / 6;
+  else if (max === gn) h = ((bn - rn) / d + 2) / 6;
+  else h = ((rn - gn) / d + 4) / 6;
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+}
+
+// Convert HSL to hex string
+function hslToHex(h: number, s: number, l: number): string {
+  const ln = l / 100, sn = s / 100;
+  const k = (n: number) => (n + h / 30) % 12;
+  const a = sn * Math.min(ln, 1 - ln);
+  const f = (n: number) => Math.round(255 * (ln - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1))));
+  return `#${[f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('')}`;
+}
+
+// Lightness targets for Tailwind-style shade scale
+const SHADE_LIGHTNESS: Record<string, number> = {
+  '50': 96, '100': 92, '200': 82, '300': 68,
+  '400': 55, '500': 44, '600': 35, '700': 28, '800': 20, '900': 13,
+};
+
+function generateShades(hex: string) {
+  const [r, g, b] = hexToRgb(hex);
+  const [h, s] = rgbToHsl(r, g, b);
+  return Object.entries(SHADE_LIGHTNESS).map(([w, l]) => ({
+    w,
+    hex: hslToHex(h, s, l),
+  }));
+}
 
 export const ChromaLab: React.FC = () => {
   const [hex, setHex] = useState('#6366f1');
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  // Simple lighten/darken logic for demo purposes
-  // Real implementation would use HSL conversion
-  const generateShades = (baseHex: string) => {
-    // This is a simplified visual generator
-    return [
-      { w: '50', op: 0.1 },
-      { w: '100', op: 0.2 },
-      { w: '200', op: 0.3 },
-      { w: '300', op: 0.4 },
-      { w: '400', op: 0.6 },
-      { w: '500', op: 1 }, // Base
-      { w: '600', op: 0.9, blend: 'black' },
-      { w: '700', op: 0.7, blend: 'black' },
-      { w: '800', op: 0.5, blend: 'black' },
-      { w: '900', op: 0.3, blend: 'black' },
-    ];
-  };
+  const shades = generateShades(hex);
 
-  const copyToClipboard = (text: string, index: number) => {
+  const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 1500);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 1500);
   };
+
+  const [r, g, b] = hexToRgb(hex);
+  const [h, s, l] = rgbToHsl(r, g, b);
 
   return (
-    <div className="h-full flex flex-col gap-3">
+    <div className="h-full flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <div className="relative flex-1 h-10 rounded-lg overflow-hidden border border-slate-700 group">
           <input
@@ -39,7 +72,10 @@ export const ChromaLab: React.FC = () => {
             onChange={e => setHex(e.target.value)}
             className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] cursor-pointer p-0 border-0"
           />
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center bg-black/10 group-hover:bg-transparent text-white font-mono font-bold shadow-sm">
+          <div
+            className="absolute inset-0 pointer-events-none flex items-center justify-center font-mono font-bold text-xs shadow-sm"
+            style={{ color: l > 50 ? '#000' : '#fff' }}
+          >
             {hex.toUpperCase()}
           </div>
         </div>
@@ -48,39 +84,50 @@ export const ChromaLab: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col gap-1 overflow-y-auto custom-scrollbar pr-1">
-        {generateShades(hex).map((shade, idx) => (
+      <div className="text-[10px] text-slate-500 font-mono flex gap-3 px-1">
+        <span>HSL({h}°, {s}%, {l}%)</span>
+        <span>RGB({r}, {g}, {b})</span>
+      </div>
+
+      <div className="flex-1 flex flex-col gap-0.5 overflow-y-auto custom-scrollbar pr-1">
+        {shades.map(shade => (
           <div
-            key={idx}
-            onClick={() => copyToClipboard(`bg-${hex}`, idx)} // In real app, calculate real hex
-            className="flex items-center justify-between p-2 rounded cursor-pointer hover:scale-[1.02] transition-transform group"
-            style={{
-              backgroundColor: shade.blend === 'black' ? '#000' : hex,
-              opacity: shade.blend === 'black' ? 1 : shade.op,
-            }}
+            key={shade.w}
+            onClick={() => copyToClipboard(shade.hex, shade.w)}
+            className="flex items-center justify-between px-2 py-1.5 rounded cursor-pointer hover:scale-[1.02] transition-transform group"
+            style={{ backgroundColor: shade.hex }}
           >
-            <div className="flex items-center gap-3">
-              {/* Visual trick for the demo to show shades without complex math lib */}
-              <div
-                className="w-4 h-4 rounded border border-white/20"
-                style={{
-                  backgroundColor: hex,
-                  opacity: shade.blend === 'black' ? shade.op : 1,
-                }}
-              ></div>
+            <div className="flex items-center gap-2">
               <span
-                className={`text-[10px] font-mono font-bold ${shade.w === '500' ? 'text-white underline' : 'text-white/80'}`}
+                className="text-[10px] font-mono font-bold"
+                style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000' : '#fff' }}
               >
                 {shade.w}
               </span>
             </div>
-            {copiedIndex === idx ? (
-              <Check size={12} className="text-white" />
-            ) : (
-              <Copy size={12} className="text-white/0 group-hover:text-white/70" />
-            )}
+            <div className="flex items-center gap-2">
+              <span
+                className="text-[10px] font-mono"
+                style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000000aa' : '#ffffffaa' }}
+              >
+                {shade.hex.toUpperCase()}
+              </span>
+              {copiedKey === shade.w ? (
+                <Check size={10} style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000' : '#fff' }} />
+              ) : (
+                <Copy
+                  size={10}
+                  className="opacity-0 group-hover:opacity-70 transition-opacity"
+                  style={{ color: parseInt(SHADE_LIGHTNESS[shade.w].toString()) > 50 ? '#000' : '#fff' }}
+                />
+              )}
+            </div>
           </div>
         ))}
+      </div>
+
+      <div className="flex items-center gap-1 text-[9px] text-slate-600 justify-center">
+        <Palette size={9} /> Click any swatch to copy hex
       </div>
     </div>
   );
