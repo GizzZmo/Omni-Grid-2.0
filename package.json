@@ -24,7 +24,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@google/genai": "^1.46.0",
+    "@google/genai": "^1.49.0",
     "@monaco-editor/react": "^4.7.0",
     "@testing-library/dom": "^10.4.1",
     "lucide-react": "0.577.0",
