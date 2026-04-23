@@ -36,6 +36,8 @@ import {
   GitBranch,
   FileCode,
   MessageSquare,
+  ShoppingBag,
+  ArrowUpCircle,
 } from 'lucide-react';
 
 // Manual mapping of all available widget types to icons and names
@@ -352,6 +354,14 @@ export const WIDGET_REGISTRY = [
     bg: 'bg-fuchsia-900/20',
     border: 'border-fuchsia-500/50',
   },
+  {
+    id: 'MARKETPLACE',
+    name: 'Marketplace',
+    icon: ShoppingBag,
+    color: 'text-fuchsia-400',
+    bg: 'bg-fuchsia-900/20',
+    border: 'border-fuchsia-500/50',
+  },
 ];
 
 interface WidgetLauncherProps {
@@ -360,13 +370,22 @@ interface WidgetLauncherProps {
 
 export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
   const { visibleWidgets, toggleWidget } = useAppStore();
+  const availableUpdates = useAppStore(s => s.availableUpdates);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
       <div className="w-[80vw] max-w-4xl h-[80vh] bg-slate-950 border border-fuchsia-500/50 rounded-lg shadow-[0_0_50px_rgba(217,70,239,0.2)] flex flex-col relative overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-fuchsia-900/50 bg-slate-900/50">
-          <h2 className="text-2xl font-gothic text-fuchsia-400 tracking-wider">WIDGET MANIFEST</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-gothic text-fuchsia-400 tracking-wider">WIDGET MANIFEST</h2>
+            {availableUpdates.length > 0 && (
+              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-900/40 border border-amber-500/50 text-[10px] text-amber-400 font-bold">
+                <ArrowUpCircle size={10} />
+                {availableUpdates.length} update{availableUpdates.length !== 1 ? 's' : ''}
+              </span>
+            )}
+          </div>
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-colors"
@@ -379,12 +398,13 @@ export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
         <div className="flex-1 overflow-y-auto p-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 custom-scrollbar">
           {WIDGET_REGISTRY.map(widget => {
             const isActive = visibleWidgets.includes(widget.id);
+            const hasUpdate = availableUpdates.includes(widget.id);
             return (
               <button
                 key={widget.id}
                 onClick={() => toggleWidget(widget.id)}
                 className={`
-                                    flex flex-col items-center justify-center gap-3 p-4 rounded-lg border transition-all duration-300 group
+                                    flex flex-col items-center justify-center gap-3 p-4 rounded-lg border transition-all duration-300 group relative
                                     ${
                                       isActive
                                         ? `${widget.bg} ${widget.border} shadow-[0_0_15px_rgba(0,0,0,0.3)]`
@@ -392,6 +412,9 @@ export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
                                     }
                                 `}
               >
+                {hasUpdate && (
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_#f59e0b]" />
+                )}
                 <div
                   className={`
                                     p-3 rounded-full transition-all duration-300
@@ -422,6 +445,12 @@ export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
         {/* Footer Status */}
         <div className="p-2 bg-slate-900/80 border-t border-slate-800 text-[10px] text-center text-slate-500 font-mono uppercase tracking-[0.2em]">
           System Modules: {WIDGET_REGISTRY.length} | Active: {visibleWidgets.length}
+          {availableUpdates.length > 0 && (
+            <span className="text-amber-400 ml-3">
+              · {availableUpdates.length} update{availableUpdates.length !== 1 ? 's' : ''} pending
+              — open Marketplace to apply
+            </span>
+          )}
         </div>
       </div>
     </div>

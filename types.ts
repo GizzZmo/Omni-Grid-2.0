@@ -1,4 +1,6 @@
 export type WidgetType =
+  // Marketplace
+  | 'MARKETPLACE'
   // Original
   | 'TRANSFORMER'
   | 'SCRATCHPAD'
@@ -146,4 +148,36 @@ export interface AIProvider {
   latencyMs?: number;
   run: (prompt: string) => Promise<CompletionResponse>;
   estimateTokens: (text: string) => number;
+}
+
+// ─── Widget Marketplace ────────────────────────────────────────────────────
+
+export type MarketplaceCategory =
+  | 'all'
+  | 'utility'
+  | 'developer'
+  | 'finance'
+  | 'creative'
+  | 'ai'
+  | 'productivity'
+  | 'community';
+
+export interface MarketplaceEntry {
+  /** Must match a WidgetType string */
+  id: string;
+  name: string;
+  description: string;
+  /** Semver string, e.g. "1.2.0" */
+  version: string;
+  author: string;
+  category: MarketplaceCategory;
+  tags: string[];
+  downloads: number;
+  rating: number;
+  updatedAt: string;
+  changelog?: string;
+  /** true = ships with Omni-Grid core; false = community submission */
+  isCore: boolean;
+  minGridW: number;
+  minGridH: number;
 }

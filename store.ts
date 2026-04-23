@@ -8,8 +8,10 @@ import {
   PromptTemplate,
   PromptVersion,
   StartupBehavior,
+  MarketplaceEntry,
 } from './types';
 import { estimateTokens } from './services/promptEngine';
+import { MARKETPLACE_CATALOG } from './widgets/marketplaceCatalog';
 
 const resolveEnvGeminiKey = () => {
   const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
@@ -176,6 +178,16 @@ interface AppState {
   updatePromptVariables: (id: string, variables: Record<string, string>) => void;
   tagPrompt: (id: string, tags: string[]) => void;
   addPrompt: (template: PromptTemplate) => void;
+
+  // Marketplace
+  /** widgetId → installed semver string */
+  installedWidgets: Record<string, string>;
+  /** widgetIds that have a newer version available */
+  availableUpdates: string[];
+  marketplaceLastChecked: number;
+  installWidget: (id: string) => void;
+  uninstallWidget: (id: string) => void;
+  checkForUpdates: () => void;
 }
 
 const DEFAULT_LAYOUT: GridItemData[] = [
@@ -224,6 +236,8 @@ const DEFAULT_LAYOUT: GridItemData[] = [
   { i: 'NEURAL_CHAT', x: 0, y: 132, w: 6, h: 12 },
   // Music
   { i: 'SUNO_PLAYER', x: 6, y: 132, w: 6, h: 12 },
+  // Marketplace
+  { i: 'MARKETPLACE', x: 0, y: 144, w: 12, h: 16 },
 ];
 
 const DEFAULT_THEME: AppTheme = {
@@ -360,6 +374,13 @@ export const useAppStore = create<AppState>()(
             cyberEditorActiveTab: '1',
             promptLibrary: DEFAULT_PROMPTS,
             activePromptId: DEFAULT_PROMPTS[0]?.id ?? null,
+            installedWidgets: (() => {
+              const pre: Record<string, string> = {};
+              MARKETPLACE_CATALOG.filter(e => e.isCore).forEach(e => { pre[e.id] = e.version; });
+              return pre;
+            })(),
+            availableUpdates: [],
+            marketplaceLastChecked: 0,
           };
         }),
 
@@ -539,6 +560,62 @@ export const useAppStore = create<AppState>()(
           promptLibrary: [template, ...state.promptLibrary],
           activePromptId: template.id,
         })),
+
+      // Marketplace
+      installedWidgets: (() => {
+        // Pre-install all core widgets at their current catalog version
+        const preInstalled: Record<string, string> = {};
+        MARKETPLACE_CATALOG.filter(e => e.isCore).forEach(e => {
+          preInstalled[e.id] = e.version;
+        });
+        return preInstalled;
+      })(),
+      availableUpdates: [],
+      marketplaceLastChecked: 0,
+
+      installWidget: (id: string) =>
+        set(state => {
+          const entry = MARKETPLACE_CATALOG.find(e => e.id === id);
+          if (!entry) return {};
+          state.addLog(`Installed widget: ${entry.name} v${entry.version}`);
+          return {
+            installedWidgets: { ...state.installedWidgets, [id]: entry.version },
+            availableUpdates: state.availableUpdates.filter(uid => uid !== id),
+          };
+        }),
+
+      uninstallWidget: (id: string) =>
+        set(state => {
+          const entry = MARKETPLACE_CATALOG.find(e => e.id === id);
+          const { [id]: _removed, ...rest } = state.installedWidgets;
+          if (entry) state.addLog(`Uninstalled widget: ${entry.name}`);
+          // Also hide from grid
+          const newVisible = state.visibleWidgets.filter(wid => wid !== id);
+          return {
+            installedWidgets: rest,
+            visibleWidgets: newVisible,
+          };
+        }),
+
+      checkForUpdates: () =>
+        set(state => {
+          // Simulated update check: compare installed version with catalog version
+          const updates = MARKETPLACE_CATALOG.filter(entry => {
+            const installed = state.installedWidgets[entry.id];
+            if (!installed) return false;
+            // Simple semver compare: treat as numeric tuple
+            const toTuple = (v: string) => v.split('.').map(Number);
+            const [im, ip, ip2] = toTuple(installed);
+            const [cm, cp, cp2] = toTuple(entry.version);
+            if (cm !== im) return cm > im;
+            if (cp !== ip) return cp > ip;
+            return cp2 > ip2;
+          }).map(e => e.id);
+          return {
+            availableUpdates: updates,
+            marketplaceLastChecked: Date.now(),
+          };
+        }),
     }),
     {
       name: 'omni-grid-storage',
