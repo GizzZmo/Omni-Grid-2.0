@@ -13,14 +13,27 @@ export const WidgetsTab: React.FC = () => {
         { id: 'SYSTEM', name: 'System Core', description: 'System status and controls' },
         { id: 'HELP', name: 'Help Desk', description: 'Documentation and support' },
         { id: 'SCRATCHPAD', name: 'Neural Scratchpad', description: 'AI-powered notes' },
+        { id: 'TRANSFORMER', name: 'Universal Transformer', description: 'Data format converter' },
+        { id: 'STRATEGIC', name: 'Strategic Blueprint', description: 'Project strategy document' },
+        { id: 'MARKET', name: 'Widget Market', description: 'Widget launcher marketplace' },
       ],
     },
     {
       name: 'Productivity',
       widgets: [
-        { id: 'FOCUS_HUD', name: 'Focus HUD', description: 'Pomodoro timer' },
+        { id: 'FOCUS_HUD', name: 'Focus HUD', description: 'Pomodoro timer and tasks' },
         { id: 'WRITEPAD', name: 'Write Pad', description: 'Document drafting' },
-        { id: 'SECURE_CALENDAR', name: 'Secure Calendar', description: 'Event management' },
+        { id: 'SECURE_CALENDAR', name: 'Secure Calendar', description: 'Encrypted event management' },
+        { id: 'TEMPORAL', name: 'Temporal Nexus', description: 'World clock and timers' },
+        { id: 'POLYGLOT', name: 'Polyglot Box', description: 'Language translator' },
+        { id: 'CLIPBOARD', name: 'Clipboard Stream', description: 'Clipboard history manager' },
+      ],
+    },
+    {
+      name: 'AI',
+      widgets: [
+        { id: 'NEURAL_CHAT', name: 'Neural Chat', description: 'AI chat assistant' },
+        { id: 'PROMPT_LAB', name: 'Prompt Lab', description: 'AI prompt engineering workspace' },
       ],
     },
     {
@@ -28,17 +41,49 @@ export const WidgetsTab: React.FC = () => {
       widgets: [
         { id: 'DEV_OPTIC', name: 'Dev Optic', description: 'Developer utilities' },
         { id: 'WEB_TERMINAL', name: 'Web Terminal', description: 'JavaScript REPL' },
-        { id: 'CYBER_EDITOR', name: 'Cyber Editor', description: 'Code editor' },
+        { id: 'CYBER_EDITOR', name: 'Cyber Editor', description: 'Monaco code editor' },
         { id: 'GIT_PULSE', name: 'Git Pulse', description: 'Repository monitor' },
+        { id: 'DOCU_HUB', name: 'DocuHub', description: 'Developer documentation viewer' },
+        { id: 'PROJECT_TRACKER', name: 'Project Tracker', description: 'Kanban project board' },
+        { id: 'ARCHITECT', name: 'Widget Architect', description: 'Custom widget builder' },
+      ],
+    },
+    {
+      name: 'Research',
+      widgets: [
+        { id: 'NEWS_FEED', name: 'News Feed', description: 'RSS news aggregator' },
+        { id: 'RESEARCH_BROWSER', name: 'Research Browser', description: 'AI-powered research tool' },
+        { id: 'PDF_VIEWER', name: 'PDF Viewer', description: 'In-browser PDF reader' },
+        { id: 'CIPHER_PAD', name: 'Cipher Pad', description: 'Encrypted notes' },
+      ],
+    },
+    {
+      name: 'Finance',
+      widgets: [
+        { id: 'ASSET', name: 'Asset Command', description: 'Crypto & stock price tracker' },
+        { id: 'VALUTA', name: 'Valuta Exchange', description: 'Currency converter' },
+        { id: 'MACRO_NET', name: 'Macro Net', description: 'Macro-economic flow visualizer' },
+        { id: 'CHAIN_PULSE', name: 'Chain Pulse', description: 'Blockchain L2 metrics' },
+        { id: 'REG_RADAR', name: 'Regulatory Radar', description: 'Crypto regulatory news' },
       ],
     },
     {
       name: 'Utilities',
       widgets: [
         { id: 'CALC', name: 'Quantum Calc', description: 'Scientific calculator' },
-        { id: 'CIPHER_VAULT', name: 'Cipher Vault', description: 'Hashing tools' },
+        { id: 'CIPHER_VAULT', name: 'Cipher Vault', description: 'Cryptographic hashing tools' },
         { id: 'WEATHER', name: 'Weather Station', description: 'Weather forecasts' },
-        { id: 'VALUTA', name: 'Valuta Exchange', description: 'Currency converter' },
+        { id: 'CHROMA_LAB', name: 'Chroma Lab', description: 'Color palette generator' },
+        { id: 'THEME_ENGINE', name: 'Aesthetic Engine', description: 'AI theme generator' },
+      ],
+    },
+    {
+      name: 'Entertainment',
+      widgets: [
+        { id: 'SONIC', name: 'Sonic Architecture', description: 'Music theory & player' },
+        { id: 'SUNO_PLAYER', name: 'Suno Player', description: 'Suno AI music player' },
+        { id: 'RADIO', name: 'Signal Radio', description: 'Internet radio player' },
+        { id: 'SUDOKU', name: 'Sudoku', description: 'Sudoku puzzle game' },
       ],
     },
   ];

@@ -24,8 +24,11 @@ export const SecureCalendar: React.FC = () => {
     <div className="h-full flex flex-col gap-2">
       <div className="flex justify-between items-center bg-slate-900 p-2 rounded">
         <button
-          onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))}
+          onClick={() =>
+            setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
+          }
           className="text-slate-400 hover:text-white"
+          aria-label="Previous month"
         >
           <ChevronLeft size={14} />
         </button>
@@ -33,17 +36,20 @@ export const SecureCalendar: React.FC = () => {
           {currentDate.toLocaleDateString('default', { month: 'long', year: 'numeric' })}
         </span>
         <button
-          onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))}
+          onClick={() =>
+            setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
+          }
           className="text-slate-400 hover:text-white"
+          aria-label="Next month"
         >
           <ChevronRight size={14} />
         </button>
       </div>
 
       <div className="flex-1 grid grid-cols-7 gap-1 text-center">
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
-          <div key={d} className="text-[10px] text-slate-500 font-bold py-1">
-            {d}
+        {(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const).map(day => (
+          <div key={day} className="text-[10px] text-slate-500 font-bold py-1">
+            {day[0]}
           </div>
         ))}
         {Array(startDay)
