@@ -43,6 +43,7 @@ import { ClipboardStream } from '../widgets/ClipboardStream';
 import { PromptLab } from '../widgets/PromptLab';
 import { NeuralChat } from '../widgets/NeuralChat';
 import { SunoPlayer } from '../widgets/SunoPlayer';
+import { WidgetMarketplace } from '../widgets/WidgetMarketplace';
 
 import {
   FileJson,
@@ -79,6 +80,7 @@ import {
   FileCode,
   GitBranch,
   MessageSquare,
+  ShoppingBag,
 } from 'lucide-react';
 import { downloadJson, uploadJson } from '../utils';
 
@@ -580,6 +582,17 @@ export const GridContainer: React.FC = () => {
           className="h-full"
         >
           <SunoPlayer />
+        </WidgetShell>
+      ),
+      MARKETPLACE: (
+        <WidgetShell
+          id="MARKETPLACE"
+          title="Widget Marketplace"
+          icon={<ShoppingBag size={14} />}
+          accentColor="text-fuchsia-400"
+          className="h-full"
+        >
+          <WidgetMarketplace />
         </WidgetShell>
       ),
     }),

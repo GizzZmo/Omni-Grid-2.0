@@ -17,7 +17,7 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 ### 🖼️ Screenshots
 
 - **[Dashboard Overview](./screenshots/dashboard-overview.svg)** - Main grid with active widgets
-- **[Widget Launcher](./screenshots/widget-launcher.svg)** - Browse and activate all 39 modules
+- **[Widget Launcher](./screenshots/widget-launcher.svg)** - Browse and activate all 40 modules
 - **[Developer Tools](./screenshots/developer-tools.svg)** - CyberEditor, Prompt Lab, Neural Chat, Git Pulse
 - **[Smart Grid & Creative](./screenshots/smart-grid-creative.svg)** - Financial & creative widgets
 
@@ -50,7 +50,15 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 
 ### 🤝 Contributing
 
-- **[Contributing Guidelines](../CONTRIBUTING.md)** - Code style, PR process, and widget standards
+- **[Contributing Guidelines](../CONTRIBUTING.md)** - Code style, PR process, testing requirements, and review criteria
+- **[Developer Portal](./developer-portal.md)** - Widget marketplace submission workflow and community guidelines
+- **[Plugin Security Protocol](./plugin-security.md)** - Security requirements for all widget submissions
+
+### 🛒 Marketplace
+
+- **[Widget Marketplace](./developer-portal.md)** - Submit and discover community widgets
+- **[Plugin API Reference](./widget-api/api-reference.md)** - Marketplace API, store integration, versioning
+- **[Widget Catalog Source](../widgets/marketplaceCatalog.ts)** - Full catalog with metadata for all widgets
 
 ---
 
