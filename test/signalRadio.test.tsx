@@ -2,8 +2,16 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { SignalRadio } from '../widgets/SignalRadio';
 
+// Ensure navigator exists in the test environment
+if (!globalThis.navigator) {
+  Object.defineProperty(globalThis, 'navigator', {
+    value: {},
+    configurable: true,
+  });
+}
+
 // Mock navigator.mediaDevices to avoid real mic access in tests
-Object.defineProperty(global.navigator, 'mediaDevices', {
+Object.defineProperty(globalThis.navigator, 'mediaDevices', {
   value: {
     getUserMedia: vi.fn().mockRejectedValue(new Error('Permission denied')),
   },
