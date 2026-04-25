@@ -7,7 +7,14 @@ vi.mock('../store', () => ({
     addLog: vi.fn(),
     theme: {
       name: 'Test',
-      colors: { background: '#000', surface: '#111', primary: '#0ff', secondary: '#f0f', text: '#fff', accent: '#0f0' },
+      colors: {
+        background: '#000',
+        surface: '#111',
+        primary: '#0ff',
+        secondary: '#f0f',
+        text: '#fff',
+        accent: '#0f0',
+      },
       font: 'monospace',
       radius: '0px',
     },

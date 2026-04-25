@@ -49,14 +49,14 @@ See [Configuration Guide](./docs/configuration.md) for details.
 
 ### Naming
 
-| Item | Convention | Example |
-|---|---|---|
-| Widget files | PascalCase | `MyWidget.tsx` |
-| WidgetType values | SCREAMING_SNAKE_CASE | `MY_WIDGET` |
-| Store slices | camelCase | `myWidgetData` |
-| CSS utility classes | Tailwind utilities only | `text-xs font-bold` |
-| Test files | camelCase matching widget | `test/myWidget.test.tsx` |
-| Catalog ID | Must match WidgetType | `'MY_WIDGET'` |
+| Item                | Convention                | Example                  |
+| ------------------- | ------------------------- | ------------------------ |
+| Widget files        | PascalCase                | `MyWidget.tsx`           |
+| WidgetType values   | SCREAMING_SNAKE_CASE      | `MY_WIDGET`              |
+| Store slices        | camelCase                 | `myWidgetData`           |
+| CSS utility classes | Tailwind utilities only   | `text-xs font-bold`      |
+| Test files          | camelCase matching widget | `test/myWidget.test.tsx` |
+| Catalog ID          | Must match WidgetType     | `'MY_WIDGET'`            |
 
 ### File structure
 
@@ -126,16 +126,16 @@ To submit a new widget to the Widget Marketplace:
 
 PRs are reviewed against these criteria:
 
-| Criterion | Required |
-|---|---|
-| All existing tests pass | ✅ Hard requirement |
-| New widget has tests | ✅ Hard requirement |
-| Security checklist passed | ✅ Hard requirement |
+| Criterion                    | Required            |
+| ---------------------------- | ------------------- |
+| All existing tests pass      | ✅ Hard requirement |
+| New widget has tests         | ✅ Hard requirement |
+| Security checklist passed    | ✅ Hard requirement |
 | TypeScript strict compliance | ✅ Hard requirement |
-| Follows design guidelines | ✅ Hard requirement |
-| Catalog entry included | ✅ For widget PRs |
-| Performance acceptable | Reviewer judgment |
-| Documentation updated | Reviewer judgment |
+| Follows design guidelines    | ✅ Hard requirement |
+| Catalog entry included       | ✅ For widget PRs   |
+| Performance acceptable       | Reviewer judgment   |
+| Documentation updated        | Reviewer judgment   |
 
 ---
 
@@ -155,14 +155,14 @@ This project uses `@google/genai` for AI features. If your feature uses AI:
 
 ### Requirements
 
-| Test type | Required? | Notes |
-|---|---|---|
-| Render test (no errors) | ✅ All widgets | `render(<MyWidget />)` without throwing |
-| Key interaction | ✅ All widgets | Test at least one button/input |
-| State integration | ✅ If store state added | Test the action and selector |
-| Error state | Recommended | Test behavior when API call fails |
-| Loading state | Recommended | Test loading indicator display |
-| Responsive resize | Manual only | Verify in dev server |
+| Test type               | Required?               | Notes                                   |
+| ----------------------- | ----------------------- | --------------------------------------- |
+| Render test (no errors) | ✅ All widgets          | `render(<MyWidget />)` without throwing |
+| Key interaction         | ✅ All widgets          | Test at least one button/input          |
+| State integration       | ✅ If store state added | Test the action and selector            |
+| Error state             | Recommended             | Test behavior when API call fails       |
+| Loading state           | Recommended             | Test loading indicator display          |
+| Responsive resize       | Manual only             | Verify in dev server                    |
 
 ### Test stack
 
@@ -233,12 +233,12 @@ describe('MyWidget', () => {
 
 Study these tests as templates:
 
-| Widget | Test file | Covers |
-|---|---|---|
+| Widget         | Test file                      | Covers                          |
+| -------------- | ------------------------------ | ------------------------------- |
 | WeatherStation | `test/weatherStation.test.tsx` | Render, location input, refresh |
-| GitPulse | `test/gitPulse.test.tsx` | Token input, repo fetch mock |
-| ProjectTracker | `test/projectTracker.test.tsx` | Task CRUD, status toggle |
-| PromptEngine | `test/promptEngine.test.ts` | Pure function unit tests |
+| GitPulse       | `test/gitPulse.test.tsx`       | Token input, repo fetch mock    |
+| ProjectTracker | `test/projectTracker.test.tsx` | Task CRUD, status toggle        |
+| PromptEngine   | `test/promptEngine.test.ts`    | Pure function unit tests        |
 
 ---
 

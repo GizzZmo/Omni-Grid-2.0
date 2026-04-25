@@ -378,7 +378,9 @@ export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-fuchsia-900/50 bg-slate-900/50">
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-gothic text-fuchsia-400 tracking-wider">WIDGET MANIFEST</h2>
+            <h2 className="text-2xl font-gothic text-fuchsia-400 tracking-wider">
+              WIDGET MANIFEST
+            </h2>
             {availableUpdates.length > 0 && (
               <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-900/40 border border-amber-500/50 text-[10px] text-amber-400 font-bold">
                 <ArrowUpCircle size={10} />
@@ -447,8 +449,8 @@ export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
           System Modules: {WIDGET_REGISTRY.length} | Active: {visibleWidgets.length}
           {availableUpdates.length > 0 && (
             <span className="text-amber-400 ml-3">
-              · {availableUpdates.length} update{availableUpdates.length !== 1 ? 's' : ''} pending
-              — open Marketplace to apply
+              · {availableUpdates.length} update{availableUpdates.length !== 1 ? 's' : ''} pending —
+              open Marketplace to apply
             </span>
           )}
         </div>

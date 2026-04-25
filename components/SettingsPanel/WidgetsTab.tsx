@@ -23,7 +23,11 @@ export const WidgetsTab: React.FC = () => {
       widgets: [
         { id: 'FOCUS_HUD', name: 'Focus HUD', description: 'Pomodoro timer and tasks' },
         { id: 'WRITEPAD', name: 'Write Pad', description: 'Document drafting' },
-        { id: 'SECURE_CALENDAR', name: 'Secure Calendar', description: 'Encrypted event management' },
+        {
+          id: 'SECURE_CALENDAR',
+          name: 'Secure Calendar',
+          description: 'Encrypted event management',
+        },
         { id: 'TEMPORAL', name: 'Temporal Nexus', description: 'World clock and timers' },
         { id: 'POLYGLOT', name: 'Polyglot Box', description: 'Language translator' },
         { id: 'CLIPBOARD', name: 'Clipboard Stream', description: 'Clipboard history manager' },
@@ -52,7 +56,11 @@ export const WidgetsTab: React.FC = () => {
       name: 'Research',
       widgets: [
         { id: 'NEWS_FEED', name: 'News Feed', description: 'RSS news aggregator' },
-        { id: 'RESEARCH_BROWSER', name: 'Research Browser', description: 'AI-powered research tool' },
+        {
+          id: 'RESEARCH_BROWSER',
+          name: 'Research Browser',
+          description: 'AI-powered research tool',
+        },
         { id: 'PDF_VIEWER', name: 'PDF Viewer', description: 'In-browser PDF reader' },
         { id: 'CIPHER_PAD', name: 'Cipher Pad', description: 'Encrypted notes' },
       ],

@@ -42,9 +42,9 @@ describe('SudokuGrid', () => {
   it('renders a pause button', () => {
     render(<SudokuGrid />);
     // Pause / play button
-    const pauseBtn = screen.getAllByRole('button').find(
-      b => b.querySelector('svg') !== null && !b.getAttribute('title')
-    );
+    const pauseBtn = screen
+      .getAllByRole('button')
+      .find(b => b.querySelector('svg') !== null && !b.getAttribute('title'));
     expect(pauseBtn).toBeTruthy();
   });
 

@@ -36,9 +36,7 @@ describe('CipherPad', () => {
 
     // Since vault is empty, it should open without decryption
     await vi.waitFor(() => {
-      expect(
-        screen.getByPlaceholderText(/Type sensitive notes here/i)
-      ).toBeTruthy();
+      expect(screen.getByPlaceholderText(/Type sensitive notes here/i)).toBeTruthy();
     });
   });
 

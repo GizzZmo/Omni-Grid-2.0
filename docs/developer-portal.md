@@ -104,15 +104,15 @@ Open `widgets/marketplaceCatalog.ts` and append your entry to the `MARKETPLACE_C
 
 **Category options:**
 
-| Value | Use for |
-|---|---|
-| `utility` | General tools (calculators, converters, formatters) |
-| `developer` | Coding and dev-ops tools |
-| `finance` | Market data, trading, economics |
-| `creative` | Design, art, media, music |
-| `ai` | AI/ML-powered features |
-| `productivity` | Task management, writing, planning |
-| `community` | Widgets that don't fit the above categories |
+| Value          | Use for                                             |
+| -------------- | --------------------------------------------------- |
+| `utility`      | General tools (calculators, converters, formatters) |
+| `developer`    | Coding and dev-ops tools                            |
+| `finance`      | Market data, trading, economics                     |
+| `creative`     | Design, art, media, music                           |
+| `ai`           | AI/ML-powered features                              |
+| `productivity` | Task management, writing, planning                  |
+| `community`    | Widgets that don't fit the above categories         |
 
 ### 4. Write Tests
 
@@ -173,12 +173,15 @@ Push your branch and open a PR targeting `main`. Use this PR template:
 ## Widget: [Widget Name]
 
 ### Summary
+
 <!-- One paragraph describing what the widget does and why it's useful -->
 
 ### Catalog Entry
+
 <!-- Paste the MarketplaceEntry you added to marketplaceCatalog.ts -->
 
 ### Security Checklist
+
 - [ ] No eval() / new Function()
 - [ ] No dangerouslySetInnerHTML with unsanitized input
 - [ ] All JSON.parse() calls wrapped in try/catch
@@ -191,11 +194,13 @@ Push your branch and open a PR targeting `main`. Use this PR template:
 - [ ] External links use rel="noopener noreferrer"
 
 ### Tests
+
 - [ ] New test file added at test/myWidget.test.tsx
 - [ ] All 132+ existing tests still pass (npm run test:run)
 - [ ] Widget renders without console errors
 
 ### Screenshots
+
 <!-- Add at least one screenshot showing the widget in action -->
 ```
 
@@ -216,10 +221,10 @@ You may be asked to make changes before merge. Address feedback commits to the s
 
 Omni-Grid uses **semver** (MAJOR.MINOR.PATCH) for widget versions.
 
-| Increment | When to use |
-|---|---|
-| `PATCH` (1.0.**1**) | Bug fix, no behavior change |
-| `MINOR` (1.**1**.0) | New feature, backward-compatible |
+| Increment           | When to use                                        |
+| ------------------- | -------------------------------------------------- |
+| `PATCH` (1.0.**1**) | Bug fix, no behavior change                        |
+| `MINOR` (1.**1**.0) | New feature, backward-compatible                   |
 | `MAJOR` (**2**.0.0) | Breaking change to widget behavior or state schema |
 
 When releasing an update, bump the `version` field in your `MARKETPLACE_CATALOG` entry and add an entry to `changelog`. The marketplace update notification system will surface the new version to users who have the widget installed.
@@ -271,15 +276,15 @@ A: Contact the core team. We may keep the source available for historical reason
 
 ## Resources
 
-| Resource | Path |
-|---|---|
-| Widget Development Guide | `docs/widget-development.md` |
-| Plugin API Reference | `docs/widget-api/api-reference.md` |
-| Security Guidelines | `docs/plugin-security.md` |
-| Architecture Overview | `docs/architecture.md` |
-| State Management | `docs/state-management.md` |
-| Existing test examples | `test/*.test.tsx` |
-| Catalog source | `widgets/marketplaceCatalog.ts` |
+| Resource                 | Path                               |
+| ------------------------ | ---------------------------------- |
+| Widget Development Guide | `docs/widget-development.md`       |
+| Plugin API Reference     | `docs/widget-api/api-reference.md` |
+| Security Guidelines      | `docs/plugin-security.md`          |
+| Architecture Overview    | `docs/architecture.md`             |
+| State Management         | `docs/state-management.md`         |
+| Existing test examples   | `test/*.test.tsx`                  |
+| Catalog source           | `widgets/marketplaceCatalog.ts`    |
 
 ---
 
