@@ -66,9 +66,9 @@ describe('WidgetMarketplace', () => {
   it('switches to Developer tab and shows Developer Portal', () => {
     render(<WidgetMarketplace />);
     // Click the "Developer" tab button (there should be a tab with that label)
-    const devTabButtons = screen.getAllByRole('button').filter(
-      b => b.textContent?.trim() === 'Developer'
-    );
+    const devTabButtons = screen
+      .getAllByRole('button')
+      .filter(b => b.textContent?.trim() === 'Developer');
     expect(devTabButtons.length).toBeGreaterThan(0);
     fireEvent.click(devTabButtons[0]);
     expect(screen.getByText(/Developer Portal/i)).toBeTruthy();
@@ -76,9 +76,9 @@ describe('WidgetMarketplace', () => {
 
   it('switches to Installed tab', () => {
     render(<WidgetMarketplace />);
-    const installedTabBtn = screen.getAllByRole('button').find(
-      b => b.textContent?.trim() === 'Installed'
-    );
+    const installedTabBtn = screen
+      .getAllByRole('button')
+      .find(b => b.textContent?.trim() === 'Installed');
     expect(installedTabBtn).toBeTruthy();
     fireEvent.click(installedTabBtn!);
     // Should show installed count heading

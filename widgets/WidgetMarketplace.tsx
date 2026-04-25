@@ -121,9 +121,7 @@ const WidgetCard: React.FC<{
             {entry.category}
           </div>
         </div>
-        {isInstalled && (
-          <CheckCircle size={14} className="text-emerald-400 flex-shrink-0 mt-0.5" />
-        )}
+        {isInstalled && <CheckCircle size={14} className="text-emerald-400 flex-shrink-0 mt-0.5" />}
       </div>
 
       {/* Description */}
@@ -133,9 +131,7 @@ const WidgetCard: React.FC<{
       <div className="flex items-center justify-between gap-1 flex-wrap">
         <StarRating rating={entry.rating} />
         <span className="text-[10px] text-slate-500">
-          {entry.downloads >= 1000
-            ? `${(entry.downloads / 1000).toFixed(1)}k`
-            : entry.downloads}{' '}
+          {entry.downloads >= 1000 ? `${(entry.downloads / 1000).toFixed(1)}k` : entry.downloads}{' '}
           installs
         </span>
         <span className="text-[10px] text-slate-600 font-mono">{entry.author}</span>
@@ -232,9 +228,7 @@ const DetailPanel: React.FC<{
           <div className="flex items-center gap-2 flex-wrap">
             <VersionBadge version={entry.version} highlight={isInstalled} />
             {isInstalled && (
-              <span className="text-[10px] text-slate-500">
-                Installed: v{installedVersion}
-              </span>
+              <span className="text-[10px] text-slate-500">Installed: v{installedVersion}</span>
             )}
             {hasUpdate && (
               <span className="text-[10px] text-amber-400 font-bold">
@@ -412,12 +406,36 @@ const DeveloperPortalTab: React.FC = () => (
       </h3>
       <div className="flex flex-col gap-2">
         {[
-          { step: '01', label: 'Build your widget', desc: 'Follow the 5-step creation workflow in the dev guide.' },
-          { step: '02', label: 'Pass security checklist', desc: 'All items in docs/plugin-security.md §7 must pass.' },
-          { step: '03', label: 'Add catalog entry', desc: 'Append your entry to widgets/marketplaceCatalog.ts with isCore: false.' },
-          { step: '04', label: 'Write tests', desc: 'Add a test file under test/ covering render, state, and interactions.' },
-          { step: '05', label: 'Open pull request', desc: 'Target the main branch with the PR template. Tag a core reviewer.' },
-          { step: '06', label: 'Review & merge', desc: 'Core team reviews within 7 days. Address feedback and get merged.' },
+          {
+            step: '01',
+            label: 'Build your widget',
+            desc: 'Follow the 5-step creation workflow in the dev guide.',
+          },
+          {
+            step: '02',
+            label: 'Pass security checklist',
+            desc: 'All items in docs/plugin-security.md §7 must pass.',
+          },
+          {
+            step: '03',
+            label: 'Add catalog entry',
+            desc: 'Append your entry to widgets/marketplaceCatalog.ts with isCore: false.',
+          },
+          {
+            step: '04',
+            label: 'Write tests',
+            desc: 'Add a test file under test/ covering render, state, and interactions.',
+          },
+          {
+            step: '05',
+            label: 'Open pull request',
+            desc: 'Target the main branch with the PR template. Tag a core reviewer.',
+          },
+          {
+            step: '06',
+            label: 'Review & merge',
+            desc: 'Core team reviews within 7 days. Address feedback and get merged.',
+          },
         ].map(s => (
           <div key={s.step} className="flex items-start gap-3">
             <span className="text-[10px] font-mono font-bold text-fuchsia-500 w-5 flex-shrink-0 mt-0.5">
@@ -557,11 +575,7 @@ export const WidgetMarketplace: React.FC = () => {
           disabled={checking}
           className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded text-[10px] text-slate-300 hover:text-white hover:border-slate-500 transition-all disabled:opacity-50"
         >
-          {checking ? (
-            <Loader2 size={11} className="animate-spin" />
-          ) : (
-            <RefreshCw size={11} />
-          )}
+          {checking ? <Loader2 size={11} className="animate-spin" /> : <RefreshCw size={11} />}
           {checking ? 'Checking...' : 'Check Updates'}
         </button>
       </div>

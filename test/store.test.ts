@@ -415,9 +415,7 @@ describe('useAppStore', () => {
     it('installWidget adds widget to installedWidgets', () => {
       // Find a widget not already installed in the catalog
       const { installedWidgets } = useAppStore.getState();
-      const candidate = MARKETPLACE_CATALOG.find(
-        (e: any) => !(e.id in installedWidgets)
-      );
+      const candidate = MARKETPLACE_CATALOG.find((e: any) => !(e.id in installedWidgets));
 
       if (candidate) {
         useAppStore.getState().installWidget(candidate.id);

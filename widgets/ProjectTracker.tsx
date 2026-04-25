@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, X, Check } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 
 interface Task {
   id: string;
@@ -18,13 +18,24 @@ interface Board {
 const STORAGE_KEY = 'omni-kanban-board';
 
 const DEFAULT_BOARD: Board = {
-  backlog: [{ id: 'b1', text: 'Define requirements', priority: 'low', createdAt: Date.now() }],
+  backlog: [{ id: 'b1', text: 'Define requirements', priority: 'low', createdAt: 0 }],
   todo: [
-    { id: 't1', text: 'Design DB Schema', priority: 'high', createdAt: Date.now() },
-    { id: 't2', text: 'Auth API', priority: 'medium', createdAt: Date.now() },
+    { id: 't1', text: 'Design DB Schema', priority: 'high', createdAt: 0 },
+    { id: 't2', text: 'Auth API', priority: 'medium', createdAt: 0 },
   ],
-  progress: [{ id: 'p1', text: 'Frontend Shell', priority: 'medium', createdAt: Date.now() }],
-  done: [{ id: 'd1', text: 'Project Setup', createdAt: Date.now() }],
+  progress: [{ id: 'p1', text: 'Frontend Shell', priority: 'medium', createdAt: 0 }],
+  done: [{ id: 'd1', text: 'Project Setup', createdAt: 0 }],
+};
+
+const withCreatedAt = (board: Board): Board => {
+  const now = Date.now();
+  const stamp = (t: Task) => (t.createdAt ? t : { ...t, createdAt: now });
+  return {
+    backlog: board.backlog.map(stamp),
+    todo: board.todo.map(stamp),
+    progress: board.progress.map(stamp),
+    done: board.done.map(stamp),
+  };
 };
 
 const LANE_META: { key: keyof Board; label: string; color: string; headerColor: string }[] = [
@@ -59,7 +70,7 @@ const loadBoard = (): Board => {
   } catch {
     /* ignore */
   }
-  return DEFAULT_BOARD;
+  return withCreatedAt(DEFAULT_BOARD);
 };
 
 export const ProjectTracker: React.FC = () => {

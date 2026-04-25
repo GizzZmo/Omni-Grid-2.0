@@ -16,7 +16,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'SYSTEM',
     name: 'System Core',
-    description: 'Real-time system log viewer and diagnostics panel. Monitor all Omni-Grid events, layout changes, and API activity.',
+    description:
+      'Real-time system log viewer and diagnostics panel. Monitor all Omni-Grid events, layout changes, and API activity.',
     version: '2.1.0',
     author: 'Omni-Grid Core',
     category: 'utility',
@@ -62,7 +63,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'CALC',
     name: 'Quantum Calc',
-    description: 'Advanced calculator with expression history, unit conversion, and scientific mode.',
+    description:
+      'Advanced calculator with expression history, unit conversion, and scientific mode.',
     version: '1.2.0',
     author: 'Omni-Grid Core',
     category: 'utility',
@@ -92,7 +94,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'CLIPBOARD',
     name: 'Memory Buffer',
-    description: 'Persistent clipboard history with instant recall, search, and drag-and-drop support.',
+    description:
+      'Persistent clipboard history with instant recall, search, and drag-and-drop support.',
     version: '1.1.0',
     author: 'Omni-Grid Core',
     category: 'utility',
@@ -185,7 +188,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'GIT_PULSE',
     name: 'Git Pulse',
-    description: 'GitHub repository monitor: commits, PRs, issues, and contributor activity at a glance.',
+    description:
+      'GitHub repository monitor: commits, PRs, issues, and contributor activity at a glance.',
     version: '1.7.0',
     author: 'Omni-Grid Core',
     category: 'developer',
@@ -200,7 +204,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'DOCU_HUB',
     name: 'DocuHub',
-    description: 'Instant documentation browser for popular libraries and languages, powered by DevDocs.',
+    description:
+      'Instant documentation browser for popular libraries and languages, powered by DevDocs.',
     version: '1.2.0',
     author: 'Omni-Grid Core',
     category: 'developer',
@@ -232,7 +237,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'ASSET',
     name: 'Asset Command',
-    description: 'Live stock and crypto price tracker with portfolio view and percentage change indicators.',
+    description:
+      'Live stock and crypto price tracker with portfolio view and percentage change indicators.',
     version: '2.1.0',
     author: 'Omni-Grid Core',
     category: 'finance',
@@ -277,7 +283,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'CHAIN_PULSE',
     name: 'Chain Pulse',
-    description: 'Live DeFi and on-chain analytics: TVL, gas prices, whale alerts, and protocol stats.',
+    description:
+      'Live DeFi and on-chain analytics: TVL, gas prices, whale alerts, and protocol stats.',
     version: '1.3.0',
     author: 'Omni-Grid Core',
     category: 'finance',
@@ -292,7 +299,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'MACRO_NET',
     name: 'Macro Net',
-    description: 'Macroeconomic dashboard: CPI, interest rates, GDP, and central bank policy trackers.',
+    description:
+      'Macroeconomic dashboard: CPI, interest rates, GDP, and central bank policy trackers.',
     version: '1.2.0',
     author: 'Omni-Grid Core',
     category: 'finance',
@@ -354,7 +362,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'THEME_ENGINE',
     name: 'Aesthetic Engine',
-    description: 'Live Omni-Grid theme editor — customize colors, fonts, border radius, and glow effects.',
+    description:
+      'Live Omni-Grid theme editor — customize colors, fonts, border radius, and glow effects.',
     version: '2.0.0',
     author: 'Omni-Grid Core',
     category: 'creative',
@@ -370,7 +379,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'SONIC',
     name: 'Sonic Architecture',
-    description: 'Ambient sound mixer with brown noise, rain, and custom soundscapes for deep focus.',
+    description:
+      'Ambient sound mixer with brown noise, rain, and custom soundscapes for deep focus.',
     version: '1.3.0',
     author: 'Omni-Grid Core',
     category: 'creative',
@@ -417,7 +427,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'NEURAL_CHAT',
     name: 'Neural Chat',
-    description: 'Conversational AI assistant powered by Gemini. Context-aware, markdown-rendered responses.',
+    description:
+      'Conversational AI assistant powered by Gemini. Context-aware, markdown-rendered responses.',
     version: '2.2.0',
     author: 'Omni-Grid Core',
     category: 'ai',
@@ -433,7 +444,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'PROMPT_LAB',
     name: 'Prompt Lab',
-    description: 'Prompt engineering workspace with versioning, variable injection, and multi-model testing.',
+    description:
+      'Prompt engineering workspace with versioning, variable injection, and multi-model testing.',
     version: '1.8.0',
     author: 'Omni-Grid Core',
     category: 'ai',
@@ -448,7 +460,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'SCRATCHPAD',
     name: 'Neural Scratchpad',
-    description: 'AI-enhanced markdown editor with one-click refine, expand, summarize, and translate actions.',
+    description:
+      'AI-enhanced markdown editor with one-click refine, expand, summarize, and translate actions.',
     version: '2.0.0',
     author: 'Omni-Grid Core',
     category: 'ai',
@@ -495,7 +508,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'SECURE_CALENDAR',
     name: 'Secure Calendar',
-    description: 'Privacy-first calendar with local-only event storage and optional AES-256 encryption.',
+    description:
+      'Privacy-first calendar with local-only event storage and optional AES-256 encryption.',
     version: '1.4.0',
     author: 'Omni-Grid Core',
     category: 'productivity',
@@ -510,7 +524,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'ARCHITECT',
     name: 'Widget Architect',
-    description: 'Visual grid layout designer for planning and prototyping Omni-Grid configurations.',
+    description:
+      'Visual grid layout designer for planning and prototyping Omni-Grid configurations.',
     version: '1.1.0',
     author: 'Omni-Grid Core',
     category: 'productivity',
@@ -620,7 +635,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
   {
     id: 'GHOST',
     name: 'Ghost Widget',
-    description: 'Placeholder widget for AI-suggested modules. Solidify to replace with the recommended widget.',
+    description:
+      'Placeholder widget for AI-suggested modules. Solidify to replace with the recommended widget.',
     version: '1.0.0',
     author: 'Omni-Grid Core',
     category: 'utility',

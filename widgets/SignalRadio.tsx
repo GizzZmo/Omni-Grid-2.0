@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Radio, Signal, Disc, Volume2, Mic, MicOff, Activity } from 'lucide-react';
+import { Radio, Disc, Volume2, Mic, MicOff, Activity } from 'lucide-react';
 
 type StationType = 'soundcloud' | 'suno';
 type Station = { name: string; url: string; type: StationType; audioUrl?: string };
@@ -30,12 +30,10 @@ export const SignalRadio: React.FC = () => {
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
-  // Memoize random heights to avoid calling Math.random during render
-  const visualizerHeights = useMemo(
-    () => Array.from({ length: 20 }, () => 20 + Math.random() * 30),
-
-    []
-  );
+  const visualizerHeights = useMemo(() => {
+    const pattern = [22, 30, 26, 38, 28, 34, 24, 40, 27, 33];
+    return Array.from({ length: 20 }, (_, i) => pattern[i % pattern.length]);
+  }, []);
 
   // Construct iframe src (only for SoundCloud stations)
   const soundcloudSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(currentStation.url)}&color=%2306b6d4&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;

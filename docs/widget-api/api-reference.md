@@ -97,20 +97,20 @@ type MarketplaceCategory =
   | 'community';
 
 interface MarketplaceEntry {
-  id: string;               // must match a WidgetType string
-  name: string;             // display name in the marketplace
-  description: string;      // short description (1–3 sentences)
-  version: string;          // semver: "1.0.0"
-  author: string;           // GitHub username or team name
+  id: string; // must match a WidgetType string
+  name: string; // display name in the marketplace
+  description: string; // short description (1–3 sentences)
+  version: string; // semver: "1.0.0"
+  author: string; // GitHub username or team name
   category: MarketplaceCategory;
-  tags: string[];           // 2–6 lowercase tags
-  downloads: number;        // install count (0 for new submissions)
-  rating: number;           // 0.0–5.0 (0 for new submissions)
-  updatedAt: string;        // ISO date "YYYY-MM-DD"
-  changelog?: string;       // human-readable release notes
-  isCore: boolean;          // false for community submissions
-  minGridW: number;         // minimum grid width (columns)
-  minGridH: number;         // minimum grid height (rows)
+  tags: string[]; // 2–6 lowercase tags
+  downloads: number; // install count (0 for new submissions)
+  rating: number; // 0.0–5.0 (0 for new submissions)
+  updatedAt: string; // ISO date "YYYY-MM-DD"
+  changelog?: string; // human-readable release notes
+  isCore: boolean; // false for community submissions
+  minGridW: number; // minimum grid width (columns)
+  minGridH: number; // minimum grid height (rows)
 }
 ```
 
@@ -348,4 +348,3 @@ In `widgets/marketplaceCatalog.ts`, append to `MARKETPLACE_CATALOG`:
   minGridH: 4,
 },
 ```
-

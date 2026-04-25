@@ -43,7 +43,9 @@ describe('PolyglotBox', () => {
     fireEvent.click(translateBtn);
 
     await vi.waitFor(() => {
-      const outputArea = screen.getByPlaceholderText(/Translation will appear here/i) as HTMLTextAreaElement;
+      const outputArea = screen.getByPlaceholderText(
+        /Translation will appear here/i
+      ) as HTMLTextAreaElement;
       expect(outputArea.value).toContain('Translation unavailable');
     });
   });

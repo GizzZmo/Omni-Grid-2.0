@@ -376,7 +376,9 @@ export const useAppStore = create<AppState>()(
             activePromptId: DEFAULT_PROMPTS[0]?.id ?? null,
             installedWidgets: (() => {
               const pre: Record<string, string> = {};
-              MARKETPLACE_CATALOG.filter(e => e.isCore).forEach(e => { pre[e.id] = e.version; });
+              MARKETPLACE_CATALOG.filter(e => e.isCore).forEach(e => {
+                pre[e.id] = e.version;
+              });
               return pre;
             })(),
             availableUpdates: [],
