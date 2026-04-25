@@ -23,7 +23,7 @@ Welcome! This is your gateway to comprehensive Omni-Grid documentation.
 |                   Dashboard Overview                    |                      Widget Launcher                       |
 | :-----------------------------------------------------: | :--------------------------------------------------------: |
 | ![Dashboard](./docs/screenshots/dashboard-overview.svg) | ![Widget Launcher](./docs/screenshots/widget-launcher.svg) |
-|          _Main dashboard with active widgets_           |              _Browse and activate 39 modules_              |
+|          _Main dashboard with active widgets_           |              _Browse and activate 42 modules_              |
 
 |                      Developer Tools                       |                   Smart Grid & Creative                   |
 | :--------------------------------------------------------: | :-------------------------------------------------------: |
@@ -130,7 +130,7 @@ For developers building on Omni-Grid:
 ### Project Planning
 
 - [Roadmap → Milestone Timeline](./ROADMAP.md#milestone-timeline)
-- [Roadmap → Current Sprint](./ROADMAP.md#current-sprint-q1-2025)
+- [Roadmap → Current Sprint](./ROADMAP.md#current-sprint-q2-2026)
 - [Roadmap → Contribution Opportunities](./ROADMAP.md#contribution-opportunities)
 - [Roadmap → Technical Milestones](./ROADMAP.md#technical-milestones)
 
@@ -142,7 +142,7 @@ For developers building on Omni-Grid:
 - **Total Lines:** ~23,400
 - **Topics Covered:** 100+
 - **Roadmap Phases:** 5
-- **Widgets Documented:** 40 (all widgets)
+- **Widgets Documented:** 42 (all widgets)
 - **Code Examples:** 150+
 - **Last Updated:** April 2026
 
