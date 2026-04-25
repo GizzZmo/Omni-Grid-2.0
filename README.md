@@ -54,7 +54,7 @@ _The main Omni-Grid dashboard with live widgets: System Core, Neural Scratchpad,
 
 ![Widget Launcher](./docs/screenshots/widget-launcher.svg)
 
-_The Widget Launcher — search and activate any of the 40 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System)._
+_The Widget Launcher — search and activate any of the 42 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System)._
 
 ### 🛠️ Developer Tools
 
@@ -295,14 +295,18 @@ Want to know what's coming next? Check out our comprehensive development roadmap
 
 **🗺️ [DEVELOPMENT ROADMAP](./ROADMAP.md)** - Complete project roadmap with timelines, milestones, and contribution opportunities
 
-### Current Focus (Q1 2025)
+### Current Focus (Q2 2026)
 
-- 🚧 Music player widget enhancement
-- ✅ Code editor widget (CyberEditor with AI assistance)
-- 🚧 AI chat widget (Gemini API)
-- 🚧 Settings panel v2
-- 🚧 Theme customization system
-- 🚧 Widget marketplace foundation
+- ✅ Music player widget enhancement (SonicArchitecture + SunoPlayer + SignalRadio)
+- ✅ Code editor widget (CyberEditor with Monaco & AI assistance)
+- ✅ AI chat widget (NeuralChat — Gemini API)
+- ✅ Settings panel v2
+- ✅ Theme customization system
+- ✅ Widget marketplace foundation (MarketWidget)
+- 🚧 Widget marketplace — full platform (installation & update system)
+- 🚧 Plugin API documentation & developer portal
+- 📋 Progressive Web App (PWA) optimization
+- 📋 Cloud backup & multi-device sync
 
 See the [full roadmap](./ROADMAP.md) for detailed timelines, technical milestones, and how you can contribute!
 

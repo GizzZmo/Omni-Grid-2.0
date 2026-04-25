@@ -41,8 +41,8 @@ npm install
 
 This will install:
 
-- **React 18.2.0** - UI framework
-- **Zustand 4.5.0** - State management
+- **React 19.2.4** - UI framework
+- **Zustand 5.0.12** - State management
 - **react-grid-layout 1.4.4** - Draggable grid system
 - **@google/genai** - AI integration
 - **lucide-react** - Icon library
