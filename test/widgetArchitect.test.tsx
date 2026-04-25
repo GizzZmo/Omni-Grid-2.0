@@ -68,9 +68,9 @@ describe('WidgetArchitect', () => {
 
     fireEvent.click(screen.getByText(/Generate Prototype/i));
 
-    // Click the CODE tab to see the generated code
+    // Click CODE tab to see the generated code (synchronous since no-AI path returns immediately)
+    fireEvent.click(screen.getByText('CODE'));
     await vi.waitFor(() => {
-      fireEvent.click(screen.getByText('CODE'));
       const codeTextarea = document.querySelector('textarea[readonly]') as HTMLTextAreaElement;
       expect(codeTextarea?.value).toContain('AI Architect unavailable');
     });

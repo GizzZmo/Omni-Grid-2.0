@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { providers, getProviderById } from '../services/aiProviders';
 import { estimateTokens } from '../services/promptEngine';
 
@@ -55,9 +55,19 @@ describe('aiProviders', () => {
   });
 
   describe('provider run()', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('returns a CompletionResponse with expected shape', async () => {
       const provider = getProviderById('gemini-pro')!;
-      const response = await provider.run('short test prompt');
+      const promise = provider.run('short test prompt');
+      await vi.runAllTimersAsync();
+      const response = await promise;
 
       expect(response.providerId).toBe('gemini-pro');
       expect(typeof response.output).toBe('string');
@@ -66,27 +76,37 @@ describe('aiProviders', () => {
       expect(typeof response.tokens.output).toBe('number');
       expect(typeof response.cost).toBe('number');
       expect(typeof response.latencyMs).toBe('number');
-    }, 10_000);
+    });
 
     it('includes the prompt in the output', async () => {
       const provider = getProviderById('gpt-4o-mini')!;
-      const response = await provider.run('uniquepromptstring');
+      const promise = provider.run('uniquepromptstring');
+      await vi.runAllTimersAsync();
+      const response = await promise;
       expect(response.output).toContain('uniquepromptstring');
-    }, 10_000);
+    });
 
     it('truncates very long prompts in the output', async () => {
       const provider = getProviderById('claude-3-sonnet')!;
       const longPrompt = 'x'.repeat(500);
-      const response = await provider.run(longPrompt);
+      const promise = provider.run(longPrompt);
+      await vi.runAllTimersAsync();
+      const response = await promise;
       // Output should be truncated at 280 chars (+ provider prefix)
       expect(response.output.length).toBeLessThan(800);
-    }, 10_000);
+    });
 
     it('calculates cost proportional to token count', async () => {
       const provider = getProviderById('gemini-pro')!;
-      const shortResp = await provider.run('hi');
-      const longResp = await provider.run('x'.repeat(400));
+      const shortPromise = provider.run('hi');
+      await vi.runAllTimersAsync();
+      const shortResp = await shortPromise;
+
+      const longPromise = provider.run('x'.repeat(400));
+      await vi.runAllTimersAsync();
+      const longResp = await longPromise;
+
       expect(longResp.cost).toBeGreaterThanOrEqual(shortResp.cost);
-    }, 20_000);
+    });
   });
 });
