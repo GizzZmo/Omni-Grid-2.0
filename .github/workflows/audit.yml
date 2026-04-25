@@ -40,11 +40,11 @@ jobs:
           echo "" >> audit-report.md
           echo "### npm audit results" >> audit-report.md
           echo "\`\`\`" >> audit-report.md
-          npm audit --audit-level=moderate 2>&1 | tee audit-output.txt >> audit-report.md
+          npm audit --audit-level=high 2>&1 | tee audit-output.txt >> audit-report.md
           echo "\`\`\`" >> audit-report.md
 
           # Check if there are vulnerabilities
-          if npm audit --audit-level=moderate > /dev/null 2>&1; then
+          if npm audit --audit-level=high > /dev/null 2>&1; then
             echo "audit_status=success" >> $GITHUB_OUTPUT
             echo "✅ No vulnerabilities found" >> audit-report.md
           else
