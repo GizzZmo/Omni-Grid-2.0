@@ -38,6 +38,8 @@ import {
   MessageSquare,
   ShoppingBag,
   ArrowUpCircle,
+  Bot,
+  Sparkles,
 } from 'lucide-react';
 
 // Manual mapping of all available widget types to icons and names
@@ -361,6 +363,30 @@ export const WIDGET_REGISTRY = [
     color: 'text-fuchsia-400',
     bg: 'bg-fuchsia-900/20',
     border: 'border-fuchsia-500/50',
+  },
+  {
+    id: 'MULTI_AGENT_HUB',
+    name: 'Agent Hub',
+    icon: Bot,
+    color: 'text-fuchsia-400',
+    bg: 'bg-fuchsia-900/20',
+    border: 'border-fuchsia-500/50',
+  },
+  {
+    id: 'BROWSER_WIDGET',
+    name: 'Browser',
+    icon: Globe,
+    color: 'text-cyan-400',
+    bg: 'bg-cyan-900/20',
+    border: 'border-cyan-500/50',
+  },
+  {
+    id: 'COMMUNITY_PORTAL',
+    name: 'Community',
+    icon: Sparkles,
+    color: 'text-amber-400',
+    bg: 'bg-amber-900/20',
+    border: 'border-amber-500/50',
   },
 ];
 
