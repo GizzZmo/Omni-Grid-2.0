@@ -44,6 +44,9 @@ import { PromptLab } from '../widgets/PromptLab';
 import { NeuralChat } from '../widgets/NeuralChat';
 import { SunoPlayer } from '../widgets/SunoPlayer';
 import { WidgetMarketplace } from '../widgets/WidgetMarketplace';
+import { MultiAgentHub } from '../widgets/MultiAgentHub';
+import { BrowserWidget } from '../widgets/BrowserWidget';
+import { CommunityPortal } from '../widgets/CommunityPortal';
 
 import {
   FileJson,
@@ -81,6 +84,8 @@ import {
   GitBranch,
   MessageSquare,
   ShoppingBag,
+  Bot,
+  Sparkles,
 } from 'lucide-react';
 import { downloadJson, uploadJson } from '../utils';
 
@@ -593,6 +598,39 @@ export const GridContainer: React.FC = () => {
           className="h-full"
         >
           <WidgetMarketplace />
+        </WidgetShell>
+      ),
+      MULTI_AGENT_HUB: (
+        <WidgetShell
+          id="MULTI_AGENT_HUB"
+          title="Multi-Agent Hub"
+          icon={<Bot size={14} />}
+          accentColor="text-fuchsia-400"
+          className="h-full"
+        >
+          <MultiAgentHub />
+        </WidgetShell>
+      ),
+      BROWSER_WIDGET: (
+        <WidgetShell
+          id="BROWSER_WIDGET"
+          title="Browser"
+          icon={<Globe size={14} />}
+          accentColor="text-cyan-400"
+          className="h-full"
+        >
+          <BrowserWidget />
+        </WidgetShell>
+      ),
+      COMMUNITY_PORTAL: (
+        <WidgetShell
+          id="COMMUNITY_PORTAL"
+          title="Community Portal"
+          icon={<Sparkles size={14} />}
+          accentColor="text-amber-400"
+          className="h-full"
+        >
+          <CommunityPortal />
         </WidgetShell>
       ),
     }),

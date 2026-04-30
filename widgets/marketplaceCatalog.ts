@@ -648,6 +648,59 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
     minGridW: 3,
     minGridH: 3,
   },
+
+  // ── New Phase 4 Widgets ───────────────────────────────────────────────────
+  {
+    id: 'MULTI_AGENT_HUB',
+    name: 'Multi-Agent Hub',
+    description:
+      'Orchestrate multiple AI agents (Researcher, Coder, Analyst, Strategist, Critic, Writer) in parallel or sequential pipelines. Monitor task status and inspect results in real time.',
+    version: '1.0.0',
+    author: 'Omni-Grid Core',
+    category: 'ai',
+    tags: ['ai', 'agents', 'orchestration', 'pipeline', 'automation'],
+    downloads: 0,
+    rating: 0,
+    updatedAt: '2026-04-30',
+    changelog: 'v1.0.0: Initial release. 6 built-in agents, 3 pre-built pipelines, parallel & sequential modes.',
+    isCore: true,
+    minGridW: 5,
+    minGridH: 8,
+  },
+  {
+    id: 'BROWSER_WIDGET',
+    name: 'Browser',
+    description:
+      'Embedded browser with URL bar, back/forward/refresh navigation, bookmarks, and quick-access preset tiles. Open any URL inside the grid.',
+    version: '1.0.0',
+    author: 'Omni-Grid Core',
+    category: 'utility',
+    tags: ['browser', 'web', 'iframe', 'navigation', 'bookmarks'],
+    downloads: 0,
+    rating: 0,
+    updatedAt: '2026-04-30',
+    changelog: 'v1.0.0: Initial release. URL navigation, bookmarks, preset tiles.',
+    isCore: true,
+    minGridW: 4,
+    minGridH: 8,
+  },
+  {
+    id: 'COMMUNITY_PORTAL',
+    name: 'Community Portal',
+    description:
+      'Submit your own widgets for community review. Includes a 12-item security checklist, submission form, and local submission queue with status tracking.',
+    version: '1.0.0',
+    author: 'Omni-Grid Core',
+    category: 'community',
+    tags: ['community', 'plugins', 'submission', 'marketplace', 'developer'],
+    downloads: 0,
+    rating: 0,
+    updatedAt: '2026-04-30',
+    changelog: 'v1.0.0: Initial release. Submission form, security checklist, local queue.',
+    isCore: true,
+    minGridW: 5,
+    minGridH: 10,
+  },
 ];
 
 /** Lookup a catalog entry by widget ID. Returns undefined if not found. */

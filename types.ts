@@ -48,7 +48,13 @@ export type WidgetType =
   // AI Chat
   | 'NEURAL_CHAT'
   // Music
-  | 'SUNO_PLAYER';
+  | 'SUNO_PLAYER'
+  // Multi-Agent Orchestration
+  | 'MULTI_AGENT_HUB'
+  // Browser
+  | 'BROWSER_WIDGET'
+  // Community Portal
+  | 'COMMUNITY_PORTAL';
 
 export interface WidgetConfig {
   id: string;

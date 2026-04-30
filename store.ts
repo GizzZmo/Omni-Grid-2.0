@@ -238,6 +238,12 @@ const DEFAULT_LAYOUT: GridItemData[] = [
   { i: 'SUNO_PLAYER', x: 6, y: 132, w: 6, h: 12 },
   // Marketplace
   { i: 'MARKETPLACE', x: 0, y: 144, w: 12, h: 16 },
+  // Multi-Agent Orchestration Hub
+  { i: 'MULTI_AGENT_HUB', x: 0, y: 160, w: 8, h: 14 },
+  // Browser Widget
+  { i: 'BROWSER_WIDGET', x: 8, y: 160, w: 4, h: 14 },
+  // Community Portal
+  { i: 'COMMUNITY_PORTAL', x: 0, y: 174, w: 12, h: 16 },
 ];
 
 const DEFAULT_THEME: AppTheme = {
