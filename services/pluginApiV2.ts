@@ -145,11 +145,19 @@ export class EventBus {
       this.history.shift();
     }
     this.channels.get(channel)?.forEach(h => {
-      try { h(payload); } catch { /* isolate handler errors */ }
+      try {
+        h(payload);
+      } catch {
+        /* isolate handler errors */
+      }
     });
     // Wildcard listeners
     this.channels.get('*')?.forEach(h => {
-      try { h({ channel, payload }); } catch { /* ignore */ }
+      try {
+        h({ channel, payload });
+      } catch {
+        /* ignore */
+      }
     });
   }
 
@@ -233,7 +241,13 @@ export class NotificationBus {
       level,
       ts: Date.now(),
     };
-    this.listeners.forEach(h => { try { h(n); } catch { /* ignore */ } });
+    this.listeners.forEach(h => {
+      try {
+        h(n);
+      } catch {
+        /* ignore */
+      }
+    });
   }
 }
 
@@ -247,7 +261,7 @@ export class PluginRegistry {
   constructor(
     private readonly eventBus: EventBus,
     private readonly sharedStore: SharedPluginStore,
-    private readonly notifications: NotificationBus,
+    private readonly notifications: NotificationBus
   ) {}
 
   private notify() {
@@ -325,7 +339,11 @@ export class PluginRegistry {
   broadcastThemeChange(theme: ThemeSnapshot) {
     for (const [, record] of this.plugins) {
       if (record.status === 'active') {
-        try { record.manifest.onThemeChange?.(theme); } catch { /* ignore */ }
+        try {
+          record.manifest.onThemeChange?.(theme);
+        } catch {
+          /* ignore */
+        }
       }
     }
   }
@@ -334,7 +352,11 @@ export class PluginRegistry {
   broadcastLayoutChange(layout: LayoutSnapshot) {
     for (const [, record] of this.plugins) {
       if (record.status === 'active') {
-        try { record.manifest.onLayoutChange?.(layout); } catch { /* ignore */ }
+        try {
+          record.manifest.onLayoutChange?.(layout);
+        } catch {
+          /* ignore */
+        }
       }
     }
   }
@@ -354,15 +376,18 @@ export class PluginRegistry {
 
     const guardedStore = {
       get: (key: string): unknown => {
-        if (!hasPermission('sharedStore:read')) throw new Error(`Plugin ${pluginId} lacks sharedStore:read`);
+        if (!hasPermission('sharedStore:read'))
+          throw new Error(`Plugin ${pluginId} lacks sharedStore:read`);
         return this.sharedStore.get(key);
       },
       set: (key: string, value: unknown) => {
-        if (!hasPermission('sharedStore:write')) throw new Error(`Plugin ${pluginId} lacks sharedStore:write`);
+        if (!hasPermission('sharedStore:write'))
+          throw new Error(`Plugin ${pluginId} lacks sharedStore:write`);
         this.sharedStore.set(`${pluginId}:${key}`, value);
       },
       delete: (key: string) => {
-        if (!hasPermission('sharedStore:write')) throw new Error(`Plugin ${pluginId} lacks sharedStore:write`);
+        if (!hasPermission('sharedStore:write'))
+          throw new Error(`Plugin ${pluginId} lacks sharedStore:write`);
         this.sharedStore.delete(`${pluginId}:${key}`);
       },
       keys: (): string[] => {
@@ -373,11 +398,13 @@ export class PluginRegistry {
 
     const guardedEvents = {
       publish: (channel: string, payload?: unknown) => {
-        if (!hasPermission('events:publish')) throw new Error(`Plugin ${pluginId} lacks events:publish`);
+        if (!hasPermission('events:publish'))
+          throw new Error(`Plugin ${pluginId} lacks events:publish`);
         this.eventBus.publish(`${pluginId}:${channel}`, payload);
       },
       subscribe: (channel: string, handler: (payload: unknown) => void): (() => void) => {
-        if (!hasPermission('events:subscribe')) throw new Error(`Plugin ${pluginId} lacks events:subscribe`);
+        if (!hasPermission('events:subscribe'))
+          throw new Error(`Plugin ${pluginId} lacks events:subscribe`);
         return this.eventBus.subscribe(channel, handler);
       },
     };

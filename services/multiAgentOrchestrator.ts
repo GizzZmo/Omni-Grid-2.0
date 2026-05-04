@@ -230,11 +230,20 @@ class MultiAgentOrchestrator {
 
     const agent = this.getAgent(task.agentId);
     if (!agent) {
-      this.updateTask(id, { status: 'failed', error: `Unknown agent: ${task.agentId}`, completedAt: Date.now() });
+      this.updateTask(id, {
+        status: 'failed',
+        error: `Unknown agent: ${task.agentId}`,
+        completedAt: Date.now(),
+      });
       return null;
     }
 
-    const controller = { aborted: false, abort() { this.aborted = true; } };
+    const controller = {
+      aborted: false,
+      abort() {
+        this.aborted = true;
+      },
+    };
     this.abortControllers.set(id, controller);
 
     this.updateTask(id, { status: 'running', startedAt: Date.now() });
@@ -327,11 +336,7 @@ class MultiAgentOrchestrator {
     return runId;
   }
 
-  private async runPipelineParallel(
-    runId: string,
-    config: PipelineConfig,
-    initialPrompt: string
-  ) {
+  private async runPipelineParallel(runId: string, config: PipelineConfig, initialPrompt: string) {
     const taskIds: string[] = [];
     const promises = config.steps.map(step => {
       const prompt = step.promptTemplate.replace('{{input}}', initialPrompt);
@@ -426,8 +431,14 @@ orchestrator.registerPipeline({
   chainResults: true,
   steps: [
     { agentId: 'researcher', promptTemplate: 'Research the following topic: {{input}}' },
-    { agentId: 'analyst', promptTemplate: 'Analyze the research and provide key insights: {{input}}' },
-    { agentId: 'strategist', promptTemplate: 'Based on the analysis, suggest strategic recommendations: {{input}}' },
+    {
+      agentId: 'analyst',
+      promptTemplate: 'Analyze the research and provide key insights: {{input}}',
+    },
+    {
+      agentId: 'strategist',
+      promptTemplate: 'Based on the analysis, suggest strategic recommendations: {{input}}',
+    },
   ],
 });
 
@@ -451,7 +462,13 @@ orchestrator.registerPipeline({
   chainResults: true,
   steps: [
     { agentId: 'coder', promptTemplate: 'Write or improve the following code: {{input}}' },
-    { agentId: 'critic', promptTemplate: 'Review the code for bugs, security issues, and improvements: {{input}}' },
-    { agentId: 'writer', promptTemplate: 'Write clear documentation for the reviewed code: {{input}}' },
+    {
+      agentId: 'critic',
+      promptTemplate: 'Review the code for bugs, security issues, and improvements: {{input}}',
+    },
+    {
+      agentId: 'writer',
+      promptTemplate: 'Write clear documentation for the reviewed code: {{input}}',
+    },
   ],
 });

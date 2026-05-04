@@ -40,13 +40,14 @@ import {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-const STATUS_CONFIG: Record<TaskStatus, { label: string; color: string; Icon: React.ElementType }> = {
-  pending: { label: 'Pending', color: 'text-amber-400', Icon: Clock },
-  running: { label: 'Running', color: 'text-cyan-400', Icon: Loader2 },
-  completed: { label: 'Done', color: 'text-emerald-400', Icon: CheckCircle2 },
-  failed: { label: 'Failed', color: 'text-red-400', Icon: XCircle },
-  cancelled: { label: 'Cancelled', color: 'text-slate-500', Icon: StopCircle },
-};
+const STATUS_CONFIG: Record<TaskStatus, { label: string; color: string; Icon: React.ElementType }> =
+  {
+    pending: { label: 'Pending', color: 'text-amber-400', Icon: Clock },
+    running: { label: 'Running', color: 'text-cyan-400', Icon: Loader2 },
+    completed: { label: 'Done', color: 'text-emerald-400', Icon: CheckCircle2 },
+    failed: { label: 'Failed', color: 'text-red-400', Icon: XCircle },
+    cancelled: { label: 'Cancelled', color: 'text-slate-500', Icon: StopCircle },
+  };
 
 const formatDuration = (task: AgentTask): string => {
   const start = task.startedAt ?? task.createdAt;
@@ -110,7 +111,9 @@ const TaskDetail: React.FC<{ task: AgentTask; onBack: () => void }> = ({ task, o
         )}
 
         <div>
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Prompt</div>
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+            Prompt
+          </div>
           <div className="bg-slate-900 border border-slate-800 rounded p-3 text-xs text-slate-300 leading-relaxed whitespace-pre-wrap break-words">
             {task.prompt}
           </div>
@@ -119,7 +122,9 @@ const TaskDetail: React.FC<{ task: AgentTask; onBack: () => void }> = ({ task, o
         {task.result && (
           <div>
             <div className="flex items-center justify-between mb-1">
-              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Result</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Result
+              </div>
               <button
                 onClick={handleCopy}
                 className="flex items-center gap-1 text-[9px] text-slate-500 hover:text-white transition-all px-1.5 py-0.5 rounded hover:bg-slate-800"
@@ -136,7 +141,9 @@ const TaskDetail: React.FC<{ task: AgentTask; onBack: () => void }> = ({ task, o
 
         {task.error && (
           <div>
-            <div className="text-[10px] font-bold text-red-400 uppercase tracking-wider mb-1">Error</div>
+            <div className="text-[10px] font-bold text-red-400 uppercase tracking-wider mb-1">
+              Error
+            </div>
             <div className="bg-red-900/10 border border-red-500/20 rounded p-3 text-xs text-red-300">
               {task.error}
             </div>
@@ -162,7 +169,9 @@ type TabId = 'tasks' | 'submit' | 'pipelines';
 
 export const MultiAgentHub: React.FC = () => {
   const [tasks, setTasks] = useState<AgentTask[]>(() => orchestrator.getAllTasks());
-  const [pipelineRuns, setPipelineRuns] = useState<PipelineRun[]>(() => orchestrator.getAllPipelineRuns());
+  const [pipelineRuns, setPipelineRuns] = useState<PipelineRun[]>(() =>
+    orchestrator.getAllPipelineRuns()
+  );
   const [selectedTask, setSelectedTask] = useState<AgentTask | null>(null);
   const [tab, setTab] = useState<TabId>('tasks');
 
@@ -172,7 +181,9 @@ export const MultiAgentHub: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
 
   // Pipeline form
-  const [selectedPipeline, setSelectedPipeline] = useState(orchestrator.getPipelines()[0]?.id ?? '');
+  const [selectedPipeline, setSelectedPipeline] = useState(
+    orchestrator.getPipelines()[0]?.id ?? ''
+  );
   const [pipelinePrompt, setPipelinePrompt] = useState('');
   const [runningPipeline, setRunningPipeline] = useState(false);
 
@@ -191,7 +202,10 @@ export const MultiAgentHub: React.FC = () => {
     const unsubPipeline = orchestrator.on<PipelineRun | null>('pipelineUpdate', () => {
       setPipelineRuns(orchestrator.getAllPipelineRuns());
     });
-    return () => { unsubTask(); unsubPipeline(); };
+    return () => {
+      unsubTask();
+      unsubPipeline();
+    };
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -222,12 +236,7 @@ export const MultiAgentHub: React.FC = () => {
   const failedCount = tasks.filter(t => t.status === 'failed').length;
 
   if (selectedTask) {
-    return (
-      <TaskDetail
-        task={selectedTask}
-        onBack={() => setSelectedTask(null)}
-      />
-    );
+    return <TaskDetail task={selectedTask} onBack={() => setSelectedTask(null)} />;
   }
 
   return (
@@ -254,11 +263,13 @@ export const MultiAgentHub: React.FC = () => {
 
       {/* Tabs */}
       <div className="flex border-b border-slate-800 flex-shrink-0 bg-slate-900/20">
-        {([
-          { id: 'tasks' as TabId, label: 'Tasks', Icon: LayoutList },
-          { id: 'submit' as TabId, label: 'New Task', Icon: Send },
-          { id: 'pipelines' as TabId, label: 'Pipelines', Icon: GitBranch },
-        ] as const).map(t => (
+        {(
+          [
+            { id: 'tasks' as TabId, label: 'Tasks', Icon: LayoutList },
+            { id: 'submit' as TabId, label: 'New Task', Icon: Send },
+            { id: 'pipelines' as TabId, label: 'Pipelines', Icon: GitBranch },
+          ] as const
+        ).map(t => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
@@ -289,7 +300,9 @@ export const MultiAgentHub: React.FC = () => {
                 <Bot size={32} className="text-slate-700" />
                 <div>
                   <div className="text-sm font-bold text-slate-400 mb-1">No tasks yet</div>
-                  <p className="text-xs text-slate-600">Submit a task or run a pipeline to get started.</p>
+                  <p className="text-xs text-slate-600">
+                    Submit a task or run a pipeline to get started.
+                  </p>
                 </div>
               </div>
             ) : (
@@ -311,20 +324,28 @@ export const MultiAgentHub: React.FC = () => {
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">{task.prompt}</p>
+                      <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
+                        {task.prompt}
+                      </p>
                       <div className="text-[9px] text-slate-600 mt-0.5">{formatDuration(task)}</div>
                     </div>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                       {(task.status === 'pending' || task.status === 'running') && (
                         <button
-                          onClick={e => { e.stopPropagation(); orchestrator.cancel(task.id); }}
+                          onClick={e => {
+                            e.stopPropagation();
+                            orchestrator.cancel(task.id);
+                          }}
                           className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-900/30 text-slate-500 hover:text-red-400 transition-all"
                           title="Cancel"
                         >
                           <StopCircle size={12} />
                         </button>
                       )}
-                      <ChevronRight size={13} className="text-slate-600 group-hover:text-slate-400 transition-all" />
+                      <ChevronRight
+                        size={13}
+                        className="text-slate-600 group-hover:text-slate-400 transition-all"
+                      />
                     </div>
                   </div>
                 );
@@ -335,7 +356,10 @@ export const MultiAgentHub: React.FC = () => {
 
         {/* Submit tab */}
         {tab === 'submit' && (
-          <form onSubmit={handleSubmit} className="h-full overflow-y-auto custom-scrollbar p-4 flex flex-col gap-4">
+          <form
+            onSubmit={handleSubmit}
+            className="h-full overflow-y-auto custom-scrollbar p-4 flex flex-col gap-4"
+          >
             <div>
               <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
                 Select Agent
@@ -411,11 +435,13 @@ export const MultiAgentHub: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <GitBranch size={11} className="text-cyan-400 flex-shrink-0" />
                         <span className="text-xs font-bold text-white">{p.name}</span>
-                        <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ml-auto ${
-                          p.mode === 'parallel'
-                            ? 'bg-fuchsia-900/30 text-fuchsia-400 border border-fuchsia-500/30'
-                            : 'bg-cyan-900/30 text-cyan-400 border border-cyan-500/30'
-                        }`}>
+                        <span
+                          className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ml-auto ${
+                            p.mode === 'parallel'
+                              ? 'bg-fuchsia-900/30 text-fuchsia-400 border border-fuchsia-500/30'
+                              : 'bg-cyan-900/30 text-cyan-400 border border-cyan-500/30'
+                          }`}
+                        >
                           {p.mode}
                         </span>
                       </div>
@@ -423,11 +449,16 @@ export const MultiAgentHub: React.FC = () => {
                         {p.steps.map((s, i) => {
                           const agent = orchestrator.getAgent(s.agentId);
                           return (
-                            <span key={i} className="text-[9px] flex items-center gap-0.5 text-slate-500">
+                            <span
+                              key={i}
+                              className="text-[9px] flex items-center gap-0.5 text-slate-500"
+                            >
                               {agent && <span>{agent.icon}</span>}
                               {agent?.name}
                               {i < p.steps.length - 1 && (
-                                <span className={`mx-1 ${p.mode === 'sequential' ? 'text-cyan-700' : 'text-fuchsia-700'}`}>
+                                <span
+                                  className={`mx-1 ${p.mode === 'sequential' ? 'text-cyan-700' : 'text-fuchsia-700'}`}
+                                >
                                   {p.mode === 'sequential' ? '→' : '‖'}
                                 </span>
                               )}
@@ -458,9 +489,13 @@ export const MultiAgentHub: React.FC = () => {
                 className="flex items-center justify-center gap-2 px-4 py-2.5 bg-cyan-900/40 border border-cyan-500/50 rounded text-xs font-bold text-cyan-300 hover:bg-cyan-900/60 hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all uppercase tracking-widest disabled:opacity-30 disabled:pointer-events-none"
               >
                 {runningPipeline ? (
-                  <><Loader2 size={13} className="animate-spin" /> Running…</>
+                  <>
+                    <Loader2 size={13} className="animate-spin" /> Running…
+                  </>
                 ) : (
-                  <><Zap size={13} /> Run Pipeline</>
+                  <>
+                    <Zap size={13} /> Run Pipeline
+                  </>
                 )}
               </button>
             </form>
@@ -474,7 +509,9 @@ export const MultiAgentHub: React.FC = () => {
                 <div className="flex flex-col gap-2">
                   {pipelineRuns.map(run => {
                     const pipeline = pipelines.find(p => p.id === run.pipelineId);
-                    const runTasks = run.taskIds.map(id => orchestrator.getTask(id)).filter(Boolean) as AgentTask[];
+                    const runTasks = run.taskIds
+                      .map(id => orchestrator.getTask(id))
+                      .filter(Boolean) as AgentTask[];
                     const doneCount = runTasks.filter(t => t.status === 'completed').length;
                     return (
                       <div
@@ -482,17 +519,22 @@ export const MultiAgentHub: React.FC = () => {
                         className="p-3 bg-slate-900/60 border border-slate-800 rounded-lg"
                       >
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-bold text-slate-200">{pipeline?.name ?? run.pipelineId}</span>
+                          <span className="text-xs font-bold text-slate-200">
+                            {pipeline?.name ?? run.pipelineId}
+                          </span>
                           <StatusBadge status={run.status} />
                         </div>
                         <div className="text-[9px] text-slate-500">
-                          {doneCount}/{run.taskIds.length} tasks · {new Date(run.createdAt).toLocaleTimeString()}
+                          {doneCount}/{run.taskIds.length} tasks ·{' '}
+                          {new Date(run.createdAt).toLocaleTimeString()}
                         </div>
                         {run.status === 'running' && (
                           <div className="mt-2 h-1 bg-slate-800 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-cyan-500 transition-all duration-500"
-                              style={{ width: `${(doneCount / Math.max(run.taskIds.length, 1)) * 100}%` }}
+                              style={{
+                                width: `${(doneCount / Math.max(run.taskIds.length, 1)) * 100}%`,
+                              }}
                             />
                           </div>
                         )}

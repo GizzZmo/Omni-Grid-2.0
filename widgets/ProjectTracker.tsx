@@ -27,8 +27,7 @@ const DEFAULT_BOARD: Board = {
   done: [{ id: 'd1', text: 'Project Setup', createdAt: 0 }],
 };
 
-const withCreatedAt = (board: Board): Board => {
-  const now = Date.now();
+const withCreatedAt = (board: Board, now: number): Board => {
   const stamp = (t: Task) => (t.createdAt ? t : { ...t, createdAt: now });
   return {
     backlog: board.backlog.map(stamp),
@@ -70,11 +69,16 @@ const loadBoard = (): Board => {
   } catch {
     /* ignore */
   }
-  return withCreatedAt(DEFAULT_BOARD);
+  return DEFAULT_BOARD;
 };
 
 export const ProjectTracker: React.FC = () => {
-  const [board, setBoard] = useState<Board>(loadBoard);
+  const [board, setBoard] = useState<Board>(() => loadBoard());
+
+  // Stamp createdAt after mount (allowed to be impure)
+  useEffect(() => {
+    setBoard(prev => withCreatedAt(prev, Date.now()));
+  }, []);
   const [addingIn, setAddingIn] = useState<keyof Board | null>(null);
   const [newTaskText, setNewTaskText] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
