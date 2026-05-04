@@ -49,23 +49,19 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface AppState {
-  // Widget visibility
-  visibleWidgets: WidgetType[];
+  // Widget visibility — string[] to support dynamic/marketplace widgets
+  visibleWidgets: string[];
 
-  // Responsive layouts
-  layouts: {
-    lg: GridItemData[];
-    md: GridItemData[];
-    sm: GridItemData[];
-    xs: GridItemData[];
-    xxs: GridItemData[];
-  };
+  // Layout (lg breakpoint only)
+  layouts: { lg: GridItemData[] };
 
   // System settings
   settings: {
-    apiKey: string;
+    geminiApiKey: string;
+    e2bApiKey: string;
     scanlines: boolean;
-    matrixRain: boolean;
+    sound: boolean;
+    startupBehavior: 'restore' | 'default' | 'empty';
   };
 
   // Theme configuration
@@ -75,9 +71,11 @@ interface AppState {
   isLayoutLocked: boolean;
   isCompact: boolean;
   ghostWidget: GhostData | null;
+  isCmdPaletteOpen: boolean;
+  isSettingsPanelOpen: boolean;
 
   // Widget-specific data
-  scratchpadNotes: Note[];
+  scratchpadContent: string;
   tasks: Task[];
   calculatorHistory: string[];
   // ... more widget data
@@ -125,7 +123,7 @@ export const useAppStore = create(
 ```typescript
 const MyWidget = () => {
   const state = useAppStore(); // Re-renders on ANY state change!
-  return <div>{state.settings.apiKey}</div>;
+  return <div>{state.settings.geminiApiKey}</div>;
 };
 ```
 
@@ -133,9 +131,9 @@ const MyWidget = () => {
 
 ```typescript
 const MyWidget = () => {
-  const apiKey = useAppStore(s => s.settings.apiKey);
-  // Only re-renders when apiKey changes
-  return <div>{apiKey}</div>;
+  const geminiApiKey = useAppStore(s => s.settings.geminiApiKey);
+  // Only re-renders when geminiApiKey changes
+  return <div>{geminiApiKey}</div>;
 };
 ```
 
@@ -143,7 +141,7 @@ const MyWidget = () => {
 
 ```typescript
 const MyWidget = () => {
-  const apiKey = useAppStore(s => s.settings.apiKey);
+  const geminiApiKey = useAppStore(s => s.settings.geminiApiKey);
   const scanlines = useAppStore(s => s.settings.scanlines);
   const theme = useAppStore(s => s.theme);
   // Re-renders only when these specific values change

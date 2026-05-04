@@ -25,7 +25,7 @@ import { useAppStore } from './store';
 
 ```typescript
 // Subscribe to specific state
-const apiKey = useAppStore(s => s.settings.apiKey);
+const geminiApiKey = useAppStore(s => s.settings.geminiApiKey);
 const visibleWidgets = useAppStore(s => s.visibleWidgets);
 
 // Subscribe to actions
@@ -38,7 +38,7 @@ const updateLayout = useAppStore(s => s.updateLayout);
 ```typescript
 // For imperative operations
 const currentState = useAppStore.getState();
-const apiKey = currentState.settings.apiKey;
+const geminiApiKey = currentState.settings.geminiApiKey;
 
 // Set state directly
 useAppStore.getState().toggleWidget('SCRATCHPAD');
@@ -54,23 +54,19 @@ Complete state shape:
 
 ```typescript
 interface AppState {
-  // Widget Visibility
-  visibleWidgets: WidgetType[];
+  // Widget Visibility — plain strings to support dynamic/marketplace widgets
+  visibleWidgets: string[];
 
-  // Layouts (Responsive)
-  layouts: {
-    lg: GridItemData[];
-    md: GridItemData[];
-    sm: GridItemData[];
-    xs: GridItemData[];
-    xxs: GridItemData[];
-  };
+  // Layout (lg breakpoint only)
+  layouts: { lg: GridItemData[] };
 
   // System Settings
   settings: {
-    apiKey: string;
+    geminiApiKey: string;
+    e2bApiKey: string;
     scanlines: boolean;
-    matrixRain: boolean;
+    sound: boolean;
+    startupBehavior: 'restore' | 'default' | 'empty';
   };
 
   // Theme
@@ -80,14 +76,22 @@ interface AppState {
   isLayoutLocked: boolean;
   isCompact: boolean;
   ghostWidget: GhostData | null;
+  isCmdPaletteOpen: boolean;
+  isSettingsPanelOpen: boolean;
 
   // Widget-Specific Data
-  scratchpadNotes: Note[];
+  scratchpadContent: string;
   tasks: Task[];
-  calculatorHistory: string[];
-  secureCalendarEvents: CalendarEvent[];
-  clipboardHistory: ClipboardItem[];
-  strategicProjects: Project[];
+  tickers: string[];
+  writePadContent: string;
+  weatherLocation: string;
+  clipboardHistory: string[];
+  cyberEditorTabs: CyberEditorTab[];
+  promptLibrary: PromptTemplate[];
+
+  // Marketplace
+  installedWidgets: Record<string, string>;
+  availableUpdates: string[];
 
   // Actions (see below)
 }
@@ -102,41 +106,15 @@ interface AppState {
 #### toggleWidget
 
 ```typescript
-toggleWidget: (widgetId: WidgetType) => void
+toggleWidget: (widgetId: string) => void
 ```
 
-**Purpose:** Show/hide a widget  
+**Purpose:** Show/hide a widget. Accepts any string ID — if the widget has no existing layout entry, a default one is created automatically.  
 **Example:**
 
 ```typescript
 const toggleWidget = useAppStore(s => s.toggleWidget);
 toggleWidget('SCRATCHPAD');
-```
-
-#### addWidget
-
-```typescript
-addWidget: (widgetId: WidgetType) => void
-```
-
-**Purpose:** Add a widget without toggling (always shows)  
-**Example:**
-
-```typescript
-useAppStore.getState().addWidget('WEATHER_STATION');
-```
-
-#### removeWidget
-
-```typescript
-removeWidget: (widgetId: WidgetType) => void
-```
-
-**Purpose:** Remove a widget without toggling (always hides)  
-**Example:**
-
-```typescript
-useAppStore.getState().removeWidget('WEATHER_STATION');
 ```
 
 ---
@@ -197,20 +175,43 @@ toggleCompact();
 
 ### Settings Management
 
-#### updateSettings
+#### setGeminiApiKey
 
 ```typescript
-updateSettings: (newSettings: Partial<Settings>) => void
+setGeminiApiKey: (key: string) => void
 ```
 
-**Purpose:** Update system settings  
+**Purpose:** Update the Gemini API key and sync it to the runtime environment  
 **Example:**
 
 ```typescript
-useAppStore.getState().updateSettings({
-  apiKey: 'new-api-key',
-  scanlines: true,
-});
+useAppStore.getState().setGeminiApiKey('AIza...');
+```
+
+#### setE2bApiKey
+
+```typescript
+setE2bApiKey: (key: string) => void
+```
+
+**Purpose:** Update the E2B sandbox API key  
+**Example:**
+
+```typescript
+useAppStore.getState().setE2bApiKey('e2b_...');
+```
+
+#### toggleSetting
+
+```typescript
+toggleSetting: (key: 'scanlines' | 'sound') => void
+```
+
+**Purpose:** Toggle a boolean setting  
+**Example:**
+
+```typescript
+useAppStore.getState().toggleSetting('scanlines');
 ```
 
 #### setTheme
@@ -243,23 +244,17 @@ useAppStore.getState().setTheme(newTheme);
 
 ### Content Management
 
-#### setScratchpadNotes
+#### setScratchpadContent
 
 ```typescript
-setScratchpadNotes: (notes: Note[]) => void
+setScratchpadContent: (content: string) => void
 ```
 
-**Purpose:** Update Neural Scratchpad notes  
+**Purpose:** Update Neural Scratchpad plain-text content  
 **Example:**
 
 ```typescript
-const newNote: Note = {
-  id: crypto.randomUUID(),
-  content: 'My note content',
-  lastUpdated: Date.now(),
-};
-const currentNotes = useAppStore.getState().scratchpadNotes;
-useAppStore.getState().setScratchpadNotes([...currentNotes, newNote]);
+useAppStore.getState().setScratchpadContent('My note content');
 ```
 
 #### setTasks
@@ -453,6 +448,9 @@ uploadJson(data => {
 
 ```typescript
 export type WidgetType =
+  // Marketplace
+  | 'MARKETPLACE'
+  // Original / Utility
   | 'TRANSFORMER'
   | 'SCRATCHPAD'
   | 'FOCUS_HUD'
@@ -474,21 +472,38 @@ export type WidgetType =
   | 'GHOST'
   | 'RADIO'
   | 'SUDOKU'
+  // Developer
   | 'DOCU_HUB'
   | 'GIT_PULSE'
   | 'PROJECT_TRACKER'
   | 'WEB_TERMINAL'
+  | 'CYBER_EDITOR'
+  // Researcher
   | 'NEWS_FEED'
   | 'CIPHER_PAD'
   | 'PDF_VIEWER'
   | 'RESEARCH_BROWSER'
+  // Financial / Smart Grid
   | 'SECURE_CALENDAR'
   | 'MACRO_NET'
   | 'CHAIN_PULSE'
   | 'REG_RADAR'
   | 'MARKET'
+  // Productivity
   | 'STRATEGIC'
-  | 'CLIPBOARD';
+  | 'CLIPBOARD'
+  // Prompt Workspace
+  | 'PROMPT_LAB'
+  // AI Chat
+  | 'NEURAL_CHAT'
+  // Music
+  | 'SUNO_PLAYER'
+  // Multi-Agent Orchestration
+  | 'MULTI_AGENT_HUB'
+  // Browser
+  | 'BROWSER_WIDGET'
+  // Community
+  | 'COMMUNITY_PORTAL';
 ```
 
 ### GridItemData

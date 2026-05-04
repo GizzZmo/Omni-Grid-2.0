@@ -17,7 +17,7 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 ### 🖼️ Screenshots
 
 - **[Dashboard Overview](./screenshots/dashboard-overview.svg)** - Main grid with active widgets
-- **[Widget Launcher](./screenshots/widget-launcher.svg)** - Browse and activate all 40 modules
+- **[Widget Launcher](./screenshots/widget-launcher.svg)** - Browse and activate all 43 modules
 - **[Developer Tools](./screenshots/developer-tools.svg)** - CyberEditor, Prompt Lab, Neural Chat, Git Pulse
 - **[Smart Grid & Creative](./screenshots/smart-grid-creative.svg)** - Financial & creative widgets
 
@@ -122,6 +122,13 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 #### 🎮 Entertainment & Games
 
 - **SudokuGrid** - Sudoku puzzle game with difficulty levels and timer
+- **SunoPlayer** - Dedicated player for the Omni-Grid 2.0 Official Theme with seek/volume controls and Suno iframe embed
+
+#### 🤝 Community & Orchestration
+
+- **CommunityPortal** - Community hub for sharing widgets and configurations
+- **MultiAgentHub** - Multi-agent orchestration workspace for coordinating AI workflows
+- **BrowserWidget** - In-grid browser for quick web lookups without leaving the dashboard
 
 ---
 
@@ -156,5 +163,5 @@ Cyberpunk-inspired UI with maximalist information density and minimal chrome.
 _"The net is vast and infinite, but your grid is your own."_
 
 **Version:** 2.0  
-**Last Updated:** February 2026  
+**Last Updated:** May 2026  
 **Maintained by:** Jon-Arve Constantine / GizzZmo
