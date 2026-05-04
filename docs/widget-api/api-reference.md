@@ -7,48 +7,60 @@
 ```typescript
 // types.ts
 export type WidgetType =
+  // Platform
   | 'MARKETPLACE'
+  // Utility
   | 'SYSTEM'
   | 'HELP'
-  | 'TRANSFORMER'
-  | 'SCRATCHPAD'
-  | 'FOCUS_HUD'
-  | 'DEV_OPTIC'
-  | 'CIPHER_VAULT'
-  | 'CHROMA_LAB'
   | 'TEMPORAL'
-  | 'SONIC'
   | 'CALC'
-  | 'ASSET'
-  | 'POLYGLOT'
-  | 'WRITEPAD'
   | 'WEATHER'
-  | 'VALUTA'
-  | 'ARCHITECT'
-  | 'THEME_ENGINE'
-  | 'GHOST'
-  | 'RADIO'
+  | 'CLIPBOARD'
   | 'SUDOKU'
-  | 'DOCU_HUB'
-  | 'GIT_PULSE'
-  | 'PROJECT_TRACKER'
-  | 'WEB_TERMINAL'
+  | 'POLYGLOT'
+  | 'GHOST'
+  | 'BROWSER_WIDGET'
+  // Developer
+  | 'TRANSFORMER'
+  | 'DEV_OPTIC'
   | 'CYBER_EDITOR'
+  | 'WEB_TERMINAL'
+  | 'GIT_PULSE'
+  | 'DOCU_HUB'
+  | 'PROJECT_TRACKER'
+  // Finance
+  | 'ASSET'
+  | 'VALUTA'
+  | 'MARKET'
+  | 'CHAIN_PULSE'
+  | 'MACRO_NET'
+  | 'REG_RADAR'
+  // Creative
+  | 'CHROMA_LAB'
+  | 'THEME_ENGINE'
+  | 'SONIC'
+  | 'SUNO_PLAYER'
+  | 'RADIO'
+  // AI
+  | 'SCRATCHPAD'
+  | 'NEURAL_CHAT'
+  | 'PROMPT_LAB'
+  | 'MULTI_AGENT_HUB'
+  // Productivity
+  | 'FOCUS_HUD'
+  | 'WRITEPAD'
+  | 'SECURE_CALENDAR'
+  | 'ARCHITECT'
+  | 'STRATEGIC'
   | 'NEWS_FEED'
-  | 'CIPHER_PAD'
   | 'PDF_VIEWER'
   | 'RESEARCH_BROWSER'
-  | 'SECURE_CALENDAR'
-  | 'MACRO_NET'
-  | 'CHAIN_PULSE'
-  | 'REG_RADAR'
-  | 'MARKET'
-  | 'STRATEGIC'
-  | 'CLIPBOARD'
-  | 'PROMPT_LAB'
-  | 'NEURAL_CHAT'
-  | 'SUNO_PLAYER';
-// Add your widget type here
+  // Security / Research
+  | 'CIPHER_VAULT'
+  | 'CIPHER_PAD'
+  // Community
+  | 'COMMUNITY_PORTAL';
+  // Add your widget type here — see docs/widget-api/getting-started.md
 ```
 
 ### `GridItemData`

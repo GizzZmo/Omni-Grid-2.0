@@ -93,7 +93,52 @@ In `components/WidgetLauncher.tsx`, add to `WIDGET_REGISTRY`:
 },
 ```
 
-## Step 6 — Test Your Widget
+## Step 6 — Write Your Test
+
+Create `test/myWidget.test.tsx` (required for all widgets — see [Testing Patterns](./examples/counter.test.tsx)):
+
+```typescript
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MyWidget } from '../widgets/MyWidget';
+
+// Mock only the store slices your widget uses
+vi.mock('../store', () => ({
+  useAppStore: vi.fn(selector =>
+    selector({
+      myWidgetData: null,
+      setMyWidgetData: vi.fn(),
+    })
+  ),
+}));
+
+describe('MyWidget', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('renders without errors', () => {
+    render(<MyWidget />);
+    expect(screen.getByText(/my widget/i)).toBeTruthy();
+  });
+
+  it('handles primary action', () => {
+    render(<MyWidget />);
+    fireEvent.click(screen.getByRole('button', { name: /action/i }));
+    // assert expected result
+  });
+});
+```
+
+Run all tests to verify nothing is broken:
+
+```bash
+npm run test:run
+```
+
+All existing tests must still pass before you open a pull request.
+
+## Step 7 — Launch the Dev Server
 
 ```bash
 npm run dev
@@ -168,4 +213,5 @@ if (ai) {
 ## Example Widgets
 
 - [Counter](./examples/counter.tsx) — Minimal stateful widget
+- [Counter Tests](./examples/counter.test.tsx) — Annotated testing patterns
 - [Weather API](./examples/weather.tsx) — External API integration example
