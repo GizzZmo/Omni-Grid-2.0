@@ -23,7 +23,7 @@ Welcome! This is your gateway to comprehensive Omni-Grid documentation.
 |                   Dashboard Overview                    |                      Widget Launcher                       |
 | :-----------------------------------------------------: | :--------------------------------------------------------: |
 | ![Dashboard](./docs/screenshots/dashboard-overview.svg) | ![Widget Launcher](./docs/screenshots/widget-launcher.svg) |
-|          _Main dashboard with active widgets_           |              _Browse and activate 42 modules_              |
+|          _Main dashboard with active widgets_           |              _Browse and activate 43 modules_              |
 
 |                      Developer Tools                       |                   Smart Grid & Creative                   |
 | :--------------------------------------------------------: | :-------------------------------------------------------: |
@@ -138,13 +138,13 @@ For developers building on Omni-Grid:
 
 ## 📊 DOCUMENTATION STATS
 
-- **Total Documentation Files:** 13
-- **Total Lines:** ~23,400
+- **Total Documentation Files:** 20+
+- **Total Lines:** ~30,000
 - **Topics Covered:** 100+
 - **Roadmap Phases:** 5
-- **Widgets Documented:** 42 (all widgets)
+- **Widgets Documented:** 43 (all user-visible widgets)
 - **Code Examples:** 150+
-- **Last Updated:** April 2026
+- **Last Updated:** May 2026
 
 ---
 
@@ -286,6 +286,6 @@ Omni-Grid 2.0 includes an official Suno AI generated theme song and three integr
 
 _"The net is vast and infinite, but your grid is your own."_
 
-**Documentation Version:** 2.1  
-**Last Updated:** April 2026  
+**Documentation Version:** 2.2  
+**Last Updated:** May 2026  
 **Maintained by:** Jon-Arve Constantine / GizzZmo

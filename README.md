@@ -54,7 +54,7 @@ _The main Omni-Grid dashboard with live widgets: System Core, Neural Scratchpad,
 
 ![Widget Launcher](./docs/screenshots/widget-launcher.svg)
 
-_The Widget Launcher — search and activate any of the 42 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System)._
+_The Widget Launcher — search and activate any of the 43 available modules, organized by category (Neural, Finance, Dev, Creative, Research, System)._
 
 ### 🛠️ Developer Tools
 

@@ -19,16 +19,18 @@ Omni-Grid is a **local-first, modular Super App** built on React with a focus on
 4. **AI Integration:** Direct client-to-API calls (no proxy server).
 5. **Responsive Grid:** Dynamic layout with drag/resize capabilities.
 
-### Widget Catalogue (39 modules)
+### Widget Catalogue (43 modules)
 
-| Category                    | Widget IDs                                                                                                     |
-| :-------------------------- | :------------------------------------------------------------------------------------------------------------- |
-| **Neural Suite**            | `SCRATCHPAD`, `WRITEPAD`, `POLYGLOT`, `ARCHITECT`, `NEURAL_CHAT`                                               |
-| **Smart Grid**              | `ASSET`, `MACRO_NET`, `CHAIN_PULSE`, `REG_RADAR`, `MARKET`, `VALUTA`                                           |
-| **Developer Optic**         | `WEB_TERMINAL`, `DEV_OPTIC`, `GIT_PULSE`, `DOCU_HUB`, `PROJECT_TRACKER`, `CYBER_EDITOR`, `PROMPT_LAB`          |
-| **Creative & Utility**      | `THEME_ENGINE`, `SONIC`, `CIPHER_VAULT`, `CHROMA_LAB`, `CLIPBOARD`, `CALC`, `WEATHER`, `RADIO`                 |
-| **Productivity & Research** | `FOCUS_HUD`, `TEMPORAL`, `SECURE_CALENDAR`, `STRATEGIC`, `NEWS_FEED`, `RESEARCH_BROWSER`, `PDF_VIEWER`, `HELP` |
-| **System**                  | `TRANSFORMER`, `SYSTEM`, `CIPHER_PAD`, `SUDOKU`, `GHOST`                                                       |
+| Category                    | Widget IDs                                                                                                                    |
+| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| **Neural Suite**            | `SCRATCHPAD`, `WRITEPAD`, `POLYGLOT`, `ARCHITECT`, `NEURAL_CHAT`                                                             |
+| **Smart Grid**              | `ASSET`, `MACRO_NET`, `CHAIN_PULSE`, `REG_RADAR`, `MARKET`, `VALUTA`                                                         |
+| **Developer Optic**         | `WEB_TERMINAL`, `DEV_OPTIC`, `GIT_PULSE`, `DOCU_HUB`, `PROJECT_TRACKER`, `CYBER_EDITOR`, `PROMPT_LAB`                        |
+| **Creative & Utility**      | `THEME_ENGINE`, `SONIC`, `CIPHER_VAULT`, `CHROMA_LAB`, `CLIPBOARD`, `CALC`, `WEATHER`, `RADIO`, `SUNO_PLAYER`                |
+| **Productivity & Research** | `FOCUS_HUD`, `TEMPORAL`, `SECURE_CALENDAR`, `STRATEGIC`, `NEWS_FEED`, `RESEARCH_BROWSER`, `PDF_VIEWER`, `HELP`, `CIPHER_PAD` |
+| **System**                  | `TRANSFORMER`, `SYSTEM`, `SUDOKU`, `GHOST`                                                                                    |
+| **Marketplace & Community** | `MARKETPLACE`, `COMMUNITY_PORTAL`                                                                                             |
+| **Orchestration & Browser** | `MULTI_AGENT_HUB`, `BROWSER_WIDGET`                                                                                           |
 
 ---
 
@@ -160,28 +162,35 @@ interface WidgetShellProps {
 
 ### 4. store.ts (State Management)
 
-**Technology:** Zustand with localStorage middleware
+**Technology:** Zustand 5 with localStorage persistence middleware
 
 **State Structure:**
 
 ```typescript
 interface AppState {
-  // Visibility
-  visibleWidgets: WidgetType[];
+  // Visibility — plain string IDs to support dynamic/marketplace widgets
+  visibleWidgets: string[];
 
-  // Layout (responsive)
-  layouts: { lg: GridItemData[], md: ..., sm: ..., xs: ..., xxs: ... };
+  // Layout (lg breakpoint only; responsive scaling handled by react-grid-layout)
+  layouts: { lg: GridItemData[] };
 
   // Widget-specific data
-  scratchpadNotes: Note[];
+  scratchpadContent: string;
   tasks: Task[];
-  calculatorHistory: string[];
+  tickers: string[];
+  writePadContent: string;
+  weatherLocation: string;
+  clipboardHistory: string[];
+  cyberEditorTabs: CyberEditorTab[];
+  promptLibrary: PromptTemplate[];
 
   // System settings
   settings: {
-    apiKey: string;
+    geminiApiKey: string;
+    e2bApiKey: string;
     scanlines: boolean;
-    matrixRain: boolean;
+    sound: boolean;
+    startupBehavior: 'restore' | 'default' | 'empty';
   };
 
   // Theme
@@ -191,11 +200,18 @@ interface AppState {
   isLayoutLocked: boolean;
   isCompact: boolean;
   ghostWidget: GhostData | null;
+  isCmdPaletteOpen: boolean;
+  isSettingsPanelOpen: boolean;
+
+  // Marketplace
+  installedWidgets: Record<string, string>;
+  availableUpdates: string[];
 
   // Actions
-  toggleWidget: (id: WidgetType) => void;
+  toggleWidget: (widgetId: string) => void;
   updateLayout: (newLayout: GridItemData[]) => void;
-  setGlobalState: (state: AppState) => void;
+  setGlobalState: (state: Partial<AppState>) => void;
+  resetAll: () => void;
   // ... other actions
 }
 ```
@@ -286,8 +302,8 @@ Saved to localStorage via Zustand
 
 **Models Used:**
 
-- `gemini-1.5-flash-latest` - Fast operations (summarize, translate)
-- `gemini-1.5-pro-latest` - Complex operations (code generation, analysis)
+- `gemini-3-flash-preview` - Fast operations (summarize, translate, refine)
+- `gemini-2.5-pro-preview` - Complex operations (code generation, analysis)
 
 ---
 
@@ -439,16 +455,16 @@ For production deployment:
 
 ### Current State
 
-- No formal test suite (minimal-change approach)
-- Manual testing via development server
-- Widget isolation makes unit testing feasible
+- **Vitest** test suite located in the `test/` directory
+- Tests run with `npm run test:run` (CI mode) or `npm test` (watch mode)
+- Coverage reports generated via `npm run test:coverage`
 
-### Future Testing Strategy
+### Testing Strategy
 
 **Unit Tests:**
 
-- Widget components (React Testing Library)
-- Utility functions (Jest)
+- Widget components (React Testing Library + Vitest)
+- Utility functions
 - Zustand store actions
 
 **Integration Tests:**
@@ -542,10 +558,10 @@ Current architecture is **single-user, single-device**.
 
 ### Current Stack (v2.0)
 
-- React 18.2.0
-- Zustand 4.5.0
+- React 19.2.4
+- Zustand 5.0.12
 - react-grid-layout 1.4.4
-- Vite 6.2.0
+- Vite 8.0.0
 - TailwindCSS (via CDN in index.html)
 
 ### Future Considerations
