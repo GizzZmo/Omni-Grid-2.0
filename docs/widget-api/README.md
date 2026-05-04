@@ -16,11 +16,12 @@ Omni-Grid widgets are self-contained React components rendered inside a **Widget
 
 ## Contents
 
-| Document                                | Description                                  |
-| --------------------------------------- | -------------------------------------------- |
-| [Getting Started](./getting-started.md) | Create your first widget in under 10 minutes |
-| [API Reference](./api-reference.md)     | Full TypeScript interfaces and store API     |
-| [Examples](./examples/)                 | Working widget examples                      |
+| Document                                          | Description                                         |
+| ------------------------------------------------- | --------------------------------------------------- |
+| [Getting Started](./getting-started.md)           | Create your first widget in under 10 minutes        |
+| [API Reference](./api-reference.md)               | Full TypeScript interfaces and store API            |
+| [Examples](./examples/)                           | Working widget examples                             |
+| [Testing Patterns](./examples/counter.test.tsx)   | Annotated test template covering all test scenarios |
 
 ## Quick Start
 

@@ -12,6 +12,25 @@
 import { MarketplaceEntry } from '../types';
 
 export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
+  // ── Platform ─────────────────────────────────────────────────────────────
+  {
+    id: 'MARKETPLACE',
+    name: 'Widget Marketplace',
+    description:
+      'Browse, install, and manage all Omni-Grid widgets. One-click installs, update notifications, version history, and a built-in developer portal for community submissions.',
+    version: '1.0.0',
+    author: 'Omni-Grid Core',
+    category: 'utility',
+    tags: ['marketplace', 'plugins', 'install', 'updates', 'developer'],
+    downloads: 12000,
+    rating: 4.8,
+    updatedAt: '2026-04-30',
+    changelog: 'v1.0.0: Initial release. Browse, install, update, and developer portal tabs.',
+    isCore: true,
+    minGridW: 6,
+    minGridH: 10,
+  },
+
   // ── Utility ──────────────────────────────────────────────────────────────
   {
     id: 'SYSTEM',

@@ -36,7 +36,7 @@ describe('WidgetMarketplace', () => {
 
   it('renders the Widget Marketplace heading', () => {
     render(<WidgetMarketplace />);
-    expect(screen.getByText(/Widget Marketplace/i)).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /Widget Marketplace/i })).toBeTruthy();
   });
 
   it('renders Browse, Installed, Updates and Developer tab buttons', () => {
@@ -81,8 +81,8 @@ describe('WidgetMarketplace', () => {
       .find(b => b.textContent?.trim() === 'Installed');
     expect(installedTabBtn).toBeTruthy();
     fireEvent.click(installedTabBtn!);
-    // Should show installed count heading
-    expect(screen.getByText(/Widget Marketplace/i)).toBeTruthy();
+    // Should still show the marketplace heading after switching tabs
+    expect(screen.getByRole('heading', { name: /Widget Marketplace/i })).toBeTruthy();
   });
 
   it('renders Check Updates button in the header', () => {
