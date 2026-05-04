@@ -133,7 +133,10 @@ const CATEGORIES: { id: MarketplaceCategory; label: string }[] = [
   { id: 'community', label: 'Community' },
 ];
 
-const STATUS_CONFIG: Record<SubmissionStatus, { label: string; color: string; Icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<
+  SubmissionStatus,
+  { label: string; color: string; Icon: React.ElementType }
+> = {
   pending: { label: 'Pending Review', color: 'text-amber-400', Icon: Clock },
   in_review: { label: 'In Review', color: 'text-blue-400', Icon: Shield },
   approved: { label: 'Approved', color: 'text-emerald-400', Icon: CheckCircle2 },
@@ -148,11 +151,17 @@ const loadSubmissions = (): PluginSubmission[] => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as PluginSubmission[]) : [];
-  } catch { return []; }
+  } catch {
+    return [];
+  }
 };
 
 const saveSubmissions = (items: PluginSubmission[]) => {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch { /* ignore */ }
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  } catch {
+    /* ignore */
+  }
 };
 
 const generateId = () =>
@@ -206,7 +215,8 @@ export const CommunityPortal: React.FC = () => {
   const validate = (): boolean => {
     const e: Record<string, string> = {};
     if (!form.widgetId.trim()) e.widgetId = 'Widget ID is required';
-    else if (!/^[A-Z_]+$/.test(form.widgetId.trim())) e.widgetId = 'Must be UPPER_SNAKE_CASE (e.g. MY_WIDGET)';
+    else if (!/^[A-Z_]+$/.test(form.widgetId.trim()))
+      e.widgetId = 'Must be UPPER_SNAKE_CASE (e.g. MY_WIDGET)';
     if (!form.name.trim()) e.name = 'Name is required';
     if (!form.description.trim()) e.description = 'Description is required';
     if (!form.author.trim()) e.author = 'Author is required';
@@ -306,13 +316,17 @@ export const CommunityPortal: React.FC = () => {
           </div>
 
           <div>
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Description</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Description
+            </div>
             <p className="text-xs text-slate-300 leading-relaxed">{selected.description}</p>
           </div>
 
           {selected.repositoryUrl && (
             <div>
-              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Repository</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                Repository
+              </div>
               <a
                 href={selected.repositoryUrl}
                 target="_blank"
@@ -325,13 +339,18 @@ export const CommunityPortal: React.FC = () => {
           )}
 
           <div>
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Category & Tags</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Category & Tags
+            </div>
             <div className="flex gap-1.5 flex-wrap">
               <span className="px-1.5 py-0.5 rounded bg-fuchsia-900/30 border border-fuchsia-500/30 text-[9px] text-fuchsia-400 font-bold uppercase">
                 {selected.category}
               </span>
               {selected.tags.map(tag => (
-                <span key={tag} className="px-1.5 py-0.5 rounded bg-slate-800 text-[9px] text-slate-400">
+                <span
+                  key={tag}
+                  className="px-1.5 py-0.5 rounded bg-slate-800 text-[9px] text-slate-400"
+                >
                   {tag}
                 </span>
               ))}
@@ -340,13 +359,17 @@ export const CommunityPortal: React.FC = () => {
 
           <div>
             <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-              Security Checklist ({selected.checklistPassed.length}/{SECURITY_CHECKLIST.length} passed)
+              Security Checklist ({selected.checklistPassed.length}/{SECURITY_CHECKLIST.length}{' '}
+              passed)
             </div>
             <div className="flex flex-col gap-1">
               {SECURITY_CHECKLIST.map(item => {
                 const passed = selected.checklistPassed.includes(item.id);
                 return (
-                  <div key={item.id} className={`flex items-center gap-2 text-[11px] ${passed ? 'text-emerald-400' : 'text-red-400'}`}>
+                  <div
+                    key={item.id}
+                    className={`flex items-center gap-2 text-[11px] ${passed ? 'text-emerald-400' : 'text-red-400'}`}
+                  >
                     {passed ? <CheckCircle2 size={11} /> : <XCircle size={11} />}
                     {item.label}
                   </div>
@@ -357,13 +380,18 @@ export const CommunityPortal: React.FC = () => {
 
           {selected.reviewNote && (
             <div className="p-3 rounded-lg bg-slate-900 border border-slate-700">
-              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Review Note</div>
+              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                Review Note
+              </div>
               <p className="text-xs text-slate-300">{selected.reviewNote}</p>
             </div>
           )}
 
           <button
-            onClick={e => { handleDelete(selected.id, e); setView('list'); }}
+            onClick={e => {
+              handleDelete(selected.id, e);
+              setView('list');
+            }}
             className="flex items-center gap-2 px-3 py-2 bg-red-900/20 border border-red-500/30 rounded text-xs text-red-400 hover:bg-red-900/40 transition-all self-start"
           >
             <Trash2 size={12} /> Delete Submission
@@ -378,7 +406,11 @@ export const CommunityPortal: React.FC = () => {
       <div className="h-full flex flex-col bg-slate-950 font-mono text-slate-200 overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-800 bg-slate-900/40 flex-shrink-0">
           <button
-            onClick={() => { setView('list'); setSubmitted(false); setErrors({}); }}
+            onClick={() => {
+              setView('list');
+              setSubmitted(false);
+              setErrors({});
+            }}
             className="text-slate-400 hover:text-white text-xs flex items-center gap-1 transition-all"
           >
             <ArrowLeft size={12} /> Back
@@ -398,7 +430,10 @@ export const CommunityPortal: React.FC = () => {
                 </p>
               </div>
               <button
-                onClick={() => { setSubmitted(false); setView('list'); }}
+                onClick={() => {
+                  setSubmitted(false);
+                  setView('list');
+                }}
                 className="px-4 py-2 bg-slate-800 border border-slate-700 rounded text-xs text-slate-200 hover:border-slate-500 transition-all"
               >
                 View Submissions
@@ -418,9 +453,13 @@ export const CommunityPortal: React.FC = () => {
                       className={`w-full px-2 py-1.5 bg-slate-800 border rounded text-xs text-slate-200 outline-none focus:border-cyan-500 font-mono uppercase ${errors.widgetId ? 'border-red-500/60' : 'border-slate-700'}`}
                       placeholder="MY_WIDGET"
                       value={form.widgetId}
-                      onChange={e => setForm(f => ({ ...f, widgetId: e.target.value.toUpperCase() }))}
+                      onChange={e =>
+                        setForm(f => ({ ...f, widgetId: e.target.value.toUpperCase() }))
+                      }
                     />
-                    {errors.widgetId && <p className="text-[9px] text-red-400 mt-0.5">{errors.widgetId}</p>}
+                    {errors.widgetId && (
+                      <p className="text-[9px] text-red-400 mt-0.5">{errors.widgetId}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-[10px] text-slate-400 mb-1">Display Name *</label>
@@ -440,7 +479,9 @@ export const CommunityPortal: React.FC = () => {
                       value={form.version}
                       onChange={e => setForm(f => ({ ...f, version: e.target.value }))}
                     />
-                    {errors.version && <p className="text-[9px] text-red-400 mt-0.5">{errors.version}</p>}
+                    {errors.version && (
+                      <p className="text-[9px] text-red-400 mt-0.5">{errors.version}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-[10px] text-slate-400 mb-1">Author *</label>
@@ -450,7 +491,9 @@ export const CommunityPortal: React.FC = () => {
                       value={form.author}
                       onChange={e => setForm(f => ({ ...f, author: e.target.value }))}
                     />
-                    {errors.author && <p className="text-[9px] text-red-400 mt-0.5">{errors.author}</p>}
+                    {errors.author && (
+                      <p className="text-[9px] text-red-400 mt-0.5">{errors.author}</p>
+                    )}
                   </div>
                 </div>
 
@@ -462,7 +505,9 @@ export const CommunityPortal: React.FC = () => {
                     value={form.description}
                     onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   />
-                  {errors.description && <p className="text-[9px] text-red-400 mt-0.5">{errors.description}</p>}
+                  {errors.description && (
+                    <p className="text-[9px] text-red-400 mt-0.5">{errors.description}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-3">
@@ -471,15 +516,21 @@ export const CommunityPortal: React.FC = () => {
                     <select
                       className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-cyan-500"
                       value={form.category}
-                      onChange={e => setForm(f => ({ ...f, category: e.target.value as MarketplaceCategory }))}
+                      onChange={e =>
+                        setForm(f => ({ ...f, category: e.target.value as MarketplaceCategory }))
+                      }
                     >
                       {CATEGORIES.map(c => (
-                        <option key={c.id} value={c.id}>{c.label}</option>
+                        <option key={c.id} value={c.id}>
+                          {c.label}
+                        </option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] text-slate-400 mb-1">Tags (comma-separated)</label>
+                    <label className="block text-[10px] text-slate-400 mb-1">
+                      Tags (comma-separated)
+                    </label>
                     <input
                       className="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-slate-200 outline-none focus:border-cyan-500"
                       placeholder="tag1, tag2, tag3"
@@ -518,7 +569,9 @@ export const CommunityPortal: React.FC = () => {
                     const cfg = CHECKLIST_CATEGORIES[cat];
                     return (
                       <div key={cat}>
-                        <div className={`text-[9px] font-bold uppercase tracking-wider mb-1.5 ${cfg.color}`}>
+                        <div
+                          className={`text-[9px] font-bold uppercase tracking-wider mb-1.5 ${cfg.color}`}
+                        >
                           {cfg.label}
                         </div>
                         <div className="flex flex-col gap-1.5">
@@ -532,11 +585,19 @@ export const CommunityPortal: React.FC = () => {
                                 className={`flex items-start gap-2 text-left p-2 rounded border transition-all ${checked ? 'bg-emerald-900/10 border-emerald-500/20' : 'bg-slate-900/40 border-slate-800 hover:border-slate-600'}`}
                               >
                                 {checked ? (
-                                  <CheckSquare size={13} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                                  <CheckSquare
+                                    size={13}
+                                    className="text-emerald-400 flex-shrink-0 mt-0.5"
+                                  />
                                 ) : (
-                                  <Square size={13} className="text-slate-500 flex-shrink-0 mt-0.5" />
+                                  <Square
+                                    size={13}
+                                    className="text-slate-500 flex-shrink-0 mt-0.5"
+                                  />
                                 )}
-                                <span className={`text-[11px] leading-relaxed ${checked ? 'text-emerald-300' : 'text-slate-400'}`}>
+                                <span
+                                  className={`text-[11px] leading-relaxed ${checked ? 'text-emerald-300' : 'text-slate-400'}`}
+                                >
                                   {item.label}
                                 </span>
                               </button>
@@ -578,7 +639,8 @@ export const CommunityPortal: React.FC = () => {
             <Sparkles size={13} /> Community Portal
           </h2>
           <p className="text-[10px] text-slate-500 font-mono mt-0.5">
-            {submissions.length} submission{submissions.length !== 1 ? 's' : ''} · Build &amp; share widgets
+            {submissions.length} submission{submissions.length !== 1 ? 's' : ''} · Build &amp; share
+            widgets
           </p>
         </div>
         <button
@@ -596,9 +658,14 @@ export const CommunityPortal: React.FC = () => {
           const count = submissions.filter(s => s.status === status).length;
           const cfg = STATUS_CONFIG[status];
           return (
-            <div key={status} className="flex-1 px-3 py-2 flex flex-col items-center gap-0.5 border-r border-slate-800 last:border-r-0">
+            <div
+              key={status}
+              className="flex-1 px-3 py-2 flex flex-col items-center gap-0.5 border-r border-slate-800 last:border-r-0"
+            >
               <span className={`text-sm font-bold ${cfg.color}`}>{count}</span>
-              <span className="text-[9px] text-slate-500 uppercase tracking-wider">{status.replace('_', ' ')}</span>
+              <span className="text-[9px] text-slate-500 uppercase tracking-wider">
+                {status.replace('_', ' ')}
+              </span>
             </div>
           );
         })}
@@ -655,7 +722,10 @@ export const CommunityPortal: React.FC = () => {
                     >
                       <Trash2 size={12} />
                     </button>
-                    <ChevronRight size={14} className="text-slate-600 group-hover:text-slate-400 transition-all" />
+                    <ChevronRight
+                      size={14}
+                      className="text-slate-600 group-hover:text-slate-400 transition-all"
+                    />
                   </div>
                 </div>
               );
@@ -667,8 +737,8 @@ export const CommunityPortal: React.FC = () => {
       {/* Guidelines footer */}
       <div className="px-4 py-2 border-t border-slate-800 bg-slate-900/20 flex-shrink-0">
         <p className="text-[9px] text-slate-600">
-          Submissions are reviewed within 7 days. All plugins must pass the security checklist and follow{' '}
-          <span className="text-slate-500">CONTRIBUTING.md</span>.
+          Submissions are reviewed within 7 days. All plugins must pass the security checklist and
+          follow <span className="text-slate-500">CONTRIBUTING.md</span>.
         </p>
       </div>
     </div>

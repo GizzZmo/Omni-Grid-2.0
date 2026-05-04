@@ -50,12 +50,18 @@ const loadBookmarks = (): BookmarkEntry[] => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw) as BookmarkEntry[];
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   return [];
 };
 
 const saveBookmarks = (bms: BookmarkEntry[]) => {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(bms)); } catch { /* ignore */ }
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(bms));
+  } catch {
+    /* ignore */
+  }
 };
 
 const generateId = () =>
@@ -257,7 +263,9 @@ export const BrowserWidget: React.FC = () => {
               autoComplete="off"
             />
           </div>
-          <button type="submit" className="sr-only">Go</button>
+          <button type="submit" className="sr-only">
+            Go
+          </button>
         </form>
 
         {/* Bookmark toggle */}
@@ -347,8 +355,8 @@ export const BrowserWidget: React.FC = () => {
             <div className="text-center">
               <div className="text-sm font-bold text-red-400 mb-1">Connection Error</div>
               <div className="text-xs text-slate-500 max-w-xs">
-                The page could not be loaded. This may be due to network restrictions, X-Frame-Options
-                headers, or the site being unavailable.
+                The page could not be loaded. This may be due to network restrictions,
+                X-Frame-Options headers, or the site being unavailable.
               </div>
             </div>
             <div className="flex gap-3">
@@ -368,68 +376,68 @@ export const BrowserWidget: React.FC = () => {
               </button>
             </div>
           </div>
-        ) : (
-          /* New-tab / preset grid shown when on HOME_URL or no navigation yet */
-          url === HOME_URL && !isLoading ? (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 p-6 overflow-y-auto custom-scrollbar bg-slate-950">
-              <div className="text-center">
-                <Globe size={32} className="text-cyan-400 mx-auto mb-2 opacity-70" />
-                <div className="text-lg font-bold text-slate-200 tracking-wide">New Tab</div>
-                <div className="text-xs text-slate-500 mt-1">Enter a URL or search above, or pick a preset</div>
+        ) : /* New-tab / preset grid shown when on HOME_URL or no navigation yet */
+        url === HOME_URL && !isLoading ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 p-6 overflow-y-auto custom-scrollbar bg-slate-950">
+            <div className="text-center">
+              <Globe size={32} className="text-cyan-400 mx-auto mb-2 opacity-70" />
+              <div className="text-lg font-bold text-slate-200 tracking-wide">New Tab</div>
+              <div className="text-xs text-slate-500 mt-1">
+                Enter a URL or search above, or pick a preset
               </div>
-
-              <div className="grid grid-cols-3 gap-3 w-full max-w-xs">
-                {PRESETS.map(preset => (
-                  <button
-                    key={preset.url}
-                    onClick={() => navigate(preset.url)}
-                    className="flex flex-col items-center gap-1.5 p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-slate-600 hover:bg-slate-800 transition-all"
-                  >
-                    <span className="text-xl">{preset.icon}</span>
-                    <span className="text-[10px] text-slate-400 font-medium">{preset.label}</span>
-                  </button>
-                ))}
-              </div>
-
-              {bookmarks.length > 0 && (
-                <div className="w-full max-w-xs">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <Star size={10} /> Bookmarks
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    {bookmarks.slice(0, 5).map(bm => (
-                      <button
-                        key={bm.id}
-                        onClick={() => navigate(bm.url)}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded hover:border-slate-600 transition-all text-left"
-                      >
-                        <Globe size={10} className="text-slate-500 flex-shrink-0" />
-                        <span className="text-[11px] text-slate-300 truncate">{bm.title}</span>
-                      </button>
-                    ))}
-                    {bookmarks.length > 5 && (
-                      <button
-                        onClick={() => setShowBookmarks(true)}
-                        className="text-[10px] text-slate-500 hover:text-cyan-400 py-1"
-                      >
-                        +{bookmarks.length - 5} more
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
-          ) : (
-            <iframe
-              ref={iframeRef}
-              src={url}
-              title="Browser"
-              className="w-full h-full border-none"
-              sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-              onLoad={handleIframeLoad}
-              onError={handleIframeError}
-            />
-          )
+
+            <div className="grid grid-cols-3 gap-3 w-full max-w-xs">
+              {PRESETS.map(preset => (
+                <button
+                  key={preset.url}
+                  onClick={() => navigate(preset.url)}
+                  className="flex flex-col items-center gap-1.5 p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-slate-600 hover:bg-slate-800 transition-all"
+                >
+                  <span className="text-xl">{preset.icon}</span>
+                  <span className="text-[10px] text-slate-400 font-medium">{preset.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {bookmarks.length > 0 && (
+              <div className="w-full max-w-xs">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <Star size={10} /> Bookmarks
+                </div>
+                <div className="flex flex-col gap-1">
+                  {bookmarks.slice(0, 5).map(bm => (
+                    <button
+                      key={bm.id}
+                      onClick={() => navigate(bm.url)}
+                      className="flex items-center gap-2 px-3 py-1.5 bg-slate-900 border border-slate-800 rounded hover:border-slate-600 transition-all text-left"
+                    >
+                      <Globe size={10} className="text-slate-500 flex-shrink-0" />
+                      <span className="text-[11px] text-slate-300 truncate">{bm.title}</span>
+                    </button>
+                  ))}
+                  {bookmarks.length > 5 && (
+                    <button
+                      onClick={() => setShowBookmarks(true)}
+                      className="text-[10px] text-slate-500 hover:text-cyan-400 py-1"
+                    >
+                      +{bookmarks.length - 5} more
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <iframe
+            ref={iframeRef}
+            src={url}
+            title="Browser"
+            className="w-full h-full border-none"
+            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+            onLoad={handleIframeLoad}
+            onError={handleIframeError}
+          />
         )}
       </div>
 

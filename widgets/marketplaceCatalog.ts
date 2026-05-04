@@ -662,7 +662,8 @@ export const MARKETPLACE_CATALOG: MarketplaceEntry[] = [
     downloads: 0,
     rating: 0,
     updatedAt: '2026-04-30',
-    changelog: 'v1.0.0: Initial release. 6 built-in agents, 3 pre-built pipelines, parallel & sequential modes.',
+    changelog:
+      'v1.0.0: Initial release. 6 built-in agents, 3 pre-built pipelines, parallel & sequential modes.',
     isCore: true,
     minGridW: 5,
     minGridH: 8,
