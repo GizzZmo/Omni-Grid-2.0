@@ -26,7 +26,7 @@ export const QuantumCalc: React.FC = () => {
         : String(parseFloat(result.toFixed(8)));
       setDisplay(resultStr);
       setLastResult(resultStr);
-    } catch (e) {
+    } catch {
       setDisplay('Error');
       setTimeout(() => setDisplay('0'), 1500);
     }

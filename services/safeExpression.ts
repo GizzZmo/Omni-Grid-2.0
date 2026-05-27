@@ -17,8 +17,8 @@ const OPERATORS: Record<Operator, OperatorMeta> = {
   '-': { precedence: 1 },
   '*': { precedence: 2 },
   '/': { precedence: 2 },
-  '^': { precedence: 3, rightAssociative: true },
-  'u-': { precedence: 4, rightAssociative: true, unary: true },
+  '^': { precedence: 4, rightAssociative: true },
+  'u-': { precedence: 3, rightAssociative: true, unary: true },
 };
 
 type Token =
