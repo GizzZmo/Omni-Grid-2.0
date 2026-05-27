@@ -4,6 +4,7 @@ node_modules/
 # Build artifacts
 dist/
 omnigrid_server
+generated-assets/
 
 # Environment variables
 .env

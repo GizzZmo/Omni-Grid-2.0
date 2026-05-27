@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Delete, Eraser, Calculator } from 'lucide-react';
+import { Delete } from 'lucide-react';
+import { evaluateMathExpression } from '../services/safeExpression';
 
 export const QuantumCalc: React.FC = () => {
   const [display, setDisplay] = useState('0');
@@ -17,24 +18,7 @@ export const QuantumCalc: React.FC = () => {
 
   const calculate = () => {
     try {
-      // Pre-process for scientific functions
-      let expr = display
-        .replace(/×/g, '*')
-        .replace(/÷/g, '/')
-        .replace(/π/g, 'Math.PI')
-        .replace(/e/g, 'Math.E')
-        .replace(/\^/g, '**')
-        .replace(/sqrt\(/g, 'Math.sqrt(')
-        .replace(/sin\(/g, 'Math.sin(')
-        .replace(/cos\(/g, 'Math.cos(')
-        .replace(/tan\(/g, 'Math.tan(')
-        .replace(/log\(/g, 'Math.log10(')
-        .replace(/ln\(/g, 'Math.log(');
-
-      // Security: Replace non-math chars (allowing standard math functions)
-      const sanitized = expr.replace(/[^0-9+\-*/.()MathPIE,_**]/g, '');
-
-      const result = eval(sanitized);
+      const result = evaluateMathExpression(display);
 
       // Format result
       const resultStr = Number.isInteger(result)
@@ -42,7 +26,7 @@ export const QuantumCalc: React.FC = () => {
         : String(parseFloat(result.toFixed(8)));
       setDisplay(resultStr);
       setLastResult(resultStr);
-    } catch (e) {
+    } catch {
       setDisplay('Error');
       setTimeout(() => setDisplay('0'), 1500);
     }

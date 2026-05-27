@@ -1,0 +1,52 @@
+name: Screenshot Assets
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'docs/screenshots/**'
+      - 'scripts/generate-screenshot-assets.mjs'
+      - '.github/workflows/assets.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'docs/screenshots/**'
+      - 'scripts/generate-screenshot-assets.mjs'
+      - '.github/workflows/assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate-assets:
+    name: Generate screenshot artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20.x
+
+      - name: Generate screenshot manifest
+        run: node scripts/generate-screenshot-assets.mjs
+
+      - name: Package screenshot archive
+        run: |
+          tar -czf generated-assets/screenshots.tar.gz docs/screenshots
+          sha256sum generated-assets/screenshots.tar.gz > generated-assets/checksums.txt
+
+      - name: Upload screenshot artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshot-assets
+          path: |
+            generated-assets/screenshots-manifest.json
+            generated-assets/screenshots-summary.md
+            generated-assets/screenshots.tar.gz
+            generated-assets/checksums.txt
+          retention-days: 30

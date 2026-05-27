@@ -147,6 +147,14 @@
 - [x] **Universal Transformer**
   - Multi-format data conversion (JSON, CSV, Base64, hex, etc.)
 
+- [x] **Runtime security hardening**
+  - Removed dynamic `eval()` execution from calculator and terminal runtimes
+  - Added deterministic expression parser for scientific calculations
+
+- [x] **Screenshot asset automation**
+  - Automated screenshot manifest + checksum generation workflow
+  - Downloadable screenshot artifact bundle for docs/release reuse
+
 ### 🚧 In Progress
 
 - [ ] **Widget marketplace — full platform**

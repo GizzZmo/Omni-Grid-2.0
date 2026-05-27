@@ -314,6 +314,26 @@ All workflows have been enhanced with:
 
 ---
 
+### Screenshot Assets (`assets.yml`)
+
+**Triggers:** Push and PRs touching `docs/screenshots/**`, Manual dispatch
+
+**Purpose:** Generate reproducible screenshot asset manifests and downloadable archives
+
+**Jobs:**
+
+- **Generate screenshot artifacts**:
+  - ✅ Generate `screenshots-manifest.json` with SHA-256 checksums
+  - ✅ Generate `screenshots-summary.md` inventory table
+  - ✅ Package screenshots into `screenshots.tar.gz`
+  - ✅ Upload artifact bundle for release/docs consumers
+
+**Artifacts:**
+
+- Screenshot manifest, summary, archive, and checksums - 30 days
+
+---
+
 ### Workflow Status (`status.yml`)
 
 **Triggers:** Completion of CI, CodeQL, Audit, or Performance workflows, Manual dispatch
@@ -415,6 +435,7 @@ npm run typecheck     # Run TypeScript type checking
 npm run build         # Build frontend
 npm run build:server  # Build C++ server
 npm run build:all     # Build both frontend and server
+npm run assets:generate # Generate screenshot asset manifest locally
 ```
 
 ---

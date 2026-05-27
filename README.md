@@ -19,6 +19,7 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 [![CodeQL](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/codeql.yml)
 [![Dependency Audit](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml)
 [![Performance](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml/badge.svg?event=pull_request)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml)
+[![Screenshot Assets](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/assets.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/assets.yml)
 
 [![Release](https://img.shields.io/github/v/release/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=00ff88)](https://github.com/GizzZmo/Omni-Grid-2.0/releases)
 [![License](https://img.shields.io/github/license/GizzZmo/Omni-Grid-2.0?style=flat-square&color=00ccff)](./LICENSE)
@@ -91,7 +92,7 @@ _Macro Net M2 correlation heatmap, Asset Command portfolio tracker, Reg Radar se
 
 ### 🛠️ Developer Optic
 
-- **Web Terminal:** Sandboxed JavaScript REPL.
+- **Web Terminal:** Secure command runtime (`calc`, `json`, `echo`, `time`) with execution guard and bounded history.
 - **Dev Optic:** JWT decoding and Regex testing.
 - **Git Pulse:** Pull Request monitoring dashboard.
 - **Widget Architect:** AI-driven prototype generation for new widgets.
@@ -209,12 +210,14 @@ Omni-Grid features a comprehensive automated workflow system:
 - **Dependency Auditing:** Daily npm security audits with PR alerts
 - **Dependabot:** Automated dependency updates with auto-merge for safe updates
 - **Test Coverage:** Automatic coverage reports on PRs
+- **Safe Runtime Execution:** Calculator and terminal expression handling without `eval()` dynamic execution
 
 ### 📦 Release & Deployment
 
 - **Automated Releases:** Tag-triggered release creation with SHA-256 checksums
 - **Documentation Deployment:** Auto-deploy docs to GitHub Pages
 - **Performance Reports:** PR-specific build performance analysis with warnings
+- **Screenshot Asset Pipeline:** Automatic screenshot manifest/checksum generation and downloadable artifact bundles
 
 ### 🤖 Automation
 
