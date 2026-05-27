@@ -35,8 +35,7 @@ const normalize = (input: string): string =>
     .replace(/\s+/g, '')
     .replace(/×/g, '*')
     .replace(/÷/g, '/')
-    .replace(/π/g, 'pi')
-    .replace(/\^/g, '^');
+    .replace(/π/g, 'pi');
 
 const isDigit = (char: string) => /[0-9]/.test(char);
 const isLetter = (char: string) => /[a-z]/.test(char);
