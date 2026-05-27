@@ -417,6 +417,7 @@ export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-colors"
+            aria-label="Close widget launcher"
           >
             <X size={24} />
           </button>
@@ -431,6 +432,7 @@ export const WidgetLauncher: React.FC<WidgetLauncherProps> = ({ onClose }) => {
               <button
                 key={widget.id}
                 onClick={() => toggleWidget(widget.id)}
+                aria-label={`${isActive ? 'Disable' : 'Enable'} ${widget.name}`}
                 className={`
                                     flex flex-col items-center justify-center gap-3 p-4 rounded-lg border transition-all duration-300 group relative
                                     ${

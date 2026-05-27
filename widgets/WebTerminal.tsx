@@ -1,12 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Terminal, Play, Trash2 } from 'lucide-react';
+import { Play, Trash2 } from 'lucide-react';
+import { evaluateMathExpression } from '../services/safeExpression';
+
+const MAX_HISTORY = 200;
+const WELCOME_HISTORY: Array<{ type: 'in' | 'out' | 'err'; content: string }> = [
+  { type: 'out', content: 'Omni-Grid Secure Runtime v2.0.0' },
+  { type: 'out', content: 'Commands: help, calc <expr>, echo <text>, json <json>, time, clear' },
+  { type: 'out', content: 'Human-in-the-loop guard is enabled.' },
+];
 
 export const WebTerminal: React.FC = () => {
-  const [history, setHistory] = useState<Array<{ type: 'in' | 'out' | 'err'; content: string }>>([
-    { type: 'out', content: 'Omni-Grid JS Runtime Environment v1.0.0' },
-    { type: 'out', content: 'Type JavaScript code to execute locally.' },
-    { type: 'out', content: 'Human-in-the-loop guard is enabled.' },
-  ]);
+  const [history, setHistory] = useState<Array<{ type: 'in' | 'out' | 'err'; content: string }>>(
+    WELCOME_HISTORY
+  );
   const [input, setInput] = useState('');
   const [requireConfirm, setRequireConfirm] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -15,27 +21,67 @@ export const WebTerminal: React.FC = () => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
 
+  const appendHistory = (entry: { type: 'in' | 'out' | 'err'; content: string }) => {
+    setHistory(prev => [...prev, entry].slice(-MAX_HISTORY));
+  };
+
+  const executeCommand = (command: string): { type: 'out' | 'err'; content: string } => {
+    const [rawName, ...rest] = command.trim().split(/\s+/);
+    const name = rawName.toLowerCase();
+    const payload = rest.join(' ').trim();
+
+    switch (name) {
+      case 'help':
+        return {
+          type: 'out',
+          content:
+            'help | calc <expr> | echo <text> | json <json> | time | clear\nExample: calc (2+2)^3',
+        };
+      case 'calc': {
+        if (!payload) return { type: 'err', content: 'Usage: calc <expression>' };
+        const result = evaluateMathExpression(payload);
+        return { type: 'out', content: String(Number.isInteger(result) ? result : +result.toFixed(8)) };
+      }
+      case 'echo':
+        return { type: 'out', content: payload || '' };
+      case 'json': {
+        if (!payload) return { type: 'err', content: 'Usage: json <json-string>' };
+        const parsed = JSON.parse(payload);
+        return { type: 'out', content: JSON.stringify(parsed, null, 2) };
+      }
+      case 'time':
+        return { type: 'out', content: new Date().toLocaleString() };
+      case 'clear':
+        setHistory(WELCOME_HISTORY);
+        return { type: 'out', content: 'History reset.' };
+      default:
+        return {
+          type: 'err',
+          content: `Unknown command: "${name}". Run "help" for available commands.`,
+        };
+    }
+  };
+
   const execute = () => {
     if (!input.trim()) return;
 
-    const cmd = input;
-    setHistory(prev => [...prev, { type: 'in', content: cmd }]);
+    const cmd = input.trim();
+    appendHistory({ type: 'in', content: cmd });
     setInput('');
 
     if (requireConfirm) {
       const allowed = window.confirm('Execute this command inside the sandbox?');
       if (!allowed) {
-        setHistory(prev => [...prev, { type: 'out', content: 'Command cancelled by operator.' }]);
+        appendHistory({ type: 'out', content: 'Command cancelled by operator.' });
         return;
       }
     }
 
     try {
-      let result = eval(cmd);
-      if (typeof result === 'object') result = JSON.stringify(result, null, 2);
-      setHistory(prev => [...prev, { type: 'out', content: String(result) }]);
-    } catch (e: any) {
-      setHistory(prev => [...prev, { type: 'err', content: e.message }]);
+      const result = executeCommand(cmd);
+      appendHistory(result);
+    } catch (e) {
+      appendHistory({ type: 'err', content: e instanceof Error ? e.message : 'Command failed.' });
     }
   };
 
@@ -67,20 +113,25 @@ export const WebTerminal: React.FC = () => {
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           className="flex-1 bg-transparent border-none outline-none text-slate-200"
-          placeholder="console.log('Hello World')"
+          placeholder="calc (2+2)^3"
         />
         <label className="flex items-center gap-1 text-[10px] text-amber-300">
           <input
             type="checkbox"
             checked={requireConfirm}
             onChange={e => setRequireConfirm(e.target.checked)}
+            aria-label="Execution guard"
           />
           Guard
         </label>
-        <button onClick={() => setHistory([])} className="text-slate-600 hover:text-red-400">
+        <button
+          onClick={() => setHistory(WELCOME_HISTORY)}
+          className="text-slate-600 hover:text-red-400"
+          aria-label="Clear terminal history"
+        >
           <Trash2 size={12} />
         </button>
-        <button onClick={execute} className="text-slate-600 hover:text-cyan-400">
+        <button onClick={execute} className="text-slate-600 hover:text-cyan-400" aria-label="Run command">
           <Play size={12} />
         </button>
       </div>

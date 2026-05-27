@@ -21,7 +21,8 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "assets:generate": "node scripts/generate-screenshot-assets.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.46.0",

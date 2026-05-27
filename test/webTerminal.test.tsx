@@ -10,13 +10,13 @@ beforeAll(() => {
 describe('WebTerminal', () => {
   it('renders the welcome messages', () => {
     render(<WebTerminal />);
-    expect(screen.getByText(/Omni-Grid JS Runtime/i)).toBeTruthy();
-    expect(screen.getByText(/Type JavaScript code/i)).toBeTruthy();
+    expect(screen.getByText(/Omni-Grid Secure Runtime/i)).toBeTruthy();
+    expect(screen.getByText(/Commands: help, calc/i)).toBeTruthy();
   });
 
   it('has an input field with the correct placeholder', () => {
     render(<WebTerminal />);
-    expect(screen.getByPlaceholderText(/console\.log/i)).toBeTruthy();
+    expect(screen.getByPlaceholderText(/calc/i)).toBeTruthy();
   });
 
   it('has guard checkbox enabled by default', () => {
@@ -38,7 +38,7 @@ describe('WebTerminal', () => {
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
 
-    const input = screen.getByPlaceholderText(/console\.log/i);
+    const input = screen.getByPlaceholderText(/calc/i);
     fireEvent.change(input, { target: { value: '1 + 1' } });
     fireEvent.keyDown(input, { key: 'Enter' });
 
