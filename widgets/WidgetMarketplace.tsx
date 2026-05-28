@@ -609,8 +609,8 @@ export const WidgetMarketplace: React.FC = () => {
   const [category, setCategory] = useState<MarketplaceCategory>('all');
   const [selectedEntry, setSelectedEntry] = useState<MarketplaceEntry | null>(null);
   const [checking, setChecking] = useState(false);
-  const [communitySubmissions, setCommunitySubmissions] = useState<PluginSubmission[]>(
-    loadCommunitySubmissions
+  const [communitySubmissions, setCommunitySubmissions] = useState<PluginSubmission[]>(() =>
+    loadCommunitySubmissions()
   );
 
   // Auto-check for updates on mount if never checked

@@ -24,6 +24,15 @@ export const COMMUNITY_SUBMISSIONS_UPDATED_EVENT = 'omni-community-submissions-u
 const isSubmissionStatus = (value: unknown): value is SubmissionStatus =>
   value === 'pending' || value === 'approved' || value === 'rejected' || value === 'in_review';
 
+const isMarketplaceCategory = (value: unknown): value is MarketplaceCategory =>
+  value === 'utility' ||
+  value === 'developer' ||
+  value === 'finance' ||
+  value === 'creative' ||
+  value === 'ai' ||
+  value === 'productivity' ||
+  value === 'community';
+
 const isPluginSubmission = (value: unknown): value is PluginSubmission => {
   if (!value || typeof value !== 'object') return false;
   const submission = value as Record<string, unknown>;
@@ -34,6 +43,7 @@ const isPluginSubmission = (value: unknown): value is PluginSubmission => {
     typeof submission.description === 'string' &&
     typeof submission.version === 'string' &&
     typeof submission.author === 'string' &&
+    isMarketplaceCategory(submission.category) &&
     Array.isArray(submission.tags) &&
     submission.tags.every(tag => typeof tag === 'string') &&
     typeof submission.repositoryUrl === 'string' &&
@@ -58,7 +68,7 @@ export const loadCommunitySubmissions = (): PluginSubmission[] => {
 export const saveCommunitySubmissions = (items: PluginSubmission[]) => {
   try {
     localStorage.setItem(COMMUNITY_SUBMISSIONS_STORAGE_KEY, JSON.stringify(items));
-    window.dispatchEvent(new CustomEvent(COMMUNITY_SUBMISSIONS_UPDATED_EVENT));
+    window.dispatchEvent(new window.CustomEvent(COMMUNITY_SUBMISSIONS_UPDATED_EVENT));
   } catch {
     /* ignore */
   }

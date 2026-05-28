@@ -23,6 +23,10 @@ vi.mock('../store', () => ({
   useAppStore: vi.fn(selector => (typeof selector === 'function' ? selector(mockState) : mockState)),
 }));
 
+const openDeveloperTab = () => {
+  fireEvent.click(screen.getAllByRole('button').find(b => b.textContent?.trim() === 'Developer')!);
+};
+
 describe('WidgetMarketplace', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -69,12 +73,7 @@ describe('WidgetMarketplace', () => {
 
   it('switches to Developer tab and shows Developer Portal', () => {
     render(<WidgetMarketplace />);
-    // Click the "Developer" tab button (there should be a tab with that label)
-    const devTabButtons = screen
-      .getAllByRole('button')
-      .filter(b => b.textContent?.trim() === 'Developer');
-    expect(devTabButtons.length).toBeGreaterThan(0);
-    fireEvent.click(devTabButtons[0]);
+    openDeveloperTab();
     expect(screen.getByText(/Developer Portal/i)).toBeTruthy();
   });
 
@@ -117,7 +116,7 @@ describe('WidgetMarketplace', () => {
     );
 
     render(<WidgetMarketplace />);
-    fireEvent.click(screen.getAllByRole('button').find(b => b.textContent?.trim() === 'Developer')!);
+    openDeveloperTab();
 
     expect(screen.getByText(/Community Submission Queue/i)).toBeTruthy();
     expect(screen.getByText('My Widget')).toBeTruthy();
@@ -126,7 +125,7 @@ describe('WidgetMarketplace', () => {
 
   it('opens the Community Portal widget from the Developer tab', () => {
     render(<WidgetMarketplace />);
-    fireEvent.click(screen.getAllByRole('button').find(b => b.textContent?.trim() === 'Developer')!);
+    openDeveloperTab();
     fireEvent.click(screen.getByRole('button', { name: /Open Community Portal/i }));
 
     expect(mockToggleWidget).toHaveBeenCalledWith('COMMUNITY_PORTAL');
