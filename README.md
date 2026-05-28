@@ -306,7 +306,7 @@ Want to know what's coming next? Check out our comprehensive development roadmap
 - ✅ Settings panel v2
 - ✅ Theme customization system
 - ✅ Widget marketplace foundation (MarketWidget)
-- 🚧 Widget marketplace — full platform (installation & update system)
+- 🚧 Widget marketplace — full platform (installation, updates, and integrated community submission queue)
 - 🚧 Plugin API documentation & developer portal
 - 📋 Progressive Web App (PWA) optimization
 - 📋 Cloud backup & multi-device sync

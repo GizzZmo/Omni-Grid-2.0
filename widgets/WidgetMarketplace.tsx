@@ -29,10 +29,12 @@ import {
   Package,
   AlertCircle,
   Loader2,
+  Sparkles,
 } from 'lucide-react';
 import { useAppStore } from '../store';
 import { MARKETPLACE_CATALOG } from './marketplaceCatalog';
 import { MarketplaceCategory, MarketplaceEntry } from '../types';
+import { loadCommunitySubmissions, PluginSubmission, SubmissionStatus } from './communitySubmissionStore';
 
 const CATEGORIES: { id: MarketplaceCategory; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -57,6 +59,20 @@ const CATEGORY_COLORS: Record<MarketplaceCategory, string> = {
 };
 
 type Tab = 'browse' | 'installed' | 'updates' | 'developer';
+
+const COMMUNITY_STATUS_STYLES: Record<SubmissionStatus, string> = {
+  pending: 'text-amber-400 bg-amber-900/20 border-amber-500/30',
+  in_review: 'text-blue-400 bg-blue-900/20 border-blue-500/30',
+  approved: 'text-emerald-400 bg-emerald-900/20 border-emerald-500/30',
+  rejected: 'text-red-400 bg-red-900/20 border-red-500/30',
+};
+
+const COMMUNITY_STATUS_LABELS: Record<SubmissionStatus, string> = {
+  pending: 'Pending Review',
+  in_review: 'In Review',
+  approved: 'Approved',
+  rejected: 'Rejected',
+};
 
 const StarRating: React.FC<{ rating: number }> = ({ rating }) => (
   <div className="flex items-center gap-0.5">
@@ -337,7 +353,10 @@ const DetailPanel: React.FC<{
   );
 };
 
-const DeveloperPortalTab: React.FC = () => (
+const DeveloperPortalTab: React.FC<{
+  submissions: PluginSubmission[];
+  onOpenCommunityPortal: () => void;
+}> = ({ submissions, onOpenCommunityPortal }) => (
   <div className="p-5 flex flex-col gap-5 overflow-y-auto custom-scrollbar h-full">
     <div>
       <h2 className="text-lg font-bold text-fuchsia-400 mb-1">Developer Portal</h2>
@@ -345,6 +364,87 @@ const DeveloperPortalTab: React.FC = () => (
         Build and share widgets with the Omni-Grid community. Follow the guides below to create,
         test, and submit your widget to the marketplace.
       </p>
+    </div>
+
+    <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 flex flex-col gap-4">
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h3 className="text-xs font-bold text-white">Community Submission Queue</h3>
+          <p className="text-[11px] text-slate-400 mt-1">
+            Review your local submission history, track review states, and jump straight into the
+            dedicated community workflow.
+          </p>
+        </div>
+        <button
+          onClick={onOpenCommunityPortal}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg border border-amber-500/40 bg-amber-900/20 text-[11px] font-bold text-amber-300 hover:bg-amber-900/30 transition-colors"
+        >
+          <Sparkles size={13} />
+          Open Community Portal
+        </button>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        {(['pending', 'in_review', 'approved', 'rejected'] as SubmissionStatus[]).map(status => {
+          const count = submissions.filter(submission => submission.status === status).length;
+          return (
+            <div key={status} className="rounded-lg border border-slate-800 bg-slate-950/60 p-3">
+              <div className="text-[10px] uppercase tracking-wider text-slate-500">
+                {COMMUNITY_STATUS_LABELS[status]}
+              </div>
+              <div className="mt-1 text-lg font-bold text-white">{count}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {submissions.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-slate-700 bg-slate-950/40 px-4 py-5 text-center">
+          <p className="text-sm font-semibold text-slate-200">No local submissions yet</p>
+          <p className="text-[11px] text-slate-500 mt-1">
+            Launch the Community Portal to create your first widget submission draft and track it
+            from the marketplace.
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            Recent Submissions
+          </div>
+          {submissions
+            .slice()
+            .sort((a, b) => b.submittedAt - a.submittedAt)
+            .slice(0, 3)
+            .map(submission => (
+              <div
+                key={submission.id}
+                className="rounded-lg border border-slate-800 bg-slate-950/60 p-3 flex items-start justify-between gap-3"
+              >
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-semibold text-white">{submission.name}</span>
+                    <span className="text-[10px] font-mono text-slate-500">
+                      {submission.widgetId} · v{submission.version}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    by {submission.author} · {new Date(submission.submittedAt).toLocaleDateString()}
+                  </p>
+                  {submission.reviewNote && (
+                    <p className="text-[11px] text-slate-500 mt-2 line-clamp-2">
+                      Review note: {submission.reviewNote}
+                    </p>
+                  )}
+                </div>
+                <span
+                  className={`shrink-0 rounded-full border px-2 py-1 text-[9px] font-bold uppercase ${COMMUNITY_STATUS_STYLES[submission.status]}`}
+                >
+                  {COMMUNITY_STATUS_LABELS[submission.status]}
+                </span>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
 
     {/* Quick links */}
@@ -493,6 +593,7 @@ export const WidgetMarketplace: React.FC = () => {
   const installedWidgets = useAppStore(s => s.installedWidgets);
   const availableUpdates = useAppStore(s => s.availableUpdates);
   const marketplaceLastChecked = useAppStore(s => s.marketplaceLastChecked);
+  const visibleWidgets = useAppStore(s => s.visibleWidgets);
   const installWidget = useAppStore(s => s.installWidget);
   const uninstallWidget = useAppStore(s => s.uninstallWidget);
   const checkForUpdates = useAppStore(s => s.checkForUpdates);
@@ -503,6 +604,7 @@ export const WidgetMarketplace: React.FC = () => {
   const [category, setCategory] = useState<MarketplaceCategory>('all');
   const [selectedEntry, setSelectedEntry] = useState<MarketplaceEntry | null>(null);
   const [checking, setChecking] = useState(false);
+  const [communitySubmissions, setCommunitySubmissions] = useState<PluginSubmission[]>([]);
 
   // Auto-check for updates on mount if never checked
   useEffect(() => {
@@ -510,6 +612,12 @@ export const WidgetMarketplace: React.FC = () => {
       checkForUpdates();
     }
   }, [marketplaceLastChecked, checkForUpdates]);
+
+  useEffect(() => {
+    if (tab === 'developer') {
+      setCommunitySubmissions(loadCommunitySubmissions());
+    }
+  }, [tab]);
 
   const handleCheckForUpdates = async () => {
     setChecking(true);
@@ -531,6 +639,12 @@ export const WidgetMarketplace: React.FC = () => {
   const handleUninstall = (id: string) => {
     uninstallWidget(id);
     if (selectedEntry?.id === id) setSelectedEntry(null);
+  };
+
+  const handleOpenCommunityPortal = () => {
+    if (!visibleWidgets.includes('COMMUNITY_PORTAL')) {
+      toggleWidget('COMMUNITY_PORTAL');
+    }
   };
 
   const filteredEntries = useMemo(() => {
@@ -768,7 +882,12 @@ export const WidgetMarketplace: React.FC = () => {
         </div>
       )}
 
-      {tab === 'developer' && <DeveloperPortalTab />}
+      {tab === 'developer' && (
+        <DeveloperPortalTab
+          submissions={communitySubmissions}
+          onOpenCommunityPortal={handleOpenCommunityPortal}
+        />
+      )}
 
       {/* Footer */}
       <div className="px-4 py-1.5 border-t border-slate-800 bg-slate-900/40 flex items-center justify-between flex-shrink-0">

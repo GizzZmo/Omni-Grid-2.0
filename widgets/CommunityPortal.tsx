@@ -30,26 +30,14 @@ import {
   Globe,
 } from 'lucide-react';
 import { MarketplaceCategory } from '../types';
+import {
+  loadCommunitySubmissions,
+  PluginSubmission,
+  saveCommunitySubmissions,
+  SubmissionStatus,
+} from './communitySubmissionStore';
 
 // ── Types ────────────────────────────────────────────────────────────────────
-
-export type SubmissionStatus = 'pending' | 'approved' | 'rejected' | 'in_review';
-
-export interface PluginSubmission {
-  id: string;
-  widgetId: string;
-  name: string;
-  description: string;
-  version: string;
-  author: string;
-  category: MarketplaceCategory;
-  tags: string[];
-  repositoryUrl: string;
-  checklistPassed: string[];
-  submittedAt: number;
-  status: SubmissionStatus;
-  reviewNote?: string;
-}
 
 // ── Security checklist ────────────────────────────────────────────────────────
 
@@ -145,25 +133,6 @@ const STATUS_CONFIG: Record<
 
 // ── Store helpers ─────────────────────────────────────────────────────────────
 
-const STORAGE_KEY = 'omni-community-submissions';
-
-const loadSubmissions = (): PluginSubmission[] => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as PluginSubmission[]) : [];
-  } catch {
-    return [];
-  }
-};
-
-const saveSubmissions = (items: PluginSubmission[]) => {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  } catch {
-    /* ignore */
-  }
-};
-
 const generateId = () =>
   typeof crypto !== 'undefined' && crypto.randomUUID
     ? crypto.randomUUID()
@@ -198,7 +167,7 @@ const EMPTY_FORM = {
 
 export const CommunityPortal: React.FC = () => {
   const [view, setView] = useState<ViewMode>('list');
-  const [submissions, setSubmissions] = useState<PluginSubmission[]>(loadSubmissions);
+  const [submissions, setSubmissions] = useState<PluginSubmission[]>(loadCommunitySubmissions);
   const [selected, setSelected] = useState<PluginSubmission | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [checklist, setChecklist] = useState<Set<string>>(new Set());
@@ -207,7 +176,7 @@ export const CommunityPortal: React.FC = () => {
 
   const persist = (items: PluginSubmission[]) => {
     setSubmissions(items);
-    saveSubmissions(items);
+    saveCommunitySubmissions(items);
   };
 
   const allChecked = checklist.size === SECURITY_CHECKLIST.length;
