@@ -1,0 +1,135 @@
+name: Generate Assets & Artifacts
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate-screenshots:
+    name: Generate Screenshot Assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Generate screenshot manifest
+        run: node scripts/generate-screenshot-assets.mjs
+
+      - name: Package screenshot archive
+        run: |
+          tar -czf generated-assets/screenshots.tar.gz docs/screenshots
+          sha256sum generated-assets/screenshots.tar.gz > generated-assets/checksums.txt
+
+      - name: Upload screenshot artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-assets
+          path: |
+            generated-assets/screenshots-manifest.json
+            generated-assets/screenshots-summary.md
+            generated-assets/screenshots.tar.gz
+            generated-assets/checksums.txt
+          retention-days: 30
+
+  generate-build-artifacts:
+    name: Generate Build Artifact Manifest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Generate build artifact manifest
+        run: npm run artifacts:generate
+
+      - name: Package build archive
+        run: |
+          tar -czf generated-assets/build.tar.gz dist/
+          sha256sum generated-assets/build.tar.gz >> generated-assets/checksums.txt || true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-assets
+          path: |
+            generated-assets/build-manifest.json
+            generated-assets/build-summary.md
+            generated-assets/build.tar.gz
+            generated-assets/checksums.txt
+          retention-days: 30
+
+  generate-report:
+    name: Generate Asset Report
+    runs-on: ubuntu-latest
+    needs: [generate-screenshots, generate-build-artifacts]
+
+    steps:
+      - name: Download screenshot artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: screenshot-assets
+          path: generated-assets/screenshots
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-assets
+          path: generated-assets/build
+
+      - name: Generate combined report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            let report = '# 📦 Asset Generation Report\n\n';
+            report += `> Generated: ${new Date().toUTCString()}\n\n`;
+
+            const screenshotSummaryPath = path.join('generated-assets', 'screenshots', 'screenshots-summary.md');
+            if (fs.existsSync(screenshotSummaryPath)) {
+              report += '## 🖼️ Screenshot Assets\n\n';
+              report += fs.readFileSync(screenshotSummaryPath, 'utf8');
+              report += '\n';
+            }
+
+            const buildSummaryPath = path.join('generated-assets', 'build', 'build-summary.md');
+            if (fs.existsSync(buildSummaryPath)) {
+              report += '## 🏗️ Build Artifacts\n\n';
+              report += fs.readFileSync(buildSummaryPath, 'utf8');
+              report += '\n';
+            }
+
+            fs.mkdirSync('generated-assets/report', { recursive: true });
+            fs.writeFileSync('generated-assets/report/combined-report.md', report, 'utf8');
+            console.log('Combined asset report generated.');
+            core.summary.addRaw(report).write();
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v4
+        with:
+          name: asset-generation-report
+          path: generated-assets/report/combined-report.md
+          retention-days: 30

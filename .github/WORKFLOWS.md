@@ -334,6 +334,43 @@ All workflows have been enhanced with:
 
 ---
 
+### Generate Assets & Artifacts (`generate.yml`)
+
+**Triggers:** Push to main/develop, Manual dispatch
+
+**Purpose:** Comprehensive generation of all project assets, artifacts, and summaries on every push to the main branches
+
+**Jobs:**
+
+- **Generate Screenshot Assets**:
+  - ✅ Run `npm run assets:generate` to produce `screenshots-manifest.json` and `screenshots-summary.md`
+  - ✅ Package screenshots into `screenshots.tar.gz` with SHA-256 checksums
+  - ✅ Upload screenshot artifact bundle (30 days)
+- **Generate Build Artifact Manifest**:
+  - ✅ Run `npm run build` to produce the `dist/` directory
+  - ✅ Run `npm run artifacts:generate` to produce `build-manifest.json` and `build-summary.md`
+  - ✅ Package `dist/` into `build.tar.gz` with SHA-256 checksum
+  - ✅ Upload build artifact bundle (30 days)
+- **Generate Asset Report** *(depends on both above jobs)*:
+  - ✅ Download and merge screenshot + build summaries into a single combined report
+  - ✅ Write combined report as GitHub Actions job summary
+  - ✅ Upload combined report artifact (30 days)
+
+**Artifacts:**
+
+- `screenshot-assets`: manifest, summary, archive, checksums - 30 days
+- `build-assets`: manifest, summary, archive, checksums - 30 days
+- `asset-generation-report`: combined Markdown report - 30 days
+
+**Permissions:** contents:read
+
+**Scripts used:**
+
+- `npm run assets:generate` → `scripts/generate-screenshot-assets.mjs`
+- `npm run artifacts:generate` → `scripts/generate-build-artifacts.mjs`
+
+---
+
 ### Workflow Status (`status.yml`)
 
 **Triggers:** Completion of CI, CodeQL, Audit, or Performance workflows, Manual dispatch
@@ -436,6 +473,7 @@ npm run build         # Build frontend
 npm run build:server  # Build C++ server
 npm run build:all     # Build both frontend and server
 npm run assets:generate # Generate screenshot asset manifest locally
+npm run artifacts:generate # Generate build artifact manifest locally (requires prior `npm run build`)
 ```
 
 ---
@@ -499,5 +537,5 @@ npm run assets:generate # Generate screenshot asset manifest locally
 
 ---
 
-_Last Updated: 2025-12-27_  
+_Last Updated: 2026-05-28_  
 _For questions or issues with workflows, please open an issue with the `ci-cd` label._
