@@ -20,6 +20,9 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 [![Dependency Audit](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/audit.yml)
 [![Performance](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml/badge.svg?event=pull_request)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml)
 [![Screenshot Assets](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/assets.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/assets.yml)
+[![Generate Assets](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/generate.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/generate.yml)
+[![Release](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/release.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/release.yml)
+[![Deploy Docs](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/docs.yml)
 
 [![Release](https://img.shields.io/github/v/release/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=00ff88)](https://github.com/GizzZmo/Omni-Grid-2.0/releases)
 [![License](https://img.shields.io/github/license/GizzZmo/Omni-Grid-2.0?style=flat-square&color=00ccff)](./LICENSE)

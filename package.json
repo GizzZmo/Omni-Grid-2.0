@@ -22,7 +22,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "assets:generate": "node scripts/generate-screenshot-assets.mjs"
+    "assets:generate": "node scripts/generate-screenshot-assets.mjs",
+    "artifacts:generate": "node scripts/generate-build-artifacts.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.46.0",
