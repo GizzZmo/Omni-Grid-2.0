@@ -34,7 +34,12 @@ import {
 import { useAppStore } from '../store';
 import { MARKETPLACE_CATALOG } from './marketplaceCatalog';
 import { MarketplaceCategory, MarketplaceEntry } from '../types';
-import { loadCommunitySubmissions, PluginSubmission, SubmissionStatus } from './communitySubmissionStore';
+import {
+  COMMUNITY_SUBMISSIONS_UPDATED_EVENT,
+  loadCommunitySubmissions,
+  PluginSubmission,
+  SubmissionStatus,
+} from './communitySubmissionStore';
 
 const CATEGORIES: { id: MarketplaceCategory; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -604,6 +609,9 @@ export const WidgetMarketplace: React.FC = () => {
   const [category, setCategory] = useState<MarketplaceCategory>('all');
   const [selectedEntry, setSelectedEntry] = useState<MarketplaceEntry | null>(null);
   const [checking, setChecking] = useState(false);
+  const [communitySubmissions, setCommunitySubmissions] = useState<PluginSubmission[]>(
+    loadCommunitySubmissions
+  );
 
   // Auto-check for updates on mount if never checked
   useEffect(() => {
@@ -611,6 +619,18 @@ export const WidgetMarketplace: React.FC = () => {
       checkForUpdates();
     }
   }, [marketplaceLastChecked, checkForUpdates]);
+
+  useEffect(() => {
+    const syncSubmissions = () => setCommunitySubmissions(loadCommunitySubmissions());
+
+    window.addEventListener(COMMUNITY_SUBMISSIONS_UPDATED_EVENT, syncSubmissions);
+    window.addEventListener('storage', syncSubmissions);
+
+    return () => {
+      window.removeEventListener(COMMUNITY_SUBMISSIONS_UPDATED_EVENT, syncSubmissions);
+      window.removeEventListener('storage', syncSubmissions);
+    };
+  }, []);
 
   const handleCheckForUpdates = async () => {
     setChecking(true);
@@ -658,10 +678,6 @@ export const WidgetMarketplace: React.FC = () => {
 
   const installedEntries = MARKETPLACE_CATALOG.filter(e => installedWidgets[e.id] !== undefined);
   const updateEntries = MARKETPLACE_CATALOG.filter(e => availableUpdates.includes(e.id));
-  const communitySubmissions: PluginSubmission[] = useMemo(
-    () => (tab === 'developer' ? loadCommunitySubmissions() : []),
-    [tab]
-  );
 
   return (
     <div className="h-full flex flex-col bg-slate-950 relative overflow-hidden">
