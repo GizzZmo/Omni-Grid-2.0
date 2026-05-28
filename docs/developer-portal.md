@@ -11,6 +11,8 @@ The Omni-Grid Developer Portal is your gateway to building and publishing widget
 
 All widgets — from one-person utilities to complex AI-powered tools — go through the same transparent review process. Community widgets are equal citizens alongside core widgets.
 
+You can also access this workflow directly from the **Widget Marketplace → Developer** tab, which now surfaces your local submission queue and provides a one-click launcher for the dedicated `COMMUNITY_PORTAL` widget.
+
 ---
 
 ## Quick Start
@@ -214,6 +216,8 @@ The core team aims to review PRs within **7 days**. During review:
 4. **Code review** checks code quality, patterns, and store usage.
 
 You may be asked to make changes before merge. Address feedback commits to the same PR branch and the review will continue.
+
+If you are iterating locally before opening a PR, revisit the marketplace's **Developer** tab to verify the queue state, review notes, and recent submission history stored in your browser.
 
 ---
 
