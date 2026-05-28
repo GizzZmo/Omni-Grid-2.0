@@ -604,7 +604,6 @@ export const WidgetMarketplace: React.FC = () => {
   const [category, setCategory] = useState<MarketplaceCategory>('all');
   const [selectedEntry, setSelectedEntry] = useState<MarketplaceEntry | null>(null);
   const [checking, setChecking] = useState(false);
-  const [communitySubmissions, setCommunitySubmissions] = useState<PluginSubmission[]>([]);
 
   // Auto-check for updates on mount if never checked
   useEffect(() => {
@@ -612,12 +611,6 @@ export const WidgetMarketplace: React.FC = () => {
       checkForUpdates();
     }
   }, [marketplaceLastChecked, checkForUpdates]);
-
-  useEffect(() => {
-    if (tab === 'developer') {
-      setCommunitySubmissions(loadCommunitySubmissions());
-    }
-  }, [tab]);
 
   const handleCheckForUpdates = async () => {
     setChecking(true);
@@ -665,6 +658,10 @@ export const WidgetMarketplace: React.FC = () => {
 
   const installedEntries = MARKETPLACE_CATALOG.filter(e => installedWidgets[e.id] !== undefined);
   const updateEntries = MARKETPLACE_CATALOG.filter(e => availableUpdates.includes(e.id));
+  const communitySubmissions: PluginSubmission[] = useMemo(
+    () => (tab === 'developer' ? loadCommunitySubmissions() : []),
+    [tab]
+  );
 
   return (
     <div className="h-full flex flex-col bg-slate-950 relative overflow-hidden">

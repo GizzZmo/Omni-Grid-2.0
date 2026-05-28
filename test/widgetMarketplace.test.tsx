@@ -121,7 +121,7 @@ describe('WidgetMarketplace', () => {
 
     expect(screen.getByText(/Community Submission Queue/i)).toBeTruthy();
     expect(screen.getByText('My Widget')).toBeTruthy();
-    expect(screen.getByText(/Pending Review/i)).toBeTruthy();
+    expect(screen.getAllByText(/Pending Review/i).length).toBeGreaterThan(0);
   });
 
   it('opens the Community Portal widget from the Developer tab', () => {
