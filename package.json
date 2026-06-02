@@ -26,7 +26,7 @@
     "artifacts:generate": "node scripts/generate-build-artifacts.mjs"
   },
   "dependencies": {
-    "@google/genai": "^1.46.0",
+    "@google/genai": "^2.7.0",
     "@monaco-editor/react": "^4.7.0",
     "@testing-library/dom": "^10.4.1",
     "lucide-react": "0.577.0",
