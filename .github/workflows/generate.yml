@@ -31,7 +31,7 @@ jobs:
           sha256sum generated-assets/screenshots.tar.gz > generated-assets/checksums.txt
 
       - name: Upload screenshot artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: screenshot-assets
           path: |
@@ -70,7 +70,7 @@ jobs:
           sha256sum generated-assets/build.tar.gz >> generated-assets/checksums.txt || true
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-assets
           path: |
@@ -128,7 +128,7 @@ jobs:
             core.summary.addRaw(report).write();
 
       - name: Upload combined report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: asset-generation-report
           path: generated-assets/report/combined-report.md
