@@ -1,0 +1,51 @@
+{
+  "name": "Omni-Grid 2.0",
+  "short_name": "Omni-Grid",
+  "description": "The cyberpunk super-app dashboard — 42+ widgets, AI integration, and a fully customisable grid.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#020617",
+  "theme_color": "#06b6d4",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Omni-Grid dashboard — desktop"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open Command Palette",
+      "short_name": "Command Palette",
+      "description": "Jump to any widget or action (Cmd+K)",
+      "url": "/?shortcut=cmd-palette",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Neural Chat",
+      "short_name": "AI Chat",
+      "description": "Open the Gemini-powered AI chat widget",
+      "url": "/?shortcut=neural-chat",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
