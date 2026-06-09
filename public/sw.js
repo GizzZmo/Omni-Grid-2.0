@@ -121,8 +121,8 @@ async function networkFirstWithShellFallback(request) {
     }
     return response;
   } catch {
-    const cached =
-      (await caches.match(request)) || (await caches.match('/index.html', { cacheName: SHELL_CACHE }));
+    const shellCache = await caches.open(SHELL_CACHE);
+    const cached = (await caches.match(request)) || (await shellCache.match('/index.html'));
     return (
       cached ||
       new Response('<h1>Offline</h1><p>Omni-Grid is offline. Please reconnect.</p>', {

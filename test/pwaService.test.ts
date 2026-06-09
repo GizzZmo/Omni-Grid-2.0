@@ -112,6 +112,17 @@ describe('pwaService — register (success)', () => {
 
     expect(mockRegister).toHaveBeenCalledWith('/custom-sw.js');
   });
+
+  it('defaults to /sw.js when no URL is provided', async () => {
+    const reg = makeRegistration();
+    const mockRegister = vi.fn().mockResolvedValue(reg);
+    (navigator.serviceWorker as any).register = mockRegister;
+
+    const { register } = await import('../services/pwaService');
+    await register(); // no argument
+
+    expect(mockRegister).toHaveBeenCalledWith('/sw.js');
+  });
 });
 
 describe('pwaService — register (error)', () => {
@@ -201,7 +212,7 @@ describe('pwaService — online/offline tracking', () => {
     });
 
     const { getPWAState } = await import('../services/pwaService');
-    // The initial isOnline is read from navigator.onLine at module load time
-    expect(typeof getPWAState().isOnline).toBe('boolean');
+    // Module initialises isOnline from navigator.onLine at import time
+    expect(getPWAState().isOnline).toBe(false);
   });
 });
