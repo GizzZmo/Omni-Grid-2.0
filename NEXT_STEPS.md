@@ -79,16 +79,23 @@ This document provides **immediate, actionable next steps** for contributing to 
 
 ### 7. Progressive Web App (PWA) Optimization
 
-**Status:** Not started  
+**Status:** Scaffolding complete 🚧  
 **Effort:** 1-2 weeks  
 **Good For:** Frontend developers familiar with service workers
 
-**What's Needed:**
+**Completed:**
 
-- Service worker for offline functionality
-- Install prompts and app manifest
-- Mobile-optimized touch interface
-- Offline data caching strategy
+- [x] `public/manifest.json` — web app manifest (icons, shortcuts, display mode)
+- [x] `public/sw.js` — service worker with cache-first static / network-first navigation strategy
+- [x] `services/pwaService.ts` — SW registration, deferred install-prompt, online/offline, update API
+- [x] `index.html` — manifest `<link>`, `theme-color`, Apple PWA meta tags
+- [x] `test/pwaService.test.ts` — 11 unit tests covering all public API surfaces
+
+**Still Needed:**
+
+- App icon artwork (`/public/icons/icon-192.png`, `/public/icons/icon-512.png`)
+- Mobile-optimized touch interface for the grid
+- Offline data caching strategy for widget state
 
 ---
 

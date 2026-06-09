@@ -1,6 +1,7 @@
 import React, { ErrorInfo, ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { register as registerPWA } from './services/pwaService';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -62,3 +63,9 @@ root.render(
     </ErrorBoundary>
   </React.StrictMode>
 );
+
+// Register the service worker for PWA offline support.
+// Only runs in production-like environments (not inside Vitest).
+if (typeof process === 'undefined' || process.env.NODE_ENV !== 'test') {
+  registerPWA();
+}

@@ -157,10 +157,10 @@
 
 ### 🚧 In Progress
 
-- [ ] **Widget marketplace — full platform**
-  - Installation and one-click management system
-  - Widget versioning and update notifications
-  - Community widget submissions and developer portal
+- [x] **Widget marketplace — full platform**
+  - ✅ Installation and one-click management system
+  - ✅ Widget versioning and update notifications
+  - ✅ Community widget submissions and developer portal
 
 - [ ] **Plugin API documentation**
   - Comprehensive widget development guide
@@ -174,10 +174,13 @@
 
 ### 📋 Next Sprint (Q3 2026)
 
-- [ ] **Progressive Web App (PWA) optimization**
-  - Service worker for offline functionality
-  - Install prompts and app manifest
-  - Mobile-optimized touch interface
+- [x] **Progressive Web App (PWA) — scaffolding complete**
+  - ✅ `public/manifest.json` — installable web app manifest with icons & shortcuts
+  - ✅ `public/sw.js` — service worker (cache-first static, network-first navigation)
+  - ✅ `services/pwaService.ts` — SW registration, deferred install-prompt, update API
+  - ✅ `index.html` updated with manifest link & Apple/PWA meta tags
+  - 🚧 App icons (`/icons/icon-192.png`, `/icons/icon-512.png`) — artwork needed
+  - 📋 Mobile-optimized touch interface
 
 - [ ] **Cloud backup & sync**
   - Cloud storage integration
