@@ -27,16 +27,6 @@ const DEFAULT_BOARD: Board = {
   done: [{ id: 'd1', text: 'Project Setup', createdAt: 0 }],
 };
 
-const withCreatedAt = (board: Board, now: number): Board => {
-  const stamp = (t: Task) => (t.createdAt ? t : { ...t, createdAt: now });
-  return {
-    backlog: board.backlog.map(stamp),
-    todo: board.todo.map(stamp),
-    progress: board.progress.map(stamp),
-    done: board.done.map(stamp),
-  };
-};
-
 const LANE_META: { key: keyof Board; label: string; color: string; headerColor: string }[] = [
   { key: 'backlog', label: 'Backlog', color: 'border-slate-700', headerColor: 'text-slate-400' },
   { key: 'todo', label: 'Todo', color: 'border-cyan-800/50', headerColor: 'text-cyan-400' },
@@ -76,10 +66,6 @@ const loadBoard = (): Board => {
 
 export const ProjectTracker: React.FC = () => {
   const [board, setBoard] = useState<Board>(() => loadBoard());
-
-  useEffect(() => {
-    setBoard(prev => withCreatedAt(prev, timestamp()));
-  }, []);
 
   const [addingIn, setAddingIn] = useState<keyof Board | null>(null);
   const [newTaskText, setNewTaskText] = useState('');
