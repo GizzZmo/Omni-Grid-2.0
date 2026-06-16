@@ -60,7 +60,7 @@ export type WidgetType =
   | 'CIPHER_PAD'
   // Community
   | 'COMMUNITY_PORTAL';
-  // Add your widget type here — see docs/widget-api/getting-started.md
+// Add your widget type here — see docs/widget-api/getting-started.md
 ```
 
 ### `GridItemData`

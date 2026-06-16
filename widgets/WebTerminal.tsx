@@ -10,9 +10,8 @@ const WELCOME_HISTORY: Array<{ type: 'in' | 'out' | 'err'; content: string }> = 
 ];
 
 export const WebTerminal: React.FC = () => {
-  const [history, setHistory] = useState<Array<{ type: 'in' | 'out' | 'err'; content: string }>>(
-    WELCOME_HISTORY
-  );
+  const [history, setHistory] =
+    useState<Array<{ type: 'in' | 'out' | 'err'; content: string }>>(WELCOME_HISTORY);
   const [input, setInput] = useState('');
   const [requireConfirm, setRequireConfirm] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -40,7 +39,10 @@ export const WebTerminal: React.FC = () => {
       case 'calc': {
         if (!payload) return { type: 'err', content: 'Usage: calc <expression>' };
         const result = evaluateMathExpression(payload);
-        return { type: 'out', content: String(Number.isInteger(result) ? result : +result.toFixed(8)) };
+        return {
+          type: 'out',
+          content: String(Number.isInteger(result) ? result : +result.toFixed(8)),
+        };
       }
       case 'echo':
         return { type: 'out', content: payload || '' };
@@ -131,7 +133,11 @@ export const WebTerminal: React.FC = () => {
         >
           <Trash2 size={12} />
         </button>
-        <button onClick={execute} className="text-slate-600 hover:text-cyan-400" aria-label="Run command">
+        <button
+          onClick={execute}
+          className="text-slate-600 hover:text-cyan-400"
+          aria-label="Run command"
+        >
           <Play size={12} />
         </button>
       </div>
