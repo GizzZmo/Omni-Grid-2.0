@@ -28,7 +28,7 @@ const DEFAULT_BOARD: Board = {
 };
 
 const withCreatedAt = (board: Board, now: number): Board => {
-  const stamp = (t: Task) => (t.createdAt ? t : { ...t, createdAt: now });
+  const stamp = (task: Task): Task => (task.createdAt ? task : { ...task, createdAt: now });
   return {
     backlog: board.backlog.map(stamp),
     todo: board.todo.map(stamp),
@@ -62,23 +62,22 @@ const generateId = (): string =>
     ? crypto.randomUUID()
     : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 
+const timestamp = (): number => new Date().getTime();
+
 const loadBoard = (): Board => {
+  let board = DEFAULT_BOARD;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw) as Board;
+    if (raw) board = JSON.parse(raw) as Board;
   } catch {
     /* ignore */
   }
-  return DEFAULT_BOARD;
+  return withCreatedAt(board, timestamp());
 };
 
 export const ProjectTracker: React.FC = () => {
   const [board, setBoard] = useState<Board>(() => loadBoard());
 
-  // Stamp createdAt after mount (allowed to be impure)
-  useEffect(() => {
-    setBoard(prev => withCreatedAt(prev, Date.now()));
-  }, []);
   const [addingIn, setAddingIn] = useState<keyof Board | null>(null);
   const [newTaskText, setNewTaskText] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -108,7 +107,8 @@ export const ProjectTracker: React.FC = () => {
       setAddingIn(null);
       return;
     }
-    const task: Task = { id: generateId(), text, createdAt: Date.now() };
+    const createdAt = timestamp();
+    const task: Task = { id: generateId(), text, createdAt };
     setBoard(prev => ({ ...prev, [lane]: [...prev[lane], task] }));
     setNewTaskText('');
     setAddingIn(null);

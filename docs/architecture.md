@@ -21,16 +21,16 @@ Omni-Grid is a **local-first, modular Super App** built on React with a focus on
 
 ### Widget Catalogue (43 modules)
 
-| Category                    | Widget IDs                                                                                                                    |
-| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| Category                    | Widget IDs                                                                                                                   |
+| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
 | **Neural Suite**            | `SCRATCHPAD`, `WRITEPAD`, `POLYGLOT`, `ARCHITECT`, `NEURAL_CHAT`                                                             |
 | **Smart Grid**              | `ASSET`, `MACRO_NET`, `CHAIN_PULSE`, `REG_RADAR`, `MARKET`, `VALUTA`                                                         |
 | **Developer Optic**         | `WEB_TERMINAL`, `DEV_OPTIC`, `GIT_PULSE`, `DOCU_HUB`, `PROJECT_TRACKER`, `CYBER_EDITOR`, `PROMPT_LAB`                        |
 | **Creative & Utility**      | `THEME_ENGINE`, `SONIC`, `CIPHER_VAULT`, `CHROMA_LAB`, `CLIPBOARD`, `CALC`, `WEATHER`, `RADIO`, `SUNO_PLAYER`                |
 | **Productivity & Research** | `FOCUS_HUD`, `TEMPORAL`, `SECURE_CALENDAR`, `STRATEGIC`, `NEWS_FEED`, `RESEARCH_BROWSER`, `PDF_VIEWER`, `HELP`, `CIPHER_PAD` |
-| **System**                  | `TRANSFORMER`, `SYSTEM`, `SUDOKU`, `GHOST`                                                                                    |
-| **Marketplace & Community** | `MARKETPLACE`, `COMMUNITY_PORTAL`                                                                                             |
-| **Orchestration & Browser** | `MULTI_AGENT_HUB`, `BROWSER_WIDGET`                                                                                           |
+| **System**                  | `TRANSFORMER`, `SYSTEM`, `SUDOKU`, `GHOST`                                                                                   |
+| **Marketplace & Community** | `MARKETPLACE`, `COMMUNITY_PORTAL`                                                                                            |
+| **Orchestration & Browser** | `MULTI_AGENT_HUB`, `BROWSER_WIDGET`                                                                                          |
 
 ---
 

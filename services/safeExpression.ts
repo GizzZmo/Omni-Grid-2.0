@@ -80,7 +80,10 @@ const tokenize = (expression: string): Token[] => {
       const prev = tokens[tokens.length - 1];
       const unary =
         char === '-' &&
-        (!prev || prev.type === 'operator' || prev.type === 'leftParen' || prev.type === 'function');
+        (!prev ||
+          prev.type === 'operator' ||
+          prev.type === 'leftParen' ||
+          prev.type === 'function');
       tokens.push({ type: 'operator', value: unary ? 'u-' : (char as Operator) });
       i++;
       continue;

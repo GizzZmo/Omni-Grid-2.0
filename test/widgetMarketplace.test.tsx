@@ -20,7 +20,9 @@ const mockState = {
 };
 
 vi.mock('../store', () => ({
-  useAppStore: vi.fn(selector => (typeof selector === 'function' ? selector(mockState) : mockState)),
+  useAppStore: vi.fn(selector =>
+    typeof selector === 'function' ? selector(mockState) : mockState
+  ),
 }));
 
 const openDeveloperTab = () => {

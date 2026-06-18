@@ -7,12 +7,7 @@
  *  - Online / offline status tracking
  */
 
-export type PWAStatus =
-  | 'unsupported'
-  | 'registering'
-  | 'registered'
-  | 'update_available'
-  | 'error';
+export type PWAStatus = 'unsupported' | 'registering' | 'registered' | 'update_available' | 'error';
 
 export interface PWAState {
   status: PWAStatus;
@@ -96,10 +91,7 @@ export const register = async (swUrl = '/sw.js'): Promise<void> => {
       if (!installing) return;
 
       installing.addEventListener('statechange', () => {
-        if (
-          installing.state === 'installed' &&
-          navigator.serviceWorker.controller
-        ) {
+        if (installing.state === 'installed' && navigator.serviceWorker.controller) {
           // A new version is waiting — notify the UI
           setState({ status: 'update_available' });
         }

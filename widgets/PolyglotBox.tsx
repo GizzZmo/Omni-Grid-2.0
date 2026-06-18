@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Copy, Check, Loader2, Play, Terminal } from 'lucide-react';
+import { ArrowRight, Copy, Check, Loader2, Play } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
 const getAi = () => getGenAIClient();
@@ -62,7 +62,7 @@ export const PolyglotBox: React.FC = () => {
       }
 
       setOutputCode(cleanCode.trim());
-    } catch (e) {
+    } catch {
       setOutputCode('// Translation failed. Please check connection.');
     } finally {
       setLoading(false);

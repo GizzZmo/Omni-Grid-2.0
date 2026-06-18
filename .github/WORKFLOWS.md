@@ -351,7 +351,7 @@ All workflows have been enhanced with:
   - ✅ Run `npm run artifacts:generate` to produce `build-manifest.json` and `build-summary.md`
   - ✅ Package `dist/` into `build.tar.gz` with SHA-256 checksum
   - ✅ Upload build artifact bundle (30 days)
-- **Generate Asset Report** *(depends on both above jobs)*:
+- **Generate Asset Report** _(depends on both above jobs)_:
   - ✅ Download and merge screenshot + build summaries into a single combined report
   - ✅ Write combined report as GitHub Actions job summary
   - ✅ Upload combined report artifact (30 days)
