@@ -30,8 +30,8 @@
     "@monaco-editor/react": "^4.7.0",
     "@testing-library/dom": "^10.4.1",
     "lucide-react": "0.577.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-grid-layout": "1.4.4",
     "zustand": "5.0.12"
   },
@@ -64,7 +64,6 @@
     "postcss": "8.5.10",
     "protobufjs": "7.6.2",
     "ws": "8.21.0",
-    "brace-expansion@^1.1.7": "1.1.15",
-    "brace-expansion@^5.0.2": "5.0.6"
+    "brace-expansion": "5.0.6"
   }
 }
