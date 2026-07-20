@@ -33,7 +33,7 @@
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-grid-layout": "1.4.4",
-    "zustand": "5.0.12"
+    "zustand": "5.0.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
