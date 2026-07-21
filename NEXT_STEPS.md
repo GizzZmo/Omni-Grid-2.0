@@ -93,7 +93,7 @@ This document provides **immediate, actionable next steps** for contributing to 
 
 **Still Needed:**
 
-- App icon artwork (`/public/icons/icon-192.png`, `/public/icons/icon-512.png`)
+- App icon artwork (`public/icons/icon-192.png`, `public/icons/icon-512.png`)
 - Mobile-optimized touch interface for the grid
 - Offline data caching strategy for widget state
 
