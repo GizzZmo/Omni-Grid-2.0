@@ -285,7 +285,7 @@ npm run typecheck
 
 - **PWA App Icons** (`public/icons/icon-192.png`, `public/icons/icon-512.png`) — artwork needed
 - **Mobile Touch Interface** — touch-optimized grid interactions
-- **Plugin API Docs** — complete guide under `docs/plugin-api/`
+- **Plugin API Docs** — complete guide under `docs/widget-api/`
 - **10+ Unit Tests** added to reach coverage target
 
 ### This Month (Q3 2026 — 4 Weeks)
