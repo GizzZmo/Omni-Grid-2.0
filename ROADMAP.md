@@ -172,7 +172,7 @@
   - Code style and conventions
   - Testing requirements and review process
 
-### 🚧 Current Sprint (Q3 2026)
+### 📋 Sprint Breakdown (Q3 2026)
 
 - [x] **Progressive Web App (PWA) — scaffolding complete**
   - ✅ `public/manifest.json` — installable web app manifest with icons & shortcuts
