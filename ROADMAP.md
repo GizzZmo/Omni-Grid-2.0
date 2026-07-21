@@ -15,7 +15,7 @@
 
 [![GitHub Issues](https://img.shields.io/github/issues/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=red)](https://github.com/GizzZmo/Omni-Grid-2.0/issues)
 [![Milestone Progress](https://img.shields.io/badge/Phase_4-15%25-FFD700?style=flat-square)](https://github.com/GizzZmo/Omni-Grid-2.0/milestones)
-[![Last Updated](https://img.shields.io/badge/Updated-April_2026-00FFFF?style=flat-square)]()
+[![Last Updated](https://img.shields.io/badge/Updated-July_2026-00FFFF?style=flat-square)]()
 
 </div>
 
@@ -37,7 +37,7 @@
 
 ---
 
-## 🎯 CURRENT SPRINT (Q2 2026)
+## 🎯 CURRENT SPRINT (Q3 2026)
 
 > **📘 [VIEW DETAILED PROJECT BLUEPRINT](./PROJECT_BLUEPRINT.md)** - Complete implementation plan with task breakdowns, technical specs, and sprint planning.
 
@@ -162,17 +162,17 @@
   - ✅ Widget versioning and update notifications
   - ✅ Community widget submissions and developer portal
 
-- [ ] **Plugin API documentation**
-  - Comprehensive widget development guide
-  - API reference and examples
-  - Best practices, security guidelines, and testing patterns
+- [x] **Plugin API documentation**
+  - ✅ Widget development guide and API reference (`docs/widget-api/`)
+  - ✅ Developer portal docs (`docs/developer-portal.md`)
+  - ✅ Example widgets and best practices
 
 - [ ] **Community contribution guidelines**
   - Contribution workflow documentation
   - Code style and conventions
   - Testing requirements and review process
 
-### 📋 Next Sprint (Q3 2026)
+### 📋 Sprint Breakdown (Q3 2026)
 
 - [x] **Progressive Web App (PWA) — scaffolding complete**
   - ✅ `public/manifest.json` — installable web app manifest with icons & shortcuts
@@ -561,7 +561,7 @@ Omni-Grid 2.0 is designed to integrate with the broader GizzZmo ecosystem:
 ╚══════════════════════════════════════════════════════════════════╝
 ```
 
-_Last updated: April 2026_  
+_Last updated: July 2026_  
 _Maintained by: [Jon-Arve Constantine / GizzZmo](https://github.com/GizzZmo)_
 
 [![Built with Love](https://img.shields.io/badge/Built_with-❤️_and_⚡-FF00FF?style=for-the-badge&labelColor=0D1117)](https://github.com/GizzZmo)

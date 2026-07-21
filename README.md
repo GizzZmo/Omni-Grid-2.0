@@ -301,17 +301,19 @@ Want to know what's coming next? Check out our comprehensive development roadmap
 
 **🗺️ [DEVELOPMENT ROADMAP](./ROADMAP.md)** - Complete project roadmap with timelines, milestones, and contribution opportunities
 
-### Current Focus (Q2 2026)
+### Current Focus (Q3 2026)
 
 - ✅ Music player widget enhancement (SonicArchitecture + SunoPlayer + SignalRadio)
 - ✅ Code editor widget (CyberEditor with Monaco & AI assistance)
 - ✅ AI chat widget (NeuralChat — Gemini API)
 - ✅ Settings panel v2
 - ✅ Theme customization system
-- ✅ Widget marketplace foundation (MarketWidget)
-- 🚧 Widget marketplace — full platform (installation, updates, and integrated community submission queue)
-- 🚧 Plugin API documentation & developer portal
-- 📋 Progressive Web App (PWA) optimization
+- ✅ Widget marketplace — full platform (MarketWidget + WidgetMarketplace + community submission queue)
+- ✅ Plugin API documentation & developer portal (`docs/widget-api/`, `docs/developer-portal.md`)
+- ✅ CommunityPortal widget
+- ✅ MultiAgentHub widget
+- ✅ Progressive Web App (PWA) scaffolding (manifest, service worker, pwaService)
+- 🚧 PWA app icons and mobile touch interface
 - 📋 Cloud backup & multi-device sync
 
 See the [full roadmap](./ROADMAP.md) for detailed timelines, technical milestones, and how you can contribute!
