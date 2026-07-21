@@ -60,9 +60,9 @@
   },
   "overrides": {
     "flatted": "3.4.2",
-    "dompurify": "3.4.1",
+    "dompurify": "3.4.12",
     "postcss": "8.5.10",
-    "protobufjs": "7.6.2",
+    "protobufjs": "7.6.5",
     "ws": "8.21.0"
   }
 }
