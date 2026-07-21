@@ -990,7 +990,7 @@ interface WidgetPackage {
 
 **Deliverables:**
 
-- Complete Plugin API docs under `docs/plugin-api/`
+- Complete Plugin API docs under `docs/widget-api/`
 - Updated `CONTRIBUTING.md` with widget submission workflow
 - Developer portal entry point
 
