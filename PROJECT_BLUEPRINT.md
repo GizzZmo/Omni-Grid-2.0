@@ -968,7 +968,7 @@ interface WidgetPackage {
 
 **Tasks:**
 
-1. PWA app icons (`/public/icons/icon-192.png`, `/public/icons/icon-512.png`)
+1. PWA app icons (`public/icons/icon-192.png`, `public/icons/icon-512.png`)
 2. Mobile-optimized touch interface for the grid
 3. Cloud backup service design & implementation
 
