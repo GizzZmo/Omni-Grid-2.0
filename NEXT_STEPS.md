@@ -283,7 +283,7 @@ npm run typecheck
 
 ### This Sprint (Q3 2026 — 2 Weeks)
 
-- **PWA App Icons** (`/public/icons/icon-192.png`, `/public/icons/icon-512.png`) — artwork needed
+- **PWA App Icons** (`public/icons/icon-192.png`, `public/icons/icon-512.png`) — artwork needed
 - **Mobile Touch Interface** — touch-optimized grid interactions
 - **Plugin API Docs** — complete guide under `docs/plugin-api/`
 - **10+ Unit Tests** added to reach coverage target
