@@ -58,6 +58,8 @@ GEMINI_API_KEY=your_google_gemini_api_key_here
 E2B_API_KEY=your_e2b_api_key_here
 ```
 
+`GEMINI_API_KEY` is the canonical name used in `.env`. The store's key resolver also accepts `VITE_API_KEY` via `import.meta.env` (useful for Vite-prefixed secrets in some deployment environments), but `GEMINI_API_KEY` is preferred.
+
 ---
 
 ## Key Commands — Run Before Every PR
