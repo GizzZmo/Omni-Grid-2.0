@@ -90,10 +90,10 @@ This document provides **immediate, actionable next steps** for contributing to 
 - [x] `services/pwaService.ts` — SW registration, deferred install-prompt, online/offline, update API
 - [x] `index.html` — manifest `<link>`, `theme-color`, Apple PWA meta tags
 - [x] `test/pwaService.test.ts` — 11 unit tests covering all public API surfaces
+- [x] App icon artwork (`public/icons/icon-192.png`, `public/icons/icon-512.png`)
 
 **Still Needed:**
 
-- App icon artwork (`public/icons/icon-192.png`, `public/icons/icon-512.png`)
 - Mobile-optimized touch interface for the grid
 - Offline data caching strategy for widget state
 
@@ -271,7 +271,8 @@ npm run typecheck
 - ✅ CommunityPortal widget shipped
 - ✅ MultiAgentHub widget shipped
 - ✅ PWA scaffolding complete (manifest, service worker, pwaService)
-- 🚧 PWA app icons and mobile touch interface
+- ✅ PWA app icons
+- 🚧 Mobile touch interface
 - 📋 Cloud backup & sync
 - 📋 Plugin API docs (full portal)
 
@@ -283,7 +284,7 @@ npm run typecheck
 
 ### This Sprint (Q3 2026 — 2 Weeks)
 
-- **PWA App Icons** (`public/icons/icon-192.png`, `public/icons/icon-512.png`) — artwork needed
+- ✅ **PWA App Icons** (`public/icons/icon-192.png`, `public/icons/icon-512.png`) — complete
 - **Mobile Touch Interface** — touch-optimized grid interactions
 - **Plugin API Docs** — complete guide under `docs/widget-api/`
 - **10+ Unit Tests** added to reach coverage target

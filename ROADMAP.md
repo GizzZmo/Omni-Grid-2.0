@@ -179,7 +179,7 @@
   - ✅ `public/sw.js` — service worker (cache-first static, network-first navigation)
   - ✅ `services/pwaService.ts` — SW registration, deferred install-prompt, update API
   - ✅ `index.html` updated with manifest link & Apple/PWA meta tags
-  - 🚧 App icons (`/icons/icon-192.png`, `/icons/icon-512.png`) — artwork needed
+  - ✅ App icons (`/icons/icon-192.png`, `/icons/icon-512.png`) — artwork complete
   - 📋 Mobile-optimized touch interface
 
 - [ ] **Cloud backup & sync**

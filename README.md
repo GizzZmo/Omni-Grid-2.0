@@ -313,7 +313,8 @@ Want to know what's coming next? Check out our comprehensive development roadmap
 - ✅ CommunityPortal widget
 - ✅ MultiAgentHub widget
 - ✅ Progressive Web App (PWA) scaffolding (manifest, service worker, pwaService)
-- 🚧 PWA app icons and mobile touch interface
+- ✅ PWA app icons
+- 🚧 Mobile touch interface
 - 📋 Cloud backup & multi-device sync
 
 See the [full roadmap](./ROADMAP.md) for detailed timelines, technical milestones, and how you can contribute!
