@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import {
   GridItemData,
   AppTheme,
@@ -10,15 +10,15 @@ import {
 } from './types';
 import { estimateTokens } from './services/promptEngine';
 import { MARKETPLACE_CATALOG } from './widgets/marketplaceCatalog';
+import {
+  saveSecretsToVault,
+  loadSecretsFromVault,
+  clearSecretsVault,
+  type VaultSecrets,
+} from './services/secureVault';
 
 // Keys are supplied only via Settings (user paste) — never baked into the client bundle.
-const resolveEnvGeminiKey = () => {
-  // Intentionally empty by default. Optional: only honor explicitly user-provided runtime overrides.
-  if (typeof window !== 'undefined' && (window as any).E2B_API_KEY === undefined) {
-    // no-op guard for structure
-  }
-  return '';
-};
+const resolveEnvGeminiKey = () => '';
 
 const resolveEnvE2BKey = () => {
   if (typeof window !== 'undefined' && (window as any).E2B_API_KEY) {
@@ -40,6 +40,18 @@ const syncRuntimeKey = (key: 'API_KEY' | 'E2B_API_KEY' | 'GEMINI_API_KEY', value
       (window as any).E2B_API_KEY = value || '';
     }
   }
+};
+
+const persistSecrets = (state: {
+  settings: { geminiApiKey: string; e2bApiKey: string };
+  gitToken: string;
+}) => {
+  const secrets: VaultSecrets = {
+    geminiApiKey: state.settings.geminiApiKey || '',
+    e2bApiKey: state.settings.e2bApiKey || '',
+    gitToken: state.gitToken || '',
+  };
+  void saveSecretsToVault(secrets);
 };
 
 const DEFAULT_SETTINGS = {
@@ -337,12 +349,18 @@ export const useAppStore = create<AppState>()(
           };
         }),
 
-      setGlobalState: newState => set(state => ({ ...state, ...newState })),
+      setGlobalState: newState => {
+        set(state => ({ ...state, ...newState }));
+        // If secrets were restored via backup, re-encrypt them
+        const next = get();
+        persistSecrets(next);
+      },
       resetAll: () =>
         set(() => {
           syncRuntimeKey('API_KEY', DEFAULT_SETTINGS.geminiApiKey);
           syncRuntimeKey('GEMINI_API_KEY', DEFAULT_SETTINGS.geminiApiKey);
           syncRuntimeKey('E2B_API_KEY', DEFAULT_SETTINGS.e2bApiKey);
+          clearSecretsVault();
           return {
             layouts: { lg: getCleanLayout() },
             visibleWidgets: ['SYSTEM', 'HELP'],
@@ -419,15 +437,17 @@ export const useAppStore = create<AppState>()(
       setGeminiApiKey: key => {
         syncRuntimeKey('API_KEY', key);
         syncRuntimeKey('GEMINI_API_KEY', key);
-        return set(state => ({
+        set(state => ({
           settings: { ...state.settings, geminiApiKey: key },
         }));
+        persistSecrets(get());
       },
       setE2bApiKey: key => {
         syncRuntimeKey('E2B_API_KEY', key);
-        return set(state => ({
+        set(state => ({
           settings: { ...state.settings, e2bApiKey: key },
         }));
+        persistSecrets(get());
       },
       setStartupBehavior: behavior => {
         set(state => ({
@@ -493,7 +513,10 @@ export const useAppStore = create<AppState>()(
       // -- New Widget States --
 
       gitToken: '',
-      setGitToken: token => set({ gitToken: token }),
+      setGitToken: token => {
+        set({ gitToken: token });
+        persistSecrets(get());
+      },
 
       rssFeeds: ['https://news.ycombinator.com/rss'],
       addRssFeed: url => set(state => ({ rssFeeds: [...state.rssFeeds, url] })),
@@ -619,6 +642,55 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'omni-grid-storage',
+      storage: createJSONStorage(() => localStorage),
+      /**
+       * Never write API keys / tokens in plaintext.
+       * Secrets live in the AES-256-GCM vault (`omni-grid-secrets`).
+       */
+      partialize: state => {
+        const { geminiApiKey: _g, e2bApiKey: _e, ...safeSettings } = state.settings;
+        const { gitToken: _t, ...rest } = state;
+        return {
+          ...rest,
+          settings: safeSettings,
+          // Explicitly omit secrets (gitToken already stripped via rest)
+        };
+      },
+      onRehydrateStorage: () => state => {
+        // After non-secret state loads, restore secrets from the encrypted vault.
+        void (async () => {
+          const secrets = await loadSecretsFromVault();
+
+          // Migrate legacy plaintext secrets if they were still present in old storage
+          const legacyGemini =
+            (state?.settings as { geminiApiKey?: string } | undefined)?.geminiApiKey || '';
+          const legacyE2b =
+            (state?.settings as { e2bApiKey?: string } | undefined)?.e2bApiKey || '';
+          const legacyGit = (state as { gitToken?: string } | undefined)?.gitToken || '';
+
+          const merged: VaultSecrets = {
+            geminiApiKey: secrets.geminiApiKey || legacyGemini || '',
+            e2bApiKey: secrets.e2bApiKey || legacyE2b || '',
+            gitToken: secrets.gitToken || legacyGit || '',
+          };
+
+          if (merged.geminiApiKey || merged.e2bApiKey || merged.gitToken) {
+            useAppStore.setState(s => ({
+              settings: {
+                ...s.settings,
+                geminiApiKey: merged.geminiApiKey,
+                e2bApiKey: merged.e2bApiKey,
+              },
+              gitToken: merged.gitToken,
+            }));
+            syncRuntimeKey('API_KEY', merged.geminiApiKey);
+            syncRuntimeKey('GEMINI_API_KEY', merged.geminiApiKey);
+            syncRuntimeKey('E2B_API_KEY', merged.e2bApiKey);
+            // Re-save so legacy plaintext is rewritten as ciphertext and stays out of main blob
+            await saveSecretsToVault(merged);
+          }
+        })();
+      },
     }
   )
 );
