@@ -14,7 +14,14 @@ import {
   saveSecretsToVault,
   loadSecretsFromVault,
   clearSecretsVault,
+  setVaultPassphrase as vaultSetPassphrase,
+  unlockVault as vaultUnlock,
+  lockVault as vaultLock,
+  removeVaultPassphrase as vaultRemovePassphrase,
+  getVaultStatus,
+  hasVaultPassphrase,
   type VaultSecrets,
+  type VaultStatus,
 } from './services/secureVault';
 
 // Keys are supplied only via Settings (user paste) — never baked into the client bundle.
@@ -40,6 +47,34 @@ const syncRuntimeKey = (key: 'API_KEY' | 'E2B_API_KEY' | 'GEMINI_API_KEY', value
       (window as any).E2B_API_KEY = value || '';
     }
   }
+};
+
+const clearRuntimeSecrets = () => {
+  syncRuntimeKey('API_KEY', '');
+  syncRuntimeKey('GEMINI_API_KEY', '');
+  syncRuntimeKey('E2B_API_KEY', '');
+};
+
+const applySecretsToState = (merged: VaultSecrets) => {
+  useAppStore.setState(s => ({
+    settings: {
+      ...s.settings,
+      geminiApiKey: merged.geminiApiKey,
+      e2bApiKey: merged.e2bApiKey,
+    },
+    gitToken: merged.gitToken,
+  }));
+  syncRuntimeKey('API_KEY', merged.geminiApiKey);
+  syncRuntimeKey('GEMINI_API_KEY', merged.geminiApiKey);
+  syncRuntimeKey('E2B_API_KEY', merged.e2bApiKey);
+};
+
+const wipeSecretsFromState = () => {
+  useAppStore.setState(s => ({
+    settings: { ...s.settings, geminiApiKey: '', e2bApiKey: '' },
+    gitToken: '',
+  }));
+  clearRuntimeSecrets();
 };
 
 const persistSecrets = (state: {
@@ -72,6 +107,13 @@ interface AppState {
   updateLayout: (layout: GridItemData[]) => void;
   setGlobalState: (state: Partial<AppState>) => void;
   resetAll: () => void;
+
+  // Secure vault (session-only status; never trust persisted value)
+  vaultStatus: VaultStatus;
+  setVaultPassphrase: (passphrase: string) => Promise<{ ok: boolean; error?: string }>;
+  unlockVault: (passphrase: string) => Promise<boolean>;
+  lockVault: () => void;
+  removeVaultPassphrase: (passphrase: string) => Promise<boolean>;
 
   // Grid Intelligence
   ghostWidget: GhostData | null;
@@ -140,8 +182,6 @@ interface AppState {
   weatherLocation: string;
   setWeatherLocation: (loc: string) => void;
 
-  // -- New Widget States --
-
   // Git Pulse
   gitToken: string;
   setGitToken: (token: string) => void;
@@ -156,7 +196,7 @@ interface AppState {
   addCalendarEvent: (event: { date: string; title: string; encrypted: boolean }) => void;
 
   // Cipher Pad
-  encryptedNotes: Record<string, string>; // ID -> Encrypted Content
+  encryptedNotes: Record<string, string>;
   saveEncryptedNote: (id: string, content: string) => void;
 
   // Clipboard Stream
@@ -184,9 +224,7 @@ interface AppState {
   addPrompt: (template: PromptTemplate) => void;
 
   // Marketplace
-  /** widgetId → installed semver string */
   installedWidgets: Record<string, string>;
-  /** widgetIds that have a newer version available */
   availableUpdates: string[];
   marketplaceLastChecked: number;
   installWidget: (id: string) => void;
@@ -215,56 +253,45 @@ const DEFAULT_LAYOUT: GridItemData[] = [
   { i: 'THEME_ENGINE', x: 6, y: 42, w: 6, h: 10 },
   { i: 'RADIO', x: 0, y: 52, w: 6, h: 8 },
   { i: 'SUDOKU', x: 6, y: 52, w: 6, h: 8 },
-  // Developer
   { i: 'DOCU_HUB', x: 0, y: 60, w: 6, h: 8 },
   { i: 'GIT_PULSE', x: 6, y: 60, w: 6, h: 8 },
   { i: 'PROJECT_TRACKER', x: 0, y: 68, w: 8, h: 8 },
   { i: 'WEB_TERMINAL', x: 8, y: 68, w: 4, h: 8 },
   { i: 'CYBER_EDITOR', x: 0, y: 76, w: 12, h: 12 },
-  // Researcher
   { i: 'NEWS_FEED', x: 0, y: 88, w: 4, h: 8 },
   { i: 'CIPHER_PAD', x: 4, y: 88, w: 4, h: 8 },
   { i: 'PDF_VIEWER', x: 8, y: 88, w: 4, h: 8 },
   { i: 'RESEARCH_BROWSER', x: 0, y: 96, w: 6, h: 8 },
-  // Smart Grid
   { i: 'SECURE_CALENDAR', x: 6, y: 96, w: 6, h: 8 },
   { i: 'MACRO_NET', x: 0, y: 104, w: 4, h: 8 },
   { i: 'CHAIN_PULSE', x: 4, y: 104, w: 4, h: 8 },
   { i: 'REG_RADAR', x: 8, y: 104, w: 4, h: 8 },
   { i: 'MARKET', x: 0, y: 112, w: 4, h: 8 },
-  // New
   { i: 'STRATEGIC', x: 6, y: 112, w: 6, h: 8 },
   { i: 'CLIPBOARD', x: 0, y: 120, w: 4, h: 8 },
   { i: 'PROMPT_LAB', x: 4, y: 120, w: 8, h: 12 },
-  // AI Chat
   { i: 'NEURAL_CHAT', x: 0, y: 132, w: 6, h: 12 },
-  // Music
   { i: 'SUNO_PLAYER', x: 6, y: 132, w: 6, h: 12 },
-  // Marketplace
   { i: 'MARKETPLACE', x: 0, y: 144, w: 12, h: 16 },
-  // Multi-Agent Orchestration Hub
   { i: 'MULTI_AGENT_HUB', x: 0, y: 160, w: 8, h: 14 },
-  // Browser Widget
   { i: 'BROWSER_WIDGET', x: 8, y: 160, w: 4, h: 14 },
-  // Community Portal
   { i: 'COMMUNITY_PORTAL', x: 0, y: 174, w: 12, h: 16 },
 ];
 
 const DEFAULT_THEME: AppTheme = {
   name: 'Midnight Cyberpunk',
   colors: {
-    background: '#020617', // slate-950
-    surface: '#0f172a', // slate-900
-    primary: '#06b6d4', // cyan-500
-    secondary: '#d946ef', // fuchsia-500
-    text: '#e2e8f0', // slate-200
-    accent: '#10b981', // emerald-500
+    background: '#020617',
+    surface: '#0f172a',
+    primary: '#06b6d4',
+    secondary: '#d946ef',
+    text: '#e2e8f0',
+    accent: '#10b981',
   },
   font: 'Share Tech Mono',
   radius: '0.5rem',
 };
 
-// Helper to deep copy layout to avoid mutation issues
 const getCleanLayout = () => JSON.parse(JSON.stringify(DEFAULT_LAYOUT));
 
 const buildVersion = (content: string, note?: string): PromptVersion => ({
@@ -310,6 +337,49 @@ export const useAppStore = create<AppState>()(
         'PROMPT_LAB',
       ],
 
+      vaultStatus: (typeof window !== 'undefined' ? getVaultStatus() : 'unprotected') as VaultStatus,
+
+      setVaultPassphrase: async (passphrase: string) => {
+        try {
+          await vaultSetPassphrase(passphrase);
+          set({ vaultStatus: 'unlocked' });
+          get().addLog('Vault passphrase enabled — secrets protected');
+          return { ok: true };
+        } catch (e) {
+          return { ok: false, error: e instanceof Error ? e.message : 'Failed to set passphrase' };
+        }
+      },
+
+      unlockVault: async (passphrase: string) => {
+        const ok = await vaultUnlock(passphrase);
+        if (!ok) {
+          set({ vaultStatus: 'locked' });
+          return false;
+        }
+        const secrets = await loadSecretsFromVault();
+        applySecretsToState(secrets);
+        set({ vaultStatus: 'unlocked' });
+        get().addLog('Vault unlocked');
+        return true;
+      },
+
+      lockVault: () => {
+        vaultLock();
+        wipeSecretsFromState();
+        set({ vaultStatus: hasVaultPassphrase() ? 'locked' : 'unprotected' });
+        get().addLog('Vault locked — secrets cleared from memory');
+      },
+
+      removeVaultPassphrase: async (passphrase: string) => {
+        const ok = await vaultRemovePassphrase(passphrase);
+        if (!ok) return false;
+        const secrets = await loadSecretsFromVault();
+        applySecretsToState(secrets);
+        set({ vaultStatus: 'unprotected' });
+        get().addLog('Vault passphrase removed — auto-unlock enabled');
+        return true;
+      },
+
       toggleWidget: (widgetId: string) =>
         set(state => {
           const isVisible = state.visibleWidgets.includes(widgetId);
@@ -343,27 +413,22 @@ export const useAppStore = create<AppState>()(
             const updatedItem = newLayoutMap.get(existingItem.i);
             return updatedItem || existingItem;
           });
-
-          return {
-            layouts: { lg: mergedLayout },
-          };
+          return { layouts: { lg: mergedLayout } };
         }),
 
       setGlobalState: newState => {
         set(state => ({ ...state, ...newState }));
-        // If secrets were restored via backup, re-encrypt them
-        const next = get();
-        persistSecrets(next);
+        persistSecrets(get());
       },
+
       resetAll: () =>
         set(() => {
-          syncRuntimeKey('API_KEY', DEFAULT_SETTINGS.geminiApiKey);
-          syncRuntimeKey('GEMINI_API_KEY', DEFAULT_SETTINGS.geminiApiKey);
-          syncRuntimeKey('E2B_API_KEY', DEFAULT_SETTINGS.e2bApiKey);
+          clearRuntimeSecrets();
           clearSecretsVault();
           return {
             layouts: { lg: getCleanLayout() },
             visibleWidgets: ['SYSTEM', 'HELP'],
+            vaultStatus: 'unprotected' as VaultStatus,
             scratchpadContent: '',
             tasks: [],
             tickers: ['BTC', 'ETH', 'SOL', 'USDT', 'NOK'],
@@ -402,7 +467,6 @@ export const useAppStore = create<AppState>()(
           };
         }),
 
-      // Grid Intelligence
       ghostWidget: null,
       setGhostWidget: ghost => set({ ghostWidget: ghost }),
       solidifyGhostWidget: () => {
@@ -413,28 +477,25 @@ export const useAppStore = create<AppState>()(
         }
       },
 
-      // Layout Lock
       isLayoutLocked: false,
       toggleLayoutLock: () => set(state => ({ isLayoutLocked: !state.isLayoutLocked })),
 
-      // Layout Compaction
       isCompact: false,
       toggleCompact: () => set(state => ({ isCompact: !state.isCompact })),
 
-      // Command Palette
       isCmdPaletteOpen: false,
       setCmdPaletteOpen: open => set({ isCmdPaletteOpen: open }),
 
       isSettingsPanelOpen: false,
       setSettingsPanelOpen: open => set({ isSettingsPanelOpen: open }),
 
-      // Settings
       settings: { ...DEFAULT_SETTINGS },
       toggleSetting: key =>
         set(state => ({
           settings: { ...state.settings, [key]: !state.settings[key] },
         })),
       setGeminiApiKey: key => {
+        if (get().vaultStatus === 'locked') return;
         syncRuntimeKey('API_KEY', key);
         syncRuntimeKey('GEMINI_API_KEY', key);
         set(state => ({
@@ -443,6 +504,7 @@ export const useAppStore = create<AppState>()(
         persistSecrets(get());
       },
       setE2bApiKey: key => {
+        if (get().vaultStatus === 'locked') return;
         syncRuntimeKey('E2B_API_KEY', key);
         set(state => ({
           settings: { ...state.settings, e2bApiKey: key },
@@ -455,11 +517,9 @@ export const useAppStore = create<AppState>()(
         }));
       },
 
-      // Theme
       theme: DEFAULT_THEME,
       setTheme: theme => set({ theme }),
 
-      // Logs
       logs: [
         'Omni-Grid System initialized...',
         'User: Jon Constantine confirmed.',
@@ -470,12 +530,10 @@ export const useAppStore = create<AppState>()(
           logs: [`[${new Date().toLocaleTimeString()}] ${msg}`, ...state.logs].slice(0, 50),
         })),
 
-      // Scratchpad
       scratchpadContent:
         '# Neural Scratchpad\n\nHighlight text here and use the AI tools to refine, expand, or translate.',
       setScratchpadContent: (content: string) => set({ scratchpadContent: content }),
 
-      // Focus
       tasks: [
         { id: '1', text: 'Define project scope', status: 'done' },
         { id: '2', text: 'Build widgets', status: 'todo' },
@@ -496,24 +554,20 @@ export const useAppStore = create<AppState>()(
         })),
       setTasks: tasks => set({ tasks }),
 
-      // Asset
       tickers: ['BTC', 'ETH', 'SOL', 'USDT', 'NOK'],
       addTicker: t => set(state => ({ tickers: [...state.tickers, t] })),
       removeTicker: t => set(state => ({ tickers: state.tickers.filter(ticker => ticker !== t) })),
       setTickers: tickers => set({ tickers }),
 
-      // WritePad
       writePadContent: '',
       setWritePadContent: content => set({ writePadContent: content }),
 
-      // Weather
       weatherLocation: '',
       setWeatherLocation: loc => set({ weatherLocation: loc }),
 
-      // -- New Widget States --
-
       gitToken: '',
       setGitToken: token => {
+        if (get().vaultStatus === 'locked') return;
         set({ gitToken: token });
         persistSecrets(get());
       },
@@ -545,7 +599,6 @@ export const useAppStore = create<AppState>()(
       cyberEditorActiveTab: '1',
       setCyberEditorActiveTab: tabId => set({ cyberEditorActiveTab: tabId }),
 
-      // Prompt Lab
       promptLibrary: DEFAULT_PROMPTS,
       activePromptId: DEFAULT_PROMPTS[0]?.id ?? null,
       setActivePrompt: id => set({ activePromptId: id }),
@@ -584,9 +637,7 @@ export const useAppStore = create<AppState>()(
           activePromptId: template.id,
         })),
 
-      // Marketplace
       installedWidgets: (() => {
-        // Pre-install all core widgets at their current catalog version
         const preInstalled: Record<string, string> = {};
         MARKETPLACE_CATALOG.filter(e => e.isCore).forEach(e => {
           preInstalled[e.id] = e.version;
@@ -612,7 +663,6 @@ export const useAppStore = create<AppState>()(
           const entry = MARKETPLACE_CATALOG.find(e => e.id === id);
           const { [id]: _removed, ...rest } = state.installedWidgets;
           if (entry) state.addLog(`Uninstalled widget: ${entry.name}`);
-          // Also hide from grid
           const newVisible = state.visibleWidgets.filter(wid => wid !== id);
           return {
             installedWidgets: rest,
@@ -622,11 +672,9 @@ export const useAppStore = create<AppState>()(
 
       checkForUpdates: () =>
         set(state => {
-          // Simulated update check: compare installed version with catalog version
           const updates = MARKETPLACE_CATALOG.filter(entry => {
             const installed = state.installedWidgets[entry.id];
             if (!installed) return false;
-            // Simple semver compare: treat as numeric tuple
             const toTuple = (v: string) => v.split('.').map(Number);
             const [im, ip, ip2] = toTuple(installed);
             const [cm, cp, cp2] = toTuple(entry.version);
@@ -643,30 +691,31 @@ export const useAppStore = create<AppState>()(
     {
       name: 'omni-grid-storage',
       storage: createJSONStorage(() => localStorage),
-      /**
-       * Never write API keys / tokens in plaintext.
-       * Secrets live in the AES-256-GCM vault (`omni-grid-secrets`).
-       */
       partialize: state => {
         const { geminiApiKey: _g, e2bApiKey: _e, ...safeSettings } = state.settings;
-        const { gitToken: _t, ...rest } = state;
+        const { gitToken: _t, vaultStatus: _v, ...rest } = state;
         return {
           ...rest,
           settings: safeSettings,
-          // Explicitly omit secrets (gitToken already stripped via rest)
         };
       },
-      onRehydrateStorage: () => state => {
-        // After non-secret state loads, restore secrets from the encrypted vault.
+      onRehydrateStorage: () => _state => {
         void (async () => {
-          const secrets = await loadSecretsFromVault();
+          const status = getVaultStatus();
+          useAppStore.setState({ vaultStatus: status });
 
-          // Migrate legacy plaintext secrets if they were still present in old storage
+          // Passphrase-protected vault starts locked until user unlocks
+          if (status === 'locked') {
+            wipeSecretsFromState();
+            return;
+          }
+
+          const secrets = await loadSecretsFromVault();
           const legacyGemini =
-            (state?.settings as { geminiApiKey?: string } | undefined)?.geminiApiKey || '';
+            (_state?.settings as { geminiApiKey?: string } | undefined)?.geminiApiKey || '';
           const legacyE2b =
-            (state?.settings as { e2bApiKey?: string } | undefined)?.e2bApiKey || '';
-          const legacyGit = (state as { gitToken?: string } | undefined)?.gitToken || '';
+            (_state?.settings as { e2bApiKey?: string } | undefined)?.e2bApiKey || '';
+          const legacyGit = (_state as { gitToken?: string } | undefined)?.gitToken || '';
 
           const merged: VaultSecrets = {
             geminiApiKey: secrets.geminiApiKey || legacyGemini || '',
@@ -675,20 +724,11 @@ export const useAppStore = create<AppState>()(
           };
 
           if (merged.geminiApiKey || merged.e2bApiKey || merged.gitToken) {
-            useAppStore.setState(s => ({
-              settings: {
-                ...s.settings,
-                geminiApiKey: merged.geminiApiKey,
-                e2bApiKey: merged.e2bApiKey,
-              },
-              gitToken: merged.gitToken,
-            }));
-            syncRuntimeKey('API_KEY', merged.geminiApiKey);
-            syncRuntimeKey('GEMINI_API_KEY', merged.geminiApiKey);
-            syncRuntimeKey('E2B_API_KEY', merged.e2bApiKey);
-            // Re-save so legacy plaintext is rewritten as ciphertext and stays out of main blob
+            applySecretsToState(merged);
             await saveSecretsToVault(merged);
           }
+
+          useAppStore.setState({ vaultStatus: getVaultStatus() });
         })();
       },
     }
