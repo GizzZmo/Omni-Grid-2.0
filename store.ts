@@ -55,8 +55,18 @@ const clearRuntimeSecrets = () => {
   syncRuntimeKey('E2B_API_KEY', '');
 };
 
-const applySecretsToState = (merged: VaultSecrets) => {
-  useAppStore.setState(s => ({
+/** Zustand set signature used by secret helpers (avoids TDZ on useAppStore). */
+type StoreSet = (
+  partial:
+    | Partial<AppState>
+    | ((state: AppState) => Partial<AppState>)
+) => void;
+
+/** Assigned inside the store factory — safe for onRehydrateStorage. */
+let storeSet: StoreSet | null = null;
+
+const applySecretsToState = (set: StoreSet, merged: VaultSecrets) => {
+  set(s => ({
     settings: {
       ...s.settings,
       geminiApiKey: merged.geminiApiKey,
@@ -69,8 +79,8 @@ const applySecretsToState = (merged: VaultSecrets) => {
   syncRuntimeKey('E2B_API_KEY', merged.e2bApiKey);
 };
 
-const wipeSecretsFromState = () => {
-  useAppStore.setState(s => ({
+const wipeSecretsFromState = (set: StoreSet) => {
+  set(s => ({
     settings: { ...s.settings, geminiApiKey: '', e2bApiKey: '' },
     gitToken: '',
   }));
@@ -325,7 +335,11 @@ const DEFAULT_PROMPTS: PromptTemplate[] = [
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set, get) => {
+      // Capture set for rehydration helpers — never reference useAppStore during init.
+      storeSet = set as StoreSet;
+
+      return {
       layouts: { lg: getCleanLayout() },
       visibleWidgets: [
         'SYSTEM',
@@ -357,7 +371,7 @@ export const useAppStore = create<AppState>()(
           return false;
         }
         const secrets = await loadSecretsFromVault();
-        applySecretsToState(secrets);
+        applySecretsToState(set as StoreSet, secrets);
         set({ vaultStatus: 'unlocked' });
         get().addLog('Vault unlocked');
         return true;
@@ -365,7 +379,7 @@ export const useAppStore = create<AppState>()(
 
       lockVault: () => {
         vaultLock();
-        wipeSecretsFromState();
+        wipeSecretsFromState(set as StoreSet);
         set({ vaultStatus: hasVaultPassphrase() ? 'locked' : 'unprotected' });
         get().addLog('Vault locked — secrets cleared from memory');
       },
@@ -374,7 +388,7 @@ export const useAppStore = create<AppState>()(
         const ok = await vaultRemovePassphrase(passphrase);
         if (!ok) return false;
         const secrets = await loadSecretsFromVault();
-        applySecretsToState(secrets);
+        applySecretsToState(set as StoreSet, secrets);
         set({ vaultStatus: 'unprotected' });
         get().addLog('Vault passphrase removed — auto-unlock enabled');
         return true;
@@ -687,7 +701,8 @@ export const useAppStore = create<AppState>()(
             marketplaceLastChecked: Date.now(),
           };
         }),
-    }),
+    };
+    },
     {
       name: 'omni-grid-storage',
       storage: createJSONStorage(() => localStorage),
@@ -701,12 +716,15 @@ export const useAppStore = create<AppState>()(
       },
       onRehydrateStorage: () => _state => {
         void (async () => {
+          const set = storeSet;
+          if (!set) return;
+
           const status = getVaultStatus();
-          useAppStore.setState({ vaultStatus: status });
+          set({ vaultStatus: status });
 
           // Passphrase-protected vault starts locked until user unlocks
           if (status === 'locked') {
-            wipeSecretsFromState();
+            wipeSecretsFromState(set);
             return;
           }
 
@@ -724,11 +742,11 @@ export const useAppStore = create<AppState>()(
           };
 
           if (merged.geminiApiKey || merged.e2bApiKey || merged.gitToken) {
-            applySecretsToState(merged);
+            applySecretsToState(set, merged);
             await saveSecretsToVault(merged);
           }
 
-          useAppStore.setState({ vaultStatus: getVaultStatus() });
+          set({ vaultStatus: getVaultStatus() });
         })();
       },
     }
