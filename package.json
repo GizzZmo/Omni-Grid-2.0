@@ -59,9 +59,10 @@
     "vitest": "^4.1.0"
   },
   "overrides": {
+    "brace-expansion": "1.1.18",
     "flatted": "3.4.2",
     "dompurify": "3.4.12",
-    "postcss": "8.5.10",
+    "postcss": "8.5.25",
     "protobufjs": "7.6.5",
     "ws": "8.21.0"
   }

@@ -458,7 +458,7 @@ export const SystemCore: React.FC = () => {
       {activeTab === 'MANIFESTO' && (
         <div className="flex-1 p-2 overflow-y-auto custom-scrollbar text-xs text-slate-300 leading-6 border border-slate-800 bg-slate-900/30">
           <p className="mb-4 text-cyan-400 font-bold">{'///'} INCOMING TRANSMISSION...</p>
-          <p className="mb-2">"The net is vast and infinite, but your grid is your own.</p>
+          <p className="mb-2">&quot;The net is vast and infinite, but your grid is your own.</p>
           <p className="mb-2">
             We built Omni-Grid because the cloud is too loud. It watches, it waits, it charges
             subscription fees for tools that should be free.
@@ -466,7 +466,7 @@ export const SystemCore: React.FC = () => {
           <p className="mb-2">
             Here, processing is local. Your thoughts are yours. The tools are sharp.
           </p>
-          <p className="mb-4">Keep it clean. Keep it local. Stay disconnected."</p>
+          <p className="mb-4">Keep it clean. Keep it local. Stay disconnected.&quot;</p>
           <div className="text-right mt-4 pt-2 border-t border-slate-800 text-fuchsia-400 font-display uppercase tracking-widest">
             - Jon Constantine
           </div>
