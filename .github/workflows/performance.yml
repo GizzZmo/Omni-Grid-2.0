@@ -13,6 +13,7 @@ jobs:
   performance:
     name: Measure Build Performance
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
 
     steps:
       - name: Checkout code
