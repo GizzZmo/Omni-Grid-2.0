@@ -86,13 +86,13 @@ npm run build:server   # optional C++ server (make server)
 
 ## Naming Conventions
 
-| Item              | Convention               | Example                  |
-| ----------------- | ------------------------ | ------------------------ |
-| Widget files      | PascalCase               | `MyWidget.tsx`           |
-| WidgetType values | SCREAMING_SNAKE_CASE     | `MY_WIDGET`              |
-| Store slices      | camelCase                | `myWidgetData`           |
-| Test files        | camelCase matching widget| `test/myWidget.test.tsx` |
-| Catalog ID        | Must match WidgetType    | `'MY_WIDGET'`            |
+| Item              | Convention                | Example                  |
+| ----------------- | ------------------------- | ------------------------ |
+| Widget files      | PascalCase                | `MyWidget.tsx`           |
+| WidgetType values | SCREAMING_SNAKE_CASE      | `MY_WIDGET`              |
+| Store slices      | camelCase                 | `myWidgetData`           |
+| Test files        | camelCase matching widget | `test/myWidget.test.tsx` |
+| Catalog ID        | Must match WidgetType     | `'MY_WIDGET'`            |
 
 ---
 
