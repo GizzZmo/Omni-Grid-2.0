@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { PenTool, Box, Play, Cpu, Layers, Code, ArrowRight } from 'lucide-react';
-import { useAppStore } from '../store';
+import { Box, Play, Cpu, Layers, Code } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
 const getAi = () => getGenAIClient();

@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Terminal,
   Cpu,
-  Trash2,
-  RefreshCw,
   AlertTriangle,
   ShieldCheck,
   Skull,
-  Settings,
   Tv,
   Volume2,
   Key,
-  Activity,
   XCircle,
-  Power,
 } from 'lucide-react';
 import { useAppStore } from '../store';
 
@@ -21,7 +15,6 @@ export const SystemCore: React.FC = () => {
   const {
     logs,
     resetAll,
-    addLog,
     settings,
     toggleSetting,
     visibleWidgets,

@@ -2,37 +2,29 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import {
   GridItemData,
-  WidgetType,
   AppTheme,
   GhostData,
   PromptTemplate,
   PromptVersion,
   StartupBehavior,
-  MarketplaceEntry,
 } from './types';
 import { estimateTokens } from './services/promptEngine';
 import { MARKETPLACE_CATALOG } from './widgets/marketplaceCatalog';
 
+// Keys are supplied only via Settings (user paste) — never baked into the client bundle.
 const resolveEnvGeminiKey = () => {
-  const metaEnv = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
-  const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
-  const browserEnv = (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
-
-  return (
-    metaEnv.VITE_API_KEY ||
-    metaEnv.GEMINI_API_KEY ||
-    nodeEnv.GEMINI_API_KEY ||
-    nodeEnv.API_KEY ||
-    browserEnv.GEMINI_API_KEY ||
-    browserEnv.API_KEY ||
-    ''
-  );
+  // Intentionally empty by default. Optional: only honor explicitly user-provided runtime overrides.
+  if (typeof window !== 'undefined' && (window as any).E2B_API_KEY === undefined) {
+    // no-op guard for structure
+  }
+  return '';
 };
 
 const resolveEnvE2BKey = () => {
-  const nodeEnv = typeof process !== 'undefined' ? process.env || {} : {};
-  const browserEnv = (typeof globalThis !== 'undefined' && (globalThis as any)?.process?.env) || {};
-  return nodeEnv.E2B_API_KEY || browserEnv.E2B_API_KEY || '';
+  if (typeof window !== 'undefined' && (window as any).E2B_API_KEY) {
+    return String((window as any).E2B_API_KEY);
+  }
+  return '';
 };
 
 const syncRuntimeKey = (key: 'API_KEY' | 'E2B_API_KEY' | 'GEMINI_API_KEY', value: string) => {
