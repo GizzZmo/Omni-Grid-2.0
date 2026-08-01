@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Fingerprint,
-  Hash,
-  Copy,
-  Check,
-  ShieldCheck,
-  ShieldOff,
-  KeyRound,
-} from 'lucide-react';
+import { Fingerprint, Hash, Copy, Check, ShieldCheck, ShieldOff, KeyRound } from 'lucide-react';
 
 // ── AES-GCM helpers ──────────────────────────────────────────────────────────
 
