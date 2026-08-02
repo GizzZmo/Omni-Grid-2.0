@@ -7,7 +7,7 @@
 
 ## 🧠 OVERVIEW
 
-Omni-Grid uses **Zustand** for state management, a lightweight alternative to Redux. This guide explains the state architecture, patterns, and best practices.
+Omni-Grid uses **Zustand** for state management, a lightweight alternative to Redux. This guide explains the state architecture, patterns, and best practices — including how **secrets are excluded from the main persist blob** and handled by the Secure Vault.
 
 ---
 
@@ -41,76 +41,116 @@ Omni-Grid uses **Zustand** for state management, a lightweight alternative to Re
 
 ## 🏗️ STORE ARCHITECTURE
 
-### Complete Store Structure
+### Complete Store Structure (simplified)
 
 ```typescript
 // store.ts
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import {
+  saveSecretsToVault,
+  loadSecretsFromVault,
+  // ... other vault helpers
+} from './services/secureVault';
 
 interface AppState {
-  // Widget visibility — string[] to support dynamic/marketplace widgets
   visibleWidgets: string[];
-
-  // Layout (lg breakpoint only)
   layouts: { lg: GridItemData[] };
 
-  // System settings
   settings: {
-    geminiApiKey: string;
+    geminiApiKey: string;   // in-memory only when unlocked
     e2bApiKey: string;
     scanlines: boolean;
     sound: boolean;
     startupBehavior: 'restore' | 'default' | 'empty';
   };
 
-  // Theme configuration
-  theme: AppTheme;
+  gitToken: string;
+  vaultStatus: 'unprotected' | 'locked' | 'unlocked';
 
-  // UI state
-  isLayoutLocked: boolean;
-  isCompact: boolean;
-  ghostWidget: GhostData | null;
-  isCmdPaletteOpen: boolean;
-  isSettingsPanelOpen: boolean;
+  // Vault actions
+  setVaultPassphrase: (passphrase: string) => Promise<{ ok: boolean; error?: string }>;
+  unlockVault: (passphrase: string) => Promise<boolean>;
+  lockVault: () => void;
+  removeVaultPassphrase: (passphrase: string) => Promise<boolean>;
 
-  // Widget-specific data
-  scratchpadContent: string;
-  tasks: Task[];
-  calculatorHistory: string[];
-  // ... more widget data
-
-  // Actions
-  toggleWidget: (id: WidgetType) => void;
-  updateLayout: (layout: GridItemData[], breakpoint?: string) => void;
-  // ... more actions
+  // ... theme, widgets, actions
 }
 
 export const useAppStore = create(
   persist(
     (set, get) => ({
-      // Initial state
-      visibleWidgets: [],
-      layouts: DEFAULT_LAYOUTS,
-      // ... other initial values
-
-      // Action implementations
-      toggleWidget: id =>
-        set(state => ({
-          visibleWidgets: state.visibleWidgets.includes(id)
-            ? state.visibleWidgets.filter(w => w !== id)
-            : [...state.visibleWidgets, id],
-        })),
-
-      // ... other actions
+      // ... state + actions
     }),
     {
       name: 'omni-grid-storage',
       storage: createJSONStorage(() => localStorage),
+      partialize: state => {
+        // CRITICAL: never persist secrets or vault status in the main blob
+        const { geminiApiKey: _g, e2bApiKey: _e, ...safeSettings } = state.settings;
+        const { gitToken: _t, vaultStatus: _v, ...rest } = state;
+        return {
+          ...rest,
+          settings: safeSettings,
+        };
+      },
+      onRehydrateStorage: () => _state => {
+        // Async: load ciphertext from vault, apply if unlocked / unprotected
+      },
     }
   )
 );
 ```
+
+---
+
+## 🔐 SECURE VAULT INTEGRATION
+
+Secrets (Gemini API key, E2B API key, Git token) are **never** written in plaintext into `omni-grid-storage`.
+
+### How it works
+
+| Layer | Responsibility |
+| --- | --- |
+| **Zustand in-memory** | Holds plaintext keys only while the vault is unlocked (or unprotected) |
+| **`partialize`** | Strips keys + `vaultStatus` before writing the main localStorage blob |
+| **`services/secureVault.ts`** | Encrypts secrets with AES-256-GCM under a data-encryption key (DEK) |
+| **IndexedDB** | Stores a non-extractable DEK when no passphrase is set |
+| **Passphrase (optional)** | PBKDF2-SHA256 (600 000 iterations) derives a KEK that wraps the DEK |
+| **Session** | DEK lives only in a module-level variable; `lockVault()` clears it and wipes keys from the store |
+
+### Vault states
+
+- **`unprotected`** — no passphrase; DEK auto-available (device key or fallback material)
+- **`locked`** — passphrase set; DEK not in memory; secrets unavailable until unlock
+- **`unlocked`** — passphrase verified this session; DEK in memory
+
+### Store actions
+
+```typescript
+// Enable protection (min 8 chars). Leaves session unlocked.
+await setVaultPassphrase(passphrase);
+
+// Unlock after page load / lock
+const ok = await unlockVault(passphrase);
+
+// Wipe DEK + clear keys from memory (and from settings in the store)
+lockVault();
+
+// Remove passphrase protection (requires current passphrase)
+await removeVaultPassphrase(passphrase);
+```
+
+UI for these actions lives in **System Core → Settings** (Vault Passphrase panel).
+
+### Threat model (summary)
+
+- ✓ localStorage dumps show only ciphertext for secrets
+- ✓ Wrong passphrase fails GCM auth — cannot unwrap DEK
+- ✓ Tampered ciphertext is detected
+- ✗ XSS on the same origin can still abuse an *unlocked* session (lock when idle if needed)
+
+See `services/secureVault.ts` and `docs/plugin-security.md` for full details.
 
 ---
 
@@ -189,6 +229,8 @@ const handleBackup = () => {
 };
 ```
 
+> **Note:** Backups may include in-memory secrets if the vault is unlocked. Treat backup files as sensitive.
+
 ---
 
 ### Pattern 4: Computed Values
@@ -197,28 +239,10 @@ const handleBackup = () => {
 
 ```typescript
 const MyWidget = () => {
-  // Subscribe to base values
   const visibleWidgets = useAppStore(s => s.visibleWidgets);
-
-  // Compute derived value
   const widgetCount = visibleWidgets.length;
   const hasWidgets = widgetCount > 0;
-
   return <div>Widgets: {widgetCount}</div>;
-};
-```
-
-**With useMemo for expensive computations:**
-
-```typescript
-const MyWidget = () => {
-  const layouts = useAppStore(s => s.layouts);
-
-  const totalArea = useMemo(() => {
-    return layouts.lg.reduce((sum, item) => sum + (item.w * item.h), 0);
-  }, [layouts]);
-
-  return <div>Total area: {totalArea}</div>;
 };
 ```
 
@@ -226,78 +250,16 @@ const MyWidget = () => {
 
 ## 🔄 ACTION PATTERNS
 
-### Pattern 1: Simple State Updates
+### Setting API keys (respects vault lock)
 
 ```typescript
-// In store definition
-setApiKey: (key: string) => set({ settings: { ...get().settings, apiKey: key } });
-```
-
-**Usage:**
-
-```typescript
-const setApiKey = useAppStore(s => s.setApiKey);
-setApiKey('new-key');
-```
-
----
-
-### Pattern 2: Complex State Updates
-
-```typescript
-// In store definition
-addTask: (text: string) =>
-  set(state => ({
-    tasks: [
-      ...state.tasks,
-      {
-        id: crypto.randomUUID(),
-        text,
-        status: 'todo',
-      },
-    ],
-  }));
-```
-
----
-
-### Pattern 3: Conditional Updates
-
-```typescript
-// In store definition
-toggleWidget: (id: WidgetType) =>
-  set(state => {
-    const isVisible = state.visibleWidgets.includes(id);
-
-    return {
-      visibleWidgets: isVisible
-        ? state.visibleWidgets.filter(w => w !== id)
-        : [...state.visibleWidgets, id],
-    };
-  });
-```
-
----
-
-### Pattern 4: Async Actions
-
-```typescript
-// Outside store (in widget or service)
-const fetchWeatherData = async () => {
-  const setWeather = useAppStore.getState().setWeatherData;
-
-  try {
-    const data = await fetch('https://api.weather.com/...');
-    const json = await data.json();
-    setWeather(json);
-  } catch (error) {
-    console.error('Failed to fetch weather', error);
-    setWeather(null);
-  }
+setGeminiApiKey: key => {
+  if (get().vaultStatus === 'locked') return;
+  // sync runtime env + store + persistSecrets()
 };
 ```
 
-**Note:** Zustand doesn't handle async directly. Use standard async/await patterns.
+When the vault is locked, key setters are no-ops so plaintext cannot be written.
 
 ---
 
@@ -307,66 +269,38 @@ const fetchWeatherData = async () => {
 
 ```typescript
 persist(
-  (set, get) => ({
-    /* state */
-  }),
+  (set, get) => ({ /* state */ }),
   {
-    name: 'omni-grid-storage', // localStorage key
-    storage: createJSONStorage(() => localStorage), // Storage adapter
-    partialize: state => ({
-      /* selective */
-    }), // Optional: save subset
+    name: 'omni-grid-storage',
+    storage: createJSONStorage(() => localStorage),
+    partialize: state => ({ /* safe subset only */ }),
   }
 );
 ```
 
----
-
-### Pattern 1: Full State Persistence (Current)
+### Partial Persistence (current production behavior)
 
 ```typescript
-// Everything is saved
-persist((set, get) => ({ ...allState }), { name: 'omni-grid-storage' });
+partialize: state => {
+  const { geminiApiKey: _g, e2bApiKey: _e, ...safeSettings } = state.settings;
+  const { gitToken: _t, vaultStatus: _v, ...rest } = state;
+  return {
+    ...rest,
+    settings: safeSettings,
+  };
+},
 ```
 
----
+Secrets are written separately via `saveSecretsToVault()` to the key `omni-grid-secrets` (ciphertext only).
 
-### Pattern 2: Partial Persistence
+### Migration / rehydration
 
-**Save only specific properties:**
+`onRehydrateStorage` runs after the main blob is restored. It:
 
-```typescript
-persist((set, get) => ({ ...allState }), {
-  name: 'omni-grid-storage',
-  partialize: state => ({
-    visibleWidgets: state.visibleWidgets,
-    settings: state.settings,
-    theme: state.theme,
-    // Exclude UI state (locks, freezes, etc.)
-  }),
-});
-```
-
----
-
-### Pattern 3: Migration Strategy
-
-**Handle version upgrades:**
-
-```typescript
-persist((set, get) => ({ ...allState }), {
-  name: 'omni-grid-storage',
-  version: 1,
-  migrate: (persistedState: any, version: number) => {
-    if (version === 0) {
-      // Upgrade from v0 to v1
-      persistedState.newField = 'default';
-      delete persistedState.oldField;
-    }
-    return persistedState;
-  },
-});
-```
+1. Reads vault status
+2. If **locked**, wipes any leftover secret fields from the store
+3. If **unlocked / unprotected**, decrypts vault ciphertext and merges into `settings` / `gitToken`
+4. Migrates any legacy plaintext keys that might still exist in older backups
 
 ---
 
@@ -384,208 +318,19 @@ const createMockStore = (initialState = {}) => {
     ...initialState,
   }));
 };
-
-describe('MyWidget', () => {
-  it('should toggle widget', () => {
-    const mockStore = createMockStore();
-    const { result } = renderHook(() => mockStore());
-
-    result.current.toggleWidget('SCRATCHPAD');
-    expect(result.current.toggleWidget).toHaveBeenCalled();
-  });
-});
 ```
 
----
+### Pattern 2: Vault integration tests
 
-### Pattern 2: Integration Testing
-
-```typescript
-import { useAppStore } from './store';
-
-describe('Store integration', () => {
-  beforeEach(() => {
-    // Reset store
-    useAppStore.setState({
-      visibleWidgets: [],
-      tasks: [],
-    });
-  });
-
-  it('should add task', () => {
-    const addTask = useAppStore.getState().addTask;
-    addTask('Test task');
-
-    const tasks = useAppStore.getState().tasks;
-    expect(tasks).toHaveLength(1);
-    expect(tasks[0].text).toBe('Test task');
-  });
-});
-```
+See `test/secureVault.test.ts` for round-trip, lock/unlock, and wrong-passphrase coverage.
 
 ---
 
 ## 🎨 ADVANCED PATTERNS
 
-### Pattern 1: Store Slices
+### Store Slices / Middleware / Subscriptions
 
-**Organize large stores into modules:**
-
-```typescript
-// slices/widgetSlice.ts
-export const createWidgetSlice = (set, get) => ({
-  visibleWidgets: [],
-  toggleWidget: id =>
-    set(state => ({
-      visibleWidgets: state.visibleWidgets.includes(id)
-        ? state.visibleWidgets.filter(w => w !== id)
-        : [...state.visibleWidgets, id],
-    })),
-});
-
-// slices/settingsSlice.ts
-export const createSettingsSlice = (set, get) => ({
-  settings: {
-    apiKey: '',
-    scanlines: false,
-  },
-  updateSettings: newSettings =>
-    set(state => ({
-      settings: { ...state.settings, ...newSettings },
-    })),
-});
-
-// store.ts
-export const useAppStore = create(
-  persist(
-    (...args) => ({
-      ...createWidgetSlice(...args),
-      ...createSettingsSlice(...args),
-    }),
-    { name: 'omni-grid-storage' }
-  )
-);
-```
-
----
-
-### Pattern 2: Middleware Stack
-
-**Combine multiple middlewares:**
-
-```typescript
-import { devtools, persist } from 'zustand/middleware';
-
-export const useAppStore = create(
-  devtools(
-    persist(
-      (set, get) => ({
-        /* state */
-      }),
-      { name: 'omni-grid-storage' }
-    ),
-    { name: 'Omni-Grid Store' }
-  )
-);
-```
-
----
-
-### Pattern 3: Subscriptions
-
-**Listen to specific state changes:**
-
-```typescript
-// Subscribe to state changes outside React
-const unsubscribe = useAppStore.subscribe(
-  state => state.theme,
-  (theme, prevTheme) => {
-    console.log('Theme changed:', prevTheme, '→', theme);
-    applyThemeToDOM(theme);
-  }
-);
-
-// Cleanup
-unsubscribe();
-```
-
----
-
-### Pattern 4: Transient Updates
-
-**Updates that don't trigger re-renders:**
-
-```typescript
-// For frequently changing values (e.g., mouse position)
-const useAppStore = create((set, get) => ({
-  mouseX: 0,
-  mouseY: 0,
-
-  // Non-reactive update
-  setMousePosition: (x, y) => {
-    get().mouseX = x;
-    get().mouseY = y;
-  },
-}));
-```
-
----
-
-## 🔍 DEBUGGING PATTERNS
-
-### Pattern 1: DevTools Integration
-
-```typescript
-import { devtools } from 'zustand/middleware';
-
-export const useAppStore = create(
-  devtools(persist(/* ... */), {
-    name: 'Omni-Grid',
-    enabled: process.env.NODE_ENV === 'development',
-  })
-);
-```
-
-**Then use Redux DevTools extension to:**
-
-- Inspect state
-- Track actions
-- Time-travel debugging
-
----
-
-### Pattern 2: Logging Middleware
-
-```typescript
-const log = config => (set, get, api) =>
-  config(
-    (...args) => {
-      console.log('Before:', get());
-      set(...args);
-      console.log('After:', get());
-    },
-    get,
-    api
-  );
-
-export const useAppStore = create(log(persist(/* ... */)));
-```
-
----
-
-### Pattern 3: State Snapshots
-
-```typescript
-// Take snapshot
-const snapshot = useAppStore.getState();
-console.log('State snapshot:', snapshot);
-
-// Compare states
-const before = useAppStore.getState();
-// ... actions
-const after = useAppStore.getState();
-console.log('Changes:', { before, after });
-```
+(Same as before — see previous sections in git history for full examples of slices, `devtools`, and `subscribe`.)
 
 ---
 
@@ -593,58 +338,27 @@ console.log('Changes:', { before, after });
 
 ### 1. Avoid Over-Subscribing
 
-**❌ Bad:**
-
-```typescript
-const MyWidget = () => {
-  const state = useAppStore(); // Re-renders on ANY change
-  return <div>{state.someValue}</div>;
-};
-```
-
-**✅ Good:**
-
-```typescript
-const MyWidget = () => {
-  const someValue = useAppStore(s => s.someValue); // Only this value
-  return <div>{someValue}</div>;
-};
-```
-
----
+Prefer targeted selectors (`useAppStore(s => s.settings.geminiApiKey)`).
 
 ### 2. Memoize Selectors
-
-**For complex selections:**
 
 ```typescript
 import { shallow } from 'zustand/shallow';
 
-const MyWidget = () => {
-  const { apiKey, theme } = useAppStore(
-    (s) => ({ apiKey: s.settings.apiKey, theme: s.theme }),
-    shallow // Shallow comparison
-  );
-
-  return <div>...</div>;
-};
+const { apiKey, theme } = useAppStore(
+  s => ({ apiKey: s.settings.geminiApiKey, theme: s.theme }),
+  shallow
+);
 ```
-
----
 
 ### 3. Batch Updates
 
-**Group related updates:**
-
 ```typescript
-const resetState = () => {
-  useAppStore.setState({
-    visibleWidgets: [],
-    tasks: [],
-    scratchpadNotes: [],
-    // Multiple updates in one batch
-  });
-};
+useAppStore.setState({
+  visibleWidgets: [],
+  tasks: [],
+  // multiple fields in one setState
+});
 ```
 
 ---
@@ -652,12 +366,13 @@ const resetState = () => {
 ## 📚 FURTHER READING
 
 - **[Architecture](./architecture.md)** - Overall system design
+- **[Configuration](./configuration.md)** - API keys, vault passphrase UI
+- **[Plugin Security](./plugin-security.md)** - Security requirements for widgets
 - **[API Reference](./api-reference.md)** - Complete API
-- **[Widget Development](./widget-development.md)** - Using state in widgets
 - **Zustand Docs:** https://github.com/pmndrs/zustand
 
 ---
 
-_State management is not just about storing data—it's about orchestrating change._
+_State management is not just about storing data—it's about orchestrating change securely._
 
 **[← Back to Documentation Hub](./README.md)**

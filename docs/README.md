@@ -24,17 +24,18 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 ### 🚀 Getting Started
 
 - **[Getting Started Guide](./getting-started.md)** - Installation, setup, and first steps
-- **[Configuration Guide](./configuration.md)** - Environment variables, settings, and customization
+- **[Configuration Guide](./configuration.md)** - Environment variables, Secure Vault, settings, and customization
 - **[Keyboard Shortcuts](./keyboard-shortcuts.md)** - Command reference and power-user tips
 
 ### 🗺️ Project Planning
 
 - **[Development Roadmap](../ROADMAP.md)** - Timeline, milestones, and contribution opportunities
+- **[Next Steps](../NEXT_STEPS.md)** - Immediate actionable tasks (lazy loading, mobile touch, …)
 
 ### 🏗️ Architecture & Design
 
 - **[Architecture Overview](./architecture.md)** - System design, data flow, and technical decisions
-- **[State Management](./state-management.md)** - Zustand store patterns and local persistence
+- **[State Management](./state-management.md)** - Zustand store patterns, partialize, and Secure Vault
 - **[WIKI - Knowledge Base](./WIKI.md)** - Core concepts and philosophies
 
 ### 🔧 Development
@@ -52,7 +53,7 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 
 - **[Contributing Guidelines](../CONTRIBUTING.md)** - Code style, PR process, testing requirements, and review criteria
 - **[Developer Portal](./developer-portal.md)** - Widget marketplace submission workflow and community guidelines
-- **[Plugin Security Protocol](./plugin-security.md)** - Security requirements for all widget submissions
+- **[Plugin Security Protocol](./plugin-security.md)** - Security requirements for all widget submissions (includes Secure Vault rules)
 
 ### 🛒 Marketplace
 
@@ -136,7 +137,7 @@ Welcome to the Omni-Grid documentation center. This knowledge base is designed t
 
 ### Local-First Architecture
 
-All data is stored locally in your browser. No cloud dependencies. You own your data.
+All data is stored locally in your browser. No cloud dependencies by default. You own your data. Secrets are encrypted at rest via the Secure Vault.
 
 ### Cross-Talk Protocol
 
@@ -144,7 +145,7 @@ Widgets communicate via drag-and-drop events, enabling seamless data flow withou
 
 ### Neural Link Integration
 
-Direct client-to-API AI integration using Google Gemini for privacy-preserving intelligence.
+Direct client-to-API AI integration using Google Gemini for privacy-preserving intelligence (keys managed only in Settings / Vault).
 
 ### High-Density Aesthetic
 
@@ -162,6 +163,6 @@ Cyberpunk-inspired UI with maximalist information density and minimal chrome.
 
 _"The net is vast and infinite, but your grid is your own."_
 
-**Version:** 2.0  
-**Last Updated:** May 2026  
+**Version:** 2.5.7  
+**Last Updated:** August 2026  
 **Maintained by:** Jon-Arve Constantine / GizzZmo

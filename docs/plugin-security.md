@@ -67,7 +67,7 @@ const loadData = <T>(key: string, fallback: T): T => {
 | `localStorage`                         | Widget-specific keys only (see §5)     |
 | `navigator.clipboard`                  | Read requires explicit user gesture    |
 | `fetch`                                | HTTPS endpoints only; no mixed content |
-| `crypto.randomUUID()`                  | ID generation                          |
+| `crypto.randomUUID()` / Web Crypto     | ID generation; Secure Vault uses SubtleCrypto |
 | `URL`, `URLSearchParams`               | URL parsing                            |
 | Gemini API (`getGenAIClient`)          | Via approved service wrapper           |
 | E2B Sandbox (`executePythonInSandbox`) | Code execution, approved service only  |
@@ -110,11 +110,13 @@ const store = useAppStore();
 - Do not store API keys, tokens, or credentials in widget-local state that could be logged or serialized.
 - Avoid calling `useAppStore.getState()` inside render functions — use selectors.
 
-### Sensitive Data
+### Sensitive Data (Secure Vault)
 
-- API keys (`geminiApiKey`, `e2bApiKey`, `githubToken`) are available in the store for legitimate use.
+- API keys (`geminiApiKey`, `e2bApiKey`) and `gitToken` are held in memory only while the vault is **unlocked** or **unprotected**.
+- At rest they are encrypted by `services/secureVault.ts` (AES-256-GCM). The main Zustand persist blob **never** contains plaintext secrets (`partialize` strips them).
 - **Never log, copy to clipboard without user consent, or transmit these keys.**
-- Do not store sensitive data in widget-scoped `localStorage` keys without explicit user opt-in.
+- Do not write secrets to widget-scoped `localStorage` keys.
+- When `vaultStatus === 'locked'`, key setters are no-ops — respect that contract.
 
 ---
 
@@ -149,54 +151,24 @@ Before adding a new npm dependency to the repository, follow this process:
 
 ### Step 1: Security Audit
 
-Run the GitHub Advisory Database check:
-
 ```bash
 npm audit --audit-level=moderate
 ```
 
-Check the package on [npmjs.com](https://npmjs.com) for:
-
-- Weekly downloads (prefer high-traffic, well-maintained packages)
-- Last publish date (avoid abandoned packages)
-- Known CVEs via [Snyk Vulnerability DB](https://security.snyk.io)
+Check the package on [npmjs.com](https://npmjs.com) for weekly downloads, last publish date, and known CVEs.
 
 ### Step 2: License Compliance
 
-Verify the package license is compatible with Omni-Grid's license. Approved licenses:
+Approved: MIT, ISC, BSD-2-Clause, BSD-3-Clause, Apache-2.0.  
+Prohibited without review: GPL, AGPL, LGPL.
 
-- MIT, ISC, BSD-2-Clause, BSD-3-Clause, Apache-2.0
+### Step 3–5: Minimal surface area, pinned versions, PR checklist
 
-Prohibited: GPL, AGPL, LGPL (without explicit review).
-
-### Step 3: Minimal Surface Area
-
-- Prefer packages with minimal dependencies (check `node_modules` tree depth).
-- Avoid packages that include native binaries unless strictly necessary.
-- For browser-only widgets, ensure the package is tree-shakeable.
-
-### Step 4: Pinned Versions
-
-All dependencies must be pinned to exact versions in `package.json` using `--save-exact`:
-
-```bash
-npm install package-name --save-exact
-```
-
-### Step 5: Review Checklist
-
-Submit a pull request with:
-
-- [ ] `npm audit` output showing no high/critical vulnerabilities
-- [ ] License verification
-- [ ] Justification for why an existing dependency cannot fulfill the need
-- [ ] A note on what widget(s) require this dependency
+Prefer tree-shakeable packages; pin exact versions with `--save-exact`; include audit output and justification in the PR.
 
 ---
 
 ## 7. Security Checklist for Widget Submissions
-
-Before submitting a widget to the marketplace, verify every item on this checklist:
 
 ### Code Quality
 
@@ -218,7 +190,7 @@ Before submitting a widget to the marketplace, verify every item on this checkli
 
 - [ ] Minimal store selectors (no full-store subscriptions)
 - [ ] No direct state mutations (store actions only)
-- [ ] Sensitive store values (API keys) handled responsibly
+- [ ] Sensitive store values (API keys) handled via Secure Vault only — never re-persisted by the widget
 - [ ] Widget state properly cleaned up on unmount
 
 ### UI/UX Security
@@ -247,4 +219,4 @@ If you discover a security vulnerability in Omni-Grid or a widget:
 
 ---
 
-_Last updated: Phase 3 Security Hardening — Stay ghost, stay safe, operator._
+_Last updated: Phase 4 Security Hardening (Secure Vault v2.5.7) — Stay ghost, stay safe, operator._
