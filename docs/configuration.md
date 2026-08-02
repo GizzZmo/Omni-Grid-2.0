@@ -68,12 +68,12 @@ E2B_API_KEY=your_e2b_api_key_here
 
 ### Where keys live
 
-| Storage | Content |
-| --- | --- |
-| In-memory Zustand `settings` | Plaintext only while vault is **unlocked** or **unprotected** |
-| `localStorage` key `omni-grid-secrets` | AES-256-GCM ciphertext only |
-| `localStorage` key `omni-grid-vault-meta` | Salt + wrapped DEK (when passphrase enabled) |
-| IndexedDB `omni-grid-vault` | Non-extractable device DEK (unprotected mode) |
+| Storage                                   | Content                                                       |
+| ----------------------------------------- | ------------------------------------------------------------- |
+| In-memory Zustand `settings`              | Plaintext only while vault is **unlocked** or **unprotected** |
+| `localStorage` key `omni-grid-secrets`    | AES-256-GCM ciphertext only                                   |
+| `localStorage` key `omni-grid-vault-meta` | Salt + wrapped DEK (when passphrase enabled)                  |
+| IndexedDB `omni-grid-vault`               | Non-extractable device DEK (unprotected mode)                 |
 
 ### Enable a passphrase (recommended)
 

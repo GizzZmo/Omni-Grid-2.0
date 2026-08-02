@@ -62,16 +62,16 @@ const loadData = <T>(key: string, fallback: T): T => {
 
 ### ✅ Allowed APIs
 
-| API                                    | Notes                                  |
-| -------------------------------------- | -------------------------------------- |
-| `localStorage`                         | Widget-specific keys only (see §5)     |
-| `navigator.clipboard`                  | Read requires explicit user gesture    |
-| `fetch`                                | HTTPS endpoints only; no mixed content |
+| API                                    | Notes                                         |
+| -------------------------------------- | --------------------------------------------- |
+| `localStorage`                         | Widget-specific keys only (see §5)            |
+| `navigator.clipboard`                  | Read requires explicit user gesture           |
+| `fetch`                                | HTTPS endpoints only; no mixed content        |
 | `crypto.randomUUID()` / Web Crypto     | ID generation; Secure Vault uses SubtleCrypto |
-| `URL`, `URLSearchParams`               | URL parsing                            |
-| Gemini API (`getGenAIClient`)          | Via approved service wrapper           |
-| E2B Sandbox (`executePythonInSandbox`) | Code execution, approved service only  |
-| Web Workers                            | For CPU-intensive tasks; no DOM access |
+| `URL`, `URLSearchParams`               | URL parsing                                   |
+| Gemini API (`getGenAIClient`)          | Via approved service wrapper                  |
+| E2B Sandbox (`executePythonInSandbox`) | Code execution, approved service only         |
+| Web Workers                            | For CPU-intensive tasks; no DOM access        |
 
 ### ❌ Disallowed APIs
 
