@@ -12,7 +12,9 @@ export const WidgetSkeleton: React.FC<{ label?: string }> = ({ label = 'LOADING 
         <span className="text-[8px] text-cyan-400 font-bold tracking-widest">OG</span>
       </div>
     </div>
-    <span className="text-[10px] text-slate-500 uppercase tracking-[0.2em] animate-pulse">{label}</span>
+    <span className="text-[10px] text-slate-500 uppercase tracking-[0.2em] animate-pulse">
+      {label}
+    </span>
     <div className="w-24 h-0.5 bg-slate-800 overflow-hidden rounded">
       <div className="h-full w-1/2 bg-gradient-to-r from-cyan-500 to-fuchsia-500 animate-[shimmer_1.2s_ease-in-out_infinite]" />
     </div>

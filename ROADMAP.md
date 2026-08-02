@@ -25,13 +25,13 @@
 
 <div align="center">
 
-| Phase          | Timeline        | Status         | Key Deliverables                          |
-| :------------- | :-------------- | :------------- | :---------------------------------------- |
-| **🔷 Phase 1** | Q4 2024         | ✅ Complete    | Core architecture, Base UI, Widget system |
-| **🔶 Phase 2** | Q1 2025         | ✅ Complete    | Essential widgets, Theme engine, Settings |
-| **🔷 Phase 3** | Q2 2025–Q1 2026 | ✅ Complete    | Plugin marketplace, AI integration, Sync  |
+| Phase          | Timeline        | Status         | Key Deliverables                                        |
+| :------------- | :-------------- | :------------- | :------------------------------------------------------ |
+| **🔷 Phase 1** | Q4 2024         | ✅ Complete    | Core architecture, Base UI, Widget system               |
+| **🔶 Phase 2** | Q1 2025         | ✅ Complete    | Essential widgets, Theme engine, Settings               |
+| **🔷 Phase 3** | Q2 2025–Q1 2026 | ✅ Complete    | Plugin marketplace, AI integration, Sync                |
 | **🔶 Phase 4** | Q2–Q3 2026      | 🚧 In Progress | Mobile support, Cloud backup, Community, Security vault |
-| **🔷 Phase 5** | Q4 2026         | 📋 Planned     | Enterprise features, Advanced AI, Scaling |
+| **🔷 Phase 5** | Q4 2026         | 📋 Planned     | Enterprise features, Advanced AI, Scaling               |
 
 </div>
 

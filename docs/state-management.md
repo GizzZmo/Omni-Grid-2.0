@@ -58,7 +58,7 @@ interface AppState {
   layouts: { lg: GridItemData[] };
 
   settings: {
-    geminiApiKey: string;   // in-memory only when unlocked
+    geminiApiKey: string; // in-memory only when unlocked
     e2bApiKey: string;
     scanlines: boolean;
     sound: boolean;
@@ -110,14 +110,14 @@ Secrets (Gemini API key, E2B API key, Git token) are **never** written in plaint
 
 ### How it works
 
-| Layer | Responsibility |
-| --- | --- |
-| **Zustand in-memory** | Holds plaintext keys only while the vault is unlocked (or unprotected) |
-| **`partialize`** | Strips keys + `vaultStatus` before writing the main localStorage blob |
-| **`services/secureVault.ts`** | Encrypts secrets with AES-256-GCM under a data-encryption key (DEK) |
-| **IndexedDB** | Stores a non-extractable DEK when no passphrase is set |
-| **Passphrase (optional)** | PBKDF2-SHA256 (600 000 iterations) derives a KEK that wraps the DEK |
-| **Session** | DEK lives only in a module-level variable; `lockVault()` clears it and wipes keys from the store |
+| Layer                         | Responsibility                                                                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------------ |
+| **Zustand in-memory**         | Holds plaintext keys only while the vault is unlocked (or unprotected)                           |
+| **`partialize`**              | Strips keys + `vaultStatus` before writing the main localStorage blob                            |
+| **`services/secureVault.ts`** | Encrypts secrets with AES-256-GCM under a data-encryption key (DEK)                              |
+| **IndexedDB**                 | Stores a non-extractable DEK when no passphrase is set                                           |
+| **Passphrase (optional)**     | PBKDF2-SHA256 (600 000 iterations) derives a KEK that wraps the DEK                              |
+| **Session**                   | DEK lives only in a module-level variable; `lockVault()` clears it and wipes keys from the store |
 
 ### Vault states
 
@@ -148,7 +148,7 @@ UI for these actions lives in **System Core → Settings** (Vault Passphrase pan
 - ✓ localStorage dumps show only ciphertext for secrets
 - ✓ Wrong passphrase fails GCM auth — cannot unwrap DEK
 - ✓ Tampered ciphertext is detected
-- ✗ XSS on the same origin can still abuse an *unlocked* session (lock when idle if needed)
+- ✗ XSS on the same origin can still abuse an _unlocked_ session (lock when idle if needed)
 
 See `services/secureVault.ts` and `docs/plugin-security.md` for full details.
 
@@ -269,11 +269,15 @@ When the vault is locked, key setters are no-ops so plaintext cannot be written.
 
 ```typescript
 persist(
-  (set, get) => ({ /* state */ }),
+  (set, get) => ({
+    /* state */
+  }),
   {
     name: 'omni-grid-storage',
     storage: createJSONStorage(() => localStorage),
-    partialize: state => ({ /* safe subset only */ }),
+    partialize: state => ({
+      /* safe subset only */
+    }),
   }
 );
 ```
