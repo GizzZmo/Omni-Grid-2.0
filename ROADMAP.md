@@ -8,14 +8,14 @@
   \____/|_|  |_|_| \_|___|     \____|_| \_\___|____/
 
   [ ROADMAP STATUS: ACTIVE ]
-  [ CURRENT PHASE: Q2 2026 ]
+  [ CURRENT PHASE: Q3 2026 ]
 ```
 
 <div align="center">
 
 [![GitHub Issues](https://img.shields.io/github/issues/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=red)](https://github.com/GizzZmo/Omni-Grid-2.0/issues)
-[![Milestone Progress](https://img.shields.io/badge/Phase_4-15%25-FFD700?style=flat-square)](https://github.com/GizzZmo/Omni-Grid-2.0/milestones)
-[![Last Updated](https://img.shields.io/badge/Updated-July_2026-00FFFF?style=flat-square)]()
+[![Milestone Progress](https://img.shields.io/badge/Phase_4-25%25-FFD700?style=flat-square)](https://github.com/GizzZmo/Omni-Grid-2.0/milestones)
+[![Last Updated](https://img.shields.io/badge/Updated-August_2026-00FFFF?style=flat-square)]()
 
 </div>
 
@@ -30,7 +30,7 @@
 | **🔷 Phase 1** | Q4 2024         | ✅ Complete    | Core architecture, Base UI, Widget system |
 | **🔶 Phase 2** | Q1 2025         | ✅ Complete    | Essential widgets, Theme engine, Settings |
 | **🔷 Phase 3** | Q2 2025–Q1 2026 | ✅ Complete    | Plugin marketplace, AI integration, Sync  |
-| **🔶 Phase 4** | Q2–Q3 2026      | 🚧 In Progress | Mobile support, Cloud backup, Community   |
+| **🔶 Phase 4** | Q2–Q3 2026      | 🚧 In Progress | Mobile support, Cloud backup, Community, Security vault |
 | **🔷 Phase 5** | Q4 2026         | 📋 Planned     | Enterprise features, Advanced AI, Scaling |
 
 </div>
@@ -155,6 +155,15 @@
   - Automated screenshot manifest + checksum generation workflow
   - Downloadable screenshot artifact bundle for docs/release reuse
 
+- [x] **Secure Vault (AES-256-GCM + optional passphrase)**
+  - Secrets (Gemini / E2B / Git tokens) never written in plaintext to localStorage
+  - Zustand `partialize` excludes API keys and vault status from the main persist blob
+  - Device DEK in IndexedDB (non-extractable) or passphrase-wrapped KEK via PBKDF2-SHA256 (600k iterations)
+  - Session-only unlock; lock wipes secrets from memory
+  - System Core UI: enable / unlock / lock / remove passphrase
+  - Client-side API-key injection removed (no Vite `define`, no fake key scripts)
+  - CodeQL regex anchors fixed in `public/sw.js`
+
 ### 🚧 In Progress
 
 - [x] **Widget marketplace — full platform**
@@ -185,7 +194,7 @@
 - [ ] **Cloud backup & sync**
   - Cloud storage integration
   - Multi-device synchronization with conflict resolution
-  - Selective sync and end-to-end encryption
+  - Selective sync and end-to-end encryption (builds on local vault)
 
 - [ ] **Advanced AI integration**
   - Enhanced Gemini API with multi-modal capabilities
@@ -196,6 +205,10 @@
   - Shared workspace support
   - Presence indicators and co-editing
   - Team features and access controls
+
+- [ ] **Performance — widget lazy loading**
+  - `React.lazy` + `Suspense` for heavy widgets (CyberEditor, NeuralChat, Marketplace, …)
+  - Reduce initial JS parse / TTI toward < 2 s target
 
 ---
 
@@ -209,7 +222,7 @@
 │  2025 Q3  │█████████████████████████│100% Complete   │
 │  2025 Q4  │████████████████████████░│ 95% Complete   │
 │  2026 Q1  │███████████████████░░░░░░│ 75% Complete   │
-│  2026 Q2  │████████░░░░░░░░░░░░░░░░░│ 15% In Progress│
+│  2026 Q2  │████████████░░░░░░░░░░░░░│ 25% In Progress│
 │  2026 Q3  │░░░░░░░░░░░░░░░░░░░░░░░░░│  0% Planned    │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -294,6 +307,13 @@
 
 ### Phase 4 - Mobile & Community (Q2–Q3 2026) 🚧
 
+**Security Hardening (shipped early in Phase 4)**
+
+- ✅ Secure Vault — AES-256-GCM encrypted secrets + optional user passphrase (PBKDF2 600k)
+- ✅ Zustand partialize so API keys never land in the main `omni-grid-storage` blob
+- ✅ No client-side API-key injection (Settings-only entry)
+- ✅ CodeQL regex anchors in service worker
+
 **Mobile Support**
 
 - 📋 Progressive Web App (PWA) optimization
@@ -367,10 +387,11 @@
 ### 🔐 Security Standards
 
 - **Zero-Trust Architecture**: All input treated as untrusted
-- **Encrypted Storage**: Sensitive data encrypted at rest
+- **Encrypted Storage**: Sensitive data (API keys, tokens) encrypted at rest via Secure Vault (AES-256-GCM); optional user passphrase wraps the data-encryption key
 - **Sandboxed Widgets**: Isolated execution contexts
 - **CSP Enforcement**: Strict Content Security Policy
-- **Regular Audits**: Automated security scanning
+- **No client injection**: API keys never baked into the client bundle; Settings-only entry
+- **Regular Audits**: Automated security scanning (CodeQL, npm audit)
 
 ### ♿ Accessibility Requirements
 
@@ -497,13 +518,13 @@ Omni-Grid 2.0 is designed to integrate with the broader GizzZmo ecosystem:
 
 ## 📊 PROGRESS TRACKING
 
-### Current Metrics (Q2 2026)
+### Current Metrics (Q3 2026)
 
 | Metric                  | Target | Current | Status         |
 | :---------------------- | :----- | :------ | :------------- |
 | **Completed Widgets**   | 40     | 42+     | ✅ Ahead       |
 | **Test Coverage**       | 70%    | ~40%    | 🚧 In Progress |
-| **Documentation**       | 100%   | ~90%    | 🚧 In Progress |
+| **Documentation**       | 100%   | ~95%    | 🚧 In Progress |
 | **Performance Score**   | 90+    | TBD     | 📋 Planned     |
 | **Accessibility Score** | AA     | TBD     | 📋 Planned     |
 
@@ -511,7 +532,7 @@ Omni-Grid 2.0 is designed to integrate with the broader GizzZmo ecosystem:
 
 - **Sprint Velocity**: ~8 story points/week
 - **Bug Fix Rate**: Ongoing via CI
-- **Feature Completion**: 100% of Phase 1, 100% of Phase 2, 100% of Phase 3, 15% of Phase 4
+- **Feature Completion**: 100% of Phase 1, 100% of Phase 2, 100% of Phase 3, ~25% of Phase 4
 - **Community PRs**: Open to contributions
 
 ---
@@ -535,13 +556,20 @@ Omni-Grid 2.0 is designed to integrate with the broader GizzZmo ecosystem:
 - DocuHub, CipherPad, UniversalTransformer, SudokuGrid
 - Plugin API documentation & contribution guidelines
 
+### v2.5.7 - Security Vault (Q3 2026) ✅ Released
+
+- Secure Vault (AES-256-GCM + PBKDF2 passphrase)
+- Zustand partialize for secrets
+- Removal of client-side API-key injection
+- CodeQL service-worker fixes
+
 ### v3.0.0 - Sync & Mobile (Q2–Q3 2026) 🚧 In Progress
 
 - Cloud synchronization
 - Mobile PWA optimization
 - Collaboration features
 - Community portal
-- Performance optimization
+- Performance optimization (lazy widgets)
 
 ---
 
@@ -561,7 +589,7 @@ Omni-Grid 2.0 is designed to integrate with the broader GizzZmo ecosystem:
 ╚══════════════════════════════════════════════════════════════════╝
 ```
 
-_Last updated: July 2026_  
+_Last updated: August 2026_  
 _Maintained by: [Jon-Arve Constantine / GizzZmo](https://github.com/GizzZmo)_
 
 [![Built with Love](https://img.shields.io/badge/Built_with-❤️_and_⚡-FF00FF?style=for-the-badge&labelColor=0D1117)](https://github.com/GizzZmo)

@@ -73,11 +73,23 @@ This document provides **immediate, actionable next steps** for contributing to 
 - [x] AI-assisted code generation via Gemini API
 - [x] Sandboxed Python execution via E2B
 
+### 7. Secure Vault & Secrets Hardening ✅ DONE (v2.5.7)
+
+- [x] `services/secureVault.ts` — AES-256-GCM DEK + optional PBKDF2-SHA256 (600k) passphrase wrap
+- [x] Zustand `partialize` excludes `geminiApiKey`, `e2bApiKey`, `gitToken`, `vaultStatus` from main localStorage blob
+- [x] Secrets stored only under `omni-grid-secrets` (ciphertext)
+- [x] IndexedDB non-extractable device key (unprotected mode) or passphrase-wrapped KEK
+- [x] Store actions: `setVaultPassphrase`, `unlockVault`, `lockVault`, `removeVaultPassphrase`
+- [x] System Core UI for enable / unlock / lock / remove
+- [x] Client-side API-key injection removed (no Vite define, no fake keys)
+- [x] CodeQL regex anchors fixed in `public/sw.js`
+- [x] Unit tests for vault round-trip / lock / wrong passphrase
+
 ---
 
 ## 🔥 CURRENT HIGH-VALUE CONTRIBUTIONS (Q3 2026)
 
-### 7. Progressive Web App (PWA) Optimization
+### 8. Progressive Web App (PWA) Optimization
 
 **Status:** Scaffolding complete 🚧  
 **Effort:** 1-2 weeks  
@@ -99,7 +111,23 @@ This document provides **immediate, actionable next steps** for contributing to 
 
 ---
 
-### 8. Cloud Backup & Sync
+### 9. Widget Lazy Loading (Performance)
+
+**Status:** Not started  
+**Effort:** 2–4 days  
+**Good For:** Frontend developers comfortable with React code-splitting
+
+**What's Needed:**
+
+- Convert heavy widgets in `components/GridContainer.tsx` to `React.lazy(() => import(...))`
+- Wrap with `<Suspense fallback={...}>` (cyberpunk-styled skeleton)
+- Priority targets: `CyberEditor`, `NeuralChat`, `WidgetMarketplace`, `MultiAgentHub`, `SunoPlayer`, `PDFViewer`, `ResearchBrowser`
+- Keep lightweight core widgets (SystemCore, HelpDesk, QuantumCalc, …) eager
+- Measure initial bundle / TTI improvement toward ROADMAP targets (< 500 KB gzipped, < 2 s TTI)
+
+---
+
+### 10. Cloud Backup & Sync
 
 **Status:** Not started  
 **Effort:** 2-3 weeks  
@@ -109,22 +137,21 @@ This document provides **immediate, actionable next steps** for contributing to 
 
 - Cloud storage integration
 - Multi-device synchronization with conflict resolution
-- Selective sync and end-to-end encryption
+- Selective sync and end-to-end encryption (reuse Secure Vault crypto)
 
 ---
 
-### 9. Widget Marketplace — Full Platform
+### 11. Widget Marketplace — Full Platform
 
-**Status:** Discovery UI done; install/update system in progress  
-**Effort:** 1-2 weeks  
+**Status:** Discovery UI + install system done  
+**Effort:** 1-2 weeks remaining  
 **Good For:** Frontend developers
 
 **What's Needed:**
 
-- One-click install and update flow
-- Widget versioning and update notifications
-- Community submission workflow
 - Rating and review system
+- Polished community submission workflow
+- Update notifications polish
 
 ---
 
@@ -135,21 +162,21 @@ These are smaller tasks that provide immediate value:
 ### Testing & Quality
 
 - [ ] Add unit tests for existing widgets
-- [ ] Improve test coverage for `store.ts`
+- [ ] Improve test coverage for `store.ts` (vault actions already covered)
 - [ ] Add E2E tests for widget lifecycle
 - [ ] Set up visual regression testing
 
 ### Documentation
 
+- [x] Document Secure Vault in ROADMAP / state-management / configuration / plugin-security
 - [ ] Add JSDoc comments to components
 - [ ] Update keyboard shortcuts documentation
-- [ ] Create troubleshooting guide
-- [ ] Add more examples to FAQ
+- [ ] Create troubleshooting guide entries for vault lock/unlock
 
 ### Performance
 
 - [ ] Analyze bundle size and optimize
-- [ ] Implement lazy loading for heavy widgets
+- [ ] Implement lazy loading for heavy widgets (see item 9)
 - [ ] Optimize localStorage operations
 - [ ] Add performance monitoring
 
@@ -166,17 +193,16 @@ These are smaller tasks that provide immediate value:
 
 ### Theme Presets
 
-- [ ] Create 5 preset themes (see Task 2)
-- [ ] Design light mode theme
+- [ ] Create additional preset themes
+- [ ] Design light mode theme polish
 - [ ] Create high-contrast theme
 - [ ] Design custom neon color palettes
 
 ### UI/UX Improvements
 
-- [ ] Design settings panel mockups
-- [ ] Create theme editor UI mockups
 - [ ] Improve widget layout patterns
-- [ ] Design marketplace interface
+- [ ] Design marketplace interface polish
+- [ ] Touch-friendly controls for mobile PWA
 
 ---
 
@@ -192,28 +218,27 @@ cd Omni-Grid-2.0
 # Install dependencies
 npm install
 
-# Create .env file with your API keys
+# Create .env file (optional — keys are entered in System Core Settings)
 cp .env.example .env
-# Edit .env and add your GEMINI_API_KEY
 
 # Start development server
 npm run dev
 ```
 
+> **Note:** API keys are no longer injected via Vite. Paste them in **System Core → Settings**. Enable a vault passphrase for at-rest encryption.
+
 ### Step 2: Pick a Task
 
 Choose from:
 
-1. **Critical tasks (1-3)** - Highest priority
-2. **High-value contributions (4-6)** - Major features
-3. **Quick wins** - Small, focused improvements
+1. **Lazy loading (item 9)** — highest impact performance win right now
+2. **Mobile touch / PWA polish**
+3. **Quick wins** — tests, a11y, docs
 
 ### Step 3: Create a Branch
 
 ```bash
-# Create feature branch
 git checkout -b feature/your-feature-name
-
 # Or fix branch
 git checkout -b fix/issue-description
 ```
@@ -221,14 +246,10 @@ git checkout -b fix/issue-description
 ### Step 4: Implement & Test
 
 ```bash
-# Run tests
 npm test
-
-# Run linter
 npm run lint
-
-# Type check
 npm run typecheck
+npm run format:check
 ```
 
 ### Step 5: Submit PR
@@ -255,6 +276,7 @@ npm run typecheck
 - [PROJECT_BLUEPRINT.md](./PROJECT_BLUEPRINT.md) - Detailed specs
 - [CONTRIBUTING.md](./CONTRIBUTING.md) - Contribution guide
 - [docs/widget-development.md](./docs/widget-development.md) - Widget guide
+- [docs/state-management.md](./docs/state-management.md) - Zustand + Secure Vault
 
 ---
 
@@ -267,16 +289,15 @@ npm run typecheck
 - ✅ All Phase 1–3 deliverables shipped (44+ widgets)
 - ✅ Widget API documentation complete
 - ✅ Settings Panel v2, Theme System, CyberEditor, NeuralChat
-- ✅ Widget Marketplace full platform (MarketWidget + WidgetMarketplace + community submission)
-- ✅ CommunityPortal widget shipped
-- ✅ MultiAgentHub widget shipped
+- ✅ Widget Marketplace full platform (MarketWidget + community submission)
+- ✅ CommunityPortal + MultiAgentHub widgets shipped
 - ✅ PWA scaffolding complete (manifest, service worker, pwaService)
-- ✅ PWA app icons
+- ✅ **Secure Vault** — encrypted secrets + optional passphrase (v2.5.7)
 - 🚧 Mobile touch interface
+- 🚧 Widget lazy loading
 - 📋 Cloud backup & sync
-- 📋 Plugin API docs (full portal)
 
-**Phase 4 Goal:** Transform Omni-Grid into a cross-device, cloud-connected platform with a thriving community widget ecosystem.
+**Phase 4 Goal:** Transform Omni-Grid into a cross-device, cloud-connected platform with a thriving community widget ecosystem and strong local-first security.
 
 ---
 
@@ -284,15 +305,15 @@ npm run typecheck
 
 ### This Sprint (Q3 2026 — 2 Weeks)
 
-- ✅ **PWA App Icons** (`public/icons/icon-192.png`, `public/icons/icon-512.png`) — complete
+- ✅ **Secure Vault** shipped
+- **Widget Lazy Loading** — code-split heavy widgets
 - **Mobile Touch Interface** — touch-optimized grid interactions
-- **Plugin API Docs** — complete guide under `docs/widget-api/`
 - **10+ Unit Tests** added to reach coverage target
 
 ### This Month (Q3 2026 — 4 Weeks)
 
 - **PWA** full offline support working
-- **Cloud Backup** architecture design finalized
+- **Cloud Backup** architecture design finalized (reuse vault crypto)
 - **Accessibility** audit pass 1 complete
 - **Community Contribution Guidelines** updated
 
@@ -305,14 +326,14 @@ npm run typecheck
 ║                                                   ║
 ║     🚀 READY TO CONTRIBUTE? PICK A TASK! 🚀     ║
 ║                                                   ║
-║  Start with items 1-3 for maximum impact         ║
+║  Start with lazy loading or mobile touch         ║
 ║  All contributions welcome - big or small!       ║
 ║                                                   ║
 ╚═══════════════════════════════════════════════════╝
 ```
 
-**Last Updated:** July 2026  
-**Next Review:** End of Sprint 2  
+**Last Updated:** August 2026  
+**Next Review:** End of Sprint  
 **Maintained by:** Jon-Arve Constantine / GizzZmo
 
 </div>
