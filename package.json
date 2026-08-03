@@ -11,6 +11,7 @@
     "build": "vite build",
     "build:server": "make server",
     "build:all": "npm run build && npm run build:server",
+    "build:analyze": "vite build && node scripts/measure-bundle.mjs",
     "serve": "./omnigrid_server",
     "preview": "vite preview",
     "test": "vitest",
@@ -22,6 +23,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
+    "measure:bundle": "node scripts/measure-bundle.mjs",
     "assets:generate": "node scripts/generate-screenshot-assets.mjs",
     "artifacts:generate": "node scripts/generate-build-artifacts.mjs"
   },
