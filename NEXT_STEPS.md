@@ -1,77 +1,48 @@
-# 🚀 OMNI-GRID 2.0 - NEXT STEPS
+# Omni-Grid 2.0 - NEXT STEPS
 
-```text
-   ____  __  __ _   _ ___       ____ ____  ___ ____
-  / __ \|  \/  | \ | |_ _|     / ___|  _ \|_ _|  _ \
- | |  | | |\/| |  \| || |_____| |  _| |_) || || | | |
- | |__| | |  | | |\  || |_____| |_| |  _ < | || |_| |
-  \____/|_|  |_|_| \_|___|     \____|_| \_\___|____/
+## Completed (Aug 2026)
 
-  [ IMMEDIATE ACTION ITEMS ]
-  [ START HERE TO CONTRIBUTE ]
-```
+### Security
+- [x] Secure Vault (AES-256-GCM + PBKDF2 passphrase)
+- [x] Zustand partialize (secrets never in plain localStorage)
+- [x] No client-side API key injection
 
-## 📋 OVERVIEW
+### Performance
+- [x] Widget lazy-loading (React.lazy + Suspense + WidgetSkeleton)
+- [x] `scripts/measure-bundle.mjs` + `npm run measure:bundle` / `build:analyze`
 
-Immediate, actionable next steps for Omni-Grid 2.0.
+### Mobile / PWA touch
+- [x] `ResponsiveGrid` — breakpoints lg→xxs (12→2 cols)
+- [x] Auto-compact on mobile; resize disabled under 768px
+- [x] Drag via `.drag-handle` only; inputs/buttons cancelled
+- [x] `useIsMobile` / `useContainerWidth` hooks
+- [x] viewport-fit=cover + safe-area + 44px coarse-pointer targets
+- [x] Docs: `docs/mobile-pwa.md`
 
-**Related:** [PROJECT_BLUEPRINT.md](./PROJECT_BLUEPRINT.md) · [ROADMAP.md](./ROADMAP.md) · [CONTRIBUTING.md](./CONTRIBUTING.md)
+### Cloud backup (vault crypto)
+- [x] `services/cloudBackup.ts` — encrypted `.ogbak.json` + optional HTTPS PUT/GET endpoint
+- [x] Unit tests: `test/cloudBackup.test.ts`
+- [x] Docs: `docs/cloud-backup.md`
+- [ ] Wire full UI in Settings → Data tab (API ready; polish remaining)
 
----
+### Tests
+- [x] `test/useMediaQuery.test.ts`
+- [x] `test/cloudBackup.test.ts`
+- [ ] E2E (Playwright) smoke for mobile viewport + vault unlock
 
-## 🎯 COMPLETED PRIORITIES ✅
+## Next priorities
 
-### Settings, Theme, Widget API, Music, AI Chat, Monaco ✅
+1. **Settings Data tab UI** for encrypted export/import + cloud endpoint
+2. **App chrome** mobile menu for header controls (safe-area already in CSS)
+3. **E2E** mobile + backup flows
+4. **Lighthouse** mobile TTI after `npm run build:analyze`
 
-### Secure Vault & Secrets Hardening ✅ (v2.5.7)
-
-- AES-256-GCM DEK + optional PBKDF2-SHA256 (600k) passphrase
-- Zustand `partialize` excludes secrets from main localStorage blob
-- System Core UI: enable / unlock / lock / remove
-- Client-side API-key injection removed; CodeQL SW regex fixed
-
-### Widget Lazy Loading ✅
-
-- `React.lazy` + `Suspense` in `components/GridContainer.tsx`
-- `components/WidgetSkeleton.tsx` cyberpunk loading fallback
-- **Eager:** SystemCore, HelpDesk, QuantumCalc, FocusHUD, Scratchpad, Asset, Transformer, CipherVault, ChromaLab, Temporal, Weather, Valuta, Sudoku, Clipboard
-- **Lazy:** CyberEditor (Monaco), NeuralChat, Marketplace, MultiAgentHub, SunoPlayer, PDFViewer, ResearchBrowser, PromptLab, Sonic, WritePad, Polyglot, Architect, Aesthetic, Radio, DocuHub, GitPulse, ProjectTracker, WebTerminal, NewsFeed, CipherPad, SecureCalendar, MacroNet, ChainPulse, RegRadar, Market, Strategic, Browser, CommunityPortal
-
----
-
-## 🔥 CURRENT HIGH-VALUE CONTRIBUTIONS (Q3 2026)
-
-### PWA / Mobile Touch
-
-Scaffolding complete. Still needed: touch-optimized grid interactions, offline widget-state caching.
-
-### Cloud Backup & Sync
-
-Not started. Reuse Secure Vault crypto for E2E encryption of cloud payloads.
-
-### Marketplace polish
-
-Rating/review system and community submission UX.
-
----
-
-## 🐛 QUICK WINS
-
-- Unit / E2E tests, a11y audit, JSDoc
-- Measure bundle size / TTI after lazy-load
-
----
-
-## 📝 GET STARTED
+## Commands
 
 ```bash
-git clone https://github.com/GizzZmo/Omni-Grid-2.0.git
-cd Omni-Grid-2.0 && npm install && npm run dev
+npm run test:run
+npm run build:analyze   # vite build + bundle size report
+npm run measure:bundle  # report only (needs dist/)
 ```
 
-API keys: **System Core → Settings**. Optional vault passphrase for at-rest encryption.
-
----
-
-**Last Updated:** August 2026  
-**Maintained by:** Jon-Arve Constantine / GizzZmo
+**Last Updated:** August 2026
