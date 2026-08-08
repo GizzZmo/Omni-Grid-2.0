@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useLayoutEffect } from 'react';
 
 /**
  * Observe container width for ResponsiveGridLayout.
@@ -16,11 +16,20 @@ export function useContainerWidth(defaultWidth = 1200) {
     if (w > 0) setWidth(w);
   }, []);
 
-  useEffect(() => {
-    setMounted(true);
-    measure();
+  // Callback ref: setMounted is called outside an effect body, when the element attaches.
+  const containerRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      ref.current = el;
+      if (el) setMounted(true);
+    },
+    [],
+  );
+
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    measure();
 
     if (typeof ResizeObserver !== 'undefined') {
       const ro = new ResizeObserver(() => measure());
@@ -30,7 +39,7 @@ export function useContainerWidth(defaultWidth = 1200) {
 
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
-  }, [measure]);
+  }, [measure, mounted]);
 
-  return { width, containerRef: ref, mounted };
+  return { width, containerRef, mounted };
 }

@@ -17,6 +17,20 @@ export default [
   },
   js.configs.recommended,
   {
+    files: ['scripts/**/*.mjs', 'scripts/**/*.js'],
+    languageOptions: {
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'readonly',
+      },
+    },
+  },
+  {
     files: ['public/sw.js'],
     languageOptions: {
       globals: {
