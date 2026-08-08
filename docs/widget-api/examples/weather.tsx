@@ -44,7 +44,7 @@ export const WeatherExampleWidget: React.FC = () => {
       if (!res.ok) throw new Error('API request failed');
       const data = await res.json();
       setWeather(data.current_weather);
-    } catch (e) {
+    } catch (_e) {
       setError('Could not fetch weather data');
     } finally {
       setLoading(false);
