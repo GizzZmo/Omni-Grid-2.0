@@ -39,7 +39,7 @@ export function useContainerWidth(defaultWidth = 1200) {
 
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
-  }, [measure, mounted]);
+  }, [measure]);
 
   return { width, containerRef, mounted };
 }
