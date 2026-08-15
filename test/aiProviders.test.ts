@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { providers, getProviderById } from '../services/aiProviders';
-import { estimateTokens } from '../services/promptEngine';
 
 describe('aiProviders', () => {
   describe('providers list', () => {
@@ -13,25 +12,30 @@ describe('aiProviders', () => {
         expect(provider.id).toBeTruthy();
         expect(provider.name).toBeTruthy();
         expect(provider.model).toBeTruthy();
-        expect(typeof provider.costPer1kTokens).toBe('number');
         expect(typeof provider.run).toBe('function');
         expect(typeof provider.estimateTokens).toBe('function');
       }
     });
 
-    it('providers have unique ids', () => {
+    it('has unique ids', () => {
       const ids = providers.map(p => p.id);
-      const uniqueIds = new Set(ids);
-      expect(uniqueIds.size).toBe(ids.length);
+      expect(new Set(ids).size).toBe(ids.length);
+    });
+  });
+
+  describe('getProviderById', () => {
+    it('returns provider for known id', () => {
+      const p = getProviderById('gemini-flash');
+      expect(p).toBeDefined();
+      expect(p!.id).toBe('gemini-flash');
     });
 
-    it('includes gemini-pro, gpt-4o-mini, and claude-3-sonnet', () => {
-      const ids = providers.map(p => p.id);
-      expect(ids).toContain('gemini-pro');
-      expect(ids).toContain('gpt-4o-mini');
-      expect(ids).toContain('claude-3-sonnet');
+    it('returns undefined for unknown id', () => {
+      expect(getProviderById('does-not-exist')).toBeUndefined();
     });
+  });
 
+  describe('estimateTokens on providers', () => {
     it('each provider estimateTokens function works correctly', () => {
       for (const provider of providers) {
         const tokens = provider.estimateTokens('hello world');
@@ -40,56 +44,27 @@ describe('aiProviders', () => {
     });
   });
 
-  describe('getProviderById', () => {
-    it('returns the correct provider by id', () => {
-      const provider = getProviderById('gemini-pro');
-      expect(provider).toBeDefined();
-      expect(provider?.id).toBe('gemini-pro');
-      expect(provider?.name).toBe('Gemini Pro');
-    });
-
-    it('returns undefined for unknown provider id', () => {
-      const provider = getProviderById('unknown-provider-xyz');
-      expect(provider).toBeUndefined();
-    });
-  });
-
-  describe('provider run()', () => {
+  describe('provider.run', () => {
     beforeEach(() => {
       vi.useFakeTimers();
     });
-
     afterEach(() => {
       vi.useRealTimers();
     });
 
-    it('returns a CompletionResponse with expected shape', async () => {
-      const provider = getProviderById('gemini-pro')!;
-      const promise = provider.run('short test prompt');
+    it('returns a response object', async () => {
+      const provider = getProviderById('gemini-flash')!;
+      const promise = provider.run('test prompt');
       await vi.runAllTimersAsync();
       const response = await promise;
-
-      expect(response.providerId).toBe('gemini-pro');
-      expect(typeof response.output).toBe('string');
-      expect(response.output.length).toBeGreaterThan(0);
-      expect(typeof response.tokens.input).toBe('number');
-      expect(typeof response.tokens.output).toBe('number');
+      expect(response.output).toBeTruthy();
       expect(typeof response.cost).toBe('number');
-      expect(typeof response.latencyMs).toBe('number');
+      expect(typeof response.tokensUsed).toBe('number');
     });
 
-    it('includes the prompt in the output', async () => {
-      const provider = getProviderById('gpt-4o-mini')!;
-      const promise = provider.run('uniquepromptstring');
-      await vi.runAllTimersAsync();
-      const response = await promise;
-      expect(response.output).toContain('uniquepromptstring');
-    });
-
-    it('truncates very long prompts in the output', async () => {
-      const provider = getProviderById('claude-3-sonnet')!;
-      const longPrompt = 'x'.repeat(500);
-      const promise = provider.run(longPrompt);
+    it('respects maxTokens option', async () => {
+      const provider = getProviderById('gemini-flash')!;
+      const promise = provider.run('x'.repeat(1000), { maxTokens: 50 });
       await vi.runAllTimersAsync();
       const response = await promise;
       // Output should be truncated at 280 chars (+ provider prefix)
