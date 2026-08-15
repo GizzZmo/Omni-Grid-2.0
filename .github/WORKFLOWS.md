@@ -25,18 +25,17 @@ All workflows have been enhanced with:
 
 **Jobs:**
 
-- **Build and Test** (Matrix: Node.js 18.x, 20.x):
+- **Build and Test** (Matrix: Node.js 20.x, 22.x):
   - ✅ Install dependencies with npm ci
   - ✅ TypeScript type checking via `npm run typecheck`
   - ✅ **Run Vitest tests** with `npm run test:run`
   - ✅ Frontend build verification (Vite)
   - ✅ C++ server compilation with Make
   - ✅ Binary verification
-  - ✅ Upload build artifacts (dist/ and omnigrid_server)
+  - ✅ Upload build artifacts (dist/ and omnigrid_server) for Node 20.x
 - **Code Quality Check**:
   - ✅ **ESLint** validation with `npm run lint`
   - ✅ **Prettier** format checking with `npm run format:check`
-  - ✅ Console.log detection (fails build if found in source)
   - ✅ TODO/FIXME comment detection (warning only)
 - **Test Coverage**:
   - ✅ Run tests with coverage reporting
@@ -537,5 +536,5 @@ npm run artifacts:generate # Generate build artifact manifest locally (requires 
 
 ---
 
-_Last Updated: 2026-05-28_  
+_Last Updated: 2026-08-14_  
 _For questions or issues with workflows, please open an issue with the `ci-cd` label._

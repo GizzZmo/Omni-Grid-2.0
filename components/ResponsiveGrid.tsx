@@ -4,7 +4,7 @@ import type { Layout } from 'react-grid-layout';
 import { useIsMobile } from '../hooks/useMediaQuery';
 import { useContainerWidth } from '../hooks/useContainerWidth';
 
-const ResponsiveGridLayout = WidthProvider(Responsive as any);
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export interface ResponsiveGridProps {
   layout: Layout[];
