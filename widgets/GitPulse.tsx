@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GitPullRequest, GitMerge, CheckCircle, Clock, AlertCircle, RefreshCw } from 'lucide-react';
+import { GitPullRequest, GitMerge, Clock, AlertCircle, RefreshCw } from 'lucide-react';
 import { useAppStore } from '../store';
 
 const MOCK_PRS = [
