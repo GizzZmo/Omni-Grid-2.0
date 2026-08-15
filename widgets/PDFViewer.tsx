@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Upload, X } from 'lucide-react';
+import { FileText, X } from 'lucide-react';
 
 export const PDFViewer: React.FC = () => {
   const [fileUrl, setFileUrl] = useState<string | null>(null);
