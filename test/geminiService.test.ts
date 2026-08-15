@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 
 // Must use regular function (not arrow) so it works as a constructor with `new`
 vi.mock('@google/genai', () => ({

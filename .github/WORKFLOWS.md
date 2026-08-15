@@ -25,7 +25,7 @@ All workflows have been enhanced with:
 
 **Jobs:**
 
-- **Build and Test** (Matrix: Node.js 20.x, 22.x):
+- **Build and Test** (Matrix: Node.js 20.x, 22.x) — *skipped for Dependabot*:
   - ✅ Install dependencies with npm ci
   - ✅ TypeScript type checking via `npm run typecheck`
   - ✅ **Run Vitest tests** with `npm run test:run`
@@ -33,11 +33,13 @@ All workflows have been enhanced with:
   - ✅ C++ server compilation with Make
   - ✅ Binary verification
   - ✅ Upload build artifacts (dist/ and omnigrid_server) for Node 20.x
-- **Code Quality Check**:
+- **Dependabot Smoke** (Node 20 only) — *only for Dependabot PRs*:
+  - ✅ Typecheck + unit tests (lightweight gate; no matrix / C++ / coverage)
+- **Code Quality Check** (always runs, including Dependabot — **Prettier gate**):
   - ✅ **ESLint** validation with `npm run lint`
-  - ✅ **Prettier** format checking with `npm run format:check`
+  - ✅ **Prettier** format checking with `npm run format:check` (fails CI on drift)
   - ✅ TODO/FIXME comment detection (warning only)
-- **Test Coverage**:
+- **Test Coverage** — *skipped for Dependabot*:
   - ✅ Run tests with coverage reporting
   - ✅ Upload coverage artifacts
   - ✅ **Post coverage report as PR comment**
@@ -536,5 +538,5 @@ npm run artifacts:generate # Generate build artifact manifest locally (requires 
 
 ---
 
-_Last Updated: 2026-08-14_  
+_Last Updated: 2026-08-15_  
 _For questions or issues with workflows, please open an issue with the `ci-cd` label._

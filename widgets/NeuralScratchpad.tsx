@@ -84,7 +84,7 @@ export const NeuralScratchpad: React.FC = () => {
       // Update both immediately to prevent race conditions during AI async return
       setLocalContent(newText);
       setScratchpadContent(newText);
-    } catch (err) {
+    } catch (_err) {
       setError('AI request failed. Check key.');
     } finally {
       setLoading(false);
