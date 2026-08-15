@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scale, AlertTriangle, FileText, CheckCircle2 } from 'lucide-react';
+import { Scale, AlertTriangle } from 'lucide-react';
 
 export const RegRadar: React.FC = () => {
   return (
