@@ -63,7 +63,7 @@ export const WeatherStation: React.FC = () => {
         city: area.areaName[0].value,
         country: area.country[0].value,
       });
-    } catch (err) {
+    } catch (_err) {
       setError('Location not found or service down.');
     } finally {
       setLoading(false);
