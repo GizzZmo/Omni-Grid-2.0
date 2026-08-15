@@ -130,7 +130,7 @@ export default [
       // Keep as warn so existing intentional `any` does not fail CI; tighten over time.
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
-        'warn',
+        'error',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
