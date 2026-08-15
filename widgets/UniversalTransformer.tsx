@@ -31,7 +31,7 @@ export const UniversalTransformer: React.FC = () => {
       const header = Object.keys(array[0]).join(',');
       const rows = array.map((obj: any) => Object.values(obj).join(',')).join('\n');
       setOutputText(`${header}\n${rows}`);
-    } catch (e) {
+    } catch (_e) {
       setOutputText('Invalid JSON');
     }
   };
@@ -48,7 +48,7 @@ export const UniversalTransformer: React.FC = () => {
         }, {});
       });
       setOutputText(JSON.stringify(json, null, 2));
-    } catch (e) {
+    } catch (_e) {
       setOutputText('Invalid CSV');
     }
   };
@@ -82,192 +82,163 @@ export const UniversalTransformer: React.FC = () => {
       case 'lb':
         return `${(val / 2.20462).toFixed(2)}kg`;
       default:
-        return '';
+        return '...';
     }
   };
 
   const unitResult = calculateConversion(unitValue, unitFrom);
 
   const handleUnitCopy = () => {
-    if (unitResult && unitResult !== '...') {
-      navigator.clipboard.writeText(unitResult);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    navigator.clipboard.writeText(unitResult);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  // Drag and Drop Handlers
-  const handleFileDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      readFile(file);
-    }
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      readFile(file);
-    }
-    // Reset to allow selecting same file again
-    e.target.value = '';
-  };
-
-  const readFile = (file: File) => {
+  const handleFileLoad = (file: File) => {
     const reader = new FileReader();
-    reader.onload = event => {
-      if (event.target?.result) {
-        setInputText(event.target.result as string);
-      }
+    reader.onload = e => {
+      const text = e.target?.result as string;
+      setInputText(text);
     };
     reader.readAsText(file);
   };
 
-  const handleDragStart = (e: React.DragEvent) => {
-    // Allows dragging the output text directly to another widget
-    e.dataTransfer.setData('text/plain', outputText);
-    e.dataTransfer.effectAllowed = 'copy';
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFileLoad(file);
+    const text = e.dataTransfer.getData('text/plain');
+    if (text) setInputText(text);
   };
 
   return (
-    <div className="h-full flex flex-col gap-4">
+    <div className="h-full flex flex-col gap-3">
       {/* Tabs */}
-      <div className="flex gap-2 p-1 bg-slate-900 rounded-lg">
+      <div className="flex bg-slate-900 p-1 rounded-lg">
         <button
-          onClick={() => {
-            setActiveTab('json-csv');
-            setCopied(false);
-          }}
-          className={`flex-1 py-1 text-xs font-medium rounded-md transition-colors ${activeTab === 'json-csv' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+          onClick={() => setActiveTab('json-csv')}
+          className={`flex-1 py-1 text-xs font-bold rounded transition-colors flex items-center justify-center gap-2 ${
+            activeTab === 'json-csv'
+              ? 'bg-indigo-700 text-white'
+              : 'text-slate-500 hover:text-slate-300'
+          }`}
         >
-          JSON / CSV
+          <FileJson size={12} /> JSON ↔ CSV
         </button>
         <button
-          onClick={() => {
-            setActiveTab('unit');
-            setCopied(false);
-          }}
-          className={`flex-1 py-1 text-xs font-medium rounded-md transition-colors ${activeTab === 'unit' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+          onClick={() => setActiveTab('unit')}
+          className={`flex-1 py-1 text-xs font-bold rounded transition-colors flex items-center justify-center gap-2 ${
+            activeTab === 'unit'
+              ? 'bg-indigo-700 text-white'
+              : 'text-slate-500 hover:text-slate-300'
+          }`}
         >
-          Units
+          <ArrowRightLeft size={12} /> Units
         </button>
       </div>
 
       {activeTab === 'json-csv' ? (
         <div className="flex-1 flex flex-col gap-2 min-h-0">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileUpload}
-            className="hidden"
-            accept=".json,.csv,.txt"
-          />
           <div
-            className={`flex-1 relative transition-all duration-200 ${isDragOver ? 'ring-2 ring-indigo-500 bg-slate-800' : ''}`}
+            className={`flex-1 flex flex-col gap-2 relative rounded transition-all ${
+              isDragOver ? 'ring-2 ring-indigo-500' : ''
+            }`}
             onDragOver={e => {
               e.preventDefault();
               setIsDragOver(true);
             }}
             onDragLeave={() => setIsDragOver(false)}
-            onDrop={handleFileDrop}
+            onDrop={handleDrop}
           >
             <textarea
-              className="w-full h-full bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono text-slate-300 resize-none focus:outline-none focus:border-indigo-500"
-              placeholder="Paste JSON/CSV here, Drag & Drop, or use the Upload button..."
               value={inputText}
               onChange={e => setInputText(e.target.value)}
+              placeholder="Paste JSON or CSV here, or drop a file..."
+              className="flex-1 bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono text-slate-200 resize-none focus:outline-none focus:border-indigo-500"
             />
-            {isDragOver && (
-              <div className="absolute inset-0 bg-indigo-900/20 flex items-center justify-center pointer-events-none">
-                <div className="bg-slate-900 text-indigo-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 shadow-xl border border-indigo-500/50">
-                  <Upload size={14} /> Drop File Here
-                </div>
-              </div>
-            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json,.csv,.txt"
+              className="hidden"
+              onChange={e => {
+                const f = e.target.files?.[0];
+                if (f) handleFileLoad(f);
+              }}
+            />
           </div>
 
-          <div className="flex gap-2 justify-center">
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-xs text-indigo-400 font-medium flex items-center gap-1 border border-indigo-900/30"
-              title="Upload file"
-            >
-              <Upload size={12} /> Upload
-            </button>
+          <div className="flex gap-2">
             <button
               onClick={convertToCSV}
-              className="bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-xs text-indigo-400 font-medium"
+              className="flex-1 py-1.5 bg-indigo-900/50 hover:bg-indigo-800 border border-indigo-700 rounded text-xs font-bold text-indigo-200 transition-colors"
             >
-              to CSV
+              → CSV
             </button>
             <button
               onClick={convertToJSON}
-              className="bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-xs text-indigo-400 font-medium"
+              className="flex-1 py-1.5 bg-indigo-900/50 hover:bg-indigo-800 border border-indigo-700 rounded text-xs font-bold text-indigo-200 transition-colors"
             >
-              to JSON
+              → JSON
+            </button>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-slate-400 hover:text-white transition-colors"
+              title="Upload file"
+            >
+              <Upload size={14} />
+            </button>
+            <button
+              onClick={handleCopy}
+              disabled={!outputText}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-slate-400 hover:text-white transition-colors disabled:opacity-40"
+              title="Copy output"
+            >
+              {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
             </button>
           </div>
 
-          <div className="flex-1 relative group">
-            <div className="absolute top-0 right-0 left-0 h-1 cursor-ns-resize z-10"></div>
-            <textarea
-              readOnly
-              draggable={!!outputText}
-              onDragStart={handleDragStart}
-              className={`w-full h-full bg-slate-900 border border-slate-800 rounded p-2 text-xs font-mono text-emerald-400 resize-none focus:outline-none cursor-grab active:cursor-grabbing ${outputText ? 'hover:border-emerald-500/50' : ''}`}
-              placeholder="Output (Drag me to Scratchpad)..."
-              value={outputText}
-            />
-            {outputText && (
-              <>
-                <div className="absolute top-2 left-2 p-1 bg-slate-800/80 rounded pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
-                  <GripHorizontal size={14} className="text-emerald-500" />
-                </div>
-                <button
-                  onClick={handleCopy}
-                  className="absolute top-2 right-2 p-1 bg-slate-800 rounded hover:bg-slate-700 text-slate-300 transition-colors z-20"
-                >
-                  {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
-                </button>
-              </>
-            )}
-          </div>
+          <textarea
+            value={outputText}
+            readOnly
+            placeholder="Output appears here..."
+            className="flex-1 bg-slate-950 border border-slate-800 rounded p-2 text-xs font-mono text-emerald-300 resize-none focus:outline-none"
+          />
         </div>
       ) : (
-        <div className="flex flex-col gap-4 p-2">
-          <div className="flex gap-2 items-end">
-            <div className="flex-1">
-              <label className="text-[10px] uppercase text-slate-500 font-bold">Input</label>
-              <input
-                type="number"
-                value={unitValue}
-                onChange={e => setUnitValue(parseFloat(e.target.value))}
-                className="w-full bg-slate-950 border border-slate-800 rounded p-2 text-sm text-slate-200 focus:border-indigo-500 focus:outline-none"
-              />
-            </div>
+        <div className="flex-1 flex flex-col justify-center gap-3">
+          <div className="bg-slate-900 p-4 rounded-lg border border-slate-800">
+            <label className="text-[10px] uppercase text-slate-500 font-bold block mb-2">
+              Value
+            </label>
+            <input
+              type="number"
+              value={unitValue}
+              onChange={e => setUnitValue(parseFloat(e.target.value) || 0)}
+              className="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-lg font-mono text-white outline-none focus:border-indigo-500"
+            />
           </div>
 
           <select
             value={unitFrom}
             onChange={e => setUnitFrom(e.target.value)}
-            className="w-full bg-slate-800 text-slate-300 text-xs p-2 rounded outline-none focus:ring-1 focus:ring-indigo-500"
+            className="bg-slate-800 text-slate-200 text-xs p-2 rounded outline-none border border-slate-700"
           >
-            <optgroup label="Web / Time">
-              <option value="px">Pixels → REM (16px base)</option>
-              <option value="rem">REM → Pixels</option>
-              <option value="epoch">Epoch → Local Date</option>
+            <optgroup label="Length / CSS">
+              <option value="px">Pixels → Rem</option>
+              <option value="rem">Rem → Pixels</option>
+              <option value="m">Meters → Feet</option>
+              <option value="ft">Feet → Meters</option>
             </optgroup>
             <optgroup label="Temperature">
               <option value="c">Celsius → Fahrenheit</option>
               <option value="f">Fahrenheit → Celsius</option>
             </optgroup>
-            <optgroup label="Length">
-              <option value="m">Meters → Feet</option>
-              <option value="ft">Feet → Meters</option>
+            <optgroup label="Time">
+              <option value="epoch">Unix Epoch → Date</option>
             </optgroup>
-            <optgroup label="Weight">
+            <optgroup label="Mass">
               <option value="kg">Kilograms → Pounds</option>
               <option value="lb">Pounds → Kilograms</option>
             </optgroup>
