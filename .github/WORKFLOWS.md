@@ -451,3 +451,43 @@ File: `.github/labeler.yml`
 
 - `size/XS`: < 10 lines changed
 - `size/S`: 10-49 lines changed
+- `size/M`: 50-199 lines changed
+- `size/L`: 200-499 lines changed
+- `size/XL`: ≥ 500 lines changed
+
+---
+
+## 🔄 Maintenance Schedule
+
+- **Daily**: Stale bot, dependency audit (scheduled)
+- **Weekly**: Dependabot version updates (Monday 09:00 UTC), CodeQL
+- **Monthly**: Review stale issues and PRs manually
+- **Quarterly**:
+  - Review and update workflow configurations
+  - Update CodeQL queries and security policies
+  - Review test coverage trends
+
+### Monitoring
+
+- ✅ Check workflow status badges in README
+- ✅ Review workflow run history in Actions tab
+- ✅ Monitor security advisories
+- ✅ Track build performance trends
+- ✅ Review test coverage reports
+
+---
+
+## 📚 Additional Resources
+
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [CodeQL Documentation](https://codeql.github.com/docs/)
+- [Dependabot Documentation](https://docs.github.com/en/code-security/dependabot)
+- [GitHub Security Features](https://docs.github.com/en/code-security)
+- [Vitest Documentation](https://vitest.dev/)
+- [ESLint Documentation](https://eslint.org/)
+- [Prettier Documentation](https://prettier.io/)
+
+---
+
+_Last Updated: 2026-08-20_  
+_For questions or issues with workflows, please open an issue with the `ci-cd` label._
