@@ -12,6 +12,7 @@ updates:
       - 'GizzZmo'
     labels:
       - 'dependencies'
+      - 'npm'
       - 'automated'
     commit-message:
       prefix: 'chore(deps):'
