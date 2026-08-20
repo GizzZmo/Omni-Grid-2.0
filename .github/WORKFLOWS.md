@@ -189,7 +189,7 @@ All workflows have been enhanced with:
 
 **Schedule:** Weekly on Monday at 09:00 UTC
 
-**Purpose:** Automated dependency updates
+**Purpose:** Automated dependency updates with grouped PRs to reduce noise
 
 **Ecosystems:**
 
@@ -202,6 +202,14 @@ All workflows have been enhanced with:
 - Weekly schedule to minimize noise
 - Labels: `dependencies`, `automated`
 - Auto-reviewers assigned
+- **Grouped updates** (noise reduction):
+  - `production-dependencies` — minor/patch production deps
+  - `development-dependencies` — minor/patch dev deps
+  - `eslint-stack` — eslint, @eslint/*, @typescript-eslint/*
+  - `vitest-stack` — vitest, @vitest/*
+  - `testing-library` — @testing-library/*
+  - `github-actions` — all Actions minor/patch bumps
+- Major updates still open as individual PRs for review
 
 ---
 
@@ -431,7 +439,7 @@ File: `.github/labeler.yml`
 
 **Automatic Labels:**
 
-- `documentation`: Changes to docs/\*_ or _.md files
+- `documentation`: Changes to docs/\*_ or \*.md files
 - `frontend`: Changes to components/, widgets/, \*.tsx files
 - `backend`: Changes to server/ or C++ files
 - `services`: Changes to services/
@@ -443,100 +451,3 @@ File: `.github/labeler.yml`
 
 - `size/XS`: < 10 lines changed
 - `size/S`: 10-49 lines changed
-- `size/M`: 50-199 lines changed
-- `size/L`: 200-499 lines changed
-- `size/XL`: 500+ lines changed
-
----
-
-## 🛠️ Development Commands
-
-### New Scripts Added
-
-```bash
-# Testing
-npm test              # Run tests in watch mode
-npm run test:run      # Run tests once
-npm run test:ui       # Run tests with UI
-npm run test:coverage # Run tests with coverage report
-
-# Linting & Formatting
-npm run lint          # Run ESLint
-npm run lint:fix      # Fix ESLint issues
-npm run format        # Format all files with Prettier
-npm run format:check  # Check formatting without changing files
-
-# Type Checking
-npm run typecheck     # Run TypeScript type checking
-
-# Building
-npm run build         # Build frontend
-npm run build:server  # Build C++ server
-npm run build:all     # Build both frontend and server
-npm run assets:generate # Generate screenshot asset manifest locally
-npm run artifacts:generate # Generate build artifact manifest locally (requires prior `npm run build`)
-```
-
----
-
-## 🎯 Best Practices
-
-### For Contributors
-
-1. ✅ Run `npm run lint` and `npm run format:check` before committing
-2. ✅ Run `npm run test:run` to ensure all tests pass
-3. ✅ Keep PRs focused and reasonably sized (< 500 lines when possible)
-4. ✅ Update documentation for new features
-5. ✅ Add tests for bug fixes and new features
-6. ✅ Follow the PR template guidelines
-7. ✅ Ensure all CI checks pass before requesting review
-
-### For Maintainers
-
-1. ✅ Review security alerts from CodeQL and Dependabot promptly
-2. ✅ Monitor workflow performance reports
-3. ✅ Keep dependencies up to date
-4. ✅ Review and merge Dependabot PRs regularly
-5. ✅ Use workflow badges in README to communicate project health
-6. ✅ Check test coverage trends
-
----
-
-## 🔧 Maintenance
-
-### Regular Tasks
-
-- **Daily**: Automated dependency audits and stale issue checks
-- **Weekly**:
-  - Review Dependabot PRs
-  - Check CodeQL security scan results
-- **Monthly**: Review stale issues and PRs manually
-- **Quarterly**:
-  - Review and update workflow configurations
-  - Update CodeQL queries and security policies
-  - Review test coverage trends
-
-### Monitoring
-
-- ✅ Check workflow status badges in README
-- ✅ Review workflow run history in Actions tab
-- ✅ Monitor security advisories
-- ✅ Track build performance trends
-- ✅ Review test coverage reports
-
----
-
-## 📚 Additional Resources
-
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [CodeQL Documentation](https://codeql.github.com/docs/)
-- [Dependabot Documentation](https://docs.github.com/en/code-security/dependabot)
-- [GitHub Security Features](https://docs.github.com/en/code-security)
-- [Vitest Documentation](https://vitest.dev/)
-- [ESLint Documentation](https://eslint.org/)
-- [Prettier Documentation](https://prettier.io/)
-
----
-
-_Last Updated: 2026-08-15_  
-_For questions or issues with workflows, please open an issue with the `ci-cd` label._

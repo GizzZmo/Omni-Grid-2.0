@@ -16,6 +16,39 @@ updates:
     commit-message:
       prefix: 'chore(deps):'
       include: 'scope'
+    # Group updates to reduce PR noise
+    groups:
+      production-dependencies:
+        dependency-type: 'production'
+        update-types:
+          - 'minor'
+          - 'patch'
+      development-dependencies:
+        dependency-type: 'development'
+        update-types:
+          - 'minor'
+          - 'patch'
+      eslint-stack:
+        patterns:
+          - 'eslint*'
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      vitest-stack:
+        patterns:
+          - 'vitest*'
+          - '@vitest/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      testing-library:
+        patterns:
+          - '@testing-library/*'
+        update-types:
+          - 'minor'
+          - 'patch'
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: 'github-actions'
@@ -34,3 +67,10 @@ updates:
     commit-message:
       prefix: 'chore(actions):'
       include: 'scope'
+    groups:
+      github-actions:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
