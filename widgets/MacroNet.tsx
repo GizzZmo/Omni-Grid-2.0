@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Globe, TrendingUp, Activity, ArrowRight, Zap, Waves } from 'lucide-react';
+import { Globe, Waves } from 'lucide-react';
 
 // --- Atomic Components (Atomic Design) ---
 

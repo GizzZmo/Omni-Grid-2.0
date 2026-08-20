@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DollarSign, RefreshCw, ArrowRightLeft, TrendingUp, Loader2 } from 'lucide-react';
+import { DollarSign, ArrowRightLeft, TrendingUp, Loader2 } from 'lucide-react';
 
 const CURRENCIES = [
   'USD',
@@ -33,8 +33,8 @@ export const ValutaExchange: React.FC = () => {
         setRate(data.rates[to]);
         setLastUpdated(new Date().toLocaleTimeString());
       }
-    } catch (e) {
-      console.error(e);
+    } catch (_e) {
+      console.error(_e);
     } finally {
       setLoading(false);
     }

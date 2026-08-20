@@ -1,15 +1,6 @@
 /// <reference lib="dom" />
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  PenTool,
-  FileText,
-  Eraser,
-  Sparkles,
-  Copy,
-  Check,
-  Loader2,
-  ArrowDownToLine,
-} from 'lucide-react';
+import { FileText, Eraser, Sparkles, Copy, Check, Loader2, ArrowDownToLine } from 'lucide-react';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
 import { COMMON_FILE_ACCEPTS } from './fileAccepts';
@@ -84,8 +75,8 @@ export const WritePad: React.FC = () => {
       setLocalContent(generated);
       setWritePadContent(generated);
       setShowPrompt(false);
-    } catch (e: unknown) {
-      const error = e instanceof Error ? e : new Error(String(e));
+    } catch (_e: unknown) {
+      const error = _e instanceof Error ? _e : new Error(String(_e));
       setLocalContent((prev: string) => `${prev}\n\n[AI Generation Failed: ${error.message}]`);
     } finally {
       setLoading(false);
