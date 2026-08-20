@@ -4,15 +4,17 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-permissions:
-  contents: write
-  pull-requests: write
+# Default: no permissions. Elevate only on the gated Dependabot job.
+permissions: {}
 
 jobs:
   auto-merge:
     name: Auto-merge Dependabot PRs
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
+    permissions:
+      contents: write       # gh pr merge
+      pull-requests: write  # approve + edit
 
     steps:
       - name: Get Dependabot metadata
