@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Cloud,
-  Sun,
-  CloudRain,
-  Wind,
-  Droplets,
-  MapPin,
-  Search,
-  Loader2,
-  Thermometer,
-} from 'lucide-react';
+import { Cloud, Sun, CloudRain, Wind, Droplets, MapPin, Search, Loader2 } from 'lucide-react';
 import { useAppStore } from '../store';
 
 interface WeatherData {
