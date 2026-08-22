@@ -200,7 +200,7 @@ All workflows have been enhanced with:
 
 - Automatic PR creation for updates
 - Weekly schedule to minimize noise
-- Labels: `dependencies`, `automated`
+- Labels: `dependencies`, `npm` / `github-actions`, `automated`
 - Auto-reviewers assigned
 - **Grouped updates** (noise reduction):
   - `production-dependencies` — minor/patch production deps
@@ -217,16 +217,26 @@ All workflows have been enhanced with:
 
 **Triggers:** Pull Request events from Dependabot
 
-**Purpose:** Automatically merge safe dependency updates
+**Purpose:** Automatically merge safe dependency updates and apply metadata labels
 
 **Jobs:**
 
 - **Auto-merge**:
-  - ✅ Fetch Dependabot metadata
+  - ✅ Fetch Dependabot metadata (`dependabot/fetch-metadata@v2`)
+  - ✅ **Ensure metadata labels exist** (`semver-major`, `semver-minor`, `semver-patch`, `production`, `development`, `npm`, `github-actions`)
+  - ✅ **Apply metadata labels** based on update-type, dependency-type, and package-ecosystem
   - ✅ Check update type (major/minor/patch)
   - ✅ Auto-approve minor and patch updates
   - ✅ Enable auto-merge for safe updates
-  - ✅ Comment on major updates requiring manual review
+  - ✅ Comment on major updates requiring manual review (with `semver-major` label)
+
+**Metadata labels applied:**
+
+| Label | Source |
+|-------|--------|
+| `semver-major` / `semver-minor` / `semver-patch` | `update-type` |
+| `production` / `development` | `dependency-type` |
+| `npm` / `github-actions` | `package-ecosystem` |
 
 **Safety:** Only auto-merges minor and patch updates
 
