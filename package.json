@@ -34,7 +34,7 @@
     "lucide-react": "1.31.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "react-grid-layout": "1.4.4",
+    "react-grid-layout": "2.2.4",
     "zustand": "5.0.12"
   },
   "devDependencies": {
