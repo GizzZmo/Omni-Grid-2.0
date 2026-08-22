@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5" />
     <title>Omni-Grid | The Super App</title>
 
     <!-- PWA -->
@@ -60,7 +60,6 @@
         font-family: var(--font-gothic);
       }
 
-      /* Dynamic Override Helper Classes */
       .bg-theme-bg {
         background-color: var(--color-bg) !important;
       }
@@ -77,7 +76,6 @@
         border-color: var(--color-primary) !important;
       }
 
-      /* Custom scrollbar for cyberpunk aesthetic */
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -94,7 +92,6 @@
         box-shadow: 0 0 10px var(--color-primary);
       }
 
-      /* CRT Scanline Effect */
       .scanlines::before {
         content: ' ';
         display: block;
@@ -110,7 +107,6 @@
         opacity: 0.15;
       }
 
-      /* React Grid Layout Overrides */
       .react-grid-item.react-grid-placeholder {
         background: rgba(217, 70, 239, 0.1) !important;
         border: 1px dashed var(--color-primary) !important;
@@ -145,7 +141,6 @@
         box-shadow: 0 0 10px var(--color-primary);
       }
 
-      /* Glitch Animation Keyframes */
       @keyframes glitch {
         0% {
           transform: translate(0);
@@ -170,6 +165,49 @@
       .hover-glitch:hover {
         animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
         color: var(--color-secondary);
+      }
+
+      /* Mobile / touch best practices */
+      html {
+        -webkit-text-size-adjust: 100%;
+        touch-action: manipulation;
+      }
+      body {
+        padding: env(safe-area-inset-top) env(safe-area-inset-right)
+          env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+      @media (pointer: coarse) {
+        .react-resizable-handle {
+          width: 44px !important;
+          height: 44px !important;
+          bottom: 0 !important;
+          right: 0 !important;
+        }
+        .react-resizable-handle::after {
+          width: 14px;
+          height: 14px;
+          right: 10px;
+          bottom: 10px;
+        }
+        .drag-handle {
+          min-height: 44px;
+          touch-action: none;
+        }
+        button,
+        [role='button'],
+        a {
+          min-height: 44px;
+          min-width: 44px;
+        }
+        [role='navigation'] button {
+          width: 48px !important;
+          height: 48px !important;
+        }
+      }
+      @media (max-width: 767px) {
+        .scanlines::before {
+          opacity: 0.08;
+        }
       }
     </style>
     <link rel="stylesheet" href="/index.css" />

@@ -65,7 +65,7 @@ export const SonicArchitecture: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playlistRef = useRef<Track[]>([]);
 
-  const NOTES = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
+  const _NOTES = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
   // Simplified circle relative to C
   const RELATIVE_MAJORS = ['C', 'G', 'D', 'A', 'E', 'B', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F'];
   const RELATIVE_MINORS = [
@@ -330,7 +330,7 @@ export const SonicArchitecture: React.FC = () => {
                 ))}
               </div>
               <div className="flex gap-2 justify-center">
-                {chords.minor?.map((c, i) => (
+                {chords.minor?.map((c, _i) => (
                   <div
                     key={c}
                     className={`w-12 h-12 flex items-center justify-center rounded font-bold text-slate-300 border border-slate-600 bg-slate-800`}

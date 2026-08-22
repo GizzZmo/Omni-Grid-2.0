@@ -1,13 +1,5 @@
 import React, { useState, useRef } from 'react';
-import {
-  FileJson,
-  ArrowRightLeft,
-  FileType,
-  Check,
-  Copy,
-  GripHorizontal,
-  Upload,
-} from 'lucide-react';
+import { ArrowRightLeft, Check, Copy, GripHorizontal, Upload } from 'lucide-react';
 
 export const UniversalTransformer: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'json-csv' | 'unit'>('json-csv');
@@ -31,7 +23,7 @@ export const UniversalTransformer: React.FC = () => {
       const header = Object.keys(array[0]).join(',');
       const rows = array.map((obj: any) => Object.values(obj).join(',')).join('\n');
       setOutputText(`${header}\n${rows}`);
-    } catch (e) {
+    } catch (_e) {
       setOutputText('Invalid JSON');
     }
   };
@@ -48,7 +40,7 @@ export const UniversalTransformer: React.FC = () => {
         }, {});
       });
       setOutputText(JSON.stringify(json, null, 2));
-    } catch (e) {
+    } catch (_e) {
       setOutputText('Invalid CSV');
     }
   };

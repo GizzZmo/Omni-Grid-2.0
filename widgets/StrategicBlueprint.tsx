@@ -7,13 +7,9 @@ import {
   Calendar,
   CheckCircle,
   BarChart,
-  ArrowRight,
-  User,
   Activity,
   Search,
   Zap,
-  Eye,
-  Terminal,
   Grid,
 } from 'lucide-react';
 
@@ -88,8 +84,8 @@ export const StrategicBlueprint: React.FC = () => {
               <p className="text-slate-600 leading-relaxed text-sm mb-4">
                 The <strong className="text-slate-900">Omni-Grid</strong> platform is entering a
                 critical scaling phase. To maintain its competitive edge as a premier data-grid
-                solution, we must transition from a &quot;feature-complete&quot; tool to a
-                &quot;performance-optimized&quot; ecosystem.
+                solution, we must transition from a "feature-complete" tool to a
+                "performance-optimized" ecosystem.
               </p>
               <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
                 <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
@@ -101,9 +97,7 @@ export const StrategicBlueprint: React.FC = () => {
                       <CheckCircle size={10} />
                     </div>
                     <div>
-                      <strong className="block text-slate-800 text-xs">
-                        Increase User Retention
-                      </strong>
+                      <strong className="block text-slate-800 text-xs">Increase Retention</strong>
                       <span className="text-slate-500 text-[10px]">
                         Reducing friction in complex data manipulation.
                       </span>
@@ -203,9 +197,9 @@ export const StrategicBlueprint: React.FC = () => {
                 <Layers className="text-blue-600" size={20} /> New Widgets
               </h2>
               <div className="bg-blue-900 text-white p-4 rounded-lg mb-4 shadow-lg">
-                <h3 className="font-bold text-sm mb-1">Philosophy: &quot;Widget Sandbox&quot;</h3>
+                <h3 className="font-bold text-sm mb-1">Philosophy: "Widget Sandbox"</h3>
                 <p className="text-xs opacity-90">
-                  Widgets must be &quot;Data Agnostic&quot; handling JSON or gRPC via middleware.
+                  Widgets must be "Data Agnostic" handling JSON or gRPC via middleware.
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -298,7 +292,7 @@ export const StrategicBlueprint: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-amber-900 text-xs">
-                      The &quot;A11y&quot; Advantage
+                      The "A11y" Advantage
                     </h4>
                     <p className="text-amber-800 text-[10px] mt-1">
                       Target Section 508 for Gov/Enterprise contracts.
