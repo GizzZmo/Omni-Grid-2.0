@@ -5,6 +5,9 @@ on:
     - cron: '0 0 * * *' # Daily at midnight
   workflow_dispatch:
 
+# Least-privilege floor; job elevates as needed
+permissions: {}
+
 jobs:
   stale:
     name: Mark Stale Issues and PRs
@@ -36,38 +39,35 @@ jobs:
 
             If you believe this issue should be reopened, please:
             - Create a new issue with updated information
-            - Reference this issue in your new submission
-
-            Thank you! 🙏
+            - Or comment on this issue and a maintainer will review
 
           days-before-issue-stale: 60
           days-before-issue-close: 7
-          stale-issue-label: 'stale'
-          exempt-issue-labels: 'keep-open,pinned,security,bug'
 
-          # Pull Requests
+          # PRs
           stale-pr-message: |
             👋 This pull request has been automatically marked as stale because it has not had recent activity.
             It will be closed in 14 days if no further activity occurs.
 
-            If this PR is still relevant, please:
-            - Rebase against the latest main branch
-            - Address any review comments
+            If this PR is still being worked on, please:
             - Add a comment to keep it open
             - Add the `keep-open` label
-
-            Thank you for your contributions! 🙏
+            - Remove the `stale` label
 
           close-pr-message: |
             🔒 This pull request has been automatically closed due to inactivity.
 
-            If you would like to continue this work, please:
-            - Reopen this PR
-            - Create a new PR with updated changes
-
-            Thank you! 🙏
+            Feel free to reopen if you wish to continue working on it.
 
           days-before-pr-stale: 30
           days-before-pr-close: 14
-          stale-pr-label: 'stale'
-          exempt-pr-labels: 'keep-open,in-progress,security'
+
+          # Exemptions
+          exempt-issue-labels: 'keep-open,pinned,security,bug,in-progress'
+          exempt-pr-labels: 'keep-open,pinned,security,bug,in-progress'
+          exempt-all-milestones: true
+          exempt-all-assignees: false
+
+          # Operations
+          operations-per-run: 30
+          remove-stale-when-updated: true

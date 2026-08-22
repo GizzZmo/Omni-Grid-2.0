@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Least-privilege floor; job elevates as needed
+permissions: {}
+
 jobs:
   label-pr:
     name: Auto-label Pull Request

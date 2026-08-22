@@ -6,6 +6,9 @@ on:
   pull_request:
     types: [opened]
 
+# Least-privilege floor; job elevates as needed
+permissions: {}
+
 jobs:
   welcome:
     name: Welcome New Contributors
@@ -39,13 +42,14 @@ jobs:
               - Please provide as much detail as possible to help us understand and address your concern
               - Feel free to join our [discussions](https://github.com/GizzZmo/Omni-Grid-2.0/discussions) for questions
               
-              ## 🌟 Want to Contribute?
+              ## 📚 Helpful Resources
               
-              Check out our [Contributing Guidelines](./CONTRIBUTING.md) to learn how you can help!
+              - [Contributing Guidelines](https://github.com/GizzZmo/Omni-Grid-2.0/blob/main/CONTRIBUTING.md)
+              - [Documentation](https://github.com/GizzZmo/Omni-Grid-2.0/tree/main/docs)
+              - [Code of Conduct](https://github.com/GizzZmo/Omni-Grid-2.0/blob/main/CODE_OF_CONDUCT.md)
               
-              ---
-              *The net is vast and infinite, but your grid is your own.* 🌐`;
-              
+              We're excited to have you here! 🚀`;
+
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -54,7 +58,7 @@ jobs:
               });
             }
 
-      - name: Welcome new PR creators
+      - name: Welcome new PR authors
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v8
         with:
@@ -63,33 +67,30 @@ jobs:
             const isFirstPR = (await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              creator: pr.user.login,
-              state: 'all'
+              state: 'all',
+              creator: pr.user.login
             })).data.length === 1;
 
             if (isFirstPR) {
-              const message = `🎉 Congratulations on your first Pull Request, @${pr.user.login}!
+              const message = `👋 Welcome to Omni-Grid, @${pr.user.login}!
               
-              Thank you for contributing to Omni-Grid! Your effort helps make this project better for everyone.
+              Thank you for your first pull request! Your contribution helps make Omni-Grid better for everyone.
               
-              ## 🔍 Review Process
+              ## 📋 Review Process
               
-              - A maintainer will review your PR as soon as possible
-              - Automated checks will run to ensure code quality and security
-              - Please address any feedback or failing checks
-              - Feel free to ask questions if you need help!
+              - A maintainer will review your PR soon
+              - CI checks must pass before merge
+              - Please ensure your code follows our [Contributing Guidelines](https://github.com/GizzZmo/Omni-Grid-2.0/blob/main/CONTRIBUTING.md)
               
-              ## 📚 Resources
+              ## ✅ Checklist
               
-              - [Contributing Guidelines](./CONTRIBUTING.md)
-              - [Documentation](./DOCUMENTATION.md)
-              - [Code of Conduct](./CODE_OF_CONDUCT.md)
+              - [ ] Tests added/updated as needed
+              - [ ] Documentation updated if applicable
+              - [ ] Code follows project style guidelines
+              - [ ] No security concerns (see plugin-security.md for widgets)
               
-              Thank you for being part of the Omni-Grid community! 🚀
-              
-              ---
-              *The net is vast and infinite, but your grid is your own.* 🌐`;
-              
+              Thank you for contributing! 🎉`;
+
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,

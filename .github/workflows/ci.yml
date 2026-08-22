@@ -10,7 +10,7 @@ on:
 permissions:
   contents: read
   checks: write
-  pull-requests: write
+  # pull-requests: write only on jobs that comment (test-coverage)
 
 jobs:
   # Full matrix + C++ + artifacts — skip on Dependabot to cut noise and CI minutes.
@@ -135,6 +135,10 @@ jobs:
     name: Test Coverage
     runs-on: ubuntu-latest
     if: github.actor != 'dependabot[bot]'
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write  # PR coverage comment
 
     steps:
       - name: Checkout code
