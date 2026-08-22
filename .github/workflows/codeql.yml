@@ -50,7 +50,7 @@ jobs:
 
       - name: Install dependencies for JavaScript
         if: matrix.language == 'javascript'
-        run: npm ci
+        run: npm install --no-fund --no-audit
 
       - name: Setup C++ build environment
         if: matrix.language == 'cpp'
