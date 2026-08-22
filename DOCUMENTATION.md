@@ -130,7 +130,7 @@ For developers building on Omni-Grid:
 ### Project Planning
 
 - [Roadmap → Milestone Timeline](./ROADMAP.md#milestone-timeline)
-- [Roadmap → Current Sprint](./ROADMAP.md#current-sprint-q2-2026)
+- [Roadmap → Current Sprint](./ROADMAP.md#current-sprint-q3-2026)
 - [Roadmap → Contribution Opportunities](./ROADMAP.md#contribution-opportunities)
 - [Roadmap → Technical Milestones](./ROADMAP.md#technical-milestones)
 
@@ -144,7 +144,7 @@ For developers building on Omni-Grid:
 - **Roadmap Phases:** 5
 - **Widgets Documented:** 43 (all user-visible widgets)
 - **Code Examples:** 150+
-- **Last Updated:** May 2026
+- **Last Updated:** July 2026
 
 ---
 
@@ -286,6 +286,6 @@ Omni-Grid 2.0 includes an official Suno AI generated theme song and three integr
 
 _"The net is vast and infinite, but your grid is your own."_
 
-**Documentation Version:** 2.2  
-**Last Updated:** May 2026  
+**Documentation Version:** 2.3  
+**Last Updated:** July 2026  
 **Maintained by:** Jon-Arve Constantine / GizzZmo

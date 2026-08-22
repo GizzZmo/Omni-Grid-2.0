@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { PenTool, Box, Play, Cpu, Layers, Code, ArrowRight } from 'lucide-react';
-import { useAppStore } from '../store';
+import { Box, Play, Cpu, Layers, Code } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
 const getAi = () => getGenAIClient();
@@ -60,7 +59,7 @@ export const WidgetArchitect: React.FC = () => {
         code = lines.slice(1, lines.length - 1).join('\n');
       }
       setGeneratedCode(code);
-    } catch (e) {
+    } catch (_e) {
       setGeneratedCode('// Error: Neural Link Severed. Please try again.');
     } finally {
       setLoading(false);
@@ -95,7 +94,7 @@ export const WidgetArchitect: React.FC = () => {
               value={prompt}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
               placeholder="Describe your widget... e.g. 'A crypto tracker that alerts me when ETH drops below $2000 using CoinGecko API'"
-              className="w-full h-32 bg-slate-950 border border-slate-800 rounded p-3 text-xs text-slate-200 resize-none focus:outline-none focus:border-indigo-500 transition-colors"
+              className="w-full h-full bg-slate-950 border border-slate-800 rounded p-3 text-xs text-slate-200 resize-none focus:outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
 

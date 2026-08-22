@@ -17,14 +17,14 @@ const SHELL_CACHE = `omni-grid-shell-${CACHE_VERSION}`;
 /** Pre-cache the app shell on install. */
 const SHELL_ASSETS = ['/', '/index.html'];
 
-/** Patterns that should NEVER be cached (API calls, CDN, etc.). */
+/** Patterns that should NEVER be cached (API calls, CDN, etc.). Anchored to avoid partial host matches. */
 const BYPASS_PATTERNS = [
-  /^https:\/\/generativelanguage\.googleapis\.com/,
-  /^https:\/\/cdn\.tailwindcss\.com/,
-  /^https:\/\/fonts\.googleapis\.com/,
-  /^https:\/\/fonts\.gstatic\.com/,
-  /^https:\/\/esm\.sh/,
-  /^https:\/\/cdnjs\.cloudflare\.com/,
+  /^https:\/\/generativelanguage\.googleapis\.com(\/|$)/,
+  /^https:\/\/cdn\.tailwindcss\.com(\/|$)/,
+  /^https:\/\/fonts\.googleapis\.com(\/|$)/,
+  /^https:\/\/fonts\.gstatic\.com(\/|$)/,
+  /^https:\/\/esm\.sh(\/|$)/,
+  /^https:\/\/cdnjs\.cloudflare\.com(\/|$)/,
 ];
 
 // ---------------------------------------------------------------------------

@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Cloud,
-  Sun,
-  CloudRain,
-  Wind,
-  Droplets,
-  MapPin,
-  Search,
-  Loader2,
-  Thermometer,
-} from 'lucide-react';
+import { Cloud, Sun, CloudRain, Wind, Droplets, MapPin, Search, Loader2 } from 'lucide-react';
 import { useAppStore } from '../store';
 
 interface WeatherData {
@@ -63,7 +53,7 @@ export const WeatherStation: React.FC = () => {
         city: area.areaName[0].value,
         country: area.country[0].value,
       });
-    } catch (err) {
+    } catch (_err) {
       setError('Location not found or service down.');
     } finally {
       setLoading(false);

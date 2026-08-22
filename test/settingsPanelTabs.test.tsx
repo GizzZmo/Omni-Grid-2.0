@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { GeneralTab } from '../components/SettingsPanel/GeneralTab';
 import { AdvancedTab } from '../components/SettingsPanel/AdvancedTab';

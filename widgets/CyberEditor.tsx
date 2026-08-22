@@ -3,13 +3,11 @@ import Editor, { OnMount } from '@monaco-editor/react';
 import {
   Code2,
   FileCode,
-  Save,
   Download,
   Copy,
   Check,
   Sparkles,
   FileJson,
-  FileType,
   Settings,
   Plus,
   X,

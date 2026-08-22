@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Terminal,
   Cpu,
-  Trash2,
-  RefreshCw,
   AlertTriangle,
   ShieldCheck,
   Skull,
-  Settings,
   Tv,
   Volume2,
   Key,
-  Activity,
   XCircle,
-  Power,
+  Lock,
+  Unlock,
+  Shield,
 } from 'lucide-react';
 import { useAppStore } from '../store';
 
@@ -21,18 +18,28 @@ export const SystemCore: React.FC = () => {
   const {
     logs,
     resetAll,
-    addLog,
     settings,
     toggleSetting,
     visibleWidgets,
     toggleWidget,
     setGeminiApiKey,
     setE2bApiKey,
+    vaultStatus,
+    setVaultPassphrase,
+    unlockVault,
+    lockVault,
+    removeVaultPassphrase,
   } = useAppStore();
   const [activeTab, setActiveTab] = useState<
     'STATUS' | 'TASKS' | 'LOGS' | 'SETTINGS' | 'MANIFESTO'
   >('STATUS');
   const [memUsage, setMemUsage] = useState(0);
+
+  // Vault passphrase form state
+  const [passphrase, setPassphrase] = useState('');
+  const [passphraseConfirm, setPassphraseConfirm] = useState('');
+  const [vaultMessage, setVaultMessage] = useState('');
+  const [vaultBusy, setVaultBusy] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -50,16 +57,86 @@ export const SystemCore: React.FC = () => {
   };
 
   const getFakeStats = (id: string) => {
-    // Deterministic fake stats based on ID string char code sum
     const sum = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const cpu = (sum % 15) + 1;
     const mem = (sum % 120) + 10;
     return { cpu, mem, pid: sum };
   };
 
+  const vaultLocked = vaultStatus === 'locked';
+  const vaultProtected = vaultStatus !== 'unprotected';
+
+  const handleEnablePassphrase = async () => {
+    setVaultMessage('');
+    if (passphrase.length < 8) {
+      setVaultMessage('Passphrase must be at least 8 characters.');
+      return;
+    }
+    if (passphrase !== passphraseConfirm) {
+      setVaultMessage('Passphrases do not match.');
+      return;
+    }
+    setVaultBusy(true);
+    const result = await setVaultPassphrase(passphrase);
+    setVaultBusy(false);
+    if (result.ok) {
+      setVaultMessage('Passphrase enabled. Vault is unlocked for this session.');
+      setPassphrase('');
+      setPassphraseConfirm('');
+    } else {
+      setVaultMessage(result.error || 'Failed to set passphrase.');
+    }
+  };
+
+  const handleUnlock = async () => {
+    setVaultMessage('');
+    setVaultBusy(true);
+    const ok = await unlockVault(passphrase);
+    setVaultBusy(false);
+    if (ok) {
+      setVaultMessage('Vault unlocked.');
+      setPassphrase('');
+    } else {
+      setVaultMessage('Wrong passphrase.');
+    }
+  };
+
+  const handleLock = () => {
+    lockVault();
+    setVaultMessage('Vault locked. API keys cleared from memory.');
+    setPassphrase('');
+  };
+
+  const handleRemovePassphrase = async () => {
+    setVaultMessage('');
+    if (!passphrase) {
+      setVaultMessage('Enter current passphrase to remove protection.');
+      return;
+    }
+    setVaultBusy(true);
+    const ok = await removeVaultPassphrase(passphrase);
+    setVaultBusy(false);
+    if (ok) {
+      setVaultMessage('Passphrase removed. Secrets auto-load on startup.');
+      setPassphrase('');
+      setPassphraseConfirm('');
+    } else {
+      setVaultMessage('Wrong passphrase — protection not removed.');
+    }
+  };
+
+  const vaultStatusLabel =
+    vaultStatus === 'unlocked' ? 'UNLOCKED' : vaultStatus === 'locked' ? 'LOCKED' : 'UNPROTECTED';
+
+  const vaultStatusColor =
+    vaultStatus === 'unlocked'
+      ? 'text-emerald-400'
+      : vaultStatus === 'locked'
+        ? 'text-amber-400'
+        : 'text-slate-400';
+
   return (
     <div className="h-full flex flex-col gap-3 font-mono">
-      {/* Tab Bar */}
       <div className="flex bg-slate-900/50 p-1 border border-slate-800 overflow-x-auto custom-scrollbar">
         {['STATUS', 'TASKS', 'LOGS', 'SETTINGS', 'CORE'].map(tab => (
           <button
@@ -74,7 +151,6 @@ export const SystemCore: React.FC = () => {
 
       {activeTab === 'STATUS' && (
         <div className="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar">
-          {/* Health Grid */}
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-slate-900/50 p-2 border border-slate-800 flex flex-col gap-1">
               <span className="text-[10px] text-slate-500 uppercase flex items-center gap-1">
@@ -90,33 +166,42 @@ export const SystemCore: React.FC = () => {
             </div>
             <div className="bg-slate-900/50 p-2 border border-slate-800 flex flex-col gap-1">
               <span className="text-[10px] text-slate-500 uppercase flex items-center gap-1">
-                <ShieldCheck size={10} /> Security
+                <ShieldCheck size={10} /> Vault
               </span>
-              <span className="text-xs text-cyan-400 animate-pulse">ENCRYPTED</span>
+              <span className={`text-xs ${vaultStatusColor} animate-pulse`}>
+                {vaultStatusLabel}
+              </span>
             </div>
           </div>
 
-          {/* API Key Status (Read Only) */}
           <div className="bg-slate-900/50 p-2 border border-slate-800 flex flex-col gap-2">
             <div className="text-[10px] text-slate-500 uppercase flex items-center gap-2">
               <Key size={10} /> Neural Link Status
             </div>
-            <div className="flex items-center gap-3 text-xs">
-              <div
-                className={`w-2 h-2 rounded-full ${settings.geminiApiKey ? 'bg-emerald-500 shadow-[0_0_5px_#10b981]' : 'bg-red-500'}`}
-              ></div>
-              <span className="text-slate-300">
-                {settings.geminiApiKey ? 'Gemini Ready' : 'Gemini Key Missing'}
-              </span>
-            </div>
-            <div className="flex items-center gap-3 text-xs">
-              <div
-                className={`w-2 h-2 rounded-full ${settings.e2bApiKey ? 'bg-emerald-500 shadow-[0_0_5px_#10b981]' : 'bg-red-500'}`}
-              ></div>
-              <span className="text-slate-300">
-                {settings.e2bApiKey ? 'E2B Sandbox Ready' : 'E2B Key Missing'}
-              </span>
-            </div>
+            {vaultLocked ? (
+              <div className="text-xs text-amber-400 flex items-center gap-2">
+                <Lock size={12} /> Vault locked — unlock in Settings
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-3 text-xs">
+                  <div
+                    className={`w-2 h-2 rounded-full ${settings.geminiApiKey ? 'bg-emerald-500 shadow-[0_0_5px_#10b981]' : 'bg-red-500'}`}
+                  ></div>
+                  <span className="text-slate-300">
+                    {settings.geminiApiKey ? 'Gemini Ready' : 'Gemini Key Missing'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  <div
+                    className={`w-2 h-2 rounded-full ${settings.e2bApiKey ? 'bg-emerald-500 shadow-[0_0_5px_#10b981]' : 'bg-red-500'}`}
+                  ></div>
+                  <span className="text-slate-300">
+                    {settings.e2bApiKey ? 'E2B Sandbox Ready' : 'E2B Key Missing'}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="bg-slate-900/50 p-2 border border-slate-800 flex items-center justify-between">
@@ -182,7 +267,7 @@ export const SystemCore: React.FC = () => {
       )}
 
       {activeTab === 'SETTINGS' && (
-        <div className="flex-1 flex flex-col gap-3 p-1">
+        <div className="flex-1 flex flex-col gap-3 p-1 overflow-y-auto custom-scrollbar">
           <div className="flex items-center justify-between p-2 bg-slate-900/50 border border-slate-800 rounded">
             <div className="flex items-center gap-2 text-xs text-slate-300">
               <Tv size={14} className="text-fuchsia-500" /> CRT Scanlines
@@ -211,6 +296,105 @@ export const SystemCore: React.FC = () => {
             </button>
           </div>
 
+          {/* Vault passphrase */}
+          <div className="flex flex-col gap-2 p-2 bg-slate-900/50 border border-violet-900/40 rounded">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs text-slate-300">
+                <Shield size={14} className="text-violet-400" /> Vault Passphrase
+              </div>
+              <span className={`text-[10px] font-bold ${vaultStatusColor}`}>
+                {vaultStatusLabel}
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-500 leading-relaxed">
+              AES-256-GCM + PBKDF2 (600k). Passphrase wraps the data key — secrets stay encrypted
+              until you unlock.
+            </p>
+
+            {vaultLocked ? (
+              <>
+                <input
+                  type="password"
+                  value={passphrase}
+                  onChange={e => setPassphrase(e.target.value)}
+                  placeholder="Enter vault passphrase"
+                  className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-violet-500 focus:outline-none"
+                  onKeyDown={e => e.key === 'Enter' && handleUnlock()}
+                />
+                <button
+                  onClick={handleUnlock}
+                  disabled={vaultBusy || !passphrase}
+                  className="w-full py-1.5 bg-violet-800 hover:bg-violet-700 disabled:opacity-40 text-white text-xs font-bold rounded flex items-center justify-center gap-1"
+                >
+                  <Unlock size={12} /> {vaultBusy ? 'Unlocking…' : 'Unlock Vault'}
+                </button>
+              </>
+            ) : (
+              <>
+                {!vaultProtected && (
+                  <>
+                    <input
+                      type="password"
+                      value={passphrase}
+                      onChange={e => setPassphrase(e.target.value)}
+                      placeholder="New passphrase (min 8 chars)"
+                      className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-violet-500 focus:outline-none"
+                    />
+                    <input
+                      type="password"
+                      value={passphraseConfirm}
+                      onChange={e => setPassphraseConfirm(e.target.value)}
+                      placeholder="Confirm passphrase"
+                      className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-violet-500 focus:outline-none"
+                    />
+                    <button
+                      onClick={handleEnablePassphrase}
+                      disabled={vaultBusy}
+                      className="w-full py-1.5 bg-violet-800 hover:bg-violet-700 disabled:opacity-40 text-white text-xs font-bold rounded flex items-center justify-center gap-1"
+                    >
+                      <Lock size={12} /> {vaultBusy ? 'Securing…' : 'Enable Passphrase'}
+                    </button>
+                  </>
+                )}
+
+                {vaultProtected && vaultStatus === 'unlocked' && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleLock}
+                      className="flex-1 py-1.5 bg-amber-900/60 hover:bg-amber-800 text-amber-200 text-xs font-bold rounded flex items-center justify-center gap-1 border border-amber-800/50"
+                    >
+                      <Lock size={12} /> Lock Now
+                    </button>
+                    <button
+                      onClick={handleRemovePassphrase}
+                      disabled={vaultBusy}
+                      className="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded border border-slate-700"
+                      title="Enter passphrase above first, then click to remove"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+
+                {vaultProtected && vaultStatus === 'unlocked' && (
+                  <input
+                    type="password"
+                    value={passphrase}
+                    onChange={e => setPassphrase(e.target.value)}
+                    placeholder="Current passphrase (to remove protection)"
+                    className="w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-violet-500 focus:outline-none"
+                  />
+                )}
+              </>
+            )}
+
+            {vaultMessage && (
+              <div className="text-[10px] text-violet-300 font-mono bg-violet-950/30 border border-violet-900/40 rounded px-2 py-1">
+                {vaultMessage}
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col gap-2 p-2 bg-slate-900/50 border border-slate-800 rounded">
             <div className="flex items-center gap-2 text-xs text-slate-300">
               <Key size={14} className="text-emerald-500" /> Gemini API Key
@@ -220,12 +404,14 @@ export const SystemCore: React.FC = () => {
                 type="password"
                 value={settings.geminiApiKey}
                 onChange={e => setGeminiApiKey(e.target.value.trim())}
-                placeholder="Enter Google Gemini API key"
-                className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none"
+                placeholder={vaultLocked ? 'Unlock vault first' : 'Enter Google Gemini API key'}
+                disabled={vaultLocked}
+                className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none disabled:opacity-40"
               />
               <button
                 onClick={() => setGeminiApiKey('')}
-                className="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded border border-slate-700 hover:border-emerald-500 hover:text-emerald-400 transition-colors"
+                disabled={vaultLocked}
+                className="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded border border-slate-700 hover:border-emerald-500 hover:text-emerald-400 transition-colors disabled:opacity-40"
               >
                 Clear
               </button>
@@ -241,19 +427,20 @@ export const SystemCore: React.FC = () => {
                 type="password"
                 value={settings.e2bApiKey}
                 onChange={e => setE2bApiKey(e.target.value.trim())}
-                placeholder="Enter E2B sandbox API key"
-                className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none"
+                placeholder={vaultLocked ? 'Unlock vault first' : 'Enter E2B sandbox API key'}
+                disabled={vaultLocked}
+                className="flex-1 bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none disabled:opacity-40"
               />
               <button
                 onClick={() => setE2bApiKey('')}
-                className="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded border border-slate-700 hover:border-cyan-500 hover:text-cyan-300 transition-colors"
+                disabled={vaultLocked}
+                className="text-[10px] px-2 py-1 bg-slate-800 text-slate-300 rounded border border-slate-700 hover:border-cyan-500 hover:text-cyan-300 transition-colors disabled:opacity-40"
               >
                 Clear
               </button>
             </div>
           </div>
 
-          {/* Danger Zone moved here */}
           <div className="mt-auto border border-red-900/30 p-2 bg-red-900/5 rounded">
             <div className="text-[10px] text-red-500 font-bold mb-2 flex items-center gap-1">
               <AlertTriangle size={10} /> FACTORY RESET

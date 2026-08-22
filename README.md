@@ -21,7 +21,6 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 [![Performance](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml/badge.svg?event=pull_request)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/performance.yml)
 [![Screenshot Assets](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/assets.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/assets.yml)
 [![Generate Assets](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/generate.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/generate.yml)
-[![Release](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/release.yml/badge.svg)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/release.yml)
 [![Deploy Docs](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/GizzZmo/Omni-Grid-2.0/actions/workflows/docs.yml)
 
 [![Release](https://img.shields.io/github/v/release/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=00ff88)](https://github.com/GizzZmo/Omni-Grid-2.0/releases)
@@ -301,17 +300,20 @@ Want to know what's coming next? Check out our comprehensive development roadmap
 
 **🗺️ [DEVELOPMENT ROADMAP](./ROADMAP.md)** - Complete project roadmap with timelines, milestones, and contribution opportunities
 
-### Current Focus (Q2 2026)
+### Current Focus (Q3 2026)
 
 - ✅ Music player widget enhancement (SonicArchitecture + SunoPlayer + SignalRadio)
 - ✅ Code editor widget (CyberEditor with Monaco & AI assistance)
 - ✅ AI chat widget (NeuralChat — Gemini API)
 - ✅ Settings panel v2
 - ✅ Theme customization system
-- ✅ Widget marketplace foundation (MarketWidget)
-- 🚧 Widget marketplace — full platform (installation, updates, and integrated community submission queue)
-- 🚧 Plugin API documentation & developer portal
-- 📋 Progressive Web App (PWA) optimization
+- ✅ Widget marketplace — full platform (MarketWidget + WidgetMarketplace + community submission queue)
+- ✅ Plugin API documentation & developer portal (`docs/widget-api/`, `docs/developer-portal.md`)
+- ✅ CommunityPortal widget
+- ✅ MultiAgentHub widget
+- ✅ Progressive Web App (PWA) scaffolding (manifest, service worker, pwaService)
+- ✅ PWA app icons
+- 🚧 Mobile touch interface
 - 📋 Cloud backup & multi-device sync
 
 See the [full roadmap](./ROADMAP.md) for detailed timelines, technical milestones, and how you can contribute!

@@ -1,15 +1,6 @@
 /// <reference lib="dom" />
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  PenTool,
-  FileText,
-  Eraser,
-  Sparkles,
-  Copy,
-  Check,
-  Loader2,
-  ArrowDownToLine,
-} from 'lucide-react';
+import { FileText, Eraser, Sparkles, Copy, Check, Loader2, ArrowDownToLine } from 'lucide-react';
 import { useAppStore } from '../store';
 import { processCrossTalk } from '../services/gridIntelligence';
 import { COMMON_FILE_ACCEPTS } from './fileAccepts';
@@ -17,131 +8,12 @@ import { getGenAIClient } from '../services/geminiService';
 
 const TEMPLATES: Record<string, string> = {
   Blank: '',
-  'Cover Letter': `[Your Name]
-[Your Address]
-[City, State, Zip]
-[Your Email]
-[Your Phone Number]
-
-[Date]
-
-[Hiring Manager Name]
-[Company Name]
-[Company Address]
-
-Dear [Hiring Manager Name],
-
-I am writing to express my enthusiastic interest in the [Job Title] position at [Company Name]. With my background in [Your Field/Experience], I am confident in my ability to contribute effectively to your team.
-
-[Paragraph 1: Introduction and Hook - Why this role?]
-
-[Paragraph 2: Highlight specific achievements and skills relevant to the job description.]
-
-[Paragraph 3: Connect your values with the company culture.]
-
-Thank you for your time and consideration. I look forward to the possibility of discussing my application further.
-
-Sincerely,
-
-[Your Name]`,
-  Resignation: `[Your Name]
-[Date]
-
-[Manager Name]
-[Company Name]
-
-Dear [Manager Name],
-
-Please accept this letter as formal notification that I am resigning from my position as [Your Job Title] at [Company Name]. My last day will be [Date].
-
-I want to express my gratitude for the opportunities I have had during my time here. I have enjoyed working with the team and have learned a great deal.
-
-I will do everything I can to ensure a smooth transition during my notice period.
-
-Sincerely,
-
-[Your Name]`,
-  'Business Inquiry': `Subject: Inquiry Regarding [Product/Service] - [Your Company/Name]
-
-Dear [Name/Team],
-
-I hope this email finds you well.
-
-My name is [Your Name] and I am contacting you on behalf of [Your Company]. We are interested in [Product/Service Name] and would like to request more information regarding:
-
-1. [Specific Question 1]
-2. [Specific Question 2]
-3. Pricing and availability
-
-Could we schedule a brief call next week to discuss this further?
-
-Best regards,
-
-[Your Name]
-[Your Title]`,
-  'Meeting Minutes': `**Meeting Minutes**
-
-**Date:** [Date]
-**Time:** [Time]
-**Location:** [Location/Link]
-
-**Attendees:**
-- [Name 1]
-- [Name 2]
-
-**Agenda:**
-1. [Topic 1]
-2. [Topic 2]
-
-**Discussion Points:**
-- [Key Point 1]
-- [Key Point 2]
-
-**Action Items:**
-- [ ] [Task] - Assigned to: [Name] - Due: [Date]
-- [ ] [Task] - Assigned to: [Name] - Due: [Date]
-
-**Next Meeting:** [Date/Time]`,
-  Memo: `**MEMORANDUM**
-
-**TO:** [Recipient(s)]
-**FROM:** [Your Name]
-**DATE:** [Date]
-**SUBJECT:** [Subject]
-
----
-
-**Background**
-[Brief context on why this memo is being written.]
-
-**Analysis/Update**
-[Detailed explanation of the situation, data, or update.]
-
-**Recommendation/Action Required**
-[Clear steps that need to be taken.]`,
-  Invoice: `INVOICE #[Number]
-Date: [Date]
-Due Date: [Date]
-
-FROM:
-[Your Name/Business]
-[Address]
-
-TO:
-[Client Name]
-[Address]
-
-| Description | Hours/Qty | Rate | Total |
-|-------------|-----------|------|-------|
-| [Item 1]    | 1         | $0   | $0    |
-| [Item 2]    | 1         | $0   | $0    |
-
-Subtotal: $0
-Tax: $0
-**TOTAL: $0**
-
-Payment Terms: [Net 30/Due on Receipt]
-Payment Methods: [Bank Transfer/PayPal]`,
+  'Cover Letter': `[Your Name]\n[Your Address]\n[City, State, Zip]\n[Your Email]\n[Your Phone Number]\n\n[Date]\n\n[Hiring Manager Name]\n[Company Name]\n[Company Address]\n\nDear [Hiring Manager Name],\n\nI am writing to express my enthusiastic interest in the [Job Title] position at [Company Name]. With my background in [Your Field/Experience], I am confident in my ability to contribute effectively to your team.\n\n[Paragraph 1: Introduction and Hook - Why this role?]\n\n[Paragraph 2: Highlight specific achievements and skills relevant to the job description.]\n\n[Paragraph 3: Connect your values with the company culture.]\n\nThank you for your time and consideration. I look forward to the possibility of discussing my application further.\n\nSincerely,\n\n[Your Name]`,
+  Resignation: `[Your Name]\n[Date]\n\n[Manager Name]\n[Company Name]\n\nDear [Manager Name],\n\nPlease accept this letter as formal notification that I am resigning from my position as [Your Job Title] at [Company Name]. My last day will be [Date].\n\nI want to express my gratitude for the opportunities I have had during my time here. I have enjoyed working with the team and have learned a great deal.\n\nI will do everything I can to ensure a smooth transition during my notice period.\n\nSincerely,\n\n[Your Name]`,
+  'Business Inquiry': `Subject: Inquiry Regarding [Product/Service] - [Your Company/Name]\n\nDear [Name/Team],\n\nI hope this email finds you well.\n\nMy name is [Your Name] and I am contacting you on behalf of [Your Company]. We are interested in [Product/Service Name] and would like to request more information regarding:\n\n1. [Specific Question 1]\n2. [Specific Question 2]\n3. Pricing and availability\n\nCould we schedule a brief call next week to discuss this further?\n\nBest regards,\n\n[Your Name]\n[Your Title]`,
+  'Meeting Minutes': `**Meeting Minutes**\n\n**Date:** [Date]\n**Time:** [Time]\n**Location:** [Location/Link]\n\n**Attendees:**\n- [Name 1]\n- [Name 2]\n\n**Agenda:**\n1. [Topic 1]\n2. [Topic 2]\n\n**Discussion Points:**\n- [Key Point 1]\n- [Key Point 2]\n\n**Action Items:**\n- [ ] [Task] - Assigned to: [Name] - Due: [Date]\n- [ ] [Task] - Assigned to: [Name] - Due: [Date]\n\n**Next Meeting:** [Date/Time]`,
+  Memo: `**MEMORANDUM**\n\n**TO:** [Recipient(s)]\n**FROM:** [Your Name]\n**DATE:** [Date]\n**SUBJECT:** [Subject]\n\n---\n\n**Background**\n[Brief context on why this memo is being written.]\n\n**Analysis/Update**\n[Detailed explanation of the situation, data, or update.]\n\n**Recommendation/Action Required**\n[Clear steps that need to be taken.]`,
+  Invoice: `INVOICE #[Number]\nDate: [Date]\nDue Date: [Date]\n\nFROM:\n[Your Name/Business]\n[Address]\n\nTO:\n[Client Name]\n[Address]\n\n| Description | Hours/Qty | Rate | Total |\n|-------------|-----------|------|-------|\n| [Item 1]    | 1         | $0   | $0    |\n| [Item 2]    | 1         | $0   | $0    |\n\nSubtotal: $0\nTax: $0\n**TOTAL: $0**\n\nPayment Terms: [Net 30/Due on Receipt]\nPayment Methods: [Bank Transfer/PayPal]`,
 };
 
 export const WritePad: React.FC = () => {
@@ -197,18 +69,14 @@ export const WritePad: React.FC = () => {
       }
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: `Draft a formal document based on this request: "${prompt}". 
-        
-        Keep the tone professional. 
-        Use placeholders like [Name] where specific info is needed. 
-        Do not include markdown code blocks, just raw text.`,
+        contents: `Draft a formal document based on this request: "${prompt}". \n        \n        Keep the tone professional. \n        Use placeholders like [Name] where specific info is needed. \n        Do not include markdown code blocks, just raw text.`,
       });
       const generated = response.text || '';
       setLocalContent(generated);
       setWritePadContent(generated);
       setShowPrompt(false);
-    } catch (e: unknown) {
-      const error = e instanceof Error ? e : new Error(String(e));
+    } catch (_e: unknown) {
+      const error = _e instanceof Error ? _e : new Error(String(_e));
       setLocalContent((prev: string) => `${prev}\n\n[AI Generation Failed: ${error.message}]`);
     } finally {
       setLoading(false);
@@ -231,7 +99,7 @@ export const WritePad: React.FC = () => {
           : processedContent;
         setLocalContent(newContent);
         setWritePadContent(newContent);
-      } catch (e) {
+      } catch (_e) {
         console.error('Cross-Talk failed');
       } finally {
         setLoading(false);

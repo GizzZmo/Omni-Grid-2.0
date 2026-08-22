@@ -34,7 +34,7 @@ export const TemporalNexus: React.FC = () => {
         contents: prompt,
       });
       setHistoryData(response.text || 'No data found.');
-    } catch (e) {
+    } catch (_e) {
       setHistoryData('Temporal Uplink Failed. Check Connectivity.');
     } finally {
       setLoading(false);

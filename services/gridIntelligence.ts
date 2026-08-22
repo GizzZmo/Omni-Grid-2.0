@@ -83,7 +83,7 @@ export async function processCrossTalk(
       contents: prompt,
     });
     return response.text || droppedText;
-  } catch (e) {
+  } catch (_e) {
     return droppedText;
   }
 }
