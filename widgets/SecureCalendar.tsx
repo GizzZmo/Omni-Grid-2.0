@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar as CalendarIcon, Lock, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Lock, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAppStore } from '../store';
 
 export const SecureCalendar: React.FC = () => {

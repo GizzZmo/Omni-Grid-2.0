@@ -7,6 +7,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   auto-merge:
@@ -20,6 +21,64 @@ jobs:
         uses: dependabot/fetch-metadata@v2
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Ensure metadata labels exist
+        run: |
+          # Create SemVer + dependency-type labels if missing (idempotent)
+          declare -A LABELS=(
+            ["semver-major"]="Major version bump — requires manual review"
+            ["semver-minor"]="Minor version bump"
+            ["semver-patch"]="Patch version bump"
+            ["production"]="Production / runtime dependency"
+            ["development"]="Development / tooling dependency"
+            ["npm"]="npm package ecosystem"
+            ["github-actions"]="GitHub Actions ecosystem"
+          )
+          for name in "${!LABELS[@]}"; do
+            gh label create "$name" \
+              --description "${LABELS[$name]}" \
+              --color "0366d6" \
+              --force 2>/dev/null || true
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Apply Dependabot metadata labels
+        run: |
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          LABELS=()
+
+          # SemVer labels from update-type
+          case "${{ steps.metadata.outputs.update-type }}" in
+            version-update:semver-major) LABELS+=("semver-major") ;;
+            version-update:semver-minor) LABELS+=("semver-minor") ;;
+            version-update:semver-patch) LABELS+=("semver-patch") ;;
+          esac
+
+          # Dependency type (direct:production / direct:development / indirect)
+          DEP_TYPE="${{ steps.metadata.outputs.dependency-type }}"
+          if [[ "$DEP_TYPE" == *"production"* ]]; then
+            LABELS+=("production")
+          elif [[ "$DEP_TYPE" == *"development"* ]]; then
+            LABELS+=("development")
+          fi
+
+          # Package ecosystem
+          case "${{ steps.metadata.outputs.package-ecosystem }}" in
+            npm)            LABELS+=("npm") ;;
+            github_actions) LABELS+=("github-actions") ;;
+          esac
+
+          # Apply any collected labels
+          if [ ${#LABELS[@]} -gt 0 ]; then
+            LABEL_ARGS=$(printf -- '--add-label %s ' "${LABELS[@]}")
+            gh pr edit "$PR_URL" $LABEL_ARGS
+            echo "Applied labels: ${LABELS[*]}"
+          else
+            echo "No additional metadata labels to apply"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check if safe to auto-merge
         id: check_safe
@@ -55,5 +114,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '⚠️ **Major version update detected!** Please review this PR manually before merging.'
+              body: '⚠️ **Major version update detected!** Please review this PR manually before merging.\n\nLabel `semver-major` has been applied for triage.'
             })

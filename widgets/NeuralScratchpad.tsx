@@ -4,7 +4,6 @@ import {
   Loader2,
   FileSearch,
   ArrowDownToLine,
-  Command,
   Zap,
   MessageSquare,
   Languages,
