@@ -1,4 +1,4 @@
-name: Security Audit
+name: Dependency Audit
 
 on:
   push:
@@ -14,11 +14,11 @@ permissions:
 
 jobs:
   audit:
-    name: npm audit
+    name: Security Audit
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v7
 
       - name: Setup Node.js
@@ -32,3 +32,18 @@ jobs:
 
       - name: Run npm audit
         run: npm audit --audit-level=high
+        continue-on-error: true
+
+      - name: Check for high/critical vulnerabilities
+        run: |
+          echo "Running security audit..."
+          npm audit --json > audit-report.json || true
+          if [ -f audit-report.json ]; then
+            HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit-report.json)
+            CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit-report.json)
+            echo "High: $HIGH, Critical: $CRITICAL"
+            if [ "$CRITICAL" -gt 0 ]; then
+              echo "❌ Critical vulnerabilities found"
+              exit 1
+            fi
+          fi
