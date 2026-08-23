@@ -53,10 +53,10 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 20.x
-          # cache: npm disabled until package-lock.json is restored
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --no-fund --no-audit
+        run: npm ci --no-fund --no-audit
 
       - name: Build frontend
         run: npm run build

@@ -487,9 +487,61 @@ File: `.github/labeler.yml`
 
 ---
 
+## 📦 Dependency caching
+
+### Strategy
+
+All Node-based jobs use the built-in cache of `actions/setup-node`:
+
+```yaml
+- uses: actions/setup-node@v7
+  with:
+    node-version: 20.x   # or matrix.node-version
+    cache: 'npm'
+- run: npm ci --no-fund --no-audit
+```
+
+- **What is cached:** the npm global store (`~/.npm`), not `node_modules`.
+- **Cache key:** derived from `package-lock.json` (hash) + runner OS.
+- **Install command:** always `npm ci` so installs are lockfile-strict and reproducible.
+- **Jobs without install** (e.g. screenshot asset generation, docs deploy) deliberately omit `cache: 'npm'`.
+
+### Why not cache `node_modules`?
+
+`node_modules` is large, OS/Node-version specific, and easy to get wrong across the 20.x / 22.x matrix. Caching the package manager store is smaller, portable, and still correct with `npm ci`.
+
+### Limits and hygiene
+
+| Policy | Default |
+|--------|---------|
+| Size | 10 GB per repository (can be raised; overage billed) |
+| Unused retention | 7 days |
+| Eviction | LRU when over size limit (checked hourly) |
+
+Do **not** store secrets in cache paths. Prefer write access only from trusted triggers (default branch / maintained workflows). Untrusted triggers (e.g. fork PRs) receive read-only cache tokens for the default-branch scope.
+
+### Adding further caches later
+
+If we add Playwright (or similar), use a **separate** `actions/cache` entry keyed on the lockfile, e.g. `~/.cache/ms-playwright`, and only run `npx playwright install` on a cache miss. Keep tool binary caches separate from the npm store.
+
+### Related workflows
+
+| Workflow | Uses npm cache? |
+|----------|-----------------|
+| `ci.yml` | Yes (all Node jobs) |
+| `audit.yml`, `codeql.yml`, `performance.yml`, `release.yml` | Yes |
+| `generate.yml` | Yes on build job only |
+| `update-lockfile.yml` | Yes |
+| `assets.yml`, `docs.yml` | No (no install) |
+
+Lockfile changes (Dependabot or the `update-lockfile` workflow) automatically create a new cache key; that is expected and healthy.
+
+---
+
 ## 📚 Additional Resources
 
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Caching dependencies to speed up workflows](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows)
 - [CodeQL Documentation](https://codeql.github.com/docs/)
 - [Dependabot Documentation](https://docs.github.com/en/code-security/dependabot)
 - [GitHub Security Features](https://docs.github.com/en/code-security)
@@ -499,5 +551,5 @@ File: `.github/labeler.yml`
 
 ---
 
-_Last Updated: 2026-08-20_  
+_Last Updated: 2026-08-23_  
 _For questions or issues with workflows, please open an issue with the `ci-cd` label._
