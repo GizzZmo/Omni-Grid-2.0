@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Calendar, History, RefreshCcw, Loader2 } from 'lucide-react';
+import { Clock, History, RefreshCcw, Loader2 } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
 const getAi = () => getGenAIClient();
