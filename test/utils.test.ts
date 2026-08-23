@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { downloadJson, uploadJson } from '../utils';
+import { downloadJson } from '../utils';
 
 describe('utils', () => {
   describe('downloadJson', () => {

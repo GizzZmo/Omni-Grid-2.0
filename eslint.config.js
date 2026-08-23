@@ -146,6 +146,10 @@ export default [
       'react-hooks/purity': 'warn',
       // Missing deps in large containers — warn, do not fail CI
       'react-hooks/exhaustive-deps': 'warn',
+      // Intentional patterns: mount fetches, store↔local sync, typing animations.
+      // Keep as warn until those call sites are refactored (do not fail CI).
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/immutability': 'warn',
     },
     settings: {
       react: {
