@@ -15,12 +15,13 @@ vi.mock('../store', () => ({
 describe('ClipboardStream', () => {
   it('renders the paste button', () => {
     render(<ClipboardStream />);
-    expect(screen.getByText(/Paste from System/i)).toBeTruthy();
+    // UI label is "Capture" (reads from system clipboard)
+    expect(screen.getByText(/Capture/i)).toBeTruthy();
   });
 
   it('shows empty buffer message when history is empty', () => {
     render(<ClipboardStream />);
-    expect(screen.getByText(/Buffer Empty/i)).toBeTruthy();
+    expect(screen.getByText(/No history yet/i)).toBeTruthy();
   });
 
   it('renders clipboard items when history is not empty', () => {
@@ -40,9 +41,9 @@ describe('ClipboardStream', () => {
 
   it('calls clearClipboardHistory when clear button is clicked', () => {
     mockStore.clipboardHistory = ['Some text'];
+    mockStore.clearClipboardHistory.mockClear();
     render(<ClipboardStream />);
-    const clearBtn = screen.getByText(/Clear Buffer/i).closest('button')!;
-    fireEvent.click(clearBtn);
+    fireEvent.click(screen.getByText(/Clear Buffer/i));
     expect(mockStore.clearClipboardHistory).toHaveBeenCalled();
     mockStore.clipboardHistory = [];
   });

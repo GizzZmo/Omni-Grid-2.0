@@ -8,14 +8,14 @@ describe('utils', () => {
       const revokeObjectURL = vi.fn();
       const click = vi.fn();
 
-      // Minimal DOM stubs
       (globalThis as any).URL = { createObjectURL, revokeObjectURL };
-      const originalCreateElement = document.createElement.bind(document);
+
+      // Real <a> so jsdom appendChild/removeChild accept it
+      const a = document.createElement('a');
+      a.click = click;
       vi.spyOn(document, 'createElement').mockImplementation((tag: string) => {
-        if (tag === 'a') {
-          return { href: '', download: '', click } as any;
-        }
-        return originalCreateElement(tag);
+        if (tag === 'a') return a;
+        return document.createElementNS('http://www.w3.org/1999/xhtml', tag) as any;
       });
 
       downloadJson('test.json', { a: 1 });
