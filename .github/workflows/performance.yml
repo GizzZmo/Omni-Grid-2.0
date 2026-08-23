@@ -1,22 +1,22 @@
-name: Performance
+name: Performance Check
 
 on:
-  push:
-    branches: [main, develop]
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   performance:
-    name: Bundle size / perf checks
+    name: Measure Build Performance
     runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v7
 
       - name: Setup Node.js
@@ -28,8 +28,133 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-fund --no-audit
 
-      - name: Build
-        run: npm run build
+      - name: Measure build time
+        id: build_performance
+        run: |
+          echo "## Build Performance Report" > performance-report.md
+          echo "" >> performance-report.md
 
-      - name: Measure bundle
-        run: npm run measure-bundle || true
+          # Measure frontend build
+          echo "### Frontend Build" >> performance-report.md
+          START=$(date +%s)
+          if npm run build 2>&1 | tee build.log; then
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
+            echo "- **Status**: ✅ Built successfully" >> performance-report.md
+          else
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
+            echo "- **Status**: ❌ Build failed" >> performance-report.md
+          fi
+
+          # Check bundle size
+          if [ -d "dist" ]; then
+            BUNDLE_SIZE=$(du -sh dist 2>/dev/null | cut -f1 || echo "unknown")
+            echo "- **Bundle Size**: ${BUNDLE_SIZE}" >> performance-report.md
+            
+            # List largest files
+            echo "" >> performance-report.md
+            echo "### Largest Assets" >> performance-report.md
+            echo "\`\`\`" >> performance-report.md
+            find dist -type f -exec du -h {} + 2>/dev/null | sort -rh | head -10 >> performance-report.md || echo "No files found" >> performance-report.md
+            echo "\`\`\`" >> performance-report.md
+            
+            # Check for large chunks
+            LARGE_FILES=$(find dist -type f -size +500k 2>/dev/null | wc -l)
+            if [ "$LARGE_FILES" -gt 0 ]; then
+              echo "" >> performance-report.md
+              echo "⚠️ **Warning**: $LARGE_FILES file(s) larger than 500KB detected" >> performance-report.md
+            fi
+          else
+            echo "⚠️ **Warning**: dist directory not found" >> performance-report.md
+          fi
+
+          cat performance-report.md
+
+      - name: Measure C++ build time
+        id: cpp_build
+        continue-on-error: true
+        run: |
+          echo "" >> performance-report.md
+          echo "### C++ Server Build" >> performance-report.md
+
+          sudo apt-get update && sudo apt-get install -y g++ make
+
+          START=$(date +%s)
+          if make server 2>&1 | tee cpp_build.log; then
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
+            
+            if [ -f "./omnigrid_server" ]; then
+              BINARY_SIZE=$(du -h ./omnigrid_server 2>/dev/null | cut -f1 || echo "unknown")
+              echo "- **Binary Size**: ${BINARY_SIZE}" >> performance-report.md
+              echo "- **Status**: ✅ Built successfully" >> performance-report.md
+            else
+              echo "- **Status**: ❌ Build failed - binary not found" >> performance-report.md
+            fi
+          else
+            END=$(date +%s)
+            DURATION=$((END - START))
+            echo "- **Duration**: ${DURATION}s" >> performance-report.md
+            echo "- **Status**: ❌ Build failed" >> performance-report.md
+          fi
+
+      - name: Comment performance report on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            let report = '## ⚡ Performance Report\n\n';
+            if (fs.existsSync('performance-report.md')) {
+              report += fs.readFileSync('performance-report.md', 'utf8');
+            } else {
+              report += '_No performance report generated._';
+            }
+
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+              });
+
+              const botComment = comments.find(c =>
+                c.user.type === 'Bot' && c.body.includes('⚡ Performance Report')
+              );
+
+              if (botComment) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: botComment.id,
+                  body: report
+                });
+                console.log('Updated existing performance report comment');
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: report
+                });
+                console.log('Created new performance report comment');
+              }
+            } catch (error) {
+              console.error('Error posting performance report:', error.message);
+              core.warning(`Failed to post performance report: ${error.message}`);
+            }
+
+      - name: Upload performance report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: performance-report
+          path: |
+            performance-report.md
+            build.log
+            cpp_build.log
+          retention-days: 30
