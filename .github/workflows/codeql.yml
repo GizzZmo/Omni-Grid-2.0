@@ -46,7 +46,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 20.x
-          cache: 'npm'
+          # cache: npm disabled until package-lock.json is restored
 
       - name: Install dependencies for JavaScript
         if: matrix.language == 'javascript'
