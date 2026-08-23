@@ -46,7 +46,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 20.x
-          # Do NOT set cache: npm — it requires package-lock.json and fails when the lockfile is missing
+          # cache enabled only after lockfile exists on main; kept off here for bootstrap safety
 
       - name: Remove existing lockfile (force / missing)
         if: github.event_name == 'workflow_dispatch' && inputs.force == true || !hashFiles('package-lock.json')
@@ -86,13 +86,16 @@ jobs:
       - name: Detect changes
         id: changes
         run: |
-          if git diff --quiet -- package-lock.json; then
+          # git status --porcelain catches both modified tracked files AND new untracked files
+          STATUS=$(git status --porcelain -- package-lock.json)
+          if [ -z "$STATUS" ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "No changes to package-lock.json"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "package-lock.json has been updated"
-            git diff --stat -- package-lock.json
+            echo "package-lock.json has been updated:"
+            echo "$STATUS"
+            git diff --stat -- package-lock.json || true
           fi
 
       # On workflow_dispatch or push to main/develop → open a PR with the new lockfile
