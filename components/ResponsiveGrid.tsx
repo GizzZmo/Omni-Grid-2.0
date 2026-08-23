@@ -1,10 +1,11 @@
 import React from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
+// v2: WidthProvider lives under /legacy; we pass width via useContainerWidth instead
+import { Responsive } from 'react-grid-layout';
 import type { Layout } from 'react-grid-layout';
 import { useIsMobile } from '../hooks/useMediaQuery';
 import { useContainerWidth } from '../hooks/useContainerWidth';
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
+const ResponsiveGridLayout = Responsive;
 
 export interface ResponsiveGridProps {
   layout: Layout[];
