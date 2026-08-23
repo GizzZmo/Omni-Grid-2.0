@@ -1,4 +1,4 @@
-name: Dependency Audit
+name: Security Audit
 
 on:
   push:
@@ -14,36 +14,21 @@ permissions:
 
 jobs:
   audit:
-    name: Security Audit
+    name: npm audit
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 20.x
-          # cache: npm disabled until package-lock.json is restored
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --no-fund --no-audit
+        run: npm ci --no-fund --no-audit
 
       - name: Run npm audit
         run: npm audit --audit-level=high
-        continue-on-error: true
-
-      - name: Check for high/critical vulnerabilities
-        run: |
-          echo "Running security audit..."
-          npm audit --json > audit-report.json || true
-          if [ -f audit-report.json ]; then
-            HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit-report.json)
-            CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit-report.json)
-            echo "High: $HIGH, Critical: $CRITICAL"
-            if [ "$CRITICAL" -gt 0 ]; then
-              echo "❌ Critical vulnerabilities found"
-              exit 1
-            fi
-          fi

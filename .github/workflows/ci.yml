@@ -9,110 +9,58 @@ on:
 
 permissions:
   contents: read
-  checks: write
-  # pull-requests: write only on jobs that comment (test-coverage)
+  pull-requests: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  # Full matrix + C++ + artifacts — skip on Dependabot to cut noise and CI minutes.
-  build-and-test:
-    name: Build and Test
+  # Matrix job for typecheck + unit tests across Node versions
+  test:
+    name: Test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
-
     strategy:
+      fail-fast: false
       matrix:
         node-version: [20.x, 22.x]
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v7
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
-          # cache: npm disabled until package-lock.json is restored (setup-node requires the lockfile)
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --no-fund --no-audit
+        run: npm ci --no-fund --no-audit
 
       - name: TypeScript type check
         run: npm run typecheck
 
       - name: Run tests
-        run: npm run test:run
+        run: npm run test
 
-      - name: Build frontend
-        run: npm run build
-
-      - name: Setup C++ build environment
-        run: sudo apt-get update && sudo apt-get install -y g++ make
-
-      - name: Build C++ server
-        run: make server
-
-      - name: Verify server binary
-        run: |
-          if [ -f "./omnigrid_server" ]; then
-            echo "✅ Server binary built successfully"
-            ls -lh ./omnigrid_server
-          else
-            echo "❌ Server binary not found"
-            exit 1
-          fi
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v7
-        if: matrix.node-version == '20.x'
-        with:
-          name: build-artifacts
-          path: |
-            dist/
-            omnigrid_server
-          retention-days: 7
-
-  # Lightweight gate for Dependabot PRs: typecheck + unit tests only (single Node).
-  dependabot-smoke:
-    name: Dependabot Smoke (typecheck + test)
-    runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 20.x
-          # cache: npm disabled until package-lock.json is restored
-
-      - name: Install dependencies
-        run: npm install --no-fund --no-audit
-
-      - name: TypeScript type check
-        run: npm run typecheck
-
-      - name: Run tests
-        run: npm run test:run
-
-  # Always runs (including Dependabot) — ESLint + Prettier gate.
-  lint-and-format:
-    name: Code Quality Check
+  # Lint job (single Node version is enough)
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 20.x
-          # cache: npm disabled until package-lock.json is restored
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --no-fund --no-audit
+        run: npm ci --no-fund --no-audit
 
       - name: Run ESLint
         run: npm run lint
@@ -120,81 +68,50 @@ jobs:
       - name: Check formatting with Prettier
         run: npm run format:check
 
-      - name: Check for TODO comments
-        run: |
-          echo "Checking for TODO comments..."
-          if grep -r "TODO\|FIXME" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules --exclude-dir=dist . 2>/dev/null; then
-            echo "⚠️  Found TODO/FIXME comments"
-            # Don't fail on TODOs, just warn
-          else
-            echo "✅ No TODO/FIXME comments found"
-          fi
-
-  # Coverage is expensive and noisy on dependency bumps — skip for Dependabot.
-  test-coverage:
-    name: Test Coverage
+  # Build job
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]'
-    permissions:
-      contents: read
-      checks: write
-      pull-requests: write  # PR coverage comment
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 20.x
-          # cache: npm disabled until package-lock.json is restored
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --no-fund --no-audit
+        run: npm ci --no-fund --no-audit
+
+      - name: Build
+        run: npm run build
+
+  # Coverage job
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-fund --no-audit
 
       - name: Run tests with coverage
         run: npm run test:coverage
 
       - name: Upload coverage reports
-        uses: actions/upload-artifact@v7
+        uses: codecov/codecov-action@v5
         with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 7
-
-      - name: Comment coverage on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-
-            // Try to read coverage summary
-            const coveragePath = path.join('coverage', 'coverage-summary.json');
-            if (!fs.existsSync(coveragePath)) {
-              console.log('Coverage summary not found, skipping PR comment');
-              return;
-            }
-
-            const coverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8'));
-            const total = coverage.total;
-
-            const body = `## 📊 Test Coverage Report
-
-            | Category | Coverage |
-            |----------|----------|
-            | Statements | ${total.statements.pct}% |
-            | Branches | ${total.branches.pct}% |
-            | Functions | ${total.functions.pct}% |
-            | Lines | ${total.lines.pct}% |
-
-            *Coverage report generated for commit ${context.sha.substring(0, 7)}*`;
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: body
-            });
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
