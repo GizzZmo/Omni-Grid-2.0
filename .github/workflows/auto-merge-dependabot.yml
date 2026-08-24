@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     permissions:
-      contents: write       # gh pr merge
-      pull-requests: write  # approve + edit
+      contents: write # gh pr merge
+      pull-requests: write # approve + edit
 
     steps:
       - name: Get Dependabot metadata
