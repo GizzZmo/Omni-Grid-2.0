@@ -138,7 +138,7 @@ jobs:
     permissions:
       contents: read
       checks: write
-      pull-requests: write  # PR coverage comment
+      pull-requests: write # PR coverage comment
 
     steps:
       - name: Checkout code
