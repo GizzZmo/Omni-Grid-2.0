@@ -25,7 +25,13 @@
     "typecheck": "tsc --noEmit",
     "measure:bundle": "node scripts/measure-bundle.mjs",
     "assets:generate": "node scripts/generate-screenshot-assets.mjs",
-    "artifacts:generate": "node scripts/generate-build-artifacts.mjs"
+    "artifacts:generate": "node scripts/generate-build-artifacts.mjs",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,css,scss,md,html,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@google/genai": "^2.17.1",
@@ -54,7 +60,9 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
+    "lint-staged": "^15.5.2",
     "prettier": "^3.9.6",
     "typescript": "~5.9.3",
     "vite": "^8.2.1",
