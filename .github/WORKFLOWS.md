@@ -25,21 +25,21 @@ All workflows have been enhanced with:
 
 **Jobs:**
 
-- **Build and Test** (Matrix: Node.js 20.x, 22.x) — *skipped for Dependabot*:
+- **Build and Test** (Matrix: Node.js 22.x) — _skipped for Dependabot_:
   - ✅ Install dependencies with npm ci
   - ✅ TypeScript type checking via `npm run typecheck`
   - ✅ **Run Vitest tests** with `npm run test:run`
   - ✅ Frontend build verification (Vite)
   - ✅ C++ server compilation with Make
   - ✅ Binary verification
-  - ✅ Upload build artifacts (dist/ and omnigrid_server) for Node 20.x
-- **Dependabot Smoke** (Node 20 only) — *only for Dependabot PRs*:
+  - ✅ Upload build artifacts (dist/ and omnigrid_server) for Node 22.x
+- **Dependabot Smoke** (Node 22 only) — _only for Dependabot PRs_:
   - ✅ Typecheck + unit tests (lightweight gate; no matrix / C++ / coverage)
 - **Code Quality Check** (always runs, including Dependabot — **Prettier gate**):
   - ✅ **ESLint** validation with `npm run lint`
   - ✅ **Prettier** format checking with `npm run format:check` (fails CI on drift)
   - ✅ TODO/FIXME comment detection (warning only)
-- **Test Coverage** — *skipped for Dependabot*:
+- **Test Coverage** — _skipped for Dependabot_:
   - ✅ Run tests with coverage reporting
   - ✅ Upload coverage artifacts
   - ✅ **Post coverage report as PR comment**
@@ -205,7 +205,7 @@ All workflows have been enhanced with:
 - **Grouped updates** (noise reduction):
   - `production-dependencies` — minor/patch production deps
   - `development-dependencies` — minor/patch dev deps
-  - `eslint-stack` — eslint, @eslint/*, @typescript-eslint/*
+  - `eslint-stack` — eslint, @eslint/_, @typescript-eslint/_
   - `vitest-stack` — vitest, @vitest/*
   - `testing-library` — @testing-library/*
   - `github-actions` — all Actions minor/patch bumps
@@ -232,11 +232,11 @@ All workflows have been enhanced with:
 
 **Metadata labels applied:**
 
-| Label | Source |
-|-------|--------|
-| `semver-major` / `semver-minor` / `semver-patch` | `update-type` |
-| `production` / `development` | `dependency-type` |
-| `npm` / `github-actions` | `package-ecosystem` |
+| Label                                            | Source              |
+| ------------------------------------------------ | ------------------- |
+| `semver-major` / `semver-minor` / `semver-patch` | `update-type`       |
+| `production` / `development`                     | `dependency-type`   |
+| `npm` / `github-actions`                         | `package-ecosystem` |
 
 **Safety:** Only auto-merges minor and patch updates
 
@@ -496,7 +496,7 @@ All Node-based jobs use the built-in cache of `actions/setup-node`:
 ```yaml
 - uses: actions/setup-node@v7
   with:
-    node-version: 20.x   # or matrix.node-version
+    node-version: 20.x # or matrix.node-version
     cache: 'npm'
 - run: npm ci --no-fund --no-audit
 ```
@@ -512,11 +512,11 @@ All Node-based jobs use the built-in cache of `actions/setup-node`:
 
 ### Limits and hygiene
 
-| Policy | Default |
-|--------|---------|
-| Size | 10 GB per repository (can be raised; overage billed) |
-| Unused retention | 7 days |
-| Eviction | LRU when over size limit (checked hourly) |
+| Policy           | Default                                              |
+| ---------------- | ---------------------------------------------------- |
+| Size             | 10 GB per repository (can be raised; overage billed) |
+| Unused retention | 7 days                                               |
+| Eviction         | LRU when over size limit (checked hourly)            |
 
 Do **not** store secrets in cache paths. Prefer write access only from trusted triggers (default branch / maintained workflows). Untrusted triggers (e.g. fork PRs) receive read-only cache tokens for the default-branch scope.
 
@@ -526,13 +526,13 @@ If we add Playwright (or similar), use a **separate** `actions/cache` entry keye
 
 ### Related workflows
 
-| Workflow | Uses npm cache? |
-|----------|-----------------|
-| `ci.yml` | Yes (all Node jobs) |
-| `audit.yml`, `codeql.yml`, `performance.yml`, `release.yml` | Yes |
-| `generate.yml` | Yes on build job only |
-| `update-lockfile.yml` | Yes |
-| `assets.yml`, `docs.yml` | No (no install) |
+| Workflow                                                    | Uses npm cache?       |
+| ----------------------------------------------------------- | --------------------- |
+| `ci.yml`                                                    | Yes (all Node jobs)   |
+| `audit.yml`, `codeql.yml`, `performance.yml`, `release.yml` | Yes                   |
+| `generate.yml`                                              | Yes on build job only |
+| `update-lockfile.yml`                                       | Yes                   |
+| `assets.yml`, `docs.yml`                                    | No (no install)       |
 
 Lockfile changes (Dependabot or the `update-lockfile` workflow) automatically create a new cache key; that is expected and healthy.
 
