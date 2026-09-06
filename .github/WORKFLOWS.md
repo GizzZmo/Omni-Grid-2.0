@@ -496,7 +496,7 @@ All Node-based jobs use the built-in cache of `actions/setup-node`:
 ```yaml
 - uses: actions/setup-node@v7
   with:
-    node-version: 20.x # or matrix.node-version
+    node-version: 22.x # or matrix.node-version
     cache: 'npm'
 - run: npm ci --no-fund --no-audit
 ```
