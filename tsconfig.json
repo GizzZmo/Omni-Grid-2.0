@@ -18,7 +18,8 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "strict": true
+    "strict": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "widgets/**/*",
