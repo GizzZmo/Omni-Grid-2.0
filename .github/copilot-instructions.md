@@ -47,7 +47,7 @@ Omni-Grid is a privacy-centric, local-first "Super App" built with **React 19 + 
 ## Setup
 
 ```bash
-# Node.js >= 20.0.0 is required (see .nvmrc)
+# Node.js >= 22.22.2 is required (see .nvmrc)
 npm install
 ```
 

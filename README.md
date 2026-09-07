@@ -25,7 +25,7 @@ https://github.com/user-attachments/assets/668727b6-d7dc-455a-9bc8-d972584b39c0
 
 [![Release](https://img.shields.io/github/v/release/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=00ff88)](https://github.com/GizzZmo/Omni-Grid-2.0/releases)
 [![License](https://img.shields.io/github/license/GizzZmo/Omni-Grid-2.0?style=flat-square&color=00ccff)](./LICENSE)
-[![Node Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen?style=flat-square&logo=node.js)](https://nodejs.org)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D22.22.2-brightgreen?style=flat-square&logo=node.js)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
 [![Stars](https://img.shields.io/github/stars/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=yellow)](https://github.com/GizzZmo/Omni-Grid-2.0/stargazers)

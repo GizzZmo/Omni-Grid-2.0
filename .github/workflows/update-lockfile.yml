@@ -45,7 +45,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 20.x
+          node-version: 22.x
           cache: 'npm'
 
       - name: Remove existing lockfile (force / missing)
@@ -61,7 +61,7 @@ jobs:
       - name: Generate / update package-lock.json
         run: |
           echo "Running npm install --package-lock-only ..."
-          npm install --package-lock-only --no-fund --no-audit
+          npm install --package-lock-only --ignore-scripts --no-fund --no-audit
           echo "Lockfile size: $(wc -c < package-lock.json) bytes"
           # Basic sanity checks
           python3 -c "

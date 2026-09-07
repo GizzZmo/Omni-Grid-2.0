@@ -24,7 +24,7 @@ Key entry points:
 npm install
 ```
 
-Node.js `>=20.0.0` is required (see `.nvmrc` / `package.json` engines).
+Node.js `>=22.22.2` is required (see `.nvmrc` / `package.json` engines).
 
 ## Build, Lint, and Test Commands
 

@@ -11,7 +11,7 @@ Before launching Omni-Grid, ensure your system meets these requirements:
 
 ### Required
 
-- **Node.js:** Version 20.0.0 or higher (required; Vite 8 and Vitest rely on `node:util styleText` from Node 20)
+- **Node.js:** Version 22.22.2 or higher (required by current test/build tooling)
 - **npm:** Version 8.0.0 or higher (comes with Node.js)
 - **Modern Browser:** Chrome 90+, Firefox 88+, Safari 14+, or Edge 90+
 - **Screen Resolution:** Minimum 1280x720 (1920x1080 recommended)
