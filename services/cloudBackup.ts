@@ -13,11 +13,7 @@
  *   ✗ User must keep their vault passphrase to restore passphrase-protected vaults
  */
 
-import {
-  encryptString,
-  decryptString,
-  getVaultStatus,
-} from './secureVault';
+import { encryptString, decryptString, getVaultStatus } from './secureVault';
 
 export const BACKUP_FORMAT_VERSION = 2;
 export const BACKUP_MAGIC = 'omni-grid-encrypted-backup';
@@ -89,9 +85,7 @@ export async function createEncryptedBackup(
 }
 
 /** Decrypt an envelope and return the original state object. */
-export async function restoreEncryptedBackup(
-  envelope: EncryptedBackupEnvelope
-): Promise<unknown> {
+export async function restoreEncryptedBackup(envelope: EncryptedBackupEnvelope): Promise<unknown> {
   if (envelope.magic !== BACKUP_MAGIC) {
     throw new Error('Not a valid Omni-Grid encrypted backup');
   }
@@ -107,10 +101,7 @@ export async function restoreEncryptedBackup(
 }
 
 /** Download encrypted backup as a .ogbak.json file. */
-export async function downloadEncryptedBackup(
-  state: unknown,
-  label?: string
-): Promise<void> {
+export async function downloadEncryptedBackup(state: unknown, label?: string): Promise<void> {
   const envelope = await createEncryptedBackup(state, label);
   const blob = new Blob([JSON.stringify(envelope, null, 2)], {
     type: 'application/json',

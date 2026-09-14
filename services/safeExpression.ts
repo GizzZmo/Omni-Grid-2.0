@@ -43,7 +43,7 @@ const isLetter = (char: string) => /[a-z]/.test(char);
 const tokenize = (expression: string): Token[] => {
   const tokens: Token[] = [];
 
-  for (let i = 0; i < expression.length; ) {
+  for (let i = 0; i < expression.length;) {
     const char = expression[i];
 
     if (isDigit(char) || char === '.') {

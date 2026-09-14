@@ -268,18 +268,11 @@ When the vault is locked, key setters are no-ops so plaintext cannot be written.
 ### Understanding persist Middleware
 
 ```typescript
-persist(
-  (set, get) => ({
-    /* state */
-  }),
-  {
-    name: 'omni-grid-storage',
-    storage: createJSONStorage(() => localStorage),
-    partialize: state => ({
-      /* safe subset only */
-    }),
-  }
-);
+persist((set, get) => ({/* state */}), {
+  name: 'omni-grid-storage',
+  storage: createJSONStorage(() => localStorage),
+  partialize: state => ({/* safe subset only */}),
+});
 ```
 
 ### Partial Persistence (current production behavior)

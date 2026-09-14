@@ -82,5 +82,7 @@ console.log(
 console.log('\nTTI tips:');
 console.log('  • Lazy widgets already code-split heavy surfaces (Monaco, marketplace, …)');
 console.log('  • Prefer network idle + first contentful paint in Lighthouse on mobile');
-console.log('  • Run: npx lighthouse http://localhost:4173 --preset=desktop --only-categories=performance');
+console.log(
+  '  • Run: npx lighthouse http://localhost:4173 --preset=desktop --only-categories=performance'
+);
 console.log('');

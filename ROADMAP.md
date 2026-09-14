@@ -15,7 +15,7 @@
 
 [![GitHub Issues](https://img.shields.io/github/issues/GizzZmo/Omni-Grid-2.0?style=flat-square&logo=github&color=red)](https://github.com/GizzZmo/Omni-Grid-2.0/issues)
 [![Milestone Progress](https://img.shields.io/badge/Phase_4-25%25-FFD700?style=flat-square)](https://github.com/GizzZmo/Omni-Grid-2.0/milestones)
-[![Last Updated](https://img.shields.io/badge/Updated-August_2026-00FFFF?style=flat-square)]()
+[![Last Updated](https://img.shields.io/badge/Updated-August_2026-00FFFF?style=flat-square)](<>)
 
 </div>
 

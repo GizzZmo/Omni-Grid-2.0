@@ -17,13 +17,10 @@ export function useContainerWidth(defaultWidth = 1200) {
   }, []);
 
   // Callback ref: setMounted is called outside an effect body, when the element attaches.
-  const containerRef = useCallback(
-    (el: HTMLDivElement | null) => {
-      ref.current = el;
-      if (el) setMounted(true);
-    },
-    [],
-  );
+  const containerRef = useCallback((el: HTMLDivElement | null) => {
+    ref.current = el;
+    if (el) setMounted(true);
+  }, []);
 
   useLayoutEffect(() => {
     const el = ref.current;

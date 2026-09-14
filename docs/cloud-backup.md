@@ -10,10 +10,10 @@ Omni-Grid stays **local-first**. Cloud backup is **optional** and always encrypt
 
 ### Formats
 
-| Format | File | Encryption |
-| ------ | ---- | ---------- |
+| Format      | File                      | Encryption              |
+| ----------- | ------------------------- | ----------------------- |
 | Legacy JSON | `omni-grid-backup-*.json` | None (session snapshot) |
-| Encrypted | `*.ogbak.json` | AES-GCM via vault DEK |
+| Encrypted   | `*.ogbak.json`            | AES-GCM via vault DEK   |
 
 ### User-controlled endpoint
 

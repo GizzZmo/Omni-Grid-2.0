@@ -493,9 +493,7 @@ QuotaExceededError: Failed to execute 'setItem' on 'Storage'
    {
      "version": 1,
      "timestamp": "2025-...",
-     "state": {
-       /* AppState */
-     }
+     "state": {/* AppState */}
    }
    ```
 

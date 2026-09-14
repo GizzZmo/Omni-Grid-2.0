@@ -159,14 +159,7 @@ export interface AIProvider {
 // ─── Widget Marketplace ────────────────────────────────────────────────────
 
 export type MarketplaceCategory =
-  | 'all'
-  | 'utility'
-  | 'developer'
-  | 'finance'
-  | 'creative'
-  | 'ai'
-  | 'productivity'
-  | 'community';
+  'all' | 'utility' | 'developer' | 'finance' | 'creative' | 'ai' | 'productivity' | 'community';
 
 export interface MarketplaceEntry {
   /** Must match a WidgetType string */
