@@ -25,7 +25,7 @@ export const WeatherStation: React.FC = () => {
 
   useEffect(() => {
     const query = weatherLocation.trim();
-    if (!query.trim()) return;
+    if (!query) return;
 
     let cancelled = false;
 
