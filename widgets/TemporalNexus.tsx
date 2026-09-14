@@ -15,32 +15,35 @@ export const TemporalNexus: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const fetchHistory = useCallback(async (force = false) => {
-    if (!force && historyData && historyData.length > 10) return; // Cache simple check
+  const fetchHistory = useCallback(
+    async (force = false) => {
+      if (!force && historyData && historyData.length > 10) return; // Cache simple check
 
-    setLoading(true);
-    try {
-      const ai = getAi();
-      if (!ai) {
-        setHistoryData('Temporal Uplink requires a configured API key.');
+      setLoading(true);
+      try {
+        const ai = getAi();
+        if (!ai) {
+          setHistoryData('Temporal Uplink requires a configured API key.');
+          setLoading(false);
+          return;
+        }
+        // Use wall-clock date, not the ticking `time` state (would refetch every second).
+        const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+        const prompt = `Tell me 3 significant historical events that happened on ${today} in history. Format as a bulleted list. Keep it concise. Also, tell me one interesting fact about this specific day of the week.`;
+
+        const response = await ai.models.generateContent({
+          model: 'gemini-3-flash-preview',
+          contents: prompt,
+        });
+        setHistoryData(response.text || 'No data found.');
+      } catch (_e) {
+        setHistoryData('Temporal Uplink Failed. Check Connectivity.');
+      } finally {
         setLoading(false);
-        return;
       }
-      // Use wall-clock date, not the ticking `time` state (would refetch every second).
-      const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-      const prompt = `Tell me 3 significant historical events that happened on ${today} in history. Format as a bulleted list. Keep it concise. Also, tell me one interesting fact about this specific day of the week.`;
-
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt,
-      });
-      setHistoryData(response.text || 'No data found.');
-    } catch (_e) {
-      setHistoryData('Temporal Uplink Failed. Check Connectivity.');
-    } finally {
-      setLoading(false);
-    }
-  }, [historyData]);
+    },
+    [historyData]
+  );
 
   useEffect(() => {
     if (activeTab === 'HISTORY') {
