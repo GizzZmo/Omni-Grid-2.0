@@ -21,43 +21,61 @@ export const WeatherStation: React.FC = () => {
   // Update local state if store changes externally (e.g. import)
   useEffect(() => {
     setLocalLoc(weatherLocation);
-    if (weatherLocation) fetchWeather(undefined, weatherLocation);
   }, [weatherLocation]);
 
-  const fetchWeather = async (e?: React.FormEvent, locOverride?: string) => {
-    if (e) e.preventDefault();
-    const query = locOverride || localLoc;
+  useEffect(() => {
+    const query = weatherLocation.trim();
     if (!query.trim()) return;
 
-    // Update store on search
-    if (!locOverride) setWeatherLocation(localLoc);
+    let cancelled = false;
 
-    setLoading(true);
-    setError('');
-    setWeather(null);
+    const fetchByLocation = async () => {
+      setLoading(true);
+      setError('');
+      setWeather(null);
 
-    try {
-      // wttr.in returns JSON with format=j1
-      const res = await fetch(`https://wttr.in/${encodeURIComponent(query)}?format=j1`);
-      if (!res.ok) throw new Error('Weather service unavailable');
-      const data = await res.json();
+      try {
+        // wttr.in returns JSON with format=j1
+        const res = await fetch(`https://wttr.in/${encodeURIComponent(query)}?format=j1`);
+        if (!res.ok) throw new Error('Weather service unavailable');
+        const data = await res.json();
 
-      const current = data.current_condition[0];
-      const area = data.nearest_area[0];
+        if (cancelled) return;
 
-      setWeather({
-        temp: current.temp_C,
-        desc: current.weatherDesc[0].value,
-        humidity: current.humidity,
-        wind: current.windspeedKmph,
-        city: area.areaName[0].value,
-        country: area.country[0].value,
-      });
-    } catch (_err) {
-      setError('Location not found or service down.');
-    } finally {
-      setLoading(false);
-    }
+        const current = data.current_condition[0];
+        const area = data.nearest_area[0];
+
+        setWeather({
+          temp: current.temp_C,
+          desc: current.weatherDesc[0].value,
+          humidity: current.humidity,
+          wind: current.windspeedKmph,
+          city: area.areaName[0].value,
+          country: area.country[0].value,
+        });
+      } catch (_err) {
+        if (!cancelled) {
+          setError('Location not found or service down.');
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchByLocation();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [weatherLocation]);
+
+  const fetchWeather = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const query = localLoc.trim();
+    if (!query) return;
+    setWeatherLocation(query);
   };
 
   const getWeatherIcon = (desc: string) => {

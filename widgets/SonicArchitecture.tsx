@@ -1,5 +1,5 @@
 /// <reference lib="dom" />
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Music,
   Play,
@@ -105,7 +105,7 @@ export const SonicArchitecture: React.FC = () => {
     return audioCtxRef.current;
   };
 
-  const playClick = () => {
+  const playClick = useCallback(() => {
     const ctx = ensureAudioContext();
     if (!ctx) return;
     const osc = ctx.createOscillator();
@@ -116,7 +116,7 @@ export const SonicArchitecture: React.FC = () => {
     gain.gain.value = 0.5;
     osc.start();
     osc.stop(ctx.currentTime + 0.05);
-  };
+  }, []);
 
   // Metronome Logic
   useEffect(() => {
@@ -132,7 +132,7 @@ export const SonicArchitecture: React.FC = () => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [metronomePlaying, bpm]);
+  }, [metronomePlaying, bpm, playClick]);
 
   const playTone = (freq: number) => {
     const ctx = ensureAudioContext();

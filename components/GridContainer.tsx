@@ -731,7 +731,7 @@ export const GridContainer: React.FC = () => {
         </WidgetShell>
       ),
     }),
-    []
+    [getStore, setScratchpadContent, setTasks, setTickers, setWeatherLocation, setWritePadContent]
   );
 
   const activeLayout = [...layouts.lg.filter(item => visibleWidgets.includes(item.i))];

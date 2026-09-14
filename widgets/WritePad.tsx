@@ -30,9 +30,7 @@ export const WritePad: React.FC = () => {
 
   // Sync from store (e.g. reload or reset)
   useEffect(() => {
-    if (localContent !== writePadContent) {
-      setLocalContent(writePadContent);
-    }
+    setLocalContent(prev => (prev !== writePadContent ? writePadContent : prev));
   }, [writePadContent]);
 
   // Debounce sync to store
