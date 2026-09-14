@@ -32,7 +32,6 @@ export const WeatherStation: React.FC = () => {
     const fetchByLocation = async () => {
       setLoading(true);
       setError('');
-      setWeather(null);
 
       try {
         // wttr.in returns JSON with format=j1
