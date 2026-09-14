@@ -49,6 +49,7 @@ export const NeuralScratchpad: React.FC = () => {
 
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
+      const sourcePrefix = localContent.substring(0, start);
 
       // Use localContent for immediate consistency
       let selectedText = localContent.substring(start, end);
@@ -70,9 +71,15 @@ export const NeuralScratchpad: React.FC = () => {
         const latestContent = textAreaRef.current?.value ?? localContent;
         let newText = '';
         if (isSelection && action !== 'ANALYZE' && action !== 'SUMMARY') {
-          // Replace selection for editing tasks only if selection content is unchanged
-          if (latestContent.substring(start, end) === selectedText) {
-            newText = latestContent.substring(0, start) + result + latestContent.substring(end);
+          // Replace only if the original prefix and selection are still aligned
+          const selectionStillAligned =
+            latestContent.startsWith(sourcePrefix) &&
+            latestContent.substring(start, start + selectedText.length) === selectedText;
+          if (selectionStillAligned) {
+            newText =
+              latestContent.substring(0, start) +
+              result +
+              latestContent.substring(start + selectedText.length);
           } else {
             newText =
               latestContent + `\n\n--- AI ${action} ---\n` + result + '\n-------------------';
