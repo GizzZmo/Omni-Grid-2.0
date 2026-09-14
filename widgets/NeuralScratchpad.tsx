@@ -67,13 +67,19 @@ export const NeuralScratchpad: React.FC = () => {
       try {
         const result = await refineText(selectedText, action);
 
+        const latestContent = textAreaRef.current?.value ?? localContent;
         let newText = '';
         if (isSelection && action !== 'ANALYZE' && action !== 'SUMMARY') {
-          // Replace selection for editing tasks
-          newText = localContent.substring(0, start) + result + localContent.substring(end);
+          // Replace selection for editing tasks only if selection content is unchanged
+          if (latestContent.substring(start, end) === selectedText) {
+            newText = latestContent.substring(0, start) + result + latestContent.substring(end);
+          } else {
+            newText =
+              latestContent + `\n\n--- AI ${action} ---\n` + result + '\n-------------------';
+          }
         } else {
           // Append result for analysis or summary
-          newText = localContent + `\n\n--- AI ${action} ---\n` + result + '\n-------------------';
+          newText = latestContent + `\n\n--- AI ${action} ---\n` + result + '\n-------------------';
         }
 
         // Update both immediately to prevent race conditions during AI async return
