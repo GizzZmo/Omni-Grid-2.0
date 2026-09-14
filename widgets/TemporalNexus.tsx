@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Clock, History, RefreshCcw, Loader2 } from 'lucide-react';
 import { getGenAIClient } from '../services/geminiService';
 
@@ -15,8 +15,8 @@ export const TemporalNexus: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const fetchHistory = async () => {
-    if (historyData && historyData.length > 10) return; // Cache simple check
+  const fetchHistory = useCallback(async (force = false) => {
+    if (!force && historyData && historyData.length > 10) return; // Cache simple check
 
     setLoading(true);
     try {
@@ -26,7 +26,8 @@ export const TemporalNexus: React.FC = () => {
         setLoading(false);
         return;
       }
-      const today = time.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+      // Use wall-clock date, not the ticking `time` state (would refetch every second).
+      const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
       const prompt = `Tell me 3 significant historical events that happened on ${today} in history. Format as a bulleted list. Keep it concise. Also, tell me one interesting fact about this specific day of the week.`;
 
       const response = await ai.models.generateContent({
@@ -39,13 +40,13 @@ export const TemporalNexus: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [historyData]);
 
   useEffect(() => {
     if (activeTab === 'HISTORY') {
-      fetchHistory();
+      void fetchHistory();
     }
-  }, [activeTab]);
+  }, [activeTab, fetchHistory]);
 
   return (
     <div className="h-full flex flex-col gap-3">
@@ -91,7 +92,7 @@ export const TemporalNexus: React.FC = () => {
                 <button
                   onClick={() => {
                     setHistoryData('');
-                    fetchHistory();
+                    void fetchHistory(true);
                   }}
                   className="text-slate-500 hover:text-white"
                 >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DollarSign, ArrowRightLeft, TrendingUp, Loader2 } from 'lucide-react';
 
 const CURRENCIES = [
@@ -24,7 +24,7 @@ export const ValutaExchange: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string>('');
 
-  const fetchRate = async () => {
+  const fetchRate = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`https://open.er-api.com/v6/latest/${from}`);
@@ -38,11 +38,11 @@ export const ValutaExchange: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [from, to]);
 
   useEffect(() => {
-    fetchRate();
-  }, [from, to]);
+    void fetchRate();
+  }, [fetchRate]);
 
   const handleSwap = () => {
     const temp = from;
