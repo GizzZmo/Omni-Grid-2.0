@@ -46,13 +46,7 @@ import {
 import { useAppStore } from '../store';
 
 type Category =
-  | 'All'
-  | 'Productivity'
-  | 'Developer'
-  | 'AI'
-  | 'Research'
-  | 'Finance'
-  | 'Entertainment';
+  'All' | 'Productivity' | 'Developer' | 'AI' | 'Research' | 'Finance' | 'Entertainment';
 
 interface MarketplaceWidget {
   type: string;

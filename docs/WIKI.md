@@ -336,9 +336,7 @@ Omni-Grid follows a **"Local-First"** dogma inspired by [local-first software pr
 {
   "version": 1,
   "timestamp": "2025-01-15T10:30:00.000Z",
-  "state": {
-    /* full state */
-  }
+  "state": {/* full state */}
 }
 ```
 

@@ -48,9 +48,7 @@ export const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({
           compactType={effectiveCompact ? 'vertical' : null}
           preventCollision={false}
           margin={isMobile ? ([8, 8] as [number, number]) : ([16, 16] as [number, number])}
-          containerPadding={
-            isMobile ? ([4, 4] as [number, number]) : ([0, 0] as [number, number])
-          }
+          containerPadding={isMobile ? ([4, 4] as [number, number]) : ([0, 0] as [number, number])}
           isDraggable={!isLayoutLocked}
           isResizable={!isLayoutLocked && !isMobile}
           resizeHandles={['se']}

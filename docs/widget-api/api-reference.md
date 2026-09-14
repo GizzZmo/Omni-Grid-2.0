@@ -99,14 +99,7 @@ Describes a widget in the marketplace catalog (`widgets/marketplaceCatalog.ts`).
 
 ```typescript
 type MarketplaceCategory =
-  | 'all'
-  | 'utility'
-  | 'developer'
-  | 'finance'
-  | 'creative'
-  | 'ai'
-  | 'productivity'
-  | 'community';
+  'all' | 'utility' | 'developer' | 'finance' | 'creative' | 'ai' | 'productivity' | 'community';
 
 interface MarketplaceEntry {
   id: string; // must match a WidgetType string

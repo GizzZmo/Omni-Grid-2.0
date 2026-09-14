@@ -3,15 +3,18 @@
 ## Completed (Aug 2026)
 
 ### Security
+
 - [x] Secure Vault (AES-256-GCM + PBKDF2 passphrase)
 - [x] Zustand partialize (secrets never in plain localStorage)
 - [x] No client-side API key injection
 
 ### Performance
+
 - [x] Widget lazy-loading (React.lazy + Suspense + WidgetSkeleton)
 - [x] `scripts/measure-bundle.mjs` + `npm run measure:bundle` / `build:analyze`
 
 ### Mobile / PWA touch
+
 - [x] `ResponsiveGrid` — breakpoints lg→xxs (12→2 cols)
 - [x] Auto-compact on mobile; resize disabled under 768px
 - [x] Drag via `.drag-handle` only; inputs/buttons cancelled
@@ -20,12 +23,14 @@
 - [x] Docs: `docs/mobile-pwa.md`
 
 ### Cloud backup (vault crypto)
+
 - [x] `services/cloudBackup.ts` — encrypted `.ogbak.json` + optional HTTPS PUT/GET endpoint
 - [x] Unit tests: `test/cloudBackup.test.ts`
 - [x] Docs: `docs/cloud-backup.md`
 - [ ] Wire full UI in Settings → Data tab (API ready; polish remaining)
 
 ### Tests
+
 - [x] `test/useMediaQuery.test.ts`
 - [x] `test/cloudBackup.test.ts`
 - [ ] E2E (Playwright) smoke for mobile viewport + vault unlock

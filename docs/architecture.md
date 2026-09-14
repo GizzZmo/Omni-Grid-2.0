@@ -219,15 +219,10 @@ interface AppState {
 **Persistence:**
 
 ```typescript
-persist(
-  (set, get) => ({
-    /* state */
-  }),
-  {
-    name: 'omni-grid-storage',
-    storage: createJSONStorage(() => localStorage),
-  }
-);
+persist((set, get) => ({/* state */}), {
+  name: 'omni-grid-storage',
+  storage: createJSONStorage(() => localStorage),
+});
 ```
 
 ---
