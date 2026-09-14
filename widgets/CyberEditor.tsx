@@ -326,7 +326,7 @@ export const CyberEditor: React.FC = () => {
       setCyberEditorActiveTab(activeTabId);
     }, 500);
     return () => clearTimeout(handler);
-  }, [tabs, activeTabId]);
+  }, [tabs, activeTabId, setCyberEditorTabs, setCyberEditorActiveTab]);
 
   const updateTabContent = (content: string) => {
     setTabs(tabs.map(t => (t.id === activeTabId ? { ...t, content } : t)));

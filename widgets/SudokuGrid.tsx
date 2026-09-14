@@ -182,18 +182,20 @@ export const SudokuGrid: React.FC = () => {
     [selected, isPaused, gameWon, isNoteMode, board, solution, initialBoard]
   );
 
-  const handleErase = () => {
+  const handleErase = useCallback(() => {
     if (!selected || isPaused || gameWon) return;
     const [r, c] = selected;
     if (initialBoard[r][c] !== null) return;
 
     // Clear notes if any, or clear board if filled (though we only fill correct numbers above,
     // typically user might want to clear notes)
-    const newNotes = [...notes];
-    newNotes[r][c] = new Set();
-    setNotes(newNotes);
+    setNotes(prev => {
+      const newNotes = [...prev];
+      newNotes[r][c] = new Set();
+      return newNotes;
+    });
     // If we allowed wrong numbers on board, we'd clear them here too.
-  };
+  }, [selected, isPaused, gameWon, initialBoard]);
 
   // Keyboard support
   useEffect(() => {
@@ -218,7 +220,7 @@ export const SudokuGrid: React.FC = () => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleInput, isPaused, gameWon]);
+  }, [handleInput, handleErase, isPaused, gameWon]);
 
   const formatTime = (s: number) => {
     const mins = Math.floor(s / 60);

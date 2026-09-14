@@ -172,7 +172,8 @@ export const FocusHUD: React.FC = () => {
     return () => {
       if (audioContextRef.current) audioContextRef.current.suspend();
     };
-  }, [soundType]); // volume is intentionally excluded: a separate effect handles live gain updates without restarting the buffer
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- volume is applied by the dedicated gain effect below
+  }, [soundType]);
 
   // Live volume adjustment without restarting the noise node
   useEffect(() => {

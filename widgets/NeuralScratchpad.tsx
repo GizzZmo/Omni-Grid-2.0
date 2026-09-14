@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Sparkles,
   Loader2,
@@ -24,10 +24,7 @@ export const NeuralScratchpad: React.FC = () => {
 
   // Performance: Sync store changes to local state (e.g. from imports), but avoid cursor jumps if focused
   useEffect(() => {
-    // Only sync if content is different to avoid unnecessary renders
-    if (scratchpadContent !== localContent) {
-      setLocalContent(scratchpadContent);
-    }
+    setLocalContent(prev => (prev !== scratchpadContent ? scratchpadContent : prev));
   }, [scratchpadContent]);
 
   // Performance: Debounce write to global store (persist layer)
@@ -44,51 +41,65 @@ export const NeuralScratchpad: React.FC = () => {
     setLocalContent(e.target.value);
   };
 
-  const handleAIAction = async (
-    action: 'REFINE' | 'EXPAND' | 'TRANSLATE' | 'ANALYZE' | 'SUMMARY' | 'TONE'
-  ) => {
-    setMenuPos(null); // Close menu
-    const textarea = textAreaRef.current;
-    if (!textarea) return;
+  const handleAIAction = useCallback(
+    async (action: 'REFINE' | 'EXPAND' | 'TRANSLATE' | 'ANALYZE' | 'SUMMARY' | 'TONE') => {
+      setMenuPos(null); // Close menu
+      const textarea = textAreaRef.current;
+      if (!textarea) return;
 
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const sourcePrefix = localContent.substring(0, start);
 
-    // Use localContent for immediate consistency
-    let selectedText = localContent.substring(start, end);
-    let isSelection = true;
+      // Use localContent for immediate consistency
+      let selectedText = localContent.substring(start, end);
+      let isSelection = true;
 
-    if (start === end) {
-      selectedText = localContent;
-      isSelection = false;
-    }
-
-    if (!selectedText.trim()) return;
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const result = await refineText(selectedText, action);
-
-      let newText = '';
-      if (isSelection && action !== 'ANALYZE' && action !== 'SUMMARY') {
-        // Replace selection for editing tasks
-        newText = localContent.substring(0, start) + result + localContent.substring(end);
-      } else {
-        // Append result for analysis or summary
-        newText = localContent + `\n\n--- AI ${action} ---\n` + result + '\n-------------------';
+      if (start === end) {
+        selectedText = localContent;
+        isSelection = false;
       }
 
-      // Update both immediately to prevent race conditions during AI async return
-      setLocalContent(newText);
-      setScratchpadContent(newText);
-    } catch (_err) {
-      setError('AI request failed. Check key.');
-    } finally {
-      setLoading(false);
-    }
-  };
+      if (!selectedText.trim()) return;
+
+      setLoading(true);
+      setError('');
+
+      try {
+        const result = await refineText(selectedText, action);
+
+        const latestContent = textAreaRef.current?.value ?? localContent;
+        let newText = '';
+        if (isSelection && action !== 'ANALYZE' && action !== 'SUMMARY') {
+          // Replace only if the original prefix and selection are still aligned
+          const selectionStillAligned =
+            latestContent.startsWith(sourcePrefix) &&
+            latestContent.substring(start, start + selectedText.length) === selectedText;
+          if (selectionStillAligned) {
+            newText =
+              latestContent.substring(0, start) +
+              result +
+              latestContent.substring(start + selectedText.length);
+          } else {
+            newText =
+              latestContent + `\n\n--- AI ${action} ---\n` + result + '\n-------------------';
+          }
+        } else {
+          // Append result for analysis or summary
+          newText = latestContent + `\n\n--- AI ${action} ---\n` + result + '\n-------------------';
+        }
+
+        // Update both immediately to prevent race conditions during AI async return
+        setLocalContent(newText);
+        setScratchpadContent(newText);
+      } catch (_err) {
+        setError('AI request failed. Check key.');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [localContent, setScratchpadContent]
+  );
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -150,7 +161,7 @@ export const NeuralScratchpad: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [localContent]); // Depend on localContent
+  }, [handleAIAction]);
 
   return (
     <div className="h-full flex flex-col relative" onMouseLeave={() => setMenuPos(null)}>
