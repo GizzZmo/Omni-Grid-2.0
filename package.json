@@ -34,10 +34,10 @@
     ]
   },
   "dependencies": {
-    "@google/genai": "^2.23.0",
+    "@google/genai": "^2.24.0",
     "@monaco-editor/react": "^4.7.0",
     "@testing-library/dom": "^10.4.2",
-    "lucide-react": "1.47.0",
+    "lucide-react": "1.48.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-grid-layout": "2.2.4",
