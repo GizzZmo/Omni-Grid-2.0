@@ -36,13 +36,13 @@
     ]
   },
   "dependencies": {
-    "@google/genai": "^2.23.0",
+    "@google/genai": "^2.30.0",
     "@monaco-editor/react": "^4.7.0",
     "@testing-library/dom": "^10.4.2",
-    "lucide-react": "1.47.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "react-grid-layout": "2.2.4",
+    "lucide-react": "1.58.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-grid-layout": "2.3.0",
     "zustand": "5.0.15"
   },
   "devDependencies": {
