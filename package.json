@@ -36,14 +36,14 @@
     ]
   },
   "dependencies": {
-    "@google/genai": "^2.23.0",
+    "@google/genai": "^2.31.0",
     "@monaco-editor/react": "^4.7.0",
     "@testing-library/dom": "^10.4.2",
-    "lucide-react": "1.47.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "react-grid-layout": "2.2.4",
-    "zustand": "5.0.15"
+    "lucide-react": "1.61.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-grid-layout": "2.3.0",
+    "zustand": "5.0.16"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
